@@ -179,7 +179,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -409,7 +409,7 @@ Transform:
   m_GameObject: {fileID: 19486447}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 13.83, y: 0.3, z: 27.01}
+  m_LocalPosition: {x: 13.83, y: 0, z: 27.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -451,7 +451,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -703,7 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::SpriteLightController
   Kind: 0
   Type: 3
-  ID: 7
+  ID: -1
   Renderer: {fileID: 20232478}
   HideIfAlphaOutOfRange: 0
   HideAlphaRangeMin: 0
@@ -1004,7 +1004,7 @@ Transform:
   m_GameObject: {fileID: 28846369}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 15.18, y: 0.3, z: 6.07}
+  m_LocalPosition: {x: 15.18, y: 0, z: 6.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -1431,7 +1431,7 @@ Transform:
   m_GameObject: {fileID: 63837938}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: -9.96, y: 0.3, z: 17.17}
+  m_LocalPosition: {x: -9.96, y: 0, z: 17.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1473,7 +1473,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -1633,7 +1633,7 @@ Transform:
   m_GameObject: {fileID: 67595430}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 7.15, y: 0.3, z: 78.18}
+  m_LocalPosition: {x: 7.15, y: 0, z: 78.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1675,7 +1675,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -1923,7 +1923,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -2185,7 +2185,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2505,7 +2505,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 4
   BloomFogIntensityMultiplier: 16
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -2927,7 +2927,7 @@ Transform:
   m_GameObject: {fileID: 126169836}
   serializedVersion: 2
   m_LocalRotation: {x: 0.34201074, y: 0.0070880176, z: -0.0025798497, w: 0.9396658}
-  m_LocalPosition: {x: -4.28, y: 0.3, z: 49}
+  m_LocalPosition: {x: -4.28, y: 0, z: 49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2969,7 +2969,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -3388,12 +3388,12 @@ Transform:
   - {fileID: 985635554}
   - {fileID: 2046294515}
   - {fileID: 375509280}
-  - {fileID: 1547424911}
-  - {fileID: 989124661}
-  - {fileID: 223367927}
-  - {fileID: 697693503}
-  - {fileID: 2106951159}
-  - {fileID: 174571160}
+  - {fileID: 1664316998}
+  - {fileID: 977077400}
+  - {fileID: 1003433896}
+  - {fileID: 1352488034}
+  - {fileID: 1504719501}
+  - {fileID: 1368006442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &137951628
@@ -3409,11 +3409,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::EnvironmentDescriptor
   ID: KDAEnvironment
-  BasicEventEffectManager: {fileID: 1547424904}
-  LightColorGroupEffectManager: {fileID: 989124660}
-  LightRotationGroupEffectManager: {fileID: 697693502}
-  LightTranslationGroupEffectManager: {fileID: 2106951158}
-  FloatFxGroupEffectManager: {fileID: 174571159}
+  BasicEventEffectManager: {fileID: 1664316991}
+  LightColorGroupEffectManager: {fileID: 977077399}
+  LightRotationGroupEffectManager: {fileID: 1352488033}
+  LightTranslationGroupEffectManager: {fileID: 1504719500}
+  FloatFxGroupEffectManager: {fileID: 1368006441}
   ColorSchemeProvider: {fileID: 137951630}
   SpectrogramDataProvider: {fileID: 137951629}
   SizeData:
@@ -3813,7 +3813,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 23bc260cfeb023407befbb23451d991b, type: 2}
+  - {fileID: 2100000, guid: 8727fe0b4eb76feac9891428bcd2d2c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3858,8 +3858,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::PlanarReflection
   MirrorRenderer: {fileID: 11400000, guid: b54751a1fc3ac3983afa3aa9d4141095, type: 2}
-  MirrorMaterial: {fileID: 2100000, guid: 23bc260cfeb023407befbb23451d991b, type: 2}
-  NoMirrorMaterial: {fileID: 2100000, guid: 596929b6c8d671b0c8b81635e68c2abe, type: 2}
+  MirrorMaterial: {fileID: 2100000, guid: 8727fe0b4eb76feac9891428bcd2d2c8, type: 2}
+  NoMirrorMaterial: {fileID: 2100000, guid: 8bf6b963a076fe7f3a17331a9a114f02, type: 2}
   Renderer: {fileID: 147604028}
   PlaneTransform: {fileID: 147604026}
 --- !u!1 &150699556
@@ -4115,7 +4115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 3
-  ID: 14
+  ID: 12
   Intensity: 1
 --- !u!114 &161037325
 MonoBehaviour:
@@ -4235,7 +4235,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -4367,51 +4367,6 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
---- !u!1 &174571158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 174571160}
-  - component: {fileID: 174571159}
-  m_Layer: 0
-  m_Name: FloatFxGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &174571159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174571158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ebe785d3e42438393b1c63620f5e385, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::FloatFxGroupEffectManager
-  effectEntries: []
---- !u!4 &174571160
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174571158}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 137951627}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &178665539
 GameObject:
   m_ObjectHideFlags: 0
@@ -4440,7 +4395,7 @@ Transform:
   m_GameObject: {fileID: 178665539}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21925567, y: -0.41006464, z: -0.102240585, w: -0.8793866}
-  m_LocalPosition: {x: -6.66, y: 0.3, z: 27.3}
+  m_LocalPosition: {x: -6.66, y: 0, z: 27.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4482,7 +4437,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -4642,7 +4597,7 @@ Transform:
   m_GameObject: {fileID: 184417611}
   serializedVersion: 2
   m_LocalRotation: {x: -0.13643016, y: 0.8208314, z: -0.21994117, w: -0.50916445}
-  m_LocalPosition: {x: -3.17, y: 0.3, z: 9.62}
+  m_LocalPosition: {x: -3.17, y: 0, z: 9.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4684,7 +4639,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -4886,7 +4841,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5046,7 +5001,7 @@ Transform:
   m_GameObject: {fileID: 220122342}
   serializedVersion: 2
   m_LocalRotation: {x: -0.4348724, y: 0.39343265, z: -0.21943179, w: -0.7797092}
-  m_LocalPosition: {x: 6.95, y: 0.3, z: 19.76}
+  m_LocalPosition: {x: 6.95, y: 0, z: 19.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5088,7 +5043,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5278,7 +5233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5351,53 +5306,6 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
---- !u!1 &223367925
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 223367927}
-  - component: {fileID: 223367926}
-  m_Layer: 0
-  m_Name: Sink Object
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &223367926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223367925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a583847fb4c4821ac7375dc8b59c4a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightSink
-  Kind: 0
-  Type: 4
-  ID: 1
---- !u!4 &223367927
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223367925}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 137951627}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &236321921
 GameObject:
   m_ObjectHideFlags: 0
@@ -5426,7 +5334,7 @@ Transform:
   m_GameObject: {fileID: 236321921}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: -3.58, y: 0.3, z: 38.39}
+  m_LocalPosition: {x: -3.58, y: 0, z: 38.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5468,7 +5376,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5660,7 +5568,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5890,7 +5798,7 @@ Transform:
   m_GameObject: {fileID: 268160522}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 7.15, y: 0.3, z: 14.06}
+  m_LocalPosition: {x: 7.15, y: 0, z: 14.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5932,7 +5840,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6134,7 +6042,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6294,7 +6202,7 @@ Transform:
   m_GameObject: {fileID: 295401615}
   serializedVersion: 2
   m_LocalRotation: {x: 0.34682903, y: -0.39044833, z: -0.16172902, w: -0.8373192}
-  m_LocalPosition: {x: -3.86, y: 0.3, z: 13.36}
+  m_LocalPosition: {x: -3.86, y: 0, z: 13.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6336,7 +6244,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6758,7 +6666,7 @@ Transform:
   m_GameObject: {fileID: 303757905}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: 6.3, y: 0.3, z: 11.21}
+  m_LocalPosition: {x: 6.3, y: 0, z: 11.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6800,7 +6708,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -7208,7 +7116,7 @@ Transform:
   m_GameObject: {fileID: 336659963}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: 4.28, y: 0.3, z: 34.69}
+  m_LocalPosition: {x: 4.28, y: 0, z: 34.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7250,7 +7158,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -7672,7 +7580,7 @@ Transform:
   m_GameObject: {fileID: 366641144}
   serializedVersion: 2
   m_LocalRotation: {x: 0.58256364, y: -0.32374427, z: -0.27165383, w: -0.6942719}
-  m_LocalPosition: {x: -8.96, y: 0.3, z: 2.2}
+  m_LocalPosition: {x: -8.96, y: 0, z: 2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7714,7 +7622,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -7994,7 +7902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightmapsIntensityData
   Kind: 0
   Type: 3
-  ID: 9
+  ID: 8
   Intensity: 1
   BakeId: 4
   Weight: 0.1
@@ -8419,7 +8327,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8520,7 +8428,7 @@ Transform:
   m_GameObject: {fileID: 411000622}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: 3.87, y: 0.3, z: 11.87}
+  m_LocalPosition: {x: 3.87, y: 0, z: 11.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8562,7 +8470,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -8722,7 +8630,7 @@ Transform:
   m_GameObject: {fileID: 420440102}
   serializedVersion: 2
   m_LocalRotation: {x: 0.48695886, y: -0.35643265, z: -0.22707266, w: -0.7643722}
-  m_LocalPosition: {x: 4.36, y: 0.3, z: 43.21}
+  m_LocalPosition: {x: 4.36, y: 0, z: 43.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8764,7 +8672,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -8941,7 +8849,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9055,7 +8963,7 @@ Transform:
   m_GameObject: {fileID: 432972106}
   serializedVersion: 2
   m_LocalRotation: {x: -0.19951631, y: 0.6152863, z: -0.16486566, w: -0.74460423}
-  m_LocalPosition: {x: -11.85, y: 0.3, z: 13.89}
+  m_LocalPosition: {x: -11.85, y: 0, z: 13.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9097,7 +9005,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -9344,7 +9252,7 @@ Transform:
   m_GameObject: {fileID: 446225326}
   serializedVersion: 2
   m_LocalRotation: {x: 0.34201074, y: 0.0070880176, z: -0.0025798497, w: 0.9396658}
-  m_LocalPosition: {x: -5.58, y: 0.3, z: 9.42}
+  m_LocalPosition: {x: -5.58, y: 0, z: 9.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9386,7 +9294,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -9677,7 +9585,7 @@ Transform:
   m_GameObject: {fileID: 457023766}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 3.85, y: 0.3, z: 16.58}
+  m_LocalPosition: {x: 3.85, y: 0, z: 16.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9719,7 +9627,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -10171,7 +10079,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10272,7 +10180,7 @@ Transform:
   m_GameObject: {fileID: 548122596}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: -9.61, y: 0.3, z: 50.79}
+  m_LocalPosition: {x: -9.61, y: 0, z: 50.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10314,7 +10222,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -10474,7 +10382,7 @@ Transform:
   m_GameObject: {fileID: 548346505}
   serializedVersion: 2
   m_LocalRotation: {x: -0.19951631, y: 0.6152863, z: -0.16486566, w: -0.74460423}
-  m_LocalPosition: {x: -3.35, y: 0.3, z: 57.94}
+  m_LocalPosition: {x: -3.35, y: 0, z: 57.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10516,7 +10424,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -10718,7 +10626,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -10878,7 +10786,7 @@ Transform:
   m_GameObject: {fileID: 569917384}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 10.240001, y: 0.3, z: 1.6200004}
+  m_LocalPosition: {x: 10.240001, y: 0, z: 1.6200004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10920,7 +10828,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -11110,7 +11018,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11524,7 +11432,7 @@ Transform:
   m_GameObject: {fileID: 592045292}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: -5.8, y: 0.3, z: 33.06}
+  m_LocalPosition: {x: -5.8, y: 0, z: 33.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11566,7 +11474,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -11857,7 +11765,7 @@ Transform:
   m_GameObject: {fileID: 603779247}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25783423, y: 0.084186025, z: -0.022557579, w: 0.9622502}
-  m_LocalPosition: {x: -12.22, y: 0.3, z: 8.5}
+  m_LocalPosition: {x: -12.22, y: 0, z: 8.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11899,7 +11807,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -12059,7 +11967,7 @@ Transform:
   m_GameObject: {fileID: 615280410}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 7.15, y: 0.3, z: 39.32}
+  m_LocalPosition: {x: 7.15, y: 0, z: 39.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12101,7 +12009,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -12348,7 +12256,7 @@ Transform:
   m_GameObject: {fileID: 653340955}
   serializedVersion: 2
   m_LocalRotation: {x: 0.30618617, y: 0.6451196, z: 0.37505385, w: -0.5911053}
-  m_LocalPosition: {x: -14.250009, y: 0.30001867, z: 5.07999}
+  m_LocalPosition: {x: -14.250009, y: 0.000018664958, z: 5.07999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12390,7 +12298,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -12592,7 +12500,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.7
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -12794,7 +12702,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -12954,7 +12862,7 @@ Transform:
   m_GameObject: {fileID: 678264928}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: -14.07, y: 0.3, z: 17.69}
+  m_LocalPosition: {x: -14.07, y: 0, z: 17.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12996,7 +12904,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -13156,7 +13064,7 @@ Transform:
   m_GameObject: {fileID: 681477325}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: -13.72, y: 0.3, z: 23.85}
+  m_LocalPosition: {x: -13.72, y: 0, z: 23.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13198,7 +13106,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -13400,7 +13308,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -13560,7 +13468,7 @@ Transform:
   m_GameObject: {fileID: 682466986}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24184473, y: 0.66446304, z: -0.24184473, w: 0.66446304}
-  m_LocalPosition: {x: -9.42, y: 0.3, z: 64}
+  m_LocalPosition: {x: -9.42, y: 0, z: 64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13602,7 +13510,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -13935,7 +13843,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -14067,51 +13975,6 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
---- !u!1 &697693501
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 697693503}
-  - component: {fileID: 697693502}
-  m_Layer: 0
-  m_Name: LightRotationGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &697693502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697693501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47ebdf100fce4003aa89ddca6b233845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightRotationGroupEffectManager
-  effectEntries: []
---- !u!4 &697693503
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697693501}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 137951627}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &702508364
 GameObject:
   m_ObjectHideFlags: 0
@@ -14182,7 +14045,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.7
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -14342,7 +14205,7 @@ Transform:
   m_GameObject: {fileID: 722800713}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: 9.75, y: 0.3, z: 64.95}
+  m_LocalPosition: {x: 9.75, y: 0, z: 64.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14384,7 +14247,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -14576,7 +14439,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14707,7 +14570,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14979,7 +14842,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15139,7 +15002,7 @@ Transform:
   m_GameObject: {fileID: 750618575}
   serializedVersion: 2
   m_LocalRotation: {x: -0.22794959, y: -0.324974, z: -0.08102501, w: 0.914257}
-  m_LocalPosition: {x: -3.5, y: 0.3, z: 17.68}
+  m_LocalPosition: {x: -3.5, y: 0, z: 17.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15181,7 +15044,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15383,7 +15246,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15674,7 +15537,7 @@ Transform:
   m_GameObject: {fileID: 762280665}
   serializedVersion: 2
   m_LocalRotation: {x: -0.22794959, y: -0.324974, z: -0.08102501, w: 0.914257}
-  m_LocalPosition: {x: -12.87, y: 0.3, z: 32.19}
+  m_LocalPosition: {x: -12.87, y: 0, z: 32.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15716,7 +15579,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15918,7 +15781,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16226,7 +16089,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16340,7 +16203,7 @@ Transform:
   m_GameObject: {fileID: 781824826}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 10.21, y: 0.3, z: 4.38}
+  m_LocalPosition: {x: 10.21, y: 0, z: 4.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16382,7 +16245,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16793,7 +16656,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 42aba6c72a0b6011ea2defa033e53de8, type: 2}
+  - {fileID: 2100000, guid: a7e082877091a8548b7d57d71951069f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16942,7 +16805,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17233,7 +17096,7 @@ Transform:
   m_GameObject: {fileID: 832145788}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21925567, y: -0.41006464, z: -0.102240585, w: -0.8793866}
-  m_LocalPosition: {x: 8.25, y: 0.3, z: 0.1500001}
+  m_LocalPosition: {x: 8.25, y: 0, z: 0.1500001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17275,7 +17138,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17435,7 +17298,7 @@ Transform:
   m_GameObject: {fileID: 836629015}
   serializedVersion: 2
   m_LocalRotation: {x: 0.21925567, y: -0.41006464, z: -0.102240585, w: -0.8793866}
-  m_LocalPosition: {x: -5.7400002, y: 0.3, z: 23.18}
+  m_LocalPosition: {x: -5.7400002, y: 0, z: 23.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17477,7 +17340,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17814,7 +17677,7 @@ Transform:
   m_GameObject: {fileID: 850626427}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24948764, y: 0.2570305, z: -0.06887112, w: 0.9311004}
-  m_LocalPosition: {x: -7.9, y: 0.3, z: 68.9}
+  m_LocalPosition: {x: -7.9, y: 0, z: 68.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17856,7 +17719,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -18266,7 +18129,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18538,7 +18401,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -18715,7 +18578,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18829,7 +18692,7 @@ Transform:
   m_GameObject: {fileID: 954023864}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 4.97, y: 0.3, z: 31.1}
+  m_LocalPosition: {x: 4.97, y: 0, z: 31.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18871,7 +18734,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -19123,7 +18986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::MaterialLightController
   Kind: 0
   Type: 3
-  ID: 8
+  ID: 7
   Renderer: {fileID: 957373127}
   SetAlphaOnly: 0
   AlphaIntensity: 1
@@ -19162,7 +19025,7 @@ Transform:
   m_GameObject: {fileID: 963354801}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 6.61, y: 0.3, z: 6.47}
+  m_LocalPosition: {x: 6.61, y: 0, z: 6.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19204,7 +19067,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -19384,6 +19247,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
   ChromaID: KDAEnvironment.[0]Environment.[3]TentacleLeft
+--- !u!1 &977077398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 977077400}
+  - component: {fileID: 977077399}
+  m_Layer: 0
+  m_Name: LightColorGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &977077399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977077398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c05d080359c4d64aa585b2b52e4ebce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightColorGroupEffectManager
+  effectEntries: []
+--- !u!4 &977077400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977077398}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137951627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &979209223
 GameObject:
   m_ObjectHideFlags: 0
@@ -19412,7 +19320,7 @@ Transform:
   m_GameObject: {fileID: 979209223}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1573787, y: 0.41619772, z: -0.07338688, w: 0.89253896}
-  m_LocalPosition: {x: 12.06, y: 0.3, z: 14.1}
+  m_LocalPosition: {x: 12.06, y: 0, z: 14.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19454,7 +19362,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -19919,7 +19827,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61033eca597bdb34ebed1e70f1c2ac4a, type: 2}
+  - {fileID: 2100000, guid: dde5796f2dc5c774a948ade168a7723a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24711,7 +24619,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 137951627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &989124659
+--- !u!1 &1003433894
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -24719,35 +24627,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 989124661}
-  - component: {fileID: 989124660}
+  - component: {fileID: 1003433896}
+  - component: {fileID: 1003433895}
   m_Layer: 0
-  m_Name: LightColorGroupEffectManager
+  m_Name: Sink Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &989124660
+--- !u!114 &1003433895
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 989124659}
+  m_GameObject: {fileID: 1003433894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c05d080359c4d64aa585b2b52e4ebce, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a583847fb4c4821ac7375dc8b59c4a7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Main::LightColorGroupEffectManager
-  effectEntries: []
---- !u!4 &989124661
+  m_EditorClassIdentifier: Main::LightSink
+  Kind: 0
+  Type: 4
+  ID: 1
+--- !u!4 &1003433896
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 989124659}
+  m_GameObject: {fileID: 1003433894}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -24826,7 +24736,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -25724,7 +25634,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -25884,7 +25794,7 @@ Transform:
   m_GameObject: {fileID: 1039123639}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12940954, y: 0.8365163, z: -0.22414394, w: 0.48296288}
-  m_LocalPosition: {x: -12.33, y: 0.3, z: 26.98}
+  m_LocalPosition: {x: -12.33, y: 0, z: 26.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25926,7 +25836,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -26190,7 +26100,7 @@ Transform:
   m_GameObject: {fileID: 1054920596}
   serializedVersion: 2
   m_LocalRotation: {x: -0.15782407, y: 0.41073778, z: -0.07242416, w: -0.8950647}
-  m_LocalPosition: {x: 12.75, y: 0.3, z: 10.48}
+  m_LocalPosition: {x: 12.75, y: 0, z: 10.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -26232,7 +26142,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -26409,7 +26319,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26565,7 +26475,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 0.6
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -26725,7 +26635,7 @@ Transform:
   m_GameObject: {fileID: 1066020960}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: 9.04, y: 0.3, z: 16.85}
+  m_LocalPosition: {x: 9.04, y: 0, z: 16.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -26767,7 +26677,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -27108,7 +27018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 3
-  ID: 11
+  ID: 10
   Intensity: 0
 --- !u!114 &1093392372
 MonoBehaviour:
@@ -27397,7 +27307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 3
-  ID: 10
+  ID: 9
   width: 0.1
   OverrideChildrenLength: 1
   length: 500
@@ -27405,7 +27315,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -27565,7 +27475,7 @@ Transform:
   m_GameObject: {fileID: 1118978239}
   serializedVersion: 2
   m_LocalRotation: {x: -0.12439522, y: 0.8470451, z: -0.22696523, w: -0.46424907}
-  m_LocalPosition: {x: -11.169994, y: 0.3, z: 2.820001}
+  m_LocalPosition: {x: -11.169994, y: 0, z: 2.820001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27607,7 +27517,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -27811,7 +27721,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 85a6ec8b8a7e637a89fa80b794d34463, type: 2}
+  - {fileID: 2100000, guid: f81e65bf572fc379da781ce7bd8890c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -28002,7 +27912,7 @@ Transform:
   m_GameObject: {fileID: 1124117737}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 11.93, y: 0.3, z: 56.1}
+  m_LocalPosition: {x: 11.93, y: 0, z: 56.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28044,7 +27954,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -28271,7 +28181,7 @@ Transform:
   m_GameObject: {fileID: 1126670692}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25783423, y: 0.084186025, z: -0.022557579, w: 0.9622502}
-  m_LocalPosition: {x: -17.62, y: 0.3, z: 22.89}
+  m_LocalPosition: {x: -17.62, y: 0, z: 22.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28313,7 +28223,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -28473,7 +28383,7 @@ Transform:
   m_GameObject: {fileID: 1133411744}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 10.54, y: 0.3, z: 51.35}
+  m_LocalPosition: {x: 10.54, y: 0, z: 51.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28515,7 +28425,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -28675,7 +28585,7 @@ Transform:
   m_GameObject: {fileID: 1136632249}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: 6.210001, y: 0.3, z: 55.439995}
+  m_LocalPosition: {x: 6.210001, y: 0, z: 55.439995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -28717,7 +28627,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -28919,7 +28829,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.7
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -29121,7 +29031,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -29281,7 +29191,7 @@ Transform:
   m_GameObject: {fileID: 1159918707}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24185152, y: -0.023356186, z: -0.0058233296, w: -0.97001463}
-  m_LocalPosition: {x: -6.657659, y: 0.3, z: -0.3353467}
+  m_LocalPosition: {x: -6.657659, y: 0, z: -0.3353467}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29323,7 +29233,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -29656,7 +29566,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.7
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -30119,7 +30029,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -30429,7 +30339,7 @@ Transform:
   m_GameObject: {fileID: 1237546111}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: -9.61, y: 0.3, z: 25.53}
+  m_LocalPosition: {x: -9.61, y: 0, z: 25.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30471,7 +30381,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -30893,7 +30803,7 @@ Transform:
   m_GameObject: {fileID: 1254776679}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: 6.7, y: 0.3, z: 47.94}
+  m_LocalPosition: {x: 6.7, y: 0, z: 47.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30935,7 +30845,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -31137,7 +31047,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 4
   BloomFogIntensityMultiplier: 16
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -31474,7 +31384,7 @@ Transform:
   m_GameObject: {fileID: 1295259626}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 16.4, y: 0.3, z: 28.34}
+  m_LocalPosition: {x: 16.4, y: 0, z: 28.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -31516,7 +31426,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -31768,7 +31678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::MaterialLightController
   Kind: 0
   Type: 3
-  ID: 15
+  ID: 13
   Renderer: {fileID: 1305667136}
   SetAlphaOnly: 0
   AlphaIntensity: 1
@@ -31924,7 +31834,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -32186,7 +32096,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d546896de16433f9889cc55f9c389f19, type: 2}
+  - {fileID: 2100000, guid: 648fe3d1a7710c844bce85d0958d9b1b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37082,6 +36992,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 30410083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1352488032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1352488034}
+  - component: {fileID: 1352488033}
+  m_Layer: 0
+  m_Name: LightRotationGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1352488033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352488032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ebdf100fce4003aa89ddca6b233845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightRotationGroupEffectManager
+  effectEntries: []
+--- !u!4 &1352488034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352488032}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137951627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1357910829
 GameObject:
   m_ObjectHideFlags: 0
@@ -37110,7 +37065,7 @@ Transform:
   m_GameObject: {fileID: 1357910829}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 11.13, y: 0.3, z: 33.89}
+  m_LocalPosition: {x: 11.13, y: 0, z: 33.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37152,7 +37107,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -37415,6 +37370,51 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
+--- !u!1 &1368006440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1368006442}
+  - component: {fileID: 1368006441}
+  m_Layer: 0
+  m_Name: FloatFxGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1368006441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368006440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ebe785d3e42438393b1c63620f5e385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::FloatFxGroupEffectManager
+  effectEntries: []
+--- !u!4 &1368006442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368006440}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137951627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1368654129
 GameObject:
   m_ObjectHideFlags: 0
@@ -37473,7 +37473,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37574,7 +37574,7 @@ Transform:
   m_GameObject: {fileID: 1377943391}
   serializedVersion: 2
   m_LocalRotation: {x: -0.31512204, y: 0.5241943, z: -0.21712841, w: -0.7607718}
-  m_LocalPosition: {x: 12.09, y: 0.3, z: 18.51}
+  m_LocalPosition: {x: 12.09, y: 0, z: 18.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37616,7 +37616,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -37907,7 +37907,7 @@ Transform:
   m_GameObject: {fileID: 1384160106}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: 9.75, y: 0.3, z: 39.69}
+  m_LocalPosition: {x: 9.75, y: 0, z: 39.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37949,7 +37949,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -38240,7 +38240,7 @@ Transform:
   m_GameObject: {fileID: 1393785397}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: -6.58, y: 0.3, z: 71.28}
+  m_LocalPosition: {x: -6.58, y: 0, z: 71.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -38282,7 +38282,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -38442,7 +38442,7 @@ Transform:
   m_GameObject: {fileID: 1413300797}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24184473, y: 0.66446304, z: -0.24184473, w: 0.66446304}
-  m_LocalPosition: {x: -7.370001, y: 0.3, z: 37.829998}
+  m_LocalPosition: {x: -7.370001, y: 0, z: 37.829998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -38484,7 +38484,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -38686,7 +38686,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -39009,7 +39009,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9767cd18692cd07cbbcd0b33a725cd1a, type: 2}
+  - {fileID: 2100000, guid: 8dfcbc7a32f5e1645aa8c43d44971c11, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -39067,8 +39067,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::PlanarReflection
   MirrorRenderer: {fileID: 11400000, guid: b54751a1fc3ac3983afa3aa9d4141095, type: 2}
-  MirrorMaterial: {fileID: 2100000, guid: 9767cd18692cd07cbbcd0b33a725cd1a, type: 2}
-  NoMirrorMaterial: {fileID: 2100000, guid: f87e86abee66d18a5aa396f4ff4ee3eb, type: 2}
+  MirrorMaterial: {fileID: 2100000, guid: 8dfcbc7a32f5e1645aa8c43d44971c11, type: 2}
+  NoMirrorMaterial: {fileID: 2100000, guid: 21c375ba6c39fee46b97ce57b1cfd532, type: 2}
   Renderer: {fileID: 1450440619}
   PlaneTransform: {fileID: 147604026}
 --- !u!1 &1463451987
@@ -39154,7 +39154,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22d6614b320d5a08abab7e5808a01e9d, type: 2}
+  - {fileID: 2100000, guid: bf79e93dff6ce454b90bcd826d9b022f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -39247,7 +39247,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -39361,7 +39361,7 @@ Transform:
   m_GameObject: {fileID: 1491329603}
   serializedVersion: 2
   m_LocalRotation: {x: 0.015817294, y: 0.4225539, z: -0.0073757246, w: 0.90616983}
-  m_LocalPosition: {x: 8.28, y: 0.3, z: 30.8}
+  m_LocalPosition: {x: 8.28, y: 0, z: 30.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39403,7 +39403,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -39535,6 +39535,51 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
+--- !u!1 &1504719499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1504719501}
+  - component: {fileID: 1504719500}
+  m_Layer: 0
+  m_Name: LightTranslationGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1504719500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504719499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edea4172ea0f4600af99f04faa447b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightTranslationGroupEffectManager
+  effectEntries: []
+--- !u!4 &1504719501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504719499}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137951627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1523486930
 GameObject:
   m_ObjectHideFlags: 0
@@ -39563,7 +39608,7 @@ Transform:
   m_GameObject: {fileID: 1523486930}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24948764, y: 0.2570305, z: -0.06887112, w: 0.9311004}
-  m_LocalPosition: {x: -11.45, y: 0.3, z: 23.79}
+  m_LocalPosition: {x: -11.45, y: 0, z: 23.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39605,7 +39650,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -39972,7 +40017,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40176,467 +40221,6 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
---- !u!1 &1547424903
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1547424911}
-  - component: {fileID: 1547424904}
-  - component: {fileID: 1547424910}
-  - component: {fileID: 1547424909}
-  - component: {fileID: 1547424908}
-  - component: {fileID: 1547424907}
-  - component: {fileID: 1547424906}
-  - component: {fileID: 1547424905}
-  m_Layer: 0
-  m_Name: BasicEventEffectController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1547424904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 336c6120d748406c96de1fe7bcede38f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicEventEffectManager
-  effectEntries:
-  - Type: 5
-    Manager: {fileID: 1547424910}
-  - Type: 0
-    Manager: {fileID: 1547424909}
-  - Type: 1
-    Manager: {fileID: 1547424908}
-  - Type: 2
-    Manager: {fileID: 1547424907}
-  - Type: 3
-    Manager: {fileID: 1547424906}
-  - Type: 4
-    Manager: {fileID: 1547424905}
-  - Type: 12
-    Manager: {fileID: 651679534}
-  - Type: 13
-    Manager: {fileID: 651679534}
-  - Type: 12
-    Manager: {fileID: 793220521}
-  - Type: 13
-    Manager: {fileID: 793220521}
-  - Type: 12
-    Manager: {fileID: 1677983928}
-  - Type: 13
-    Manager: {fileID: 1677983928}
-  - Type: 12
-    Manager: {fileID: 1317682766}
-  - Type: 13
-    Manager: {fileID: 1317682766}
-  - Type: 12
-    Manager: {fileID: 1072064407}
-  - Type: 13
-    Manager: {fileID: 1072064407}
-  - Type: 12
-    Manager: {fileID: 443895006}
-  - Type: 13
-    Manager: {fileID: 443895006}
-  - Type: 12
-    Manager: {fileID: 876415568}
-  - Type: 13
-    Manager: {fileID: 876415568}
---- !u!114 &1547424905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 4
-  ColorBoostEffect: {fileID: 1547424910}
-  ColorSchemeProvider: {fileID: 137951630}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 52}
-  - {x: 2, y: 82}
-  - {x: 3, y: 2}
-  - {x: 5, y: 14}
-  - {x: 6, y: 35}
-  - {x: 7, y: 79}
-  - {x: 8, y: 37}
-  - {x: 9, y: 54}
-  - {x: 10, y: 30}
-  - {x: 11, y: 40}
-  - {x: 12, y: 19}
-  - {x: 13, y: 71}
-  - {x: 14, y: 87}
-  - {x: 15, y: 47}
-  - {x: 16, y: 26}
-  - {x: 17, y: 84}
-  - {x: 18, y: 76}
-  - {x: 19, y: 22}
-  - {x: 20, y: 61}
-  - {x: 21, y: 36}
-  - {x: 22, y: 59}
-  - {x: 23, y: 23}
-  - {x: 24, y: 32}
-  - {x: 25, y: 69}
-  - {x: 26, y: 72}
-  - {x: 27, y: 17}
-  - {x: 28, y: 12}
-  - {x: 29, y: 80}
-  - {x: 30, y: 11}
-  - {x: 31, y: 7}
-  - {x: 32, y: 27}
-  - {x: 33, y: 73}
-  - {x: 34, y: 68}
-  - {x: 35, y: 64}
-  - {x: 36, y: 42}
-  - {x: 37, y: 34}
-  - {x: 38, y: 28}
-  - {x: 39, y: 18}
-  - {x: 40, y: 63}
-  - {x: 41, y: 62}
-  - {x: 42, y: 83}
-  - {x: 43, y: 51}
-  - {x: 44, y: 43}
-  - {x: 45, y: 53}
-  - {x: 46, y: 13}
-  - {x: 47, y: 46}
-  - {x: 48, y: 31}
-  - {x: 49, y: 9}
-  - {x: 50, y: 77}
-  - {x: 51, y: 29}
-  - {x: 52, y: 81}
-  - {x: 53, y: 21}
-  - {x: 54, y: 33}
-  - {x: 55, y: 15}
-  - {x: 56, y: 60}
-  - {x: 57, y: 20}
-  - {x: 58, y: 44}
-  - {x: 59, y: 57}
-  - {x: 60, y: 50}
-  - {x: 61, y: 48}
-  - {x: 62, y: 56}
-  - {x: 63, y: 55}
-  - {x: 64, y: 78}
-  - {x: 65, y: 49}
-  - {x: 66, y: 65}
-  - {x: 67, y: 58}
-  - {x: 68, y: 86}
-  - {x: 69, y: 74}
-  - {x: 70, y: 70}
-  - {x: 71, y: 16}
-  - {x: 72, y: 10}
-  - {x: 73, y: 39}
-  - {x: 74, y: 88}
-  - {x: 75, y: 25}
-  - {x: 76, y: 85}
-  - {x: 77, y: 66}
-  - {x: 78, y: 45}
-  - {x: 79, y: 75}
-  - {x: 80, y: 67}
-  lightEntries:
-  - {fileID: 1463451989}
-  - {fileID: 223367926}
-  - {fileID: 1260296965}
-  - {fileID: 1025267408}
-  - {fileID: 101960405}
-  - {fileID: 375509281}
-  - {fileID: 1093392370}
-  - {fileID: 2101532793}
-  - {fileID: 1066020966}
-  - {fileID: 1874102990}
-  - {fileID: 19486452}
-  - {fileID: 1136632255}
-  - {fileID: 457023772}
-  - {fileID: 268160528}
-  - {fileID: 681477331}
-  - {fileID: 1159918713}
-  - {fileID: 954023870}
-  - {fileID: 1133411750}
-  - {fileID: 432972112}
-  - {fileID: 1919973168}
-  - {fileID: 1822686776}
-  - {fileID: 762280671}
-  - {fileID: 1844789305}
-  - {fileID: 1832247723}
-  - {fileID: 303757911}
-  - {fileID: 1207030130}
-  - {fileID: 1784633672}
-  - {fileID: 603779253}
-  - {fileID: 63837943}
-  - {fileID: 220122348}
-  - {fileID: 1295259632}
-  - {fileID: 1118978245}
-  - {fileID: 1039123645}
-  - {fileID: 411000627}
-  - {fileID: 1491329609}
-  - {fileID: 1377943397}
-  - {fileID: 832145794}
-  - {fileID: 1602036215}
-  - {fileID: 2102848500}
-  - {fileID: 161037323}
-  - {fileID: 1124117743}
-  - {fileID: 781824832}
-  - {fileID: 1651709184}
-  - {fileID: 1878419064}
-  - {fileID: 1610243699}
-  - {fileID: 1992695527}
-  - {fileID: 850626433}
-  - {fileID: 1237546117}
-  - {fileID: 963354807}
-  - {fileID: 336659969}
-  - {fileID: 1384160112}
-  - {fileID: 1357910835}
-  - {fileID: 2124507778}
-  - {fileID: 325171539}
-  - {fileID: 1523486936}
-  - {fileID: 366641150}
-  - {fileID: 236321927}
-  - {fileID: 1413300802}
-  - {fileID: 592045298}
-  - {fileID: 420440107}
-  - {fileID: 1054920602}
-  - {fileID: 1783704718}
-  - {fileID: 1586205824}
-  - {fileID: 1567636116}
-  - {fileID: 1126670698}
-  - {fileID: 678264934}
-  - {fileID: 1720887393}
-  - {fileID: 722800719}
-  - {fileID: 67595436}
-  - {fileID: 750618581}
-  - {fileID: 1700760745}
-  - {fileID: 548122602}
-  - {fileID: 653340960}
-  - {fileID: 295401621}
-  - {fileID: 2039990627}
-  - {fileID: 126169841}
-  - {fileID: 1393785403}
-  - {fileID: 184417617}
-  - {fileID: 178665545}
-  - {fileID: 615280416}
-  - {fileID: 569917390}
-  - {fileID: 979209229}
-  - {fileID: 1869049883}
-  - {fileID: 2094955031}
-  - {fileID: 836629021}
-  - {fileID: 446225332}
-  - {fileID: 682466992}
-  - {fileID: 1254776685}
-  - {fileID: 28846375}
-  - {fileID: 548346511}
---- !u!114 &1547424906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 3
-  ColorBoostEffect: {fileID: 1547424910}
-  ColorSchemeProvider: {fileID: 137951630}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 9}
-  - {x: 2, y: 3}
-  - {x: 3, y: 2}
-  - {x: 4, y: 1}
-  - {x: 5, y: 0}
-  - {x: 6, y: 5}
-  - {x: 7, y: 4}
-  - {x: 8, y: 14}
-  - {x: 9, y: 8}
-  lightEntries:
-  - {fileID: 1427835768}
-  - {fileID: 806432066}
-  - {fileID: 549658002}
-  - {fileID: 696705315}
-  - {fileID: 172452183}
-  - {fileID: 1990501959}
-  - {fileID: 1025267409}
-  - {fileID: 20232479}
-  - {fileID: 957373130}
-  - {fileID: 375509282}
-  - {fileID: 1116933437}
-  - {fileID: 1093392371}
-  - {fileID: 2101532794}
-  - {fileID: 1567257341}
-  - {fileID: 161037324}
-  - {fileID: 1305667139}
-  - {fileID: 1651709185}
---- !u!114 &1547424907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 2
-  ColorBoostEffect: {fileID: 1547424910}
-  ColorSchemeProvider: {fileID: 137951630}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 7}
-  - {x: 2, y: 3}
-  - {x: 3, y: 2}
-  - {x: 4, y: 1}
-  - {x: 5, y: 0}
-  - {x: 6, y: 4}
-  - {x: 7, y: 5}
-  lightEntries:
-  - {fileID: 750353500}
-  - {fileID: 1011619076}
-  - {fileID: 1157427743}
-  - {fileID: 1033552971}
-  - {fileID: 285244834}
-  - {fileID: 756365615}
-  - {fileID: 1025267410}
-  - {fileID: 375509283}
-  - {fileID: 667265088}
-  - {fileID: 1093392372}
-  - {fileID: 2101532795}
-  - {fileID: 161037325}
-  - {fileID: 1651709186}
---- !u!114 &1547424908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 1
-  ColorBoostEffect: {fileID: 1547424910}
-  ColorSchemeProvider: {fileID: 137951630}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 3}
-  - {x: 2, y: 9}
-  - {x: 3, y: 4}
-  - {x: 4, y: 8}
-  - {x: 5, y: 6}
-  lightEntries:
-  - {fileID: 1025267411}
-  - {fileID: 375509284}
-  - {fileID: 1093392373}
-  - {fileID: 2101532796}
-  - {fileID: 1141051383}
-  - {fileID: 660383907}
-  - {fileID: 161037326}
-  - {fileID: 1176106321}
-  - {fileID: 1651709187}
-  - {fileID: 702508370}
-  - {fileID: 2120748637}
---- !u!114 &1547424909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 0
-  ColorBoostEffect: {fileID: 1547424910}
-  ColorSchemeProvider: {fileID: 137951630}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 4}
-  - {x: 2, y: 3}
-  - {x: 3, y: 7}
-  - {x: 4, y: 10}
-  - {x: 5, y: 9}
-  - {x: 6, y: 8}
-  lightEntries:
-  - {fileID: 1025267412}
-  - {fileID: 375509285}
-  - {fileID: 1093392374}
-  - {fileID: 2101532797}
-  - {fileID: 682239389}
-  - {fileID: 769459503}
-  - {fileID: 161037327}
-  - {fileID: 1651709188}
-  - {fileID: 85112662}
-  - {fileID: 937554540}
-  - {fileID: 195947901}
-  - {fileID: 1064498159}
---- !u!114 &1547424910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ba8770cdbe47ca91444e4b30a577ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::ColorBoostEffect
-  Atsc: {fileID: 0}
-  ID: 5
-  ColorSchemeProvider: {fileID: 137951630}
-  Boost: 0
---- !u!4 &1547424911
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547424903}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 137951627}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1567257335
 GameObject:
   m_ObjectHideFlags: 0
@@ -40757,7 +40341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::SpriteLightController
   Kind: 0
   Type: 3
-  ID: 13
+  ID: -1
   Renderer: {fileID: 1567257340}
   HideIfAlphaOutOfRange: 0
   HideAlphaRangeMin: 0
@@ -40796,7 +40380,7 @@ Transform:
   m_GameObject: {fileID: 1567636110}
   serializedVersion: 2
   m_LocalRotation: {x: -0.31512204, y: 0.5241943, z: -0.21712841, w: -0.7607718}
-  m_LocalPosition: {x: 9.66, y: 0.3, z: 22.92}
+  m_LocalPosition: {x: 9.66, y: 0, z: 22.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -40838,7 +40422,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -41030,7 +40614,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41129,7 +40713,7 @@ Transform:
   m_GameObject: {fileID: 1586205818}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12940954, y: 0.8365163, z: -0.22414394, w: 0.48296288}
-  m_LocalPosition: {x: -16.6, y: 0.3, z: 10.15}
+  m_LocalPosition: {x: -16.6, y: 0, z: 10.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41171,7 +40755,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -41462,7 +41046,7 @@ Transform:
   m_GameObject: {fileID: 1602036209}
   serializedVersion: 2
   m_LocalRotation: {x: -0.15656607, y: 0.8430193, z: -0.34919006, w: -0.37798387}
-  m_LocalPosition: {x: 9.79, y: 0.3, z: 10.24}
+  m_LocalPosition: {x: 9.79, y: 0, z: 10.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41504,7 +41088,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -41664,7 +41248,7 @@ Transform:
   m_GameObject: {fileID: 1610243693}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25783423, y: 0.084186025, z: -0.022557579, w: 0.9622502}
-  m_LocalPosition: {x: -7.54, y: 0.3, z: 23.72}
+  m_LocalPosition: {x: -7.54, y: 0, z: 23.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41706,7 +41290,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -42091,7 +41675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 3
-  ID: 16
+  ID: 14
   Intensity: 0.7
 --- !u!114 &1651709186
 MonoBehaviour:
@@ -42272,6 +41856,471 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
+--- !u!1 &1664316990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1664316998}
+  - component: {fileID: 1664316991}
+  - component: {fileID: 1664316997}
+  - component: {fileID: 1664316996}
+  - component: {fileID: 1664316995}
+  - component: {fileID: 1664316994}
+  - component: {fileID: 1664316993}
+  - component: {fileID: 1664316992}
+  m_Layer: 0
+  m_Name: BasicEventEffectController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1664316991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 336c6120d748406c96de1fe7bcede38f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicEventEffectManager
+  effectEntries:
+  - Type: 5
+    Manager: {fileID: 1664316997}
+  - Type: 0
+    Manager: {fileID: 1664316996}
+  - Type: 1
+    Manager: {fileID: 1664316995}
+  - Type: 2
+    Manager: {fileID: 1664316994}
+  - Type: 3
+    Manager: {fileID: 1664316993}
+  - Type: 4
+    Manager: {fileID: 1664316992}
+  - Type: 12
+    Manager: {fileID: 651679534}
+  - Type: 13
+    Manager: {fileID: 651679534}
+  - Type: 12
+    Manager: {fileID: 793220521}
+  - Type: 13
+    Manager: {fileID: 793220521}
+  - Type: 12
+    Manager: {fileID: 1677983928}
+  - Type: 13
+    Manager: {fileID: 1677983928}
+  - Type: 12
+    Manager: {fileID: 1317682766}
+  - Type: 13
+    Manager: {fileID: 1317682766}
+  - Type: 12
+    Manager: {fileID: 1072064407}
+  - Type: 13
+    Manager: {fileID: 1072064407}
+  - Type: 12
+    Manager: {fileID: 443895006}
+  - Type: 13
+    Manager: {fileID: 443895006}
+  - Type: 12
+    Manager: {fileID: 876415568}
+  - Type: 13
+    Manager: {fileID: 876415568}
+--- !u!114 &1664316992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 4
+  ColorBoostEffect: {fileID: 1664316997}
+  ColorSchemeProvider: {fileID: 137951630}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 53}
+  - {x: 2, y: 83}
+  - {x: 3, y: 4}
+  - {x: 4, y: 2}
+  - {x: 5, y: 15}
+  - {x: 6, y: 36}
+  - {x: 7, y: 80}
+  - {x: 8, y: 38}
+  - {x: 9, y: 55}
+  - {x: 10, y: 31}
+  - {x: 11, y: 41}
+  - {x: 12, y: 20}
+  - {x: 13, y: 72}
+  - {x: 14, y: 88}
+  - {x: 15, y: 48}
+  - {x: 16, y: 27}
+  - {x: 17, y: 85}
+  - {x: 18, y: 77}
+  - {x: 19, y: 23}
+  - {x: 20, y: 62}
+  - {x: 21, y: 37}
+  - {x: 22, y: 60}
+  - {x: 23, y: 24}
+  - {x: 24, y: 33}
+  - {x: 25, y: 70}
+  - {x: 26, y: 73}
+  - {x: 27, y: 18}
+  - {x: 28, y: 13}
+  - {x: 29, y: 81}
+  - {x: 30, y: 12}
+  - {x: 31, y: 8}
+  - {x: 32, y: 28}
+  - {x: 33, y: 74}
+  - {x: 34, y: 69}
+  - {x: 35, y: 65}
+  - {x: 36, y: 43}
+  - {x: 37, y: 35}
+  - {x: 38, y: 29}
+  - {x: 39, y: 19}
+  - {x: 40, y: 64}
+  - {x: 41, y: 63}
+  - {x: 42, y: 84}
+  - {x: 43, y: 52}
+  - {x: 44, y: 44}
+  - {x: 45, y: 54}
+  - {x: 46, y: 14}
+  - {x: 47, y: 47}
+  - {x: 48, y: 32}
+  - {x: 49, y: 10}
+  - {x: 50, y: 78}
+  - {x: 51, y: 30}
+  - {x: 52, y: 82}
+  - {x: 53, y: 22}
+  - {x: 54, y: 34}
+  - {x: 55, y: 16}
+  - {x: 56, y: 61}
+  - {x: 57, y: 21}
+  - {x: 58, y: 45}
+  - {x: 59, y: 58}
+  - {x: 60, y: 51}
+  - {x: 61, y: 49}
+  - {x: 62, y: 57}
+  - {x: 63, y: 56}
+  - {x: 64, y: 79}
+  - {x: 65, y: 50}
+  - {x: 66, y: 66}
+  - {x: 67, y: 59}
+  - {x: 68, y: 87}
+  - {x: 69, y: 75}
+  - {x: 70, y: 71}
+  - {x: 71, y: 17}
+  - {x: 72, y: 11}
+  - {x: 73, y: 40}
+  - {x: 74, y: 89}
+  - {x: 75, y: 26}
+  - {x: 76, y: 86}
+  - {x: 77, y: 67}
+  - {x: 78, y: 46}
+  - {x: 79, y: 76}
+  - {x: 80, y: 68}
+  lightEntries:
+  - {fileID: 1463451989}
+  - {fileID: 1003433895}
+  - {fileID: 1260296965}
+  - {fileID: 1025267408}
+  - {fileID: 101960405}
+  - {fileID: 375509281}
+  - {fileID: 1093392370}
+  - {fileID: 2101532793}
+  - {fileID: 1066020966}
+  - {fileID: 1874102990}
+  - {fileID: 19486452}
+  - {fileID: 1136632255}
+  - {fileID: 457023772}
+  - {fileID: 268160528}
+  - {fileID: 681477331}
+  - {fileID: 1159918713}
+  - {fileID: 954023870}
+  - {fileID: 1133411750}
+  - {fileID: 432972112}
+  - {fileID: 1919973168}
+  - {fileID: 1822686776}
+  - {fileID: 762280671}
+  - {fileID: 1844789305}
+  - {fileID: 1832247723}
+  - {fileID: 303757911}
+  - {fileID: 1207030130}
+  - {fileID: 1784633672}
+  - {fileID: 603779253}
+  - {fileID: 63837943}
+  - {fileID: 220122348}
+  - {fileID: 1295259632}
+  - {fileID: 1118978245}
+  - {fileID: 1039123645}
+  - {fileID: 411000627}
+  - {fileID: 1491329609}
+  - {fileID: 1377943397}
+  - {fileID: 832145794}
+  - {fileID: 1602036215}
+  - {fileID: 2102848500}
+  - {fileID: 161037323}
+  - {fileID: 1124117743}
+  - {fileID: 781824832}
+  - {fileID: 1651709184}
+  - {fileID: 1878419064}
+  - {fileID: 1610243699}
+  - {fileID: 1992695527}
+  - {fileID: 850626433}
+  - {fileID: 1237546117}
+  - {fileID: 963354807}
+  - {fileID: 336659969}
+  - {fileID: 1384160112}
+  - {fileID: 1357910835}
+  - {fileID: 2124507778}
+  - {fileID: 325171539}
+  - {fileID: 1523486936}
+  - {fileID: 366641150}
+  - {fileID: 236321927}
+  - {fileID: 1413300802}
+  - {fileID: 592045298}
+  - {fileID: 420440107}
+  - {fileID: 1054920602}
+  - {fileID: 1783704718}
+  - {fileID: 1586205824}
+  - {fileID: 1567636116}
+  - {fileID: 1126670698}
+  - {fileID: 678264934}
+  - {fileID: 1720887393}
+  - {fileID: 722800719}
+  - {fileID: 67595436}
+  - {fileID: 750618581}
+  - {fileID: 1700760745}
+  - {fileID: 548122602}
+  - {fileID: 653340960}
+  - {fileID: 295401621}
+  - {fileID: 2039990627}
+  - {fileID: 126169841}
+  - {fileID: 1393785403}
+  - {fileID: 184417617}
+  - {fileID: 178665545}
+  - {fileID: 615280416}
+  - {fileID: 569917390}
+  - {fileID: 979209229}
+  - {fileID: 1869049883}
+  - {fileID: 2094955031}
+  - {fileID: 836629021}
+  - {fileID: 446225332}
+  - {fileID: 682466992}
+  - {fileID: 1254776685}
+  - {fileID: 28846375}
+  - {fileID: 548346511}
+--- !u!114 &1664316993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 3
+  ColorBoostEffect: {fileID: 1664316997}
+  ColorSchemeProvider: {fileID: 137951630}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 9}
+  - {x: 2, y: 3}
+  - {x: 3, y: 2}
+  - {x: 4, y: 1}
+  - {x: 5, y: 0}
+  - {x: 6, y: 5}
+  - {x: 7, y: 4}
+  - {x: 8, y: 13}
+  - {x: 9, y: 7}
+  lightEntries:
+  - {fileID: 1427835768}
+  - {fileID: 806432066}
+  - {fileID: 549658002}
+  - {fileID: 696705315}
+  - {fileID: 172452183}
+  - {fileID: 1990501959}
+  - {fileID: 1025267409}
+  - {fileID: 957373130}
+  - {fileID: 375509282}
+  - {fileID: 1116933437}
+  - {fileID: 1093392371}
+  - {fileID: 2101532794}
+  - {fileID: 161037324}
+  - {fileID: 1305667139}
+  - {fileID: 1651709185}
+--- !u!114 &1664316994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 2
+  ColorBoostEffect: {fileID: 1664316997}
+  ColorSchemeProvider: {fileID: 137951630}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 8}
+  - {x: 2, y: 3}
+  - {x: 3, y: 2}
+  - {x: 4, y: 1}
+  - {x: 5, y: 0}
+  - {x: 6, y: 4}
+  - {x: 7, y: 5}
+  lightEntries:
+  - {fileID: 750353500}
+  - {fileID: 1011619076}
+  - {fileID: 1157427743}
+  - {fileID: 1033552971}
+  - {fileID: 285244834}
+  - {fileID: 756365615}
+  - {fileID: 1025267410}
+  - {fileID: 375509283}
+  - {fileID: 667265088}
+  - {fileID: 1093392372}
+  - {fileID: 2101532795}
+  - {fileID: 161037325}
+  - {fileID: 1651709186}
+--- !u!114 &1664316995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 1
+  ColorBoostEffect: {fileID: 1664316997}
+  ColorSchemeProvider: {fileID: 137951630}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 4}
+  - {x: 2, y: 10}
+  - {x: 3, y: 5}
+  - {x: 4, y: 9}
+  - {x: 5, y: 7}
+  lightEntries:
+  - {fileID: 1025267411}
+  - {fileID: 375509284}
+  - {fileID: 1093392373}
+  - {fileID: 2101532796}
+  - {fileID: 1141051383}
+  - {fileID: 660383907}
+  - {fileID: 161037326}
+  - {fileID: 1176106321}
+  - {fileID: 1651709187}
+  - {fileID: 702508370}
+  - {fileID: 2120748637}
+--- !u!114 &1664316996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 0
+  ColorBoostEffect: {fileID: 1664316997}
+  ColorSchemeProvider: {fileID: 137951630}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 5}
+  - {x: 2, y: 4}
+  - {x: 3, y: 8}
+  - {x: 4, y: 11}
+  - {x: 5, y: 10}
+  - {x: 6, y: 9}
+  lightEntries:
+  - {fileID: 1025267412}
+  - {fileID: 375509285}
+  - {fileID: 1093392374}
+  - {fileID: 2101532797}
+  - {fileID: 682239389}
+  - {fileID: 769459503}
+  - {fileID: 161037327}
+  - {fileID: 1651709188}
+  - {fileID: 85112662}
+  - {fileID: 937554540}
+  - {fileID: 195947901}
+  - {fileID: 1064498159}
+--- !u!114 &1664316997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ba8770cdbe47ca91444e4b30a577ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::ColorBoostEffect
+  Atsc: {fileID: 0}
+  ID: 5
+  ColorSchemeProvider: {fileID: 137951630}
+  Boost: 0
+--- !u!4 &1664316998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664316990}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 137951627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673494760
 GameObject:
   m_ObjectHideFlags: 0
@@ -42695,7 +42744,7 @@ Transform:
   m_GameObject: {fileID: 1700760739}
   serializedVersion: 2
   m_LocalRotation: {x: -0.13643016, y: 0.8208314, z: -0.21994117, w: -0.50916445}
-  m_LocalPosition: {x: -8.59, y: 0.3, z: 13.18}
+  m_LocalPosition: {x: -8.59, y: 0, z: 13.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42737,7 +42786,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -42897,7 +42946,7 @@ Transform:
   m_GameObject: {fileID: 1720887387}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25488704, y: 0.16773127, z: -0.04494346, w: 0.95125127}
-  m_LocalPosition: {x: 8.37, y: 0.3, z: 41.29}
+  m_LocalPosition: {x: 8.37, y: 0, z: 41.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42939,7 +42988,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43492,7 +43541,7 @@ Transform:
   m_GameObject: {fileID: 1783704712}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 14.41, y: 0.3, z: 31.7}
+  m_LocalPosition: {x: 14.41, y: 0, z: 31.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43534,7 +43583,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43694,7 +43743,7 @@ Transform:
   m_GameObject: {fileID: 1784633666}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 6.5, y: 0.3, z: 62.23}
+  m_LocalPosition: {x: 6.5, y: 0, z: 62.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43736,7 +43785,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43927,7 +43976,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bd4b2f57e2345cfc0b7c3dd3f700abef, type: 2}
+  - {fileID: 2100000, guid: c64b4f84288568e4886120d73bed0295, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -44046,7 +44095,7 @@ Transform:
   m_GameObject: {fileID: 1822686770}
   serializedVersion: 2
   m_LocalRotation: {x: 0.258744, y: 0.023250965, z: -0.0062300665, w: 0.96564597}
-  m_LocalPosition: {x: -8, y: 0.3, z: 4.45}
+  m_LocalPosition: {x: -8, y: 0, z: 4.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44088,7 +44137,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -44294,7 +44343,7 @@ Transform:
   m_GameObject: {fileID: 1832247717}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12940954, y: 0.8365163, z: -0.22414394, w: 0.48296288}
-  m_LocalPosition: {x: -10.64, y: 0.3, z: 10.03}
+  m_LocalPosition: {x: -10.64, y: 0, z: 10.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44336,7 +44385,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -44627,7 +44676,7 @@ Transform:
   m_GameObject: {fileID: 1844789299}
   serializedVersion: 2
   m_LocalRotation: {x: -0.41418785, y: 0.53723466, z: -0.34225625, w: -0.6501447}
-  m_LocalPosition: {x: -4.06, y: 0.3, z: 29.32}
+  m_LocalPosition: {x: -4.06, y: 0, z: 29.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44669,7 +44718,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -44892,7 +44941,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45137,7 +45186,7 @@ Transform:
   m_GameObject: {fileID: 1869049878}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: -18.61, y: 0.3, z: 28.92}
+  m_LocalPosition: {x: -18.61, y: 0, z: 28.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45179,7 +45228,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -45380,7 +45429,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -45539,8 +45588,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878419058}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5062679, y: 0.2824729, z: -0.17995512, w: -0.79468113}
-  m_LocalPosition: {x: -7.6500006, y: 0.3, z: 17.75}
+  m_LocalRotation: {x: -0.5062679, y: 0.2824729, z: -0.17995511, w: -0.79468113}
+  m_LocalPosition: {x: -7.6500006, y: 0, z: 17.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45582,7 +45631,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -45772,7 +45821,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45905,7 +45954,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46528,7 +46577,7 @@ Transform:
   m_GameObject: {fileID: 1919973162}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23456977, y: 0.40821788, z: -0.109381676, w: 0.8754261}
-  m_LocalPosition: {x: -8.400001, y: 0.3, z: 20.32}
+  m_LocalPosition: {x: -8.400001, y: 0, z: 20.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46570,7 +46619,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -46891,7 +46940,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -47153,7 +47202,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -47296,7 +47345,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -47456,7 +47505,7 @@ Transform:
   m_GameObject: {fileID: 1992695521}
   serializedVersion: 2
   m_LocalRotation: {x: -0.2438712, y: 0.32351062, z: -0.08668439, w: -0.9101393}
-  m_LocalPosition: {x: 19.56, y: 0.3, z: 32.28}
+  m_LocalPosition: {x: 19.56, y: 0, z: 32.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47498,7 +47547,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -47920,7 +47969,7 @@ Transform:
   m_GameObject: {fileID: 2039990621}
   serializedVersion: 2
   m_LocalRotation: {x: -0.21312577, y: 0.5480486, z: -0.14684927, w: -0.7953964}
-  m_LocalPosition: {x: 15.12, y: 0.3, z: 17.43}
+  m_LocalPosition: {x: 15.12, y: 0, z: 17.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47962,7 +48011,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -49502,7 +49551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 3
-  ID: 12
+  ID: 11
   Intensity: 1
 --- !u!114 &2101532795
 MonoBehaviour:
@@ -49684,7 +49733,7 @@ Transform:
   m_GameObject: {fileID: 2102848494}
   serializedVersion: 2
   m_LocalRotation: {x: 0.45315394, y: 0.3659981, z: -0.21130912, w: 0.7848856}
-  m_LocalPosition: {x: -6.38593, y: 0.3, z: 2.1237526}
+  m_LocalPosition: {x: -6.38593, y: 0, z: 2.1237526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -49726,7 +49775,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -49858,51 +49907,6 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
---- !u!1 &2106951157
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2106951159}
-  - component: {fileID: 2106951158}
-  m_Layer: 0
-  m_Name: LightTranslationGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2106951158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106951157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edea4172ea0f4600af99f04faa447b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightTranslationGroupEffectManager
-  effectEntries: []
---- !u!4 &2106951159
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106951157}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 137951627}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2108699160
 GameObject:
   m_ObjectHideFlags: 0
@@ -50424,7 +50428,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.7
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -50584,7 +50588,7 @@ Transform:
   m_GameObject: {fileID: 2124507772}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12940954, y: 0.8365163, z: -0.22414394, w: 0.48296288}
-  m_LocalPosition: {x: 4, y: 0.3, z: 23.24}
+  m_LocalPosition: {x: 4, y: 0, z: 23.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -50626,7 +50630,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -50816,7 +50820,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

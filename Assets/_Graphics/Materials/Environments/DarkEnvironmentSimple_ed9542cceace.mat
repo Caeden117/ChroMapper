@@ -1,0 +1,427 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DarkEnvironmentSimple_ed9542cceace
+  m_Shader: {fileID: 4800000, guid: efaf81b9ea3d6c94fb2f56e67786306d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - DIFFUSE
+  - FOG
+  - HEIGHT_FOG
+  - LIGHT_FALLOFF
+  - MULTIPLY_REFLECTIONS
+  - REFLECTION_PROBE_BOX_PROJECTION
+  - SPECULAR
+  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
+  m_InvalidKeywords:
+  - DISTORTION_NONE
+  - _ACES_APPROACH_AFTER_EMISSIVE
+  - _CURVE_VERTICES_NONE
+  - _CUSTOM_TIME_STANDARD
+  - _EMISSIONTEXTURE_NONE
+  - _HOLOGRAM_NONE
+  - _METALLIC_TEXTURE_NONE
+  - _PARALLAX_NONE
+  - _RIMLIGHT_NONE
+  - _SECONDARY_UVS_NONE
+  - _SMOOTHNESS_TEXTURE_NONE
+  - _VERTEXMODE_NONE
+  - _ZWRITE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2010
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DiffuseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DirtDetailTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DirtTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 0.5, y: 0.5}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortionTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionGradientTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EnvironmentReflectionCube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LookupTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetalSmoothnessTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMaskingMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PulseMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SDFNoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondaryEmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VertexDisplacement3DTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VertexDisplacementMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Cutout_Type: 0
+    - Distortion: 0
+    - Note_Plane_Cut: 0
+    - _Aces_Approach: 0
+    - _AlbedoMultiplier: 1
+    - _AlphaMultiplier: 1
+    - _AmbientMinimalValue: 0
+    - _AmbientMultiplier: 1
+    - _AntiflickerDistanceOffset: 21
+    - _AntiflickerDistanceScale: 0.1
+    - _AntiflickerStrength: 0.7
+    - _AvatarComputeSkinning: 0
+    - _BlendModeDst: 0
+    - _BlendModeDstA: 0
+    - _BlendModeSrc: 1
+    - _BlendModeSrcA: 0
+    - _BodyFadeGamma: 2
+    - _BothSidesDiffuseMultiplier: 1
+    - _CloseToCameraCutoutOffset: 0.5
+    - _CloseToCameraCutoutScale: 0.5
+    - _ColorFog: 0
+    - _ColorFogHighlightMultiplier: 30000
+    - _ColorFogInfluence: 0.5
+    - _ColorFogMax: 1
+    - _ColorFogMultiplier: 1
+    - _ColoredMetalMultiplier: 5
+    - _CullMode: 2
+    - _Curve_Vertices: 0
+    - _Custom_Time: 0
+    - _CutColorBacksideFalloff: 0.07
+    - _CutColorFalloff: 4
+    - _CutPlaneEdgeGlowWidth: 0.01
+    - _Cutout: 0
+    - _CutoutTexScale: 1
+    - _DarkeningIntensity: 1
+    - _DarkeningScale: 0.35
+    - _Diffuse_Texture_Source: 0
+    - _DisplacementBidirectional: 0
+    - _DisplacementSpatial: 0
+    - _DisplacementStrength: 0.1
+    - _DissolveAlpha: 0
+    - _DissolveColorIntensity: 1
+    - _DissolveEndValue: 10
+    - _DissolveOffset: 0
+    - _DissolveProgress: 0
+    - _DissolveReverse: 0
+    - _DissolveScale: 5
+    - _DissolveStartValue: 0
+    - _DissolveTextureInfluence: 0.2
+    - _Dissolve_Grid: 0
+    - _Dissolve_Space: 0
+    - _DistortionStrength: 0.2
+    - _Distortion_Target: 0
+    - _EmissionBloomIntensity: 1
+    - _EmissionBrightness: 1
+    - _EmissionColorType: 0
+    - _EmissionFogSuppression: 0
+    - _EmissionGradientAffectsAlpha: 0
+    - _EmissionGradientIntensity: 1
+    - _EmissionGradientPanningSpeed: 0
+    - _EmissionGradientPosition: 0.5
+    - _EmissionMaskIntensity: 1
+    - _EmissionMaskStepValue: 0.5
+    - _EmissionMaskStepWidth: 0.1
+    - _EmissionStrength: 1
+    - _EmissionTexBloomIntensity: 1
+    - _EmissionTexWhiteBoostMultiplier: 1
+    - _EmissionTexture: 0
+    - _EmissionThreshold: 0
+    - _EmissionThresholdAngle: 0
+    - _Emission_Alpha_Source: 0
+    - _Emission_Step: 0
+    - _Emission_Texture_Source: 0
+    - _EnableBothSidesDiffuse: 0
+    - _EnableBoxProjectionOffset: 0
+    - _EnableCloseToCameraCutout: 0
+    - _EnableCustomMPMMip: 0
+    - _EnableDiffuse: 1
+    - _EnableDiffuseTexture: 0
+    - _EnableDirectionalRim: 0
+    - _EnableDissolve: 0
+    - _EnableDistanceDarkening: 0
+    - _EnableEmissionAngleDisappear: 0
+    - _EnableEmissionMask: 0
+    - _EnableFakeMirrorTransparency: 0
+    - _EnableFog: 1
+    - _EnableGroundFade: 0
+    - _EnableHeightFog: 1
+    - _EnableHeightFogSoften: 0
+    - _EnableLightFalloff: 1
+    - _EnableLightmap: 0
+    - _EnableMetalSmoothnessTex: 0
+    - _EnableNoiseDithering: 0
+    - _EnableNormalMap: 0
+    - _EnableOcclusion: 0
+    - _EnableOcclusionDetail: 0
+    - _EnableReflectedDir: 0
+    - _EnableReflectionProbe: 0
+    - _EnableReflectionTexture: 0
+    - _EnableRimDim: 0
+    - _EnableRotateUV: 0
+    - _EnableSecondaryEmissionMask: 0
+    - _EnableSpecular: 1
+    - _EnableVertexDisplacementMask: 0
+    - _FadeEndY: 1
+    - _FadeStartY: 1.25
+    - _FadeZoneInterceptX: 0.2
+    - _FadeZoneSlope: 0.76
+    - _FakeMirrorTransparency: 1
+    - _FlipbookBlendingOff: 0
+    - _FlipbookColumns: 8
+    - _FlipbookNonloopableFrames: 0
+    - _FlipbookRows: 8
+    - _FlipbookSpeed: 1
+    - _FogColorHighlight: 0
+    - _FogHeightOffset: 0
+    - _FogHeightScale: 1
+    - _FogScale: 1
+    - _FogSoften: 1
+    - _FogSoftenOffset: 1
+    - _FogStartOffset: 0
+    - _GridFalloff: 4
+    - _GridSize: 10
+    - _GridSpeed: 0.1
+    - _GridThickness: 1.5
+    - _GroundFadeOffset: -1
+    - _GroundFadeScale: 0.15
+    - _HaltScan: 0
+    - _HighlightSelection: 0
+    - _HoloIntensity: 1
+    - _HoloMaterialize: 1
+    - _Hologram: 0
+    - _HologramFill: -0.6
+    - _HologramGridSize: 3
+    - _HologramPhaseOffset: 0
+    - _HologramScanDistance: 2
+    - _HologramStripeSpeed: 1.43
+    - _InstancedPrivatePointLightColor: 0
+    - _InvertDiffuseNormal: 0
+    - _InvertPulseTexture: 0
+    - _InvertRimDim: 0
+    - _InvertRimlight: 0
+    - _IridescenceColorInfluence: 0
+    - _IridescenceTiling: 0.25
+    - _Layers: 3
+    - _LinearToGamma: 0
+    - _LookupEmissiveModulationStrength: 1
+    - _LookupMaxScale: 2
+    - _LookupRadialDisplacementScale: 10
+    - _LookupRotationMultiplier: 1
+    - _LookupTextureEmission: 0
+    - _LookupXYZDisplacementScale: 10
+    - _MainEffectFogSuppression: 0
+    - _MaskBlend: 0
+    - _MeshPacking: 0
+    - _MeshPackingId: 1
+    - _Metallic: 0.27
+    - _Metallic_Texture: 0
+    - _MpmMipBias: 0
+    - _MultiplyReflections: 1
+    - _NormalScale: 1
+    - _NoteSize: 0.25
+    - _NoteVertexDistortion: 0
+    - _OcclusionBeforeEmission: 0
+    - _OcclusionDetailIntensity: 1
+    - _OcclusionIntensity: 1
+    - _Occlusion_Source: 0
+    - _OffsetStep: 1
+    - _Parallax: 0.02
+    - _ParallaxIntensity: 1
+    - _ParallaxIntensity_Step: -0.25
+    - _ParallaxMaskIntensity: 1
+    - _Parallax_Iridescence: 0
+    - _Parallax_Masking: 0
+    - _Parallax_Projection: 0
+    - _PointLightPositionLocal: 0
+    - _PreciseNormal: 0
+    - _PrivatePointLight: 0
+    - _PrivatePointLightIntensity: 1
+    - _Probe_Calculation: 0
+    - _PulseMultiplyByTexture: 0
+    - _PulseSmooth: 0.02
+    - _PulseSpeed: 0.2
+    - _PulseWidth: 0.1
+    - _QuestWhiteboostMultiplier: 1
+    - _ReflectionProbeBoxProjection: 1
+    - _ReflectionProbeDisabledWhiteboost: 0
+    - _ReflectionProbeGrayscale: 0.2
+    - _ReflectionProbeIntensity: 1
+    - _ReflectionSingleCubemap: 0
+    - _ReflectionStatic: 0
+    - _ReflectionTexIntensity: 1
+    - _RimDarkening: 0
+    - _RimDistanceOffset: 2
+    - _RimDistanceScale: 0.3
+    - _RimLight: 0
+    - _RimLightBloomIntensity: 1
+    - _RimLightEdgeStart: 0.5
+    - _RimLightIntensity: 1
+    - _RimLightWhiteboostMultiplier: 1
+    - _RimOffset: 1
+    - _RimScale: 1
+    - _RimSmoothness: 1
+    - _Rim_WhiteBoostType: 0
+    - _RotateUV: 0
+    - _SDFNegativeIntensity: 0.5
+    - _SDFNoiseIntensity: 1
+    - _SDFNoiseScale: 5
+    - _SDFPointIntensity: 1
+    - _SecondaryEmissionMaskIntensity: 1
+    - _SecondaryUVsDiffuse: 0
+    - _SecondaryUVsDistortion: 0
+    - _SecondaryUVsEmissionTex: 0
+    - _SecondaryUVsMPM: 0
+    - _SecondaryUVsMask: 0
+    - _SecondaryUVsMask2: 0
+    - _SecondaryUVsNormal: 0
+    - _SecondaryUVsOcclusion: 0
+    - _SecondaryUVsOcclusionDetail: 0
+    - _SecondaryUVsParallax: 0
+    - _SecondaryUVsPulseTex: 0
+    - _Secondary_Mask_Blend: 0
+    - _Secondary_UVs: 0
+    - _SegmentToHighlight: -1
+    - _Smoothness: 0.407
+    - _Smoothness_Texture: 0
+    - _Spectrogram: 0
+    - _SpecularAntiflicker: 0
+    - _SpecularIntensity: 0.57
+    - _SphericalNormalOffsetIntensity: 0.1
+    - _StartOffset: 1
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _Texture3D_Lookup: 0
+    - _UVColorSegments: 0
+    - _UseColorArray: 0
+    - _UseDissolveColor: 0
+    - _UseDissolveProgress: 0
+    - _UseDissolveTexture: 0
+    - _UseHologramMaterialization: 0
+    - _UseSphericalNormalOffset: 0
+    - _UvSegmentsIgnoreRim: 0
+    - _VertexDisplacement3DTexScale: 5
+    - _VertexDisplacementMaskMode: 0
+    - _VertexDisplacementMaskMultiplier: 1
+    - _VertexDisplacementMaskOffset: 0
+    - _VertexDisplacement_Mask_Source: 0
+    - _VertexMode: 0
+    - _Vertex_WhiteBoostType: 0
+    - _WhiteOffset: 2
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _AdditiveUVOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.32099995, g: 0.32099995, b: 0.32099995, a: 0}
+    - _CutPlane: {r: 1, g: 0, b: 0, a: 0}
+    - _DarkeningCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _DarkeningDirection: {r: 1, g: 1, b: 1, a: 1}
+    - _DisplacementAxisMultiplier: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolveAxisVector: {r: 0, g: 1, b: 0, a: 0}
+    - _DissolveColor: {r: 0, g: 1, b: 1, a: 0}
+    - _DissolveTextureSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _DistortionAxes: {r: 1, g: 1, b: 0, a: 0}
+    - _DistortionPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionMaskSpeed: {r: 0, g: 1, b: 0, a: 0}
+    - _EmissionTexColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionTexSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _GlowCutoutColor: {r: 1, g: 0, b: 0, a: 1}
+    - _HologramColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InputUvMultiplier: {r: 1, g: 1, b: 0, a: 0}
+    - _InstancedSecondaryOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _InstancedSecondaryTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _IridescenceAxesMultiplier: {r: 1, g: 2, b: 3, a: 0}
+    - _LookupEmissiveMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupGridSize: {r: 1, g: 1, b: 1, a: 0}
+    - _LookupRadialDisplacementMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupRotationMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupScaleMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupXDisplacementMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupYDisplacementMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _LookupZDisplacementMapping: {r: 0, g: 0, b: 0, a: 0}
+    - _NominalDiffuseLevel: {r: 0, g: 0, b: 0, a: 0}
+    - _ParallaxColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ParallaxMaskSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _ParallaxTexSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _PrivatePointLightColor: {r: 1, g: 0, b: 0, a: 0}
+    - _PrivatePointLightPosition: {r: 0, g: 0, b: 0, a: 1}
+    - _ReflectionProbeBoxProjectionPositionOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _ReflectionProbeBoxProjectionSizeOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _RimLightColor: {r: 1, g: 1, b: 1, a: 0}
+    - _RimPerpendicularAxis: {r: 0, g: 1, b: 0, a: 0}
+    - _SDFNoiseOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _SDFNoisePanning: {r: 0, g: 0, b: 0, a: 0}
+    - _SecondaryEmissionMaskSpeed: {r: 0, g: 1, b: 0, a: 0}
+    - _SphericalNormalOffsetCenter: {r: 0, g: 0, b: 0, a: 1}
+    - _UVScale: {r: 1, g: 1, b: 1, a: 1}
+    - _VertexDisplacement3DTexOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _VertexDisplacement3DTexPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _VertexDisplacementMaskSpeed: {r: 0, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

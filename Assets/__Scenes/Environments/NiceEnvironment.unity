@@ -385,7 +385,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -458,416 +458,6 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
---- !u!1 &26418716
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 26418717}
-  - component: {fileID: 26418724}
-  - component: {fileID: 26418723}
-  - component: {fileID: 26418722}
-  - component: {fileID: 26418721}
-  - component: {fileID: 26418720}
-  - component: {fileID: 26418719}
-  - component: {fileID: 26418718}
-  m_Layer: 0
-  m_Name: BasicEventEffectController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &26418717
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &26418718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 4
-  ColorBoostEffect: {fileID: 26418723}
-  ColorSchemeProvider: {fileID: 33546800}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 11}
-  - {x: 2, y: 12}
-  - {x: 3, y: 8}
-  - {x: 4, y: 7}
-  - {x: 5, y: 2}
-  - {x: 6, y: 4}
-  - {x: 7, y: 3}
-  - {x: 8, y: 9}
-  - {x: 9, y: 18}
-  - {x: 10, y: 17}
-  - {x: 11, y: 3}
-  - {x: 12, y: 5}
-  - {x: 13, y: 15}
-  - {x: 14, y: 13}
-  lightEntries:
-  - {fileID: 1448902033}
-  - {fileID: 322433818}
-  - {fileID: 900011900}
-  - {fileID: 1202232696}
-  - {fileID: 1360808470}
-  - {fileID: 539397384}
-  - {fileID: 1203797113}
-  - {fileID: 538625613}
-  - {fileID: 393671402}
-  - {fileID: 1778008399}
-  - {fileID: 625311689}
-  - {fileID: 570157192}
-  - {fileID: 704556241}
-  - {fileID: 1055703097}
-  - {fileID: 320597257}
-  - {fileID: 1340145612}
-  - {fileID: 1732005692}
-  - {fileID: 898472695}
-  - {fileID: 1975263811}
-  - {fileID: 1148920198}
-  - {fileID: 734802265}
-  - {fileID: 1636323096}
---- !u!114 &26418719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 3
-  ColorBoostEffect: {fileID: 26418723}
-  ColorSchemeProvider: {fileID: 33546800}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 3}
-  - {x: 2, y: 4}
-  - {x: 3, y: 5}
-  - {x: 4, y: 2}
-  - {x: 5, y: 13}
-  - {x: 6, y: 0}
-  - {x: 7, y: 8}
-  - {x: 8, y: 10}
-  - {x: 9, y: 12}
-  - {x: 10, y: 7}
-  - {x: 11, y: 1}
-  lightEntries:
-  - {fileID: 262041917}
-  - {fileID: 2139732995}
-  - {fileID: 744323903}
-  - {fileID: 343287891}
-  - {fileID: 1450279877}
-  - {fileID: 1465899399}
-  - {fileID: 1360808471}
-  - {fileID: 1270751891}
-  - {fileID: 1055703098}
-  - {fileID: 2088952732}
-  - {fileID: 1340145613}
-  - {fileID: 273276402}
-  - {fileID: 898472696}
-  - {fileID: 963928049}
-  - {fileID: 530282850}
-  - {fileID: 734802266}
-  - {fileID: 1636323097}
---- !u!114 &26418720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 2
-  ColorBoostEffect: {fileID: 26418723}
-  ColorSchemeProvider: {fileID: 33546800}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 2}
-  - {x: 2, y: 4}
-  - {x: 3, y: 3}
-  - {x: 4, y: 1}
-  - {x: 5, y: 15}
-  - {x: 6, y: 10}
-  - {x: 7, y: 5}
-  - {x: 8, y: 9}
-  - {x: 9, y: 7}
-  - {x: 10, y: 0}
-  - {x: 11, y: 11}
-  lightEntries:
-  - {fileID: 160327867}
-  - {fileID: 1908826219}
-  - {fileID: 1099573746}
-  - {fileID: 1865762311}
-  - {fileID: 91487797}
-  - {fileID: 480257340}
-  - {fileID: 1360808472}
-  - {fileID: 1055703099}
-  - {fileID: 886956531}
-  - {fileID: 1340145614}
-  - {fileID: 535501853}
-  - {fileID: 1508772496}
-  - {fileID: 1383519797}
-  - {fileID: 898472697}
-  - {fileID: 734802267}
-  - {fileID: 1636323098}
-  - {fileID: 2115857817}
---- !u!114 &26418721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 1
-  ColorBoostEffect: {fileID: 26418723}
-  ColorSchemeProvider: {fileID: 33546800}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 0}
-  - {x: 2, y: 1}
-  - {x: 3, y: 2}
-  - {x: 4, y: 3}
-  - {x: 5, y: 4}
-  - {x: 6, y: 5}
-  - {x: 7, y: 6}
-  - {x: 8, y: 7}
-  - {x: 9, y: 8}
-  - {x: 10, y: 9}
-  - {x: 11, y: 10}
-  - {x: 12, y: 11}
-  - {x: 13, y: 12}
-  - {x: 14, y: 13}
-  - {x: 15, y: 14}
-  - {x: 16, y: 15}
-  - {x: 17, y: 16}
-  - {x: 18, y: 17}
-  - {x: 19, y: 18}
-  - {x: 20, y: 19}
-  - {x: 21, y: 20}
-  - {x: 22, y: 21}
-  - {x: 23, y: 22}
-  - {x: 24, y: 23}
-  - {x: 25, y: 24}
-  - {x: 26, y: 25}
-  - {x: 27, y: 26}
-  - {x: 28, y: 27}
-  - {x: 29, y: 28}
-  - {x: 30, y: 29}
-  - {x: 31, y: 30}
-  - {x: 32, y: 31}
-  - {x: 33, y: 32}
-  - {x: 34, y: 33}
-  - {x: 35, y: 34}
-  - {x: 36, y: 35}
-  - {x: 37, y: 36}
-  - {x: 38, y: 37}
-  - {x: 39, y: 38}
-  - {x: 40, y: 39}
-  lightEntries:
-  - {fileID: 1660218317}
-  - {fileID: 346909132}
-  - {fileID: 543423724}
-  - {fileID: 1043037228}
-  - {fileID: 509896978}
-  - {fileID: 1194221023}
-  - {fileID: 1997891934}
-  - {fileID: 95299847}
-  - {fileID: 1197269466}
-  - {fileID: 1238498859}
-  - {fileID: 2038961830}
-  - {fileID: 1842558550}
-  - {fileID: 2025381100}
-  - {fileID: 812924580}
-  - {fileID: 583863207}
-  - {fileID: 579795983}
-  - {fileID: 532227818}
-  - {fileID: 1518078514}
-  - {fileID: 2039527099}
-  - {fileID: 1148066731}
-  - {fileID: 757528428}
-  - {fileID: 2019887379}
-  - {fileID: 1949753744}
-  - {fileID: 1351970723}
-  - {fileID: 179406027}
-  - {fileID: 1091680273}
-  - {fileID: 935663649}
-  - {fileID: 431674832}
-  - {fileID: 1449082744}
-  - {fileID: 894219893}
-  - {fileID: 1497784796}
-  - {fileID: 1665509004}
-  - {fileID: 1740180437}
-  - {fileID: 613632420}
-  - {fileID: 1833101080}
-  - {fileID: 351058829}
-  - {fileID: 1191532434}
-  - {fileID: 282810092}
-  - {fileID: 201160908}
-  - {fileID: 1875326688}
-  - {fileID: 1360808473}
-  - {fileID: 1055703100}
-  - {fileID: 1340145615}
-  - {fileID: 898472698}
-  - {fileID: 734802268}
-  - {fileID: 1636323099}
---- !u!114 &26418722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicLightEffect
-  Atsc: {fileID: 0}
-  ID: 0
-  ColorBoostEffect: {fileID: 26418723}
-  ColorSchemeProvider: {fileID: 33546800}
-  OffIntensity: 0
-  LightOnStart: 0
-  InvertColorScheme: 0
-  LightIdRemapEntries:
-  - {x: 1, y: 6}
-  - {x: 2, y: 5}
-  - {x: 3, y: 8}
-  - {x: 4, y: 7}
-  - {x: 5, y: 2}
-  - {x: 6, y: 4}
-  - {x: 7, y: 3}
-  - {x: 8, y: 9}
-  lightEntries:
-  - {fileID: 1360808474}
-  - {fileID: 1055703101}
-  - {fileID: 1340145616}
-  - {fileID: 393671404}
-  - {fileID: 538625615}
-  - {fileID: 1203797115}
-  - {fileID: 704556243}
-  - {fileID: 570157194}
-  - {fileID: 625311691}
-  - {fileID: 1778008401}
-  - {fileID: 1448902035}
-  - {fileID: 898472699}
-  - {fileID: 734802269}
-  - {fileID: 1636323100}
---- !u!114 &26418723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ba8770cdbe47ca91444e4b30a577ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::ColorBoostEffect
-  Atsc: {fileID: 0}
-  ID: 5
-  ColorSchemeProvider: {fileID: 33546800}
-  Boost: 0
---- !u!114 &26418724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26418716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 336c6120d748406c96de1fe7bcede38f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::BasicEventEffectManager
-  effectEntries:
-  - Type: 5
-    Manager: {fileID: 26418723}
-  - Type: 0
-    Manager: {fileID: 26418722}
-  - Type: 1
-    Manager: {fileID: 26418721}
-  - Type: 2
-    Manager: {fileID: 26418720}
-  - Type: 3
-    Manager: {fileID: 26418719}
-  - Type: 4
-    Manager: {fileID: 26418718}
-  - Type: 9
-    Manager: {fileID: 374643313}
-  - Type: 8
-    Manager: {fileID: 374643310}
-  - Type: 8
-    Manager: {fileID: 2058658904}
-  - Type: 12
-    Manager: {fileID: 501652947}
-  - Type: 13
-    Manager: {fileID: 322734062}
-  - Type: 12
-    Manager: {fileID: 1099573750}
-  - Type: 13
-    Manager: {fileID: 343287895}
-  - Type: 12
-    Manager: {fileID: 91487801}
-  - Type: 13
-    Manager: {fileID: 1450279881}
-  - Type: 12
-    Manager: {fileID: 1865762315}
-  - Type: 13
-    Manager: {fileID: 1465899403}
-  - Type: 12
-    Manager: {fileID: 1908826223}
-  - Type: 13
-    Manager: {fileID: 744323905}
 --- !u!1 &33546794
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,12 +542,12 @@ Transform:
   - {fileID: 1658665074}
   - {fileID: 1738942971}
   - {fileID: 1055703096}
-  - {fileID: 26418717}
-  - {fileID: 1523311269}
-  - {fileID: 900011899}
-  - {fileID: 1751308610}
-  - {fileID: 1701305494}
-  - {fileID: 1720787465}
+  - {fileID: 664018228}
+  - {fileID: 1591023032}
+  - {fileID: 1724168404}
+  - {fileID: 774848479}
+  - {fileID: 1160221670}
+  - {fileID: 2036869173}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &33546798
@@ -973,11 +563,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::EnvironmentDescriptor
   ID: NiceEnvironment
-  BasicEventEffectManager: {fileID: 26418724}
-  LightColorGroupEffectManager: {fileID: 1523311270}
-  LightRotationGroupEffectManager: {fileID: 1751308611}
-  LightTranslationGroupEffectManager: {fileID: 1701305495}
-  FloatFxGroupEffectManager: {fileID: 1720787466}
+  BasicEventEffectManager: {fileID: 664018235}
+  LightColorGroupEffectManager: {fileID: 1591023033}
+  LightRotationGroupEffectManager: {fileID: 774848480}
+  LightTranslationGroupEffectManager: {fileID: 1160221671}
+  FloatFxGroupEffectManager: {fileID: 2036869174}
   ColorSchemeProvider: {fileID: 33546800}
   SpectrogramDataProvider: {fileID: 33546799}
   SizeData:
@@ -1711,7 +1301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &59536504
 GameObject:
@@ -1744,7 +1334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[532]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[10]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &59536506
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1770,7 +1360,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1947,7 +1537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &66239449
 GameObject:
@@ -2079,7 +1669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &86834938
 GameObject:
@@ -2153,7 +1743,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b0904d56d8d4905a3657add7776ae7, type: 2}
+  - {fileID: 2100000, guid: 75c7207cb24441e2f94982f573ce19ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2257,7 +1847,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -2470,7 +2060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 7
+  ID: 13
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -2478,7 +2068,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -2592,7 +2182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &95299849
 MonoBehaviour:
@@ -2801,7 +2391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[550]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[28]SmallTrackLaneRing(Clone)
 --- !u!4 &123166840
 Transform:
   m_ObjectHideFlags: 0
@@ -2877,7 +2467,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2921,7 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &128412866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,7 +2703,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3243,7 +2833,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3287,7 +2877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[539]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[17]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &160327861
 GameObject:
   m_ObjectHideFlags: 0
@@ -3358,7 +2948,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -3670,7 +3260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 24
+  ID: 30
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -3678,7 +3268,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -3792,7 +3382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &179406029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3882,7 +3472,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3926,7 +3516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[542]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[20]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &196104448
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,7 +3647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &201160905
 GameObject:
@@ -4108,7 +3698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 38
+  ID: 44
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -4116,7 +3706,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -4230,7 +3820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &201160910
 MonoBehaviour:
@@ -4293,7 +3883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[535]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[13]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &238954497
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4319,7 +3909,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4496,7 +4086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &246520360
 GameObject:
@@ -4558,7 +4148,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4675,7 +4265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[524]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[2]SmallTrackLaneRing(Clone)
 --- !u!114 &253992599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4763,7 +4353,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5014,7 +4604,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5195,7 +4785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 37
+  ID: 43
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -5203,7 +4793,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -5317,7 +4907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &282810094
 MonoBehaviour:
@@ -5511,7 +5101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[534]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[12]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &296197631
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5537,7 +5127,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5630,7 +5220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[532]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[10]SmallTrackLaneRing(Clone)
 --- !u!114 &300617325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5693,7 +5283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[539]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[17]SmallTrackLaneRing(Clone)
 --- !u!4 &312667012
 Transform:
   m_ObjectHideFlags: 0
@@ -5755,7 +5345,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5901,7 +5491,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6042,7 +5632,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6257,7 +5847,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22d6614b320d5a08abab7e5808a01e9d, type: 2}
+  - {fileID: 2100000, guid: bf79e93dff6ce454b90bcd826d9b022f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6457,7 +6047,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6667,7 +6257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone)
 --- !u!4 &345807739
 Transform:
   m_ObjectHideFlags: 0
@@ -6737,7 +6327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 1
+  ID: 7
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -6745,7 +6335,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -6859,7 +6449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &346909134
 MonoBehaviour:
@@ -6940,7 +6530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 35
+  ID: 41
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -6948,7 +6538,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -7062,7 +6652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &351058831
 MonoBehaviour:
@@ -7154,7 +6744,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7355,7 +6945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &374643302
 GameObject:
   m_ObjectHideFlags: 0
@@ -7580,7 +7170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7726,7 +7316,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -7850,7 +7440,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -8072,7 +7662,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8189,7 +7779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone)
 --- !u!4 &406712774
 Transform:
   m_ObjectHideFlags: 0
@@ -8256,7 +7846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[545]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[23]SmallTrackLaneRing(Clone)
 --- !u!4 &407292802
 Transform:
   m_ObjectHideFlags: 0
@@ -8319,7 +7909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone)
 --- !u!4 &411653549
 Transform:
   m_ObjectHideFlags: 0
@@ -8389,7 +7979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 27
+  ID: 33
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -8397,7 +7987,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -8511,7 +8101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &431674834
 MonoBehaviour:
@@ -8601,7 +8191,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8851,7 +8441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[534]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[12]SmallTrackLaneRing(Clone)
 --- !u!114 &441590706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8927,7 +8517,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8971,7 +8561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &456193230
 GameObject:
   m_ObjectHideFlags: 0
@@ -9093,7 +8683,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b0904d56d8d4905a3657add7776ae7, type: 2}
+  - {fileID: 2100000, guid: 75c7207cb24441e2f94982f573ce19ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9195,7 +8785,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -9529,7 +9119,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61033eca597bdb34ebed1e70f1c2ac4a, type: 2}
+  - {fileID: 2100000, guid: dde5796f2dc5c774a948ade168a7723a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14451,7 +14041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &500258303
 GameObject:
   m_ObjectHideFlags: 0
@@ -14498,7 +14088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone)
 --- !u!4 &500258306
 Transform:
   m_ObjectHideFlags: 0
@@ -14657,7 +14247,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14779,7 +14369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 4
+  ID: 10
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -14787,7 +14377,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -14901,7 +14491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &509896980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14978,7 +14568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[540]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[18]SmallTrackLaneRing(Clone)
 --- !u!4 &514142726
 Transform:
   m_ObjectHideFlags: 0
@@ -15041,7 +14631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[551]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[29]SmallTrackLaneRing(Clone)
 --- !u!4 &516074075
 Transform:
   m_ObjectHideFlags: 0
@@ -15309,7 +14899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 16
+  ID: 22
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -15317,7 +14907,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15431,7 +15021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &532227820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15532,7 +15122,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15722,7 +15312,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15868,7 +15458,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -15992,7 +15582,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16224,7 +15814,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 4
   BloomFogIntensityMultiplier: 8
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16401,7 +15991,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16536,7 +16126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 2
+  ID: 8
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -16544,7 +16134,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16658,7 +16248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &543423726
 MonoBehaviour:
@@ -16749,7 +16339,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16793,7 +16383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[546]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[24]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &570157184
 GameObject:
   m_ObjectHideFlags: 0
@@ -16867,7 +16457,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -16991,7 +16581,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17202,7 +16792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 15
+  ID: 21
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -17210,7 +16800,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17324,7 +16914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &579795985
 MonoBehaviour:
@@ -17405,7 +16995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 14
+  ID: 20
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -17413,7 +17003,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17527,7 +17117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &583863209
 MonoBehaviour:
@@ -17590,7 +17180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[528]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[6]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &584889624
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17616,7 +17206,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17712,7 +17302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 33
+  ID: 39
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -17720,7 +17310,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -17834,7 +17424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &613632422
 MonoBehaviour:
@@ -17925,7 +17515,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17969,7 +17559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[541]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[19]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &615218885
 GameObject:
   m_ObjectHideFlags: 0
@@ -18174,7 +17764,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -18298,7 +17888,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -18518,7 +18108,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18721,7 +18311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &643588743
 GameObject:
@@ -18769,7 +18359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[531]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[9]SmallTrackLaneRing(Clone)
 --- !u!114 &643588747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18817,7 +18407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[526]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[4]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &648896301
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18843,7 +18433,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18936,7 +18526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[527]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[5]SmallTrackLaneRing(Clone)
 --- !u!114 &651003984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19012,7 +18602,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19056,7 +18646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &654347754
 GameObject:
   m_ObjectHideFlags: 0
@@ -19161,6 +18751,421 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 654347754}
   m_Mesh: {fileID: -629719859055844128, guid: ef7a68fff2de0498b810ee0b0dc62817, type: 3}
+--- !u!1 &664018227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 664018228}
+  - component: {fileID: 664018235}
+  - component: {fileID: 664018234}
+  - component: {fileID: 664018233}
+  - component: {fileID: 664018232}
+  - component: {fileID: 664018231}
+  - component: {fileID: 664018230}
+  - component: {fileID: 664018229}
+  m_Layer: 0
+  m_Name: BasicEventEffectController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &664018228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &664018229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 4
+  ColorBoostEffect: {fileID: 664018234}
+  ColorSchemeProvider: {fileID: 33546800}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 11}
+  - {x: 2, y: 12}
+  - {x: 3, y: 9}
+  - {x: 4, y: 10}
+  - {x: 5, y: 6}
+  - {x: 6, y: 8}
+  - {x: 7, y: 0}
+  - {x: 8, y: 7}
+  - {x: 9, y: 18}
+  - {x: 10, y: 17}
+  - {x: 11, y: 5}
+  - {x: 12, y: 3}
+  - {x: 13, y: 13}
+  - {x: 14, y: 15}
+  lightEntries:
+  - {fileID: 1448902033}
+  - {fileID: 322433818}
+  - {fileID: 1724168405}
+  - {fileID: 1202232696}
+  - {fileID: 1360808470}
+  - {fileID: 539397384}
+  - {fileID: 1203797113}
+  - {fileID: 538625613}
+  - {fileID: 393671402}
+  - {fileID: 1778008399}
+  - {fileID: 625311689}
+  - {fileID: 570157192}
+  - {fileID: 704556241}
+  - {fileID: 1055703097}
+  - {fileID: 320597257}
+  - {fileID: 1340145612}
+  - {fileID: 1732005692}
+  - {fileID: 898472695}
+  - {fileID: 1975263811}
+  - {fileID: 1148920198}
+  - {fileID: 734802265}
+  - {fileID: 1636323096}
+--- !u!114 &664018230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 3
+  ColorBoostEffect: {fileID: 664018234}
+  ColorSchemeProvider: {fileID: 33546800}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 2}
+  - {x: 2, y: 3}
+  - {x: 3, y: 4}
+  - {x: 4, y: 5}
+  - {x: 5, y: 13}
+  - {x: 6, y: 0}
+  - {x: 7, y: 8}
+  - {x: 8, y: 10}
+  - {x: 9, y: 12}
+  - {x: 10, y: 1}
+  - {x: 11, y: 7}
+  lightEntries:
+  - {fileID: 262041917}
+  - {fileID: 2139732995}
+  - {fileID: 744323903}
+  - {fileID: 343287891}
+  - {fileID: 1450279877}
+  - {fileID: 1465899399}
+  - {fileID: 1360808471}
+  - {fileID: 1270751891}
+  - {fileID: 1055703098}
+  - {fileID: 2088952732}
+  - {fileID: 1340145613}
+  - {fileID: 273276402}
+  - {fileID: 898472696}
+  - {fileID: 963928049}
+  - {fileID: 530282850}
+  - {fileID: 734802266}
+  - {fileID: 1636323097}
+--- !u!114 &664018231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 2
+  ColorBoostEffect: {fileID: 664018234}
+  ColorSchemeProvider: {fileID: 33546800}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 1}
+  - {x: 2, y: 2}
+  - {x: 3, y: 3}
+  - {x: 4, y: 4}
+  - {x: 5, y: 15}
+  - {x: 6, y: 10}
+  - {x: 7, y: 5}
+  - {x: 8, y: 9}
+  - {x: 9, y: 7}
+  - {x: 10, y: 0}
+  - {x: 11, y: 11}
+  lightEntries:
+  - {fileID: 160327867}
+  - {fileID: 1908826219}
+  - {fileID: 1099573746}
+  - {fileID: 1865762311}
+  - {fileID: 91487797}
+  - {fileID: 480257340}
+  - {fileID: 1360808472}
+  - {fileID: 1055703099}
+  - {fileID: 886956531}
+  - {fileID: 1340145614}
+  - {fileID: 535501853}
+  - {fileID: 1508772496}
+  - {fileID: 1383519797}
+  - {fileID: 898472697}
+  - {fileID: 734802267}
+  - {fileID: 1636323098}
+  - {fileID: 2115857817}
+--- !u!114 &664018232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 1
+  ColorBoostEffect: {fileID: 664018234}
+  ColorSchemeProvider: {fileID: 33546800}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 5}
+  - {x: 2, y: 6}
+  - {x: 3, y: 7}
+  - {x: 4, y: 8}
+  - {x: 5, y: 9}
+  - {x: 6, y: 10}
+  - {x: 7, y: 11}
+  - {x: 8, y: 12}
+  - {x: 9, y: 13}
+  - {x: 10, y: 14}
+  - {x: 11, y: 15}
+  - {x: 12, y: 16}
+  - {x: 13, y: 17}
+  - {x: 14, y: 18}
+  - {x: 15, y: 19}
+  - {x: 16, y: 20}
+  - {x: 17, y: 21}
+  - {x: 18, y: 22}
+  - {x: 19, y: 23}
+  - {x: 20, y: 24}
+  - {x: 21, y: 25}
+  - {x: 22, y: 26}
+  - {x: 23, y: 27}
+  - {x: 24, y: 28}
+  - {x: 25, y: 29}
+  - {x: 26, y: 30}
+  - {x: 27, y: 31}
+  - {x: 28, y: 32}
+  - {x: 29, y: 33}
+  - {x: 30, y: 34}
+  - {x: 31, y: 35}
+  - {x: 32, y: 36}
+  - {x: 33, y: 37}
+  - {x: 34, y: 38}
+  - {x: 35, y: 39}
+  - {x: 36, y: 40}
+  - {x: 37, y: 41}
+  - {x: 38, y: 42}
+  - {x: 39, y: 43}
+  - {x: 40, y: 44}
+  lightEntries:
+  - {fileID: 1360808473}
+  - {fileID: 1055703100}
+  - {fileID: 1340145615}
+  - {fileID: 898472698}
+  - {fileID: 734802268}
+  - {fileID: 1636323099}
+  - {fileID: 1660218317}
+  - {fileID: 346909132}
+  - {fileID: 543423724}
+  - {fileID: 1043037228}
+  - {fileID: 509896978}
+  - {fileID: 1194221023}
+  - {fileID: 1997891934}
+  - {fileID: 95299847}
+  - {fileID: 1197269466}
+  - {fileID: 1238498859}
+  - {fileID: 2038961830}
+  - {fileID: 1842558550}
+  - {fileID: 2025381100}
+  - {fileID: 812924580}
+  - {fileID: 583863207}
+  - {fileID: 579795983}
+  - {fileID: 532227818}
+  - {fileID: 1518078514}
+  - {fileID: 2039527099}
+  - {fileID: 1148066731}
+  - {fileID: 757528428}
+  - {fileID: 2019887379}
+  - {fileID: 1949753744}
+  - {fileID: 1351970723}
+  - {fileID: 179406027}
+  - {fileID: 1091680273}
+  - {fileID: 935663649}
+  - {fileID: 431674832}
+  - {fileID: 1449082744}
+  - {fileID: 894219893}
+  - {fileID: 1497784796}
+  - {fileID: 1665509004}
+  - {fileID: 1740180437}
+  - {fileID: 613632420}
+  - {fileID: 1833101080}
+  - {fileID: 351058829}
+  - {fileID: 1191532434}
+  - {fileID: 282810092}
+  - {fileID: 201160908}
+  - {fileID: 1875326688}
+--- !u!114 &664018233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f2dcefc297b9b40a12ccbf3fe55817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicLightEffect
+  Atsc: {fileID: 0}
+  ID: 0
+  ColorBoostEffect: {fileID: 664018234}
+  ColorSchemeProvider: {fileID: 33546800}
+  OffIntensity: 0
+  LightOnStart: 0
+  InvertColorScheme: 0
+  HighlightMatchesNormalColor: 0
+  LightIdRemapEntries:
+  - {x: 1, y: 6}
+  - {x: 2, y: 5}
+  - {x: 3, y: 8}
+  - {x: 4, y: 7}
+  - {x: 5, y: 2}
+  - {x: 6, y: 4}
+  - {x: 7, y: 3}
+  - {x: 8, y: 9}
+  lightEntries:
+  - {fileID: 1360808474}
+  - {fileID: 1055703101}
+  - {fileID: 1340145616}
+  - {fileID: 393671404}
+  - {fileID: 538625615}
+  - {fileID: 1203797115}
+  - {fileID: 704556243}
+  - {fileID: 570157194}
+  - {fileID: 625311691}
+  - {fileID: 1778008401}
+  - {fileID: 1448902035}
+  - {fileID: 898472699}
+  - {fileID: 734802269}
+  - {fileID: 1636323100}
+--- !u!114 &664018234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ba8770cdbe47ca91444e4b30a577ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::ColorBoostEffect
+  Atsc: {fileID: 0}
+  ID: 5
+  ColorSchemeProvider: {fileID: 33546800}
+  Boost: 0
+--- !u!114 &664018235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664018227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 336c6120d748406c96de1fe7bcede38f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::BasicEventEffectManager
+  effectEntries:
+  - Type: 5
+    Manager: {fileID: 664018234}
+  - Type: 0
+    Manager: {fileID: 664018233}
+  - Type: 1
+    Manager: {fileID: 664018232}
+  - Type: 2
+    Manager: {fileID: 664018231}
+  - Type: 3
+    Manager: {fileID: 664018230}
+  - Type: 4
+    Manager: {fileID: 664018229}
+  - Type: 9
+    Manager: {fileID: 374643313}
+  - Type: 8
+    Manager: {fileID: 374643310}
+  - Type: 8
+    Manager: {fileID: 2058658904}
+  - Type: 12
+    Manager: {fileID: 501652947}
+  - Type: 13
+    Manager: {fileID: 322734062}
+  - Type: 12
+    Manager: {fileID: 1099573750}
+  - Type: 13
+    Manager: {fileID: 343287895}
+  - Type: 12
+    Manager: {fileID: 91487801}
+  - Type: 13
+    Manager: {fileID: 1450279881}
+  - Type: 12
+    Manager: {fileID: 1865762315}
+  - Type: 13
+    Manager: {fileID: 1465899403}
+  - Type: 12
+    Manager: {fileID: 1908826223}
+  - Type: 13
+    Manager: {fileID: 744323905}
 --- !u!1 &668883085
 GameObject:
   m_ObjectHideFlags: 0
@@ -19291,7 +19296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &669628864
 GameObject:
   m_ObjectHideFlags: 0
@@ -19351,7 +19356,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19395,7 +19400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[548]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[26]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &675792660
 GameObject:
   m_ObjectHideFlags: 0
@@ -19622,7 +19627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone)
 --- !u!4 &688031827
 Transform:
   m_ObjectHideFlags: 0
@@ -19702,7 +19707,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19746,7 +19751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[543]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[21]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &704556233
 GameObject:
   m_ObjectHideFlags: 0
@@ -19820,7 +19825,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -19944,7 +19949,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -20152,7 +20157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[529]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[7]SmallTrackLaneRing(Clone)
 --- !u!114 &714169752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20227,7 +20232,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20503,7 +20508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 1
-  ID: 44
+  ID: 4
   Intensity: 0
 --- !u!114 &734802269
 MonoBehaviour:
@@ -20609,7 +20614,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -20803,7 +20808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone)
 --- !u!4 &746003761
 Transform:
   m_ObjectHideFlags: 0
@@ -20870,7 +20875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[530]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[8]SmallTrackLaneRing(Clone)
 --- !u!114 &756574901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20936,7 +20941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 20
+  ID: 26
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -20944,7 +20949,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -21058,7 +21063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &757528430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21219,8 +21224,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
+--- !u!1 &774848478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774848479}
+  - component: {fileID: 774848480}
+  m_Layer: 0
+  m_Name: LightRotationGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &774848479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774848478}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &774848480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774848478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ebdf100fce4003aa89ddca6b233845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightRotationGroupEffectManager
+  effectEntries: []
 --- !u!1 &780911092
 GameObject:
   m_ObjectHideFlags: 0
@@ -21280,7 +21330,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21324,7 +21374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &812924577
 GameObject:
   m_ObjectHideFlags: 0
@@ -21374,7 +21424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 13
+  ID: 19
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -21382,7 +21432,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -21496,7 +21546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &812924582
 MonoBehaviour:
@@ -21587,7 +21637,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21631,7 +21681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[550]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[28]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &845308202
 GameObject:
   m_ObjectHideFlags: 0
@@ -21762,7 +21812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &850482070
 GameObject:
   m_ObjectHideFlags: 0
@@ -21809,7 +21859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[547]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[25]SmallTrackLaneRing(Clone)
 --- !u!4 &850482073
 Transform:
   m_ObjectHideFlags: 0
@@ -21956,7 +22006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &880647083
 GameObject:
@@ -22017,7 +22067,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22061,7 +22111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &881208762
 GameObject:
   m_ObjectHideFlags: 0
@@ -22107,7 +22157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22264,7 +22314,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -22445,7 +22495,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 29
+  ID: 35
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -22453,7 +22503,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -22567,7 +22617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &894219895
 MonoBehaviour:
@@ -22671,7 +22721,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b0904d56d8d4905a3657add7776ae7, type: 2}
+  - {fileID: 2100000, guid: 75c7207cb24441e2f94982f573ce19ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22857,7 +22907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 1
-  ID: 43
+  ID: 3
   Intensity: 1
 --- !u!114 &898472699
 MonoBehaviour:
@@ -22875,53 +22925,6 @@ MonoBehaviour:
   Type: 0
   ID: 11
   Intensity: 0
---- !u!1 &900011898
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 900011899}
-  - component: {fileID: 900011900}
-  m_Layer: 0
-  m_Name: Sink Object
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &900011899
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900011898}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &900011900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900011898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a583847fb4c4821ac7375dc8b59c4a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightSink
-  Kind: 0
-  Type: 4
-  ID: 2
 --- !u!1 &909242601
 GameObject:
   m_ObjectHideFlags: 0
@@ -23052,7 +23055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &914372161
 GameObject:
@@ -23184,7 +23187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &922929157
 GameObject:
@@ -23232,7 +23235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[538]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[16]SmallTrackLaneRing(Clone)
 --- !u!114 &922929161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23298,7 +23301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 26
+  ID: 32
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -23306,7 +23309,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -23420,7 +23423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &935663651
 MonoBehaviour:
@@ -23523,7 +23526,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -23701,7 +23704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[549]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[27]SmallTrackLaneRing(Clone)
 --- !u!4 &978707211
 Transform:
   m_ObjectHideFlags: 0
@@ -23749,7 +23752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[524]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[2]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &979563707
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23775,7 +23778,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23952,7 +23955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &988738682
 GameObject:
@@ -24000,7 +24003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[536]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[14]SmallTrackLaneRing(Clone)
 --- !u!114 &988738686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24063,7 +24066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[535]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[13]SmallTrackLaneRing(Clone)
 --- !u!114 &993105457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24141,7 +24144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4cc595ea978475b04b284c0d9ce78fdd, type: 2}
+  - {fileID: 2100000, guid: 65107518d766b115da7bf0cbf10b611b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24316,7 +24319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &1015745954
 GameObject:
   m_ObjectHideFlags: 0
@@ -24348,7 +24351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[536]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[14]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1015745956
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24374,7 +24377,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24480,7 +24483,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24524,7 +24527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[540]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[18]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1028418996
 GameObject:
   m_ObjectHideFlags: 0
@@ -24570,7 +24573,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24786,7 +24789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1043037225
 GameObject:
@@ -24837,7 +24840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 3
+  ID: 9
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -24845,7 +24848,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -24959,7 +24962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1043037230
 MonoBehaviour:
@@ -25129,7 +25132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightmapsIntensityData
   Kind: 0
   Type: 1
-  ID: 41
+  ID: 1
   Intensity: 1
   BakeId: 2
   Weight: 0
@@ -25200,7 +25203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 25
+  ID: 31
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -25208,7 +25211,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -25322,7 +25325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &1091680275
 MonoBehaviour:
@@ -25426,7 +25429,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -25720,7 +25723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &1107923315
 GameObject:
@@ -25794,7 +25797,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b0904d56d8d4905a3657add7776ae7, type: 2}
+  - {fileID: 2100000, guid: 75c7207cb24441e2f94982f573ce19ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -25956,7 +25959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &1116254515
 GameObject:
   m_ObjectHideFlags: 0
@@ -25988,7 +25991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[523]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[1]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1116254517
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26014,7 +26017,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26092,7 +26095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[529]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[7]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1116939914
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -26118,7 +26121,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26210,7 +26213,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26342,7 +26345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[537]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[15]SmallTrackLaneRing(Clone)
 --- !u!114 &1142971393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26408,7 +26411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 19
+  ID: 25
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -26416,7 +26419,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -26530,7 +26533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1148066733
 MonoBehaviour:
@@ -26764,6 +26767,51 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
+--- !u!1 &1160221669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160221670}
+  - component: {fileID: 1160221671}
+  m_Layer: 0
+  m_Name: LightTranslationGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1160221670
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160221669}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1160221671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160221669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edea4172ea0f4600af99f04faa447b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightTranslationGroupEffectManager
+  effectEntries: []
 --- !u!1 &1164372179
 GameObject:
   m_ObjectHideFlags: 0
@@ -26810,7 +26858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[523]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[1]SmallTrackLaneRing(Clone)
 --- !u!114 &1164372183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26885,7 +26933,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d546896de16433f9889cc55f9c389f19, type: 2}
+  - {fileID: 2100000, guid: 648fe3d1a7710c844bce85d0958d9b1b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31874,7 +31922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1191532431
 GameObject:
@@ -31925,7 +31973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 36
+  ID: 42
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -31933,7 +31981,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -32047,7 +32095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &1191532436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32127,7 +32175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 5
+  ID: 11
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -32135,7 +32183,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -32249,7 +32297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &1194221025
 MonoBehaviour:
@@ -32330,7 +32378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 8
+  ID: 14
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -32338,7 +32386,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -32452,7 +32500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &1197269468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32553,7 +32601,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 4
   BloomFogIntensityMultiplier: 8
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -32758,7 +32806,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -32882,7 +32930,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -33103,7 +33151,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -33147,7 +33195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1223570374
 GameObject:
   m_ObjectHideFlags: 0
@@ -33194,7 +33242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[526]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[4]SmallTrackLaneRing(Clone)
 --- !u!114 &1223570378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33260,7 +33308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 9
+  ID: 15
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -33268,7 +33316,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -33382,7 +33430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &1238498861
 MonoBehaviour:
@@ -33460,7 +33508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[546]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[24]SmallTrackLaneRing(Clone)
 --- !u!4 &1251907133
 Transform:
   m_ObjectHideFlags: 0
@@ -33523,7 +33571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone)
 --- !u!4 &1257226404
 Transform:
   m_ObjectHideFlags: 0
@@ -33590,7 +33638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[544]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[22]SmallTrackLaneRing(Clone)
 --- !u!4 &1257329194
 Transform:
   m_ObjectHideFlags: 0
@@ -33638,7 +33686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[527]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[5]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1268150408
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -33664,7 +33712,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -33781,7 +33829,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -34043,7 +34091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &1296993656
 GameObject:
@@ -34175,7 +34223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &1314864183
 GameObject:
@@ -34307,7 +34355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &1340145596
 GameObject:
@@ -34463,7 +34511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 1
-  ID: 42
+  ID: 2
   Intensity: 1
 --- !u!114 &1340145616
 MonoBehaviour:
@@ -34530,7 +34578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 23
+  ID: 29
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -34538,7 +34586,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -34652,7 +34700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1351970725
 MonoBehaviour:
@@ -34838,7 +34886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 1
-  ID: 40
+  ID: 0
   Intensity: 0.5
 --- !u!114 &1360808474
 MonoBehaviour:
@@ -35151,7 +35199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[530]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[8]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1368885297
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -35177,7 +35225,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35294,7 +35342,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -35556,7 +35604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &1395849032
 GameObject:
@@ -35688,7 +35736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &1402071659
 GameObject:
@@ -35796,7 +35844,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35840,7 +35888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1420448944
 GameObject:
   m_ObjectHideFlags: 0
@@ -36018,7 +36066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1448902025
 GameObject:
@@ -36093,7 +36141,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -36217,7 +36265,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -36428,7 +36476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 28
+  ID: 34
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -36436,7 +36484,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -36550,7 +36598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &1449082746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36653,7 +36701,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -36947,7 +36995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &1463811742
 GameObject:
@@ -37152,7 +37200,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -37365,7 +37413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 30
+  ID: 36
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -37373,7 +37421,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -37487,7 +37535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &1497784798
 MonoBehaviour:
@@ -37590,7 +37638,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -37851,7 +37899,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 42aba6c72a0b6011ea2defa033e53de8, type: 2}
+  - {fileID: 2100000, guid: a7e082877091a8548b7d57d71951069f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -37979,7 +38027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 17
+  ID: 23
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -37987,7 +38035,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -38101,7 +38149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &1518078516
 MonoBehaviour:
@@ -38133,51 +38181,6 @@ MonoBehaviour:
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
---- !u!1 &1523311268
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1523311269}
-  - component: {fileID: 1523311270}
-  m_Layer: 0
-  m_Name: LightColorGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1523311269
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523311268}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1523311270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523311268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c05d080359c4d64aa585b2b52e4ebce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightColorGroupEffectManager
-  effectEntries: []
 --- !u!1 &1526105060
 GameObject:
   m_ObjectHideFlags: 0
@@ -38237,7 +38240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38281,7 +38284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[549]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[27]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1527916071
 GameObject:
   m_ObjectHideFlags: 0
@@ -38327,7 +38330,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38472,7 +38475,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38516,7 +38519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[552]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[30]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1530380303
 GameObject:
   m_ObjectHideFlags: 0
@@ -38576,7 +38579,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38620,7 +38623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1545679350
 GameObject:
   m_ObjectHideFlags: 0
@@ -38667,7 +38670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[543]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[21]SmallTrackLaneRing(Clone)
 --- !u!4 &1545679353
 Transform:
   m_ObjectHideFlags: 0
@@ -38743,7 +38746,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38787,7 +38790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[547]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[25]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1558936746
 GameObject:
   m_ObjectHideFlags: 0
@@ -38834,7 +38837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[533]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[11]SmallTrackLaneRing(Clone)
 --- !u!114 &1558936750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38981,7 +38984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &1574383940
 GameObject:
   m_ObjectHideFlags: 0
@@ -39159,7 +39162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[541]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[19]SmallTrackLaneRing(Clone)
 --- !u!4 &1581124042
 Transform:
   m_ObjectHideFlags: 0
@@ -39176,6 +39179,51 @@ Transform:
   - {fileID: 613935106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1591023031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1591023032}
+  - component: {fileID: 1591023033}
+  m_Layer: 0
+  m_Name: LightColorGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1591023032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591023031}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1591023033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591023031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c05d080359c4d64aa585b2b52e4ebce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightColorGroupEffectManager
+  effectEntries: []
 --- !u!1 &1592341155
 GameObject:
   m_ObjectHideFlags: 0
@@ -39306,7 +39354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &1618781702
 GameObject:
@@ -39438,7 +39486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &1636323079
 GameObject:
@@ -39594,7 +39642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::LightIntensityData
   Kind: 0
   Type: 1
-  ID: 45
+  ID: 5
   Intensity: 0
 --- !u!114 &1636323100
 MonoBehaviour:
@@ -39838,7 +39886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 0
+  ID: 6
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -39846,7 +39894,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -39960,7 +40008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &1660218319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40040,7 +40088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 31
+  ID: 37
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -40048,7 +40096,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -40162,7 +40210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1665509006
 MonoBehaviour:
@@ -40253,7 +40301,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40297,7 +40345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1673561833
 GameObject:
   m_ObjectHideFlags: 0
@@ -40344,7 +40392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[528]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[6]SmallTrackLaneRing(Clone)
 --- !u!114 &1673561837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40392,7 +40440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[537]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[15]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1673704382
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -40418,7 +40466,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40595,7 +40643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &1683113072
 GameObject:
   m_ObjectHideFlags: 0
@@ -40642,7 +40690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[559]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[37]BigTrackLaneRing(Clone)
 --- !u!4 &1683113075
 Transform:
   m_ObjectHideFlags: 0
@@ -40721,7 +40769,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40794,51 +40842,6 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
---- !u!1 &1701305493
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1701305494}
-  - component: {fileID: 1701305495}
-  m_Layer: 0
-  m_Name: LightTranslationGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1701305494
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1701305493}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1701305495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1701305493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edea4172ea0f4600af99f04faa447b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightTranslationGroupEffectManager
-  effectEntries: []
 --- !u!1 &1708118152
 GameObject:
   m_ObjectHideFlags: 0
@@ -40969,7 +40972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1720678284
 GameObject:
@@ -41103,51 +41106,6 @@ MonoBehaviour:
   UseCollision: 0
   CollisionHeight: 0
   UpdateTransform: 1
---- !u!1 &1720787464
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1720787465}
-  - component: {fileID: 1720787466}
-  m_Layer: 0
-  m_Name: FloatFxGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1720787465
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720787464}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1720787466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720787464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ebe785d3e42438393b1c63620f5e385, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::FloatFxGroupEffectManager
-  effectEntries: []
 --- !u!1 &1721631751
 GameObject:
   m_ObjectHideFlags: 0
@@ -41194,7 +41152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[548]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[26]SmallTrackLaneRing(Clone)
 --- !u!4 &1721631754
 Transform:
   m_ObjectHideFlags: 0
@@ -41211,6 +41169,53 @@ Transform:
   - {fileID: 669628865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1724168403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724168404}
+  - component: {fileID: 1724168405}
+  m_Layer: 0
+  m_Name: Sink Object
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1724168404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724168403}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1724168405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724168403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a583847fb4c4821ac7375dc8b59c4a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::LightSink
+  Kind: 0
+  Type: 4
+  ID: 2
 --- !u!1 &1724998403
 GameObject:
   m_ObjectHideFlags: 0
@@ -41270,7 +41275,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d2c8ab928555a3c88df2c5045986bf, type: 2}
+  - {fileID: 2100000, guid: 7dd837c70feae64f2b1997c1d7fa2583, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41314,7 +41319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1728145289
 GameObject:
   m_ObjectHideFlags: 0
@@ -41373,7 +41378,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41477,7 +41482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[533]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[11]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1729004328
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -41503,7 +41508,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41610,7 +41615,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41751,7 +41756,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -42001,7 +42006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Main::PlanarReflection
   MirrorRenderer: {fileID: 11400000, guid: b54751a1fc3ac3983afa3aa9d4141095, type: 2}
-  MirrorMaterial: {fileID: 2100000, guid: 9767cd18692cd07cbbcd0b33a725cd1a, type: 2}
+  MirrorMaterial: {fileID: 2100000, guid: 8dfcbc7a32f5e1645aa8c43d44971c11, type: 2}
   NoMirrorMaterial: {fileID: 2100000, guid: 3c50f650c63a6db9abe575aa828989d7, type: 2}
   Renderer: {fileID: 1738919848}
   PlaneTransform: {fileID: 1738919847}
@@ -42117,7 +42122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 32
+  ID: 38
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -42125,7 +42130,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -42239,7 +42244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &1740180439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42316,7 +42321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[525]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[3]SmallTrackLaneRing(Clone)
 --- !u!114 &1748216502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42333,51 +42338,6 @@ MonoBehaviour:
   ParentManager: {fileID: 374643312}
   PositionZ: 20.2
   CachedTransform: {fileID: 1748216500}
---- !u!1 &1751308609
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1751308610}
-  - component: {fileID: 1751308611}
-  m_Layer: 0
-  m_Name: LightRotationGroupEffectManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1751308610
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751308609}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 33546797}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1751308611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751308609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47ebdf100fce4003aa89ddca6b233845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Main::LightRotationGroupEffectManager
-  effectEntries: []
 --- !u!1 &1751831252
 GameObject:
   m_ObjectHideFlags: 0
@@ -42438,7 +42398,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -42568,7 +42528,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bd4b2f57e2345cfc0b7c3dd3f700abef, type: 2}
+  - {fileID: 2100000, guid: c64b4f84288568e4886120d73bed0295, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -42659,7 +42619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[542]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[20]SmallTrackLaneRing(Clone)
 --- !u!4 &1773827673
 Transform:
   m_ObjectHideFlags: 0
@@ -42749,7 +42709,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -42873,7 +42833,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43188,7 +43148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 34
+  ID: 40
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -43196,7 +43156,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43310,7 +43270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &1833101082
 MonoBehaviour:
@@ -43391,7 +43351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 11
+  ID: 17
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -43399,7 +43359,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -43513,7 +43473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1842558552
 MonoBehaviour:
@@ -43675,7 +43635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &1862008579
 GameObject:
   m_ObjectHideFlags: 0
@@ -43806,7 +43766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1865762305
 GameObject:
@@ -43880,7 +43840,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -44093,7 +44053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 39
+  ID: 45
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -44101,7 +44061,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -44215,7 +44175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[562]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[40]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3)
 --- !u!114 &1875326690
 MonoBehaviour:
@@ -44307,7 +44267,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -44612,7 +44572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &1896758364
 GameObject:
@@ -44948,7 +44908,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 2
   BloomFogIntensityMultiplier: 1
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -45158,7 +45118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone)
 --- !u!4 &1920508703
 Transform:
   m_ObjectHideFlags: 0
@@ -45238,7 +45198,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45282,7 +45242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[544]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[22]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1926223701
 GameObject:
   m_ObjectHideFlags: 0
@@ -45653,7 +45613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 22
+  ID: 28
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -45661,7 +45621,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -45775,7 +45735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &1949753746
 MonoBehaviour:
@@ -45866,7 +45826,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45910,7 +45870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[545]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[23]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &1960206959
 GameObject:
   m_ObjectHideFlags: 0
@@ -46041,7 +46001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &1961721208
 GameObject:
@@ -46074,7 +46034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[538]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[16]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &1961721210
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -46100,7 +46060,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46398,7 +46358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 6
+  ID: 12
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -46406,7 +46366,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -46520,7 +46480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[554]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[32]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &1997891936
 MonoBehaviour:
@@ -46601,7 +46561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 21
+  ID: 27
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -46609,7 +46569,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -46723,7 +46683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[558]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[36]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1)
 --- !u!114 &2019887381
 MonoBehaviour:
@@ -46804,7 +46764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 12
+  ID: 18
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -46812,7 +46772,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -46926,7 +46886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[556]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[34]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional
 --- !u!114 &2025381102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47003,7 +46963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[552]SmallTrackLaneRing(Clone)
+  ChromaID: GameCore.[30]SmallTrackLaneRing(Clone)
 --- !u!4 &2025902429
 Transform:
   m_ObjectHideFlags: 0
@@ -47020,6 +46980,51 @@ Transform:
   - {fileID: 1529720909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2036869172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2036869173}
+  - component: {fileID: 2036869174}
+  m_Layer: 0
+  m_Name: FloatFxGroupEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2036869173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036869172}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 33546797}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2036869174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036869172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ebe785d3e42438393b1c63620f5e385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::FloatFxGroupEffectManager
+  effectEntries: []
 --- !u!1 &2038961827
 GameObject:
   m_ObjectHideFlags: 0
@@ -47069,7 +47074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 10
+  ID: 16
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -47077,7 +47082,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -47191,7 +47196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &2038961832
 MonoBehaviour:
@@ -47272,7 +47277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Main::ParametricBloomFogLightController
   Kind: 0
   Type: 1
-  ID: 18
+  ID: 24
   width: 0.14
   OverrideChildrenLength: 1
   length: 6
@@ -47280,7 +47285,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -47394,7 +47399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[557]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[35]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2)
 --- !u!114 &2039527101
 MonoBehaviour:
@@ -47556,7 +47561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[4]NeonTubeBothSidesDirectional
     (3).[1]BoxLight
 --- !u!1 &2043157359
 GameObject:
@@ -47688,7 +47693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[561]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[39]BigTrackLaneRing(Clone).[3]NeonTubeBothSidesDirectional
     (2).[1]BoxLight
 --- !u!1 &2044929042
 GameObject:
@@ -47749,7 +47754,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -47793,7 +47798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[551]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[29]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!1 &2052187410
 GameObject:
   m_ObjectHideFlags: 0
@@ -47839,7 +47844,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39d683c3bf80da2d88527b0aa1108cd4, type: 2}
+  - {fileID: 2100000, guid: 011e1a941d9298e4794c52a9cdd096c2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48370,7 +48375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[560]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
+  ChromaID: GameCore.[38]BigTrackLaneRing(Clone).[2]NeonTubeBothSidesDirectional
     (1).[1]BoxLight
 --- !u!1 &2084397233
 GameObject:
@@ -48450,7 +48455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[531]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[9]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &2087889451
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -48476,7 +48481,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48593,7 +48598,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0
@@ -48756,7 +48761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[525]SmallTrackLaneRing(Clone).[0]Ring
+  ChromaID: GameCore.[3]SmallTrackLaneRing(Clone).[0]Ring
 --- !u!23 &2110884370
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -48782,7 +48787,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da21fbe78c1409d38a52b57c296b8d0d, type: 2}
+  - {fileID: 2100000, guid: 4f24fb84f49bd5725aa2480bdcabfe0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -48875,7 +48880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[553]BigTrackLaneRing(Clone)
+  ChromaID: GameCore.[31]BigTrackLaneRing(Clone)
 --- !u!4 &2111705992
 Transform:
   m_ObjectHideFlags: 0
@@ -49228,7 +49233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f91ec23eebd67f4f9436e50ec0a7f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Main::ChromaIDMarker
-  ChromaID: GameCore.[555]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
+  ChromaID: GameCore.[33]BigTrackLaneRing(Clone).[1]NeonTubeBothSidesDirectional.[1]BoxLight
 --- !u!1 &2139732989
 GameObject:
   m_ObjectHideFlags: 0
@@ -49299,7 +49304,7 @@ MonoBehaviour:
   ColorAlphaMultiplier: 1.5
   BloomFogIntensityMultiplier: 0.75
   LightType:
-    Material: {fileID: 2100000, guid: 6f9ae8b335339b1afb7004e73660ac7b, type: 2}
+    Material: {fileID: 2100000, guid: c4f5bc67d835e4243b1c23e4f0bb405b, type: 2}
     RenderingPriority: 0
   FakeBloomIntensityMultiplier: 1
   BoostToWhite: 0

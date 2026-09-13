@@ -36,20 +36,7 @@ public class EnumShowIfAnyDrawer : ShowIfAnyDrawer
         foreach (var target in prop.targets)
         {
             var mat = (Material)target;
-            for (var i = 0; i < options.Length; i++)
-            {
-                var option = options[i].Replace(' ', '_').ToUpperInvariant();
-                if (option is "NONE" or "OFF") continue;
-
-                var keyword = $"{prop.name.ToUpperInvariant()}_{option}";
-                var localKeyword = mat.shader.keywordSpace.FindKeyword(keyword);
-                if (!localKeyword.isValid) continue;
-
-                if (i == index)
-                    mat.EnableKeyword(localKeyword);
-                else
-                    mat.DisableKeyword(localKeyword);
-            }
+            MaterialKeywordUtils.SetEnumKeywords(mat, prop.name, options, index);
         }
     }
 }

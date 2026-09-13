@@ -22,6 +22,7 @@ Material:
   - REFLECTION_PROBE
   - REFLECTION_PROBE_BOX_PROJECTION
   - USE_SPHERICAL_NORMAL_OFFSET
+  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
   - _PARALLAX_MASKING_VERTEX_COLOR
   - _VERTEXMODE_DISPLACEMENT
   m_InvalidKeywords:
@@ -43,7 +44,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2011
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -191,6 +192,7 @@ Material:
     - _EmissionBrightness: 0.6
     - _EmissionColorType: 0
     - _EmissionFogSuppression: 0
+    - _EmissionGradientAffectsAlpha: 0
     - _EmissionGradientIntensity: 1
     - _EmissionGradientPanningSpeed: 0
     - _EmissionGradientPosition: 0.5

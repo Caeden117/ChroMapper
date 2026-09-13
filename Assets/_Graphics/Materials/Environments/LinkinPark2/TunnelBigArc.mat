@@ -26,6 +26,7 @@ Material:
   - REFLECTION_PROBE_BOX_PROJECTION
   - REFLECTION_STATIC
   - _ACES_APPROACH_BEFORE_EMISSIVE
+  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
   - _EMISSIONCOLORTYPE_MAINEFFECT
   - _EMISSIONTEXTURE_SIMPLE
   m_InvalidKeywords:
@@ -46,7 +47,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2015
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -194,6 +195,7 @@ Material:
     - _EmissionBrightness: 1
     - _EmissionColorType: 3
     - _EmissionFogSuppression: 0.982
+    - _EmissionGradientAffectsAlpha: 0
     - _EmissionGradientIntensity: 1
     - _EmissionGradientPanningSpeed: 0
     - _EmissionGradientPosition: 0.5

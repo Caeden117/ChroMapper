@@ -131,7 +131,7 @@ Material:
     - _BumpAmt: 10
     - _BumpScale: 1
     - _Cull: 2
-    - _CullMode: 2
+    - _CullMode: 0
     - _Cutoff: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 10

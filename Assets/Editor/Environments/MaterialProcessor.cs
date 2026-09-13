@@ -86,6 +86,14 @@ public static class MaterialProcessor
             }
 
         SynchronizeKeywords(material, matInfo.Keywords);
+        MaterialKeywordUtils.ApplyCustomEnumPropertyKeywords(material);
+
+        // Game materials mostly inherit ordering from per-material shader queue tags; the exported queue is
+        // applied as an override so the mapped ChroMapper shader's default cannot flatten the game's order.
+        if (matInfo.RenderQueue >= 0)
+        {
+            material.renderQueue = matInfo.RenderQueue;
+        }
     }
 
     private static void SynchronizeKeywords(Material material, IEnumerable<string> keywords)
