@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CustomNotes;
@@ -63,9 +64,27 @@ public class NoteModelSO : ScriptableObject
         foreach (var comp in prefab.GetComponentsInChildren<Renderer>())
         foreach (var mat in comp.sharedMaterials)
         {
+            if (!Settings.Instance.ShaderCompatibility) continue;
             if (mat == null) continue;
             if (mat.shader != null && mat.shader.isSupported) continue;
-            if (Settings.Instance.ShaderCompatibility) mat.shader = Shader.Find("ChroMapper/Object/Note");
+
+            var sourceKeywords = mat.shaderKeywords ?? Array.Empty<string>();
+            mat.shader = Shader.Find("ChroMapper/Object/Note");
+            mat.shaderKeywords = sourceKeywords
+                .Select(keyword => keyword switch
+                {
+                    "ENABLE_CUTOUT" => "CUTOUT",
+                    "ENABLE_PLANE_CUT" => "PLANE_CUT",
+                    "ENABLE_RIM_DIM" => "RIM_DIM",
+                    "ACES_TONE_MAPPING" => "ACES_TONE_MAPPING",
+                    "ENABLE_HEIGHT_FOG" => "HEIGHT_FOG",
+                    _ => keyword,
+                })
+                .Where(keyword => keyword != null)
+                .Concat(new[] { "RIM_DIM", "CUTOUT", "_FOGTYPE_LERP", "HEIGHT_FOG" })
+                .Distinct(StringComparer.Ordinal)
+                .OrderBy(keyword => keyword, StringComparer.Ordinal)
+                .ToArray();
         }
 
         so.NoteLeft = VisualModelSO.Create(noteLeft.gameObject, so.name);
@@ -203,8 +222,7 @@ public class NoteModelSO : ScriptableObject
         {
             foreach (var visualModel in ownedVisualModels)
             {
-                if (visualModel != null)
-                    Destroy(visualModel);
+                if (visualModel != null) Destroy(visualModel);
             }
         }
 

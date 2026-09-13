@@ -1,0 +1,304 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: ColliderEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: 
+  basicEntries:
+  - Name: Boost Colors
+    Type: 5
+    Kind: 3
+    Components: 0
+  - Name: Ambient
+    Type: 6
+    Kind: 2
+    Components: 0
+  glsEntries:
+  - Group: Center Blocks
+    Name: Local
+    ID: 0
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Mask Strength
+    ID: 25
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Global
+    ID: 1
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Inner Lasers
+    ID: 2
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Outer Lasers
+    ID: 3
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Side01 Lasers
+    ID: 4
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Center Blocks
+    Name: Side02 Lasers
+    ID: 5
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Side Blocks Set 01 (Left)
+    Name: Local
+    ID: 7
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Mask Strength
+    ID: 26
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Global
+    ID: 9
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Inner Lasers
+    ID: 11
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Outer Lasers
+    ID: 13
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Side01 Lasers
+    ID: 15
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 01 (Left)
+    Name: Side02 Lasers
+    ID: 17
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Local
+    ID: 8
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Mask Strength
+    ID: 27
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Global
+    ID: 10
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: 'Inner Lasers '
+    ID: 12
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Outer Lasers
+    ID: 14
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Side01 Lasers
+    ID: 16
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Side Blocks Set 02 (Right)
+    Name: Side02 Lasers
+    ID: 18
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Colliders
+    Name: Diamonds
+    ID: 6
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Colliders
+    Name: Colliders Left
+    ID: 21
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Colliders
+    Name: Colliders Right
+    ID: 22
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Runway
+    Name: Left
+    ID: 19
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Runway
+    Name: Right
+    ID: 20
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Chevron
+    Name: Local
+    ID: 23
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Chevron
+    Name: Mask Strength
+    ID: 24
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0

@@ -32,8 +32,8 @@ Material:
     - _FadeLength: 1
     - _Gain: 1
     - _MediaLoop: 0
-    - _MediaPlaying: 3
-    - _MediaTime: 0
+    - _MediaPlaying: 1
+    - _MediaTime: 0.6135391
     - _MediaVolume: 1
     - _SourceDistance: 30.727812
     - _SourceSpatialBlend: 0

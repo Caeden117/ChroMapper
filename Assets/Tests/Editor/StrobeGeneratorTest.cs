@@ -16,7 +16,7 @@ namespace Tests.Placement
         public void ChromaStepGradient()
         {
             // Use the dev branch's renamed runtime track-definition property.
-            var tracksDefinition = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TracksDefinition;
+            var trackDefinitions = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TrackDefinitions;
 
             var eventA = new BaseEvent
             {
@@ -64,7 +64,7 @@ namespace Tests.Placement
                 new List<StrobeGeneratorPass>
                 {
                     new StrobeStepGradientPass(
-                        tracksDefinition,
+                        trackDefinitions,
                         (int)LightValue.BlueOn,
                         false,
                         2,
@@ -82,7 +82,7 @@ namespace Tests.Placement
         public void LightIDChromaStepGradient()
         {
             // Use the dev branch's renamed runtime track-definition property.
-            var tracksDefinition = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TracksDefinition;
+            var trackDefinitions = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TrackDefinitions;
 
             var eventA = new BaseEvent
             {
@@ -175,7 +175,7 @@ namespace Tests.Placement
                 new List<StrobeGeneratorPass>
                 {
                     new StrobeStepGradientPass(
-                        tracksDefinition,
+                        trackDefinitions,
                         (int)LightValue.BlueOn,
                         false,
                         2,

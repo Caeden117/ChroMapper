@@ -94,12 +94,16 @@ public class MapLoader : MonoBehaviour
             events.LoadAll();
         }
 
-        if (objects is List<BaseEnvironmentEnhancement> && objects.Count > 0)
+        BeatmapRuntimeContext context = null;
+        if (objects is List<BaseEnvironmentEnhancement>)
         {
-            var context = Resources.FindObjectsOfTypeAll<BeatmapRuntimeContext>().FirstOrDefault();
-            context.NotifyEnvironment();
+            context = Resources.FindObjectsOfTypeAll<BeatmapRuntimeContext>().FirstOrDefault();
+            if (context != null && context.Descriptor != null)
+                context.Descriptor.BloomFogParams.ResetToDefaults();
         }
 
         collection.RefreshPool(true);
+
+        if (context != null) context.NotifyEnvironment();
     }
 }

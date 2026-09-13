@@ -19,7 +19,7 @@ public class MaterialPropertyBlockPositionAnimator : MonoBehaviour
         SetProperty();
         Controller.ApplyChanges();
     }
-    
+
     protected void SetProperty()
     {
         if (TargetTransform != null) Controller.Mpb.SetVector(PropertyId, TargetTransform.position);

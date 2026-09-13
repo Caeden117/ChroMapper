@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Environment/Environment List", fileName = "EnvironmentListSO")]
@@ -25,6 +22,8 @@ public class EnvironmentListSO : ScriptableObject
 
     public EnvironmentListInfo GetEnvironmentOrDefault(string environment) =>
         lookupID.TryGetValue(environment, out var env) && !env.Ignore ? env : lookupID[defaultEnvironment];
+
+    public void Sort() => List = List.OrderBy(x => x.ID).ToList();
 }
 
 [Serializable]
@@ -32,7 +31,7 @@ public class EnvironmentListInfo
 {
     public string Name;
     public string ID;
-    public TracksDefinitionSO TracksDefinition;
+    public TrackDefinitionsSO TrackDefinitions;
     public ColorSchemeSO ColorScheme;
     public bool Ignore;
 }

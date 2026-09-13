@@ -913,6 +913,8 @@ GameObject:
   - component: {fileID: 9045392}
   - component: {fileID: 9045391}
   - component: {fileID: 9045390}
+  - component: {fileID: 9045394}
+  - component: {fileID: 9045393}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -1003,6 +1005,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &9045393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 9045394}
+--- !u!114 &9045394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 9045392}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &10836527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,7 +1303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -1532,6 +1588,8 @@ GameObject:
   - component: {fileID: 19479532}
   - component: {fileID: 19479531}
   - component: {fileID: 19479530}
+  - component: {fileID: 19479534}
+  - component: {fileID: 19479533}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -1622,6 +1680,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &19479533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19479526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 19479534}
+--- !u!114 &19479534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19479526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 19479532}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &19962156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,8 +2047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -1944,8 +2056,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -2392,15 +2504,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -2740,6 +2852,8 @@ GameObject:
   - component: {fileID: 37120739}
   - component: {fileID: 37120738}
   - component: {fileID: 37120737}
+  - component: {fileID: 37120741}
+  - component: {fileID: 37120740}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -2830,6 +2944,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &37120740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37120733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 37120741}
+--- !u!114 &37120741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37120733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 37120739}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &37725339
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,8 +3272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -3113,7 +3281,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -3393,8 +3561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -3402,8 +3570,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -4508,8 +4676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -4517,8 +4685,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -4748,8 +4916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -4757,7 +4925,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -5646,8 +5814,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -5655,8 +5823,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -7329,8 +7497,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -7338,8 +7506,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -8284,16 +8452,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -8526,8 +8694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -8535,8 +8703,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -9211,6 +9379,8 @@ GameObject:
   - component: {fileID: 118376839}
   - component: {fileID: 118376838}
   - component: {fileID: 118376837}
+  - component: {fileID: 118376841}
+  - component: {fileID: 118376840}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -9301,6 +9471,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &118376840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118376833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 118376841}
+--- !u!114 &118376841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118376833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 118376839}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &118383798
 GameObject:
   m_ObjectHideFlags: 0
@@ -9778,7 +10002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -9787,7 +10011,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
   IntensityMultiplier: 1
-  BoostToWhite: 0
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -10134,6 +10358,8 @@ GameObject:
   - component: {fileID: 136251552}
   - component: {fileID: 136251551}
   - component: {fileID: 136251550}
+  - component: {fileID: 136251554}
+  - component: {fileID: 136251553}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -10224,6 +10450,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &136251553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136251546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 136251554}
+--- !u!114 &136251554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136251546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 136251552}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1001 &138592842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10952,7 +11232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -11486,8 +11766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -11495,7 +11775,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -11909,8 +12189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -11918,8 +12198,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -12151,7 +12431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -12597,6 +12877,8 @@ GameObject:
   - component: {fileID: 175704724}
   - component: {fileID: 175704723}
   - component: {fileID: 175704722}
+  - component: {fileID: 175704726}
+  - component: {fileID: 175704725}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -12687,6 +12969,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &175704725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175704718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 175704726}
+--- !u!114 &175704726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175704718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 175704724}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &175851155
 GameObject:
   m_ObjectHideFlags: 0
@@ -13411,7 +13747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -13804,7 +14140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -14853,6 +15189,8 @@ GameObject:
   - component: {fileID: 204849733}
   - component: {fileID: 204849732}
   - component: {fileID: 204849731}
+  - component: {fileID: 204849735}
+  - component: {fileID: 204849734}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -14943,6 +15281,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &204849734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204849727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 204849735}
+--- !u!114 &204849735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204849727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 204849733}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &205077709
 GameObject:
   m_ObjectHideFlags: 0
@@ -15299,8 +15691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -15308,7 +15700,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -15909,7 +16301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -16654,8 +17046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -16663,7 +17055,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -16848,8 +17240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -16857,8 +17249,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -17158,7 +17550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -18091,7 +18483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -20333,8 +20725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -20342,8 +20734,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -20713,7 +21105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -21367,12 +21759,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -21608,8 +22000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -21617,8 +22009,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -22763,7 +23155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -23227,7 +23619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -23514,8 +23906,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -23523,7 +23915,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -23710,7 +24102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -24272,16 +24664,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -24780,8 +25172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -24789,8 +25181,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -25321,8 +25713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -25330,8 +25722,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -25656,8 +26048,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -25665,8 +26057,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -26971,7 +27363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -27306,7 +27698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -27640,16 +28032,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -28561,6 +28953,8 @@ GameObject:
   - component: {fileID: 378622371}
   - component: {fileID: 378622370}
   - component: {fileID: 378622369}
+  - component: {fileID: 378622373}
+  - component: {fileID: 378622372}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -28651,6 +29045,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &378622372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378622365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 378622373}
+--- !u!114 &378622373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378622365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 378622371}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &379259324
 GameObject:
   m_ObjectHideFlags: 0
@@ -28981,8 +29429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -28990,7 +29438,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -29624,7 +30072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -33391,7 +33839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &408476428
@@ -34178,6 +34626,8 @@ GameObject:
   - component: {fileID: 416323474}
   - component: {fileID: 416323473}
   - component: {fileID: 416323472}
+  - component: {fileID: 416323476}
+  - component: {fileID: 416323475}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -34268,6 +34718,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &416323475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416323468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 416323476}
+--- !u!114 &416323476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416323468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 416323474}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &416461855
 GameObject:
   m_ObjectHideFlags: 0
@@ -35140,12 +35644,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -35516,8 +36020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -35525,7 +36029,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -35757,15 +36261,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -35998,8 +36502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -36007,8 +36511,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -36891,7 +37395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -38563,7 +39067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &448116800
@@ -39005,7 +39509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -39411,8 +39915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -39420,8 +39924,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -39696,7 +40200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -40118,6 +40622,8 @@ GameObject:
   - component: {fileID: 465021935}
   - component: {fileID: 465021934}
   - component: {fileID: 465021933}
+  - component: {fileID: 465021937}
+  - component: {fileID: 465021936}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -40208,6 +40714,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &465021936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465021929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 465021937}
+--- !u!114 &465021937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465021929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 465021935}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &466891931
 GameObject:
   m_ObjectHideFlags: 0
@@ -41051,7 +41611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -44231,7 +44791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -44754,8 +45314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -44763,8 +45323,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -45398,6 +45958,8 @@ GameObject:
   - component: {fileID: 527862706}
   - component: {fileID: 527862705}
   - component: {fileID: 527862704}
+  - component: {fileID: 527862708}
+  - component: {fileID: 527862707}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -45488,6 +46050,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &527862707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527862700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 527862708}
+--- !u!114 &527862708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527862700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 527862706}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &528637325
 GameObject:
   m_ObjectHideFlags: 0
@@ -45675,7 +46291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -46103,6 +46719,8 @@ GameObject:
   - component: {fileID: 534172347}
   - component: {fileID: 534172346}
   - component: {fileID: 534172345}
+  - component: {fileID: 534172349}
+  - component: {fileID: 534172348}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -46193,6 +46811,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &534172348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534172341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 534172349}
+--- !u!114 &534172349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534172341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 534172347}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &535784926
 GameObject:
   m_ObjectHideFlags: 0
@@ -46206,6 +46878,8 @@ GameObject:
   - component: {fileID: 535784932}
   - component: {fileID: 535784931}
   - component: {fileID: 535784930}
+  - component: {fileID: 535784934}
+  - component: {fileID: 535784933}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -46296,6 +46970,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &535784933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535784926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 535784934}
+--- !u!114 &535784934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535784926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 535784932}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &538932544
 GameObject:
   m_ObjectHideFlags: 0
@@ -46699,6 +47427,8 @@ GameObject:
   - component: {fileID: 548896222}
   - component: {fileID: 548896221}
   - component: {fileID: 548896220}
+  - component: {fileID: 548896224}
+  - component: {fileID: 548896223}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -46789,6 +47519,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &548896223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548896216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 548896224}
+--- !u!114 &548896224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548896216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 548896222}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &549209063
 GameObject:
   m_ObjectHideFlags: 0
@@ -46953,7 +47737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -47842,8 +48626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -47851,8 +48635,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -48084,8 +48868,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -48093,7 +48877,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -48278,8 +49062,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -48287,7 +49071,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -48518,8 +49302,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -48527,8 +49311,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -49490,8 +50274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -49499,8 +50283,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -49686,7 +50470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -50111,8 +50895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -50120,7 +50904,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -50625,7 +51409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -51290,8 +52074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -51299,8 +52083,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -52010,12 +52794,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -57285,8 +58069,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -57294,8 +58078,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -57573,8 +58357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -57582,7 +58366,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -58558,8 +59342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -58567,8 +59351,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -60268,8 +61052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -60277,8 +61061,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -60510,16 +61294,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -60855,8 +61639,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -60864,7 +61648,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -61422,8 +62206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -61431,8 +62215,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -62267,7 +63051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -62554,8 +63338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -62563,7 +63347,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -63473,8 +64257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -63482,8 +64266,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -63729,7 +64513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -64125,6 +64909,7 @@ MonoBehaviour:
   - ID: 7
     Targets:
     - {fileID: 1579670695}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64166,6 +64951,7 @@ MonoBehaviour:
   - ID: 7
     Targets:
     - {fileID: 2117597778}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64183,6 +64969,7 @@ MonoBehaviour:
   Count: 4
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64200,6 +64987,7 @@ MonoBehaviour:
   Count: 1
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64313,6 +65101,7 @@ MonoBehaviour:
   - ID: 31
     Targets:
     - {fileID: 1967940040}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64426,6 +65215,7 @@ MonoBehaviour:
   - ID: 31
     Targets:
     - {fileID: 1522582818}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64443,6 +65233,7 @@ MonoBehaviour:
   Count: 16
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64460,6 +65251,7 @@ MonoBehaviour:
   Count: 16
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64477,6 +65269,7 @@ MonoBehaviour:
   Count: 16
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64494,6 +65287,7 @@ MonoBehaviour:
   Count: 4
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64511,6 +65305,7 @@ MonoBehaviour:
   Count: 16
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &734934026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64531,6 +65326,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 1590111397}
+  autoRegisterRoot: {fileID: 0}
 --- !u!4 &734934027
 Transform:
   m_ObjectHideFlags: 0
@@ -64805,8 +65601,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -64814,7 +65610,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -66245,8 +67041,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -66254,7 +67050,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -66717,12 +67513,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -68133,7 +68929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -70418,8 +71214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -70427,8 +71223,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.4
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -71368,12 +72164,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -72610,7 +73406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -74669,15 +75465,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -75007,8 +75803,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -75016,8 +75812,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -75634,8 +76430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -75643,8 +76439,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -78490,7 +79286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -78857,7 +79653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79966,8 +80762,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79975,7 +80771,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -81063,8 +81859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -81072,8 +81868,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -81529,8 +82325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -81538,7 +82334,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -81723,8 +82519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -81732,7 +82528,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -82100,7 +82896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -83802,8 +84598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -83811,8 +84607,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -84364,7 +85160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -84764,8 +85560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -84773,7 +85569,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -86714,8 +87510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -86723,7 +87519,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -86910,7 +87706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -87888,8 +88684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -87897,8 +88693,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.4
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -88195,6 +88991,8 @@ GameObject:
   - component: {fileID: 1041821088}
   - component: {fileID: 1041821087}
   - component: {fileID: 1041821086}
+  - component: {fileID: 1041821090}
+  - component: {fileID: 1041821089}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -88285,6 +89083,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1041821089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041821082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1041821090}
+--- !u!114 &1041821090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041821082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1041821088}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1042004791
 GameObject:
   m_ObjectHideFlags: 0
@@ -88552,8 +89404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -88561,7 +89413,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -89247,7 +90099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -91414,8 +92266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -91423,8 +92275,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.4
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -92643,8 +93495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -92652,8 +93504,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -92932,8 +93784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -92941,7 +93793,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -93650,8 +94502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -93659,8 +94511,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -93887,6 +94739,8 @@ GameObject:
   - component: {fileID: 1106566995}
   - component: {fileID: 1106566994}
   - component: {fileID: 1106566993}
+  - component: {fileID: 1106566997}
+  - component: {fileID: 1106566996}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -93977,6 +94831,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1106566996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106566989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1106566997}
+--- !u!114 &1106566997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106566989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1106566995}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1107685733
 GameObject:
   m_ObjectHideFlags: 0
@@ -94364,8 +95272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -94373,7 +95281,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -95561,8 +96469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -95570,8 +96478,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -95962,8 +96870,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -95971,7 +96879,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -96203,8 +97111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -96212,8 +97120,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -96682,8 +97590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -96691,8 +97599,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -97018,7 +97926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -97211,8 +98119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -97220,7 +98128,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -100244,8 +101152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -100253,8 +101161,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -100532,8 +101440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -100541,8 +101449,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -100728,7 +101636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -101080,8 +101988,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -101089,7 +101997,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -101514,7 +102422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -101707,8 +102615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -101716,7 +102624,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -102979,7 +103887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -103447,8 +104355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -103456,8 +104364,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -103985,6 +104893,8 @@ GameObject:
   - component: {fileID: 1216962000}
   - component: {fileID: 1216961999}
   - component: {fileID: 1216961998}
+  - component: {fileID: 1216962002}
+  - component: {fileID: 1216962001}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -104075,6 +104985,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1216962001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216961994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1216962002}
+--- !u!114 &1216962002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216961994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1216962000}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1217864895
 GameObject:
   m_ObjectHideFlags: 0
@@ -104555,15 +105519,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -105448,8 +106412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -105457,8 +106421,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -106047,8 +107011,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -106056,8 +107020,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -106446,8 +107410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -106455,8 +107419,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -106707,8 +107671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -106716,7 +107680,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -107009,8 +107973,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -107018,8 +107982,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -108266,7 +109230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -108459,8 +109423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -108468,7 +109432,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -109296,6 +110260,8 @@ GameObject:
   - component: {fileID: 1283448097}
   - component: {fileID: 1283448096}
   - component: {fileID: 1283448095}
+  - component: {fileID: 1283448099}
+  - component: {fileID: 1283448098}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -109386,6 +110352,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1283448098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283448091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1283448099}
+--- !u!114 &1283448099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283448091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1283448097}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1283985844
 GameObject:
   m_ObjectHideFlags: 0
@@ -110069,7 +111089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -111332,8 +112352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -111341,7 +112361,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -111621,12 +112641,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -115043,8 +116063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -115052,7 +116072,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -116218,7 +117238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -116227,7 +117247,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
   IntensityMultiplier: 1
-  BoostToWhite: 0
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -118201,8 +119221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -118210,7 +119230,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -118833,8 +119853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -118842,7 +119862,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -119688,8 +120708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -119697,8 +120717,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -120264,8 +121284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -120273,8 +121293,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -121571,8 +122591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -121580,8 +122600,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -121948,8 +122968,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -121957,8 +122977,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -125114,7 +126134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &1422654658
@@ -125130,6 +126150,8 @@ GameObject:
   - component: {fileID: 1422654664}
   - component: {fileID: 1422654663}
   - component: {fileID: 1422654662}
+  - component: {fileID: 1422654666}
+  - component: {fileID: 1422654665}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -125220,6 +126242,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1422654665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422654658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1422654666}
+--- !u!114 &1422654666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422654658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1422654664}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1422914451
 GameObject:
   m_ObjectHideFlags: 0
@@ -125281,7 +126357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -125522,8 +126598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -125531,7 +126607,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -126154,8 +127230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -126163,7 +127239,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -126734,6 +127810,8 @@ GameObject:
   - component: {fileID: 1436069362}
   - component: {fileID: 1436069361}
   - component: {fileID: 1436069360}
+  - component: {fileID: 1436069364}
+  - component: {fileID: 1436069363}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -126824,6 +127902,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1436069363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436069356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1436069364}
+--- !u!114 &1436069364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436069356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1436069362}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1437723034
 GameObject:
   m_ObjectHideFlags: 0
@@ -126885,7 +128017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -128912,7 +130044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -129587,15 +130719,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -130713,7 +131845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -131364,7 +132496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -131663,7 +132795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -133103,6 +134235,8 @@ GameObject:
   - component: {fileID: 1511285580}
   - component: {fileID: 1511285579}
   - component: {fileID: 1511285578}
+  - component: {fileID: 1511285582}
+  - component: {fileID: 1511285581}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -133193,6 +134327,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1511285581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511285574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1511285582}
+--- !u!114 &1511285582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511285574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1511285580}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1512662744
 GameObject:
   m_ObjectHideFlags: 0
@@ -133920,6 +135108,8 @@ GameObject:
   - component: {fileID: 1520726408}
   - component: {fileID: 1520726407}
   - component: {fileID: 1520726406}
+  - component: {fileID: 1520726410}
+  - component: {fileID: 1520726409}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -134010,6 +135200,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1520726409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520726402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1520726410}
+--- !u!114 &1520726410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520726402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1520726408}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1520868243
 GameObject:
   m_ObjectHideFlags: 0
@@ -134753,7 +135997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -135351,8 +136595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -135360,8 +136604,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -136423,8 +137667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -136432,7 +137676,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -136617,8 +137861,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -136626,7 +137870,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -136813,7 +138057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -139129,16 +140373,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -139777,8 +141021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -139786,7 +141030,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -140821,8 +142065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -140830,7 +142074,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -141637,6 +142881,8 @@ GameObject:
   - component: {fileID: 1632466059}
   - component: {fileID: 1632466058}
   - component: {fileID: 1632466057}
+  - component: {fileID: 1632466061}
+  - component: {fileID: 1632466060}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -141727,6 +142973,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1632466060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632466053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1632466061}
+--- !u!114 &1632466061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632466053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1632466059}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1632951592
 GameObject:
   m_ObjectHideFlags: 0
@@ -141968,8 +143268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -141977,8 +143277,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -143074,8 +144374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -143083,8 +144383,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -143850,8 +145150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -143859,7 +145159,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -145951,15 +147251,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -146520,8 +147820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -146529,7 +147829,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -146760,8 +148060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -146769,7 +148069,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -147160,6 +148460,8 @@ GameObject:
   - component: {fileID: 1703910805}
   - component: {fileID: 1703910804}
   - component: {fileID: 1703910803}
+  - component: {fileID: 1703910807}
+  - component: {fileID: 1703910806}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -147250,6 +148552,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1703910806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703910799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1703910807}
+--- !u!114 &1703910807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703910799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1703910805}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1705568139
 GameObject:
   m_ObjectHideFlags: 0
@@ -147482,8 +148838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -147491,8 +148847,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -147826,8 +149182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -147835,8 +149191,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -148163,16 +149519,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -149057,7 +150413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -149566,8 +150922,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -149575,8 +150931,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -149854,8 +151210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -149863,7 +151219,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -153113,7 +154469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &1735530039
@@ -153522,8 +154878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -153531,8 +154887,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -154062,7 +155418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -154256,6 +155612,8 @@ GameObject:
   - component: {fileID: 1747736459}
   - component: {fileID: 1747736458}
   - component: {fileID: 1747736457}
+  - component: {fileID: 1747736461}
+  - component: {fileID: 1747736460}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -154346,6 +155704,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1747736460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747736453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1747736461}
+--- !u!114 &1747736461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747736453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1747736459}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1748197472
 GameObject:
   m_ObjectHideFlags: 0
@@ -154405,8 +155817,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -154414,8 +155826,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -154934,15 +156346,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -155801,8 +157213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -155810,7 +157222,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -156286,16 +157698,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -157166,8 +158578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -157175,8 +158587,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.4
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -157829,8 +159241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -157838,8 +159250,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -159060,8 +160472,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -159069,8 +160481,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -159483,7 +160895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -159768,8 +161180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -159777,7 +161189,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -160530,12 +161942,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -160943,8 +162355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -160952,7 +162364,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -161186,7 +162598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -161487,6 +162899,8 @@ GameObject:
   - component: {fileID: 1841407021}
   - component: {fileID: 1841407020}
   - component: {fileID: 1841407019}
+  - component: {fileID: 1841407023}
+  - component: {fileID: 1841407022}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -161577,6 +162991,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1841407022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841407015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1841407023}
+--- !u!114 &1841407023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841407015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1841407021}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1842115103
 GameObject:
   m_ObjectHideFlags: 0
@@ -161638,7 +163106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -161948,7 +163416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -162190,7 +163658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -162476,6 +163944,8 @@ GameObject:
   - component: {fileID: 1850382046}
   - component: {fileID: 1850382045}
   - component: {fileID: 1850382044}
+  - component: {fileID: 1850382048}
+  - component: {fileID: 1850382047}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -162566,6 +164036,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1850382047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850382040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1850382048}
+--- !u!114 &1850382048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850382040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1850382046}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1850532288
 GameObject:
   m_ObjectHideFlags: 0
@@ -162857,7 +164381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -163373,8 +164897,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -163382,8 +164906,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -163797,7 +165321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -164401,8 +165925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -164410,8 +165934,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -164876,6 +166400,8 @@ GameObject:
   - component: {fileID: 1875899405}
   - component: {fileID: 1875899404}
   - component: {fileID: 1875899403}
+  - component: {fileID: 1875899407}
+  - component: {fileID: 1875899406}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -164966,6 +166492,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1875899406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875899399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1875899407}
+--- !u!114 &1875899407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875899399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1875899405}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1879670994
 GameObject:
   m_ObjectHideFlags: 0
@@ -165224,6 +166804,8 @@ GameObject:
   - component: {fileID: 1884138561}
   - component: {fileID: 1884138560}
   - component: {fileID: 1884138559}
+  - component: {fileID: 1884138563}
+  - component: {fileID: 1884138562}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -165314,6 +166896,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1884138562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884138555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1884138563}
+--- !u!114 &1884138563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884138555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1884138561}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1884216595
 GameObject:
   m_ObjectHideFlags: 0
@@ -165895,15 +167531,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 47.73
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
   EndAlpha: 1
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
-  LightWidthMultiplier: 1
+  LightWidthMultiplier: 4.2
   IntensityMultiplier: 1
   BoostToWhite: 0
   LimitAlpha: 0
@@ -166707,16 +168343,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 160
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -167200,8 +168836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -167209,7 +168845,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -167805,7 +169441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -167814,7 +169450,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
   IntensityMultiplier: 1
-  BoostToWhite: 0
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -168333,7 +169969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -169814,8 +171450,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -169823,8 +171459,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -171207,8 +172843,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -171216,8 +172852,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -171401,8 +173037,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -171410,8 +173046,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -172715,12 +174351,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
@@ -173443,6 +175079,8 @@ GameObject:
   - component: {fileID: 1975159713}
   - component: {fileID: 1975159712}
   - component: {fileID: 1975159711}
+  - component: {fileID: 1975159715}
+  - component: {fileID: 1975159714}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -173533,6 +175171,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1975159714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975159707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 1975159715}
+--- !u!114 &1975159715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975159707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 1975159713}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &1979535601
 GameObject:
   m_ObjectHideFlags: 0
@@ -176015,7 +177707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -176806,7 +178498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -176999,8 +178691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -177008,7 +178700,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -177193,8 +178885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -177202,8 +178894,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -177434,7 +179126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -177443,7 +179135,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
   IntensityMultiplier: 1
-  BoostToWhite: 0
+  BoostToWhite: 1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -177581,6 +179273,8 @@ GameObject:
   - component: {fileID: 2023023350}
   - component: {fileID: 2023023349}
   - component: {fileID: 2023023348}
+  - component: {fileID: 2023023352}
+  - component: {fileID: 2023023351}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -177671,6 +179365,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &2023023351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023023344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 2023023352}
+--- !u!114 &2023023352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023023344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 2023023350}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1 &2023164176
 GameObject:
   m_ObjectHideFlags: 0
@@ -178532,7 +180280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -178991,8 +180739,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -179000,8 +180748,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -184400,8 +186148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -184409,7 +186157,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.15
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -184749,7 +186497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -186337,8 +188085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -186346,8 +188094,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1
@@ -186609,6 +188357,8 @@ GameObject:
   - component: {fileID: 2099664702}
   - component: {fileID: 2099664701}
   - component: {fileID: 2099664700}
+  - component: {fileID: 2099664704}
+  - component: {fileID: 2099664703}
   m_Layer: 14
   m_Name: ToothMesh
   m_TagString: Untagged
@@ -186699,6 +188449,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &2099664703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099664696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0114da892b82b4b6499f9ba3fd4837a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spectrogram: {fileID: 2099664704}
+--- !u!114 &2099664704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099664696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fee9e2e51f584be280a4435b50c8006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialPropertyBlockController: {fileID: 2099664702}
+  dataIndex: 0
+  propertyName: 
+  multiplier: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  audioLink: {fileID: 0}
 --- !u!1001 &2103280181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -186940,8 +188744,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -186949,7 +188753,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -187890,7 +189694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -188373,7 +190177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Length: 1
-  Center: 1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -189421,8 +191225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.5
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -189430,7 +191234,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.75
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -190349,8 +192153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 2
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -190358,8 +192162,8 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
-  BoostToWhite: 0
+  IntensityMultiplier: 0.8
+  BoostToWhite: 0.1
   LimitAlpha: 0
   MinAlpha: 0
   MaxAlpha: 1

@@ -19,7 +19,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     [SerializeField] private ScrollPrecisionController scrollPrecisionController;
     [SerializeField] private SelectionController selectionController;
     // Read the authoritative mutable definition directly so startup cannot miss an earlier environment notification.
-    private TracksDefinitionSO TrackDefinition => beatmapRuntimeContext.TracksDefinition;
+    private TrackDefinitionsSO TrackDefinition => beatmapRuntimeContext.TrackDefinitions;
 
     // Convert a temporary in-place edit into the required contract: edited clone plus exact unedited live original.
     private static BeatmapObjectUpdatedAction UpdatedEventAction(
@@ -582,18 +582,18 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         }
 
         // ScriptableObjects require Unity's overloaded null comparison when selecting the runtime fallback.
-        var tracksDefinition = e.TracksDefinition != null
-            ? e.TracksDefinition
+        var trackDefinitions = e.TrackDefinitions != null
+            ? e.TrackDefinitions
             : TrackDefinition;
-        if (tracksDefinition == null)
+        if (trackDefinitions == null)
         {
-            LogMetadataFailure(e, "both container and runtime TracksDefinition are null");
+            LogMetadataFailure(e, "both container and runtime TrackDefinitions are null");
             return false;
         }
 
         lastMetadataFailureContainer = null;
         lastMetadataFailureReason = null;
-        components = tracksDefinition.GetBasicOrDefault(e.EventData.Type).Components;
+        components = trackDefinitions.GetBasicOrDefault(e.EventData.Type).Components;
         return true;
     }
 
@@ -639,8 +639,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             return true;
 
         // ScriptableObjects require Unity's overloaded null comparison when selecting the runtime fallback.
-        var definitions = eventContainer.TracksDefinition != null
-            ? eventContainer.TracksDefinition
+        var definitions = eventContainer.TrackDefinitions != null
+            ? eventContainer.TrackDefinitions
             : controller.TrackDefinition;
         return definitions != null
                && definitions.GetBasicOrDefault(eventContainer.EventData.Type).Kind == BasicEventKind.Lights;

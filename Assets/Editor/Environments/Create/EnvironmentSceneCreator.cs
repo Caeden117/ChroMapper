@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -52,7 +51,7 @@ public partial class EnvironmentSceneCreator
         Debug.Log($"Created all {environmentDataPaths.Count} environment scenes from data.");
     }
 
-    private static void ReadSelectedAndCreateEnvironment(bool script)
+    private static void ReadSelectedAndCreateEnvironment(bool allowScript)
     {
         var textAsset = Selection.activeObject switch
         {
@@ -81,10 +80,10 @@ public partial class EnvironmentSceneCreator
             Debug.LogError("Create from Data could not resolve environment JSON for the selected or active scene.");
             return;
         }
-        CreateEnvironmentFromData(textAsset, script);
+        CreateEnvironmentFromData(textAsset, allowScript);
     }
 
-    private static void CreateEnvironmentFromData(TextAsset textAsset, bool script)
+    private static void CreateEnvironmentFromData(TextAsset textAsset, bool allowScript)
     {
         var assetName = textAsset.name;
 
@@ -102,8 +101,7 @@ public partial class EnvironmentSceneCreator
         // Oh dear I'm loading stuff at runtime
         var environmentLibrary =
             AssetDatabase.LoadAssetAtPath<EnvironmentLibrarySO>(PathUtils.Combine(editorPath, "EnvironmentLibrarySO.asset"));
-        var environmentData =
-            JsonConvert.DeserializeObject<EnvData>(textAsset.text, new Vector3ArrayConverter());
+        var environmentData = CreateUtils.JsonToEnvironmentData(textAsset);
 
         // Move null checks up here so it doesnt ruin the rest of the process
         if (environmentLibrary == null) throw new ArgumentNullException(nameof(environmentLibrary));
@@ -113,7 +111,7 @@ public partial class EnvironmentSceneCreator
         if (environmentLibrary.SkyboxMaterial != null) RenderSettings.skybox = environmentLibrary.SkyboxMaterial;
 
         // Create the environment in the new scene
-        CreateEnvironment(scene, environmentData, environmentLibrary, script);
+        CreateEnvironment(scene, environmentData, environmentLibrary, allowScript);
 
         // Save the scene to disk
         if ((exist && EditorSceneManager.SaveScene(scene)) || EditorSceneManager.SaveScene(scene, targetPath))
@@ -134,10 +132,20 @@ public partial class EnvironmentSceneCreator
     // Main method which constructs the environment from parsed data
     public static void CreateEnvironment(
         Scene scene,
-        EnvData data,
+        EnvironmentData data,
         EnvironmentLibrarySO library,
-        bool script)
+        bool allowScript)
     {
+        var blacklist = new[] { "SaberBurnMarkSparklePS", "SaberBurnMarksArea", "BasicGameHUD" };
+        data.Objects = data
+            .Objects.Where(x => !blacklist.Any(y => x.ChromaID.Contains(y)))
+            .ToList();
+
+        var container = new CreateContainer
+        {
+            Data = data, Library = library, ComponentInstances = CreateContainer.CollectComponentInstances(data)
+        };
+
         // Refuse to strip a scene when source data or generated libraries are empty after a failed refresh.
         if (data?.Objects == null || data.Objects.Count == 0)
             throw new InvalidOperationException($"Environment '{data?.Data?.ID ?? scene.name}' contains no objects.");
@@ -155,19 +163,23 @@ public partial class EnvironmentSceneCreator
         // Stop before scene destruction if serialized entries exist but none point to usable Unity assets.
         if (!library.Meshes.Lookup.Values.Any(x => x != null))
             throw new InvalidOperationException("Environment mesh lookup contains no resolved Unity mesh assets.");
-        if (!library.Materials.Lookup.Values.Any(x => x != null))
-            throw new InvalidOperationException("Environment material lookup contains no resolved Unity material assets.");
+        if (!library.Materials.HasResolvedMaterials(data.Data.ID))
+            throw new InvalidOperationException(
+                $"Environment material lookup contains no resolved Unity material assets for '{data.Data.ID}'.");
 
         // first pass: strip existing object and component
         var existingObjects = StripObjects(scene, data);
 
         // second pass: spawn object
-        var chromaIdObjects = SpawnObjects(library, data, existingObjects);
+        container.ChromaIdObjects = SpawnObjects(container, existingObjects);
 
         // third pass: build component
-        if (script) BuildComponents(library, data, chromaIdObjects);
+        if (allowScript) BuildComponents(container);
 
         // forth pass: cleanup and remove unused
-        if (script) Cleanup(scene, data);
+        if (allowScript) Cleanup(scene, data);
+
+        // fifth pass
+        // ReflectionProbeBakePipeline.BakeSceneReflectionProbes(scene);
     }
 }

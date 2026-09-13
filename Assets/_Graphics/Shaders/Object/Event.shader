@@ -26,7 +26,7 @@ Shader "ChroMapper/Object/Event"
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _ColorA)
@@ -79,7 +79,7 @@ Shader "ChroMapper/Object/Event"
                 else if (pos >= fadeSize) col = colorB;
                 else col = colorA;
 
-                ACES_TONE_MAPPING_APPLY(col);
+                col = ApplyAcesTonemapping(col);
                 return col;
             }
             ENDHLSL

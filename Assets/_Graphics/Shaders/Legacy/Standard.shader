@@ -35,8 +35,6 @@ Shader "ChroMapper/Legacy/Standard"
             "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"
         }
 
-        GrabPass {}
-
         Pass
         {
             HLSLPROGRAM
@@ -77,9 +75,9 @@ Shader "ChroMapper/Legacy/Standard"
             half _Scale;
             half _Power;
 
-            // GrabPass Texture for Light approximation
-            sampler2D _GrabTexture;
-            float4 _GrabTexture_TexelSize;
+            // Shared GrabPass texture for light approximation
+            sampler2D _GrabTexture1;
+            float4 _GrabTexture1_TexelSize;
 
             struct v2f
             {
@@ -133,7 +131,7 @@ Shader "ChroMapper/Legacy/Standard"
 
                 float _Factor = 50;
                 // Shorthand for mixing pixels by weight and blur
-                #define ADDPIXELXY(weight,kernelX,kernelY) tex2Dproj(_GrabTexture, UNITY_PROJ_COORD( float4( i.uvscreen.x + (i.VSNormal.x + kernelX * (1-_Smoothness)) * _Factor * _GrabTexture_TexelSize.x,  i.uvscreen.y + (-i.VSNormal.y + kernelY * (1-_Smoothness)) * _Factor * _GrabTexture_TexelSize.y, i.uvscreen.z, i.uvscreen.w))) * weight
+                #define ADDPIXELXY(weight,kernelX,kernelY) tex2Dproj(_GrabTexture1, UNITY_PROJ_COORD( float4( i.uvscreen.x + (i.VSNormal.x + kernelX * (1-_Smoothness)) * _Factor * _GrabTexture1_TexelSize.x,  i.uvscreen.y + (-i.VSNormal.y + kernelY * (1-_Smoothness)) * _Factor * _GrabTexture1_TexelSize.y, i.uvscreen.z, i.uvscreen.w))) * weight
                 // average 9 points for local reflections
                 pixelCol += ADDPIXELXY(0.05, 1.0, -1.0);
                 pixelCol += ADDPIXELXY(0.10, 1.0, 0.0);
@@ -150,7 +148,7 @@ Shader "ChroMapper/Legacy/Standard"
                 float4 lightColor = half4(0, 0, 0, 0);
 
                 // Shorthand for mixing pixels by weight by screen position
-                #define ADDPIXELXYSCREEN(weight,kernelX,kernelY) tex2Dproj(_GrabTexture, UNITY_PROJ_COORD(float4(_GrabTexture_TexelSize.z / (sampleRange + 1.0) * (kernelX + 1.0), _GrabTexture_TexelSize.w / (sampleRange + 1.0) * (kernelY + 1.0), _GrabTexture_TexelSize.z, _GrabTexture_TexelSize.w))) * weight
+                #define ADDPIXELXYSCREEN(weight,kernelX,kernelY) tex2Dproj(_GrabTexture1, UNITY_PROJ_COORD(float4(_GrabTexture1_TexelSize.z / (sampleRange + 1.0) * (kernelX + 1.0), _GrabTexture1_TexelSize.w / (sampleRange + 1.0) * (kernelY + 1.0), _GrabTexture1_TexelSize.z, _GrabTexture1_TexelSize.w))) * weight
 
                 // naughty for loop to get samples from the grab pass
                 for (int k = 0; k < sampleRange; k++)

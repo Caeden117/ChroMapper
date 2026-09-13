@@ -583,16 +583,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -2145,6 +2145,7 @@ GameObject:
   - component: {fileID: 14743940}
   - component: {fileID: 14743942}
   - component: {fileID: 14743941}
+  - component: {fileID: 14743943}
   m_Layer: 14
   m_Name: StageConstructionRingMeshTop
   m_TagString: Untagged
@@ -2235,6 +2236,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &14743943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14743936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 14743940}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &15000039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,6 +2427,7 @@ GameObject:
   - component: {fileID: 17728912}
   - component: {fileID: 17728914}
   - component: {fileID: 17728913}
+  - component: {fileID: 17728915}
   m_Layer: 14
   m_Name: StageConstructionRingMeshTop
   m_TagString: Untagged
@@ -2499,6 +2518,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &17728915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17728908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 17728912}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &18271396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2999,16 +3035,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -7003,16 +7039,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -10801,16 +10837,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -11213,16 +11249,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -13073,16 +13109,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -14800,16 +14836,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -15888,6 +15924,7 @@ GameObject:
   - component: {fileID: 124987634}
   - component: {fileID: 124987636}
   - component: {fileID: 124987635}
+  - component: {fileID: 124987637}
   m_Layer: 14
   m_Name: StageConstructionRingMeshSides
   m_TagString: Untagged
@@ -15978,6 +16015,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &124987637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124987630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 124987634}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &125024298
 GameObject:
   m_ObjectHideFlags: 0
@@ -16519,16 +16573,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -17625,16 +17679,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -18096,16 +18150,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -19007,16 +19061,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -21089,16 +21143,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -24361,16 +24415,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -24908,16 +24962,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -26411,7 +26465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 100
 --- !u!1 &213555978
@@ -29019,16 +29073,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -33186,16 +33240,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -39822,16 +39876,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -40752,16 +40806,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -41318,16 +41372,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -45703,7 +45757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &318381612
@@ -45815,16 +45869,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -46144,16 +46198,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -46735,16 +46789,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -48103,16 +48157,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -53468,16 +53522,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -54511,16 +54565,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -56851,16 +56905,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -60895,16 +60949,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -61650,16 +61704,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -65596,16 +65650,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -65951,16 +66005,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -67927,16 +67981,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -69069,16 +69123,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -70145,16 +70199,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -71809,16 +71863,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -75587,16 +75641,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -78183,16 +78237,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -79862,16 +79916,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -80743,16 +80797,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -81080,16 +81134,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -82477,16 +82531,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -84096,16 +84150,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -93972,16 +94026,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -96455,14 +96509,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Length: 1
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 1.5
+  EndWidth: 1.5
+  StartAlpha: 4
+  EndAlpha: 4
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.002
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -97853,16 +97907,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -101764,16 +101818,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -102009,16 +102063,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -102704,16 +102758,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -103083,16 +103137,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -104298,16 +104352,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -105140,16 +105194,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -107463,16 +107517,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -108484,16 +108538,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -110231,16 +110285,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -110379,6 +110433,7 @@ GameObject:
   - component: {fileID: 777025551}
   - component: {fileID: 777025553}
   - component: {fileID: 777025552}
+  - component: {fileID: 777025554}
   m_Layer: 14
   m_Name: StageConstructionRingMeshSides
   m_TagString: Untagged
@@ -110469,6 +110524,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &777025554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777025547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 777025551}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &777289586
 GameObject:
   m_ObjectHideFlags: 0
@@ -112641,16 +112713,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -113682,6 +113754,7 @@ GameObject:
   - component: {fileID: 810048047}
   - component: {fileID: 810048049}
   - component: {fileID: 810048048}
+  - component: {fileID: 810048050}
   m_Layer: 14
   m_Name: StageConstructionRingMeshTop
   m_TagString: Untagged
@@ -113772,6 +113845,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &810048050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810048043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 810048047}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &810644256
 GameObject:
   m_ObjectHideFlags: 0
@@ -115424,16 +115514,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -116333,16 +116423,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -117370,16 +117460,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 5
+  EndWidth: 5
+  StartAlpha: 7
+  EndAlpha: 7
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.001
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -118442,16 +118532,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -120008,16 +120098,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -130257,7 +130347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &921841906
@@ -131141,16 +131231,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -138834,16 +138924,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -146547,16 +146637,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -149881,6 +149971,7 @@ GameObject:
   - component: {fileID: 1079027537}
   - component: {fileID: 1079027538}
   - component: {fileID: 1079027539}
+  - component: {fileID: 1079027540}
   m_Layer: 14
   m_Name: ConeMesh
   m_TagString: Untagged
@@ -149930,6 +150021,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1079027540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079027536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1079027539}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1080126067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151052,16 +151160,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -151873,16 +151981,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -152947,16 +153055,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -155401,16 +155509,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -156343,16 +156451,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -162486,16 +162594,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -164750,16 +164858,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -165103,16 +165211,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 1.5
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 1.5
+  EndWidth: 1.5
+  StartAlpha: 4
+  EndAlpha: 4
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.002
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -166202,16 +166310,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -166446,16 +166554,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -167584,16 +167692,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -172240,16 +172348,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -174095,16 +174203,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -174835,6 +174943,7 @@ MonoBehaviour:
   - ID: 1
     Targets:
     - {fileID: 1627021249}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174858,6 +174967,7 @@ MonoBehaviour:
   - ID: 1
     Targets:
     - {fileID: 475073148}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174878,6 +174988,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 1035911008}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174904,6 +175015,7 @@ MonoBehaviour:
   - ID: 2
     Targets:
     - {fileID: 1382315402}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174924,6 +175036,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 679743429}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174944,6 +175057,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 264005244}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175015,6 +175129,7 @@ MonoBehaviour:
   - ID: 17
     Targets:
     - {fileID: 42523282}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175041,6 +175156,7 @@ MonoBehaviour:
   - ID: 2
     Targets:
     - {fileID: 44415425}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175067,6 +175183,7 @@ MonoBehaviour:
   - ID: 2
     Targets:
     - {fileID: 1473699629}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175372,6 +175489,7 @@ MonoBehaviour:
   - ID: 95
     Targets:
     - {fileID: 1436374810}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175461,6 +175579,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 528729857}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175766,6 +175885,7 @@ MonoBehaviour:
   - ID: 95
     Targets:
     - {fileID: 2054386192}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175855,6 +175975,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 586022273}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175875,6 +175996,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 2101977874}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175892,6 +176014,7 @@ MonoBehaviour:
   Count: 1
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1293276840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175963,6 +176086,7 @@ MonoBehaviour:
   - ID: 17
     Targets:
     - {fileID: 2081831100}
+  autoRegisterRoot: {fileID: 0}
 --- !u!4 &1293276841
 Transform:
   m_ObjectHideFlags: 0
@@ -176646,16 +176770,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -178935,16 +179059,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -179353,16 +179477,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -179644,16 +179768,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -183764,7 +183888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &1322254640
@@ -184558,16 +184682,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -185883,16 +186007,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -186402,16 +186526,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -186690,14 +186814,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Length: 1
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 8
+  EndWidth: 8
+  StartAlpha: 4
+  EndAlpha: 4
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.0025
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -187439,16 +187563,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -190063,16 +190187,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -194977,16 +195101,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -196069,16 +196193,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 1.5
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 1.5
+  EndWidth: 1.5
+  StartAlpha: 4
+  EndAlpha: 4
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.002
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -196497,16 +196621,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -198768,16 +198892,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -199012,16 +199136,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -200594,16 +200718,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -200838,16 +200962,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -201302,16 +201426,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -201731,16 +201855,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -203902,16 +204026,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -205280,16 +205404,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -207744,16 +207868,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -217354,16 +217478,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -220149,16 +220273,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 4
+  EndWidth: 4
+  StartAlpha: 7
+  EndAlpha: 7
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.001
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -221042,16 +221166,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -221330,14 +221454,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Length: 1
   Center: 1
-  StartWidth: 1
-  EndWidth: 1
-  StartAlpha: 1
-  EndAlpha: 1
+  StartWidth: 1.5
+  EndWidth: 1.5
+  StartAlpha: 4
+  EndAlpha: 4
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.002
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -222089,16 +222213,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -225674,16 +225798,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -227037,16 +227161,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -231808,16 +231932,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -234610,16 +234734,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -235667,16 +235791,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -236169,16 +236293,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -236462,16 +236586,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -242957,16 +243081,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -243815,16 +243939,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -244668,16 +244792,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -245566,16 +245690,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -249087,16 +249211,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -256680,7 +256804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &1798834429
@@ -258273,16 +258397,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -262317,16 +262441,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -263996,16 +264120,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -269857,16 +269981,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -270590,16 +270714,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -272081,16 +272205,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -272782,16 +272906,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
-  EndWidth: 1
+  EndWidth: 3
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -273803,16 +273927,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -275021,16 +275145,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -279336,16 +279460,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -279627,16 +279751,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -281396,16 +281520,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -282342,16 +282466,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 20
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -283757,16 +283881,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -285900,6 +286024,7 @@ GameObject:
   - component: {fileID: 2047595440}
   - component: {fileID: 2047595442}
   - component: {fileID: 2047595441}
+  - component: {fileID: 2047595443}
   m_Layer: 14
   m_Name: StageConstructionRingMeshSides
   m_TagString: Untagged
@@ -285990,6 +286115,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 1
+--- !u!114 &2047595443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047595436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 2047595440}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &2047676041
 GameObject:
   m_ObjectHideFlags: 0
@@ -288773,16 +288915,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -289063,16 +289205,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -296258,16 +296400,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 100
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0

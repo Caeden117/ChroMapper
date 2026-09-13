@@ -1,26 +1,36 @@
 Shader "ChroMapper/BloomfogMesh"
 {
+    // Material properties control textures and blending. Runtime fog values remain globals.
+    // The cubic RGB transfer preserves vertex alpha. BLOOM_FOG alone enables attenuation.
+    // The procedural mesh is two-sided and uses dynamic blending without depth writes.
+    // The OVERDRAW_VIEW debug route is intentionally omitted.
     Properties
     {
-        _BloomfogAlphaMask("Bloomfog Alpha Mask", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "white" {}
+        [Space] [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactor ("Blend Src Factor", Float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactor ("Blend Dst Factor", Float) = 10
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactorA ("Blend Src Factor A", Float) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactorA ("Blend Dst Factor A", Float) = 10
+        [Space] [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp ("Blend Operation", Float) = 0
     }
     SubShader
     {
         Tags
         {
-            "RenderType"="Transparent" "Queue"="Transparent"
+            "RenderType"="Opaque"
         }
         ZWrite Off
         Cull Off
-        BlendOp Max
-        Blend One One, Zero Zero
-        LOD 100
+        Blend [_BlendSrcFactor] [_BlendDstFactor], [_BlendSrcFactorA] [_BlendDstFactorA]
+        BlendOp [_BlendOp]
+        LOD 200
 
         Pass
         {
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _ BLOOM_FOG
 
             #include "UnityCG.cginc"
 
@@ -41,25 +51,22 @@ Shader "ChroMapper/BloomfogMesh"
             };
 
             uniform float4x4 _VertexTransformMatrix;
+            uniform float _CustomFogOffset;
+            uniform float _CustomFogAttenuation;
 
-            sampler2D _BloomfogAlphaMask;
+            sampler2D _MainTex;
 
             v2f vert(appdata v)
             {
-                // Constant view matrix, so it lives here
-                float4x4 ViewMatrix = float4x4(
-                    2, 0, 0, 0,
-                    0, -2, 0, 0,
-                    0, 0, -1, 0,
-                    -1, 1, 0, 1
-                );
-
                 v2f o;
-                o.vertex = mul(transpose(ViewMatrix), float4(v.vertex, 1.0));
+                // Set once as a global by BloomfogRendererSO.Initialize to match the game's runtime cbuffer matrix
+                o.vertex = mul(_VertexTransformMatrix, float4(v.vertex, 1.0));
                 o.uv = v.uv;
 
                 float4 color = v.color;
-                color.rgb = GammaToLinearSpace(color.rgb);
+                // Recovered GammaToLinearSpace cubic transfer; alpha is untouched.
+                color.rgb = color.rgb * (color.rgb * (color.rgb * 0.305306011
+                    + 0.682171111) + 0.012522878);
                 o.color = color;
 
                 o.tangent.xyz = v.tangent / v.tangent.z;
@@ -67,30 +74,24 @@ Shader "ChroMapper/BloomfogMesh"
                 return o;
             }
 
-            // im NGL a lot of this came from Owen's decompilation help
-            // this is unreadable as fuck but it is 1:1 equivalent to Beat Saber's bloomfog mesh
             float4 frag(v2f i) : SV_Target
             {
                 float3 dir = i.tangent.xyz / i.tangent.w;
 
                 float dir2 = dot(dir.xyz, dir.xyz);
 
-                float alpha = max(i.color.a, 1);
-                alpha = 1 / alpha;
-
-                float u0 = dir2 * alpha - 10;
-
-                u0 = max(u0, 0);
-
-                u0 = u0 * 0.01 + 1.0;
-
-                u0 = 1.0 / u0;
+                float u0 = 1.0;
+                #if defined(BLOOM_FOG)
+                float alpha = 1.0 / max(i.color.a, 1.0);
+                u0 = max(dir2 * alpha - _CustomFogOffset, 0.0);
+                u0 = 1.0 / (u0 * _CustomFogAttenuation + 1.0);
+                #endif
 
                 float2 uv = float2(i.uv.x / i.uv.z, i.uv.y);
 
                 // sample generated here, but sample_indexable in DXBC
                 // this will be functionally equivalent
-                float4 line_mask = tex2D(_BloomfogAlphaMask, uv);
+                float4 line_mask = tex2D(_MainTex, uv);
 
                 float a2 = i.color.a * i.color.a;
 

@@ -189,7 +189,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: High Qwawity Bwoom
+    m_Localized: Bloom
     m_Metadata:
       m_Items: []
   - m_Id: 45
@@ -479,8 +479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: Renders the Bloom effect at full or half resolution. We recommend
-      keeping it at full resolution.
+    m_Localized: Enables or disables camera bloom.
     m_Metadata:
       m_Items: []
   - m_Id: 112
@@ -1479,6 +1478,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 539782955901091840
     m_Localized: Solid Chain Link
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683422597120
+    m_Localized: Bloom Fog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568640
+    m_Localized: Enables or disables environment bloom fog.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568641
+    m_Localized: Screen Displacement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568642
+    m_Localized: Enables or disables obstacle screen displacement.
     m_Metadata:
       m_Items: []
   references:

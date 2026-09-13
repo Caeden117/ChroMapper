@@ -12,108 +12,43 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - HEIGHT_FOG
+  - CUTOUT
+  - _WHITEBOOSTTYPE_MAINEFFECT
   m_InvalidKeywords:
-  - ENABLE_FOG
-  - ENABLE_HEIGHT_FOG
-  - ETC1_EXTERNAL_ALPHA
-  - FOG
+  - _BLOOMTYPE_DEFERRED
   - _ZWRITE_ON
-  m_LightmapFlags: 4
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2003
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - ENABLE_HEIGHT_FOG: 0
-    - _AnimationSpawned: 0
-    - _BlendModeDst: 1
-    - _BlendModeDstA: 0
-    - _BlendModeSrc: 1
-    - _BlendModeSrcA: 0
-    - _BlendOp: 0
-    - _BumpScale: 1
-    - _CircleRadius: 7.5
+    - _BlendDstFactor: 1
+    - _BlendDstFactorA: 1
+    - _BlendSrcFactor: 1
+    - _BlendSrcFactorA: 1
+    - _BloomType: 1
     - _CullMode: 0
-    - _Cutoff: 0.5
     - _Cutout: 0
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _EnableFog: 1
-    - _EnableHeightFog: 1
-    - _FadeSize: 5
-    - _FogEnd: 500
+    - _CutoutTexScale: 0.2
+    - _EnableCutout: 1
     - _FogHeightOffset: 0
     - _FogHeightScale: 2.5
     - _FogScale: 1
-    - _FogStart: 0
-    - _FogStartOffset: 100
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _MainAlpha: 0.25
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _OpaqueAlpha: 1
-    - _OutsideAlpha: 0.25
-    - _Parallax: 0.02
-    - _Rotation: 0
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _UVSec: 0
+    - _FogStartOffset: 7
+    - _WhiteBoostType: 1
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0, b: 0, a: 10}
-    - _ColorTint: {r: 1, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _CutoutTexOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Position: {r: 0, g: 1.5, b: 0, a: 0}
-    - _RotationAxis: {r: 0, g: 1, b: 0, a: 0}
+    - _SizeParams: {r: 0.5, g: 0.5, b: 0.5, a: 0.025}
     - _WorldScale: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
-  m_AllowLocking: 1
+  m_AllowLocking: 0

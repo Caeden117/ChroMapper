@@ -178,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -1652,6 +1652,7 @@ GameObject:
   - component: {fileID: 14599441}
   - component: {fileID: 14599440}
   - component: {fileID: 14599439}
+  - component: {fileID: 14599444}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -1778,6 +1779,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &14599444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14599432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 14599443}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &16992484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,8 +1919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -1910,7 +1928,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -3730,8 +3748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -3739,7 +3757,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -4114,8 +4132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -4123,7 +4141,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -4960,16 +4978,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -5762,8 +5780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -5771,7 +5789,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -8103,8 +8121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -8112,7 +8130,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -9343,7 +9361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &79686043
@@ -9498,8 +9516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -9507,7 +9525,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -9692,8 +9710,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -9701,7 +9719,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -9933,8 +9951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -9942,7 +9960,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -11723,8 +11741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -11732,7 +11750,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -15220,6 +15238,7 @@ GameObject:
   - component: {fileID: 113306251}
   - component: {fileID: 113306250}
   - component: {fileID: 113306249}
+  - component: {fileID: 113306254}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -15346,6 +15365,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &113306254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113306242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 113306253}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &114400029
 GameObject:
   m_ObjectHideFlags: 0
@@ -15846,8 +15882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -15855,7 +15891,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -16221,8 +16257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -16230,7 +16266,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -17181,16 +17217,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -17422,8 +17458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -17431,7 +17467,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -17798,8 +17834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -17807,7 +17843,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -18840,16 +18876,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -23735,6 +23771,7 @@ GameObject:
   - component: {fileID: 157686881}
   - component: {fileID: 157686880}
   - component: {fileID: 157686879}
+  - component: {fileID: 157686884}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -23861,6 +23898,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &157686884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157686872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 157686883}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &158300883
 GameObject:
   m_ObjectHideFlags: 0
@@ -24224,8 +24278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -24233,7 +24287,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -25370,7 +25424,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2.5
   Center: 1
   StartWidth: 1
   EndWidth: 1
@@ -25379,7 +25433,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 2
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -25564,8 +25618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -25573,7 +25627,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -28264,8 +28318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -28273,7 +28327,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -28727,8 +28781,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -28736,7 +28790,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -28876,6 +28930,7 @@ GameObject:
   - component: {fileID: 199050191}
   - component: {fileID: 199050190}
   - component: {fileID: 199050189}
+  - component: {fileID: 199050193}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -28983,6 +29038,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &199050193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199050183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 199050192}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &199862684
 GameObject:
   m_ObjectHideFlags: 0
@@ -29088,8 +29160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -29097,7 +29169,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -30104,16 +30176,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -30924,6 +30996,7 @@ GameObject:
   - component: {fileID: 217992432}
   - component: {fileID: 217992431}
   - component: {fileID: 217992430}
+  - component: {fileID: 217992434}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -31031,6 +31104,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &217992434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217992424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 217992433}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &220155704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31758,8 +31848,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -31767,7 +31857,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -32854,16 +32944,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -33789,8 +33879,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -33798,7 +33888,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -34581,8 +34671,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -34590,7 +34680,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -35188,16 +35278,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -37094,7 +37184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &256176956
@@ -39792,6 +39882,7 @@ GameObject:
   - component: {fileID: 286269607}
   - component: {fileID: 286269606}
   - component: {fileID: 286269605}
+  - component: {fileID: 286269609}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -39898,6 +39989,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &286269609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286269599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 286269608}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &286700434
 GameObject:
   m_ObjectHideFlags: 0
@@ -40287,8 +40395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -40296,7 +40404,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -41026,8 +41134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -41035,7 +41143,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -41697,8 +41805,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -41706,7 +41814,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -42456,16 +42564,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -43752,16 +43860,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -44448,8 +44556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -44457,7 +44565,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -45953,8 +46061,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -45962,7 +46070,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -47108,6 +47216,7 @@ GameObject:
   - component: {fileID: 359654568}
   - component: {fileID: 359654567}
   - component: {fileID: 359654566}
+  - component: {fileID: 359654571}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -47234,6 +47343,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &359654571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359654559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 359654570}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &359810142
 GameObject:
   m_ObjectHideFlags: 0
@@ -47590,8 +47716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -47599,7 +47725,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -50373,8 +50499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -50382,7 +50508,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -51050,8 +51176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -51059,7 +51185,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -52432,6 +52558,7 @@ GameObject:
   - component: {fileID: 414629214}
   - component: {fileID: 414629213}
   - component: {fileID: 414629212}
+  - component: {fileID: 414629216}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -52539,6 +52666,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &414629216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414629206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 414629215}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &416333420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54185,8 +54329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -54194,7 +54338,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -54877,8 +55021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -54886,7 +55030,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -55316,6 +55460,7 @@ GameObject:
   - component: {fileID: 448083916}
   - component: {fileID: 448083915}
   - component: {fileID: 448083914}
+  - component: {fileID: 448083918}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -55422,6 +55567,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &448083918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448083908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 448083917}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &449382711
 GameObject:
   m_ObjectHideFlags: 0
@@ -56332,8 +56494,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -56341,7 +56503,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -56923,8 +57085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -56932,7 +57094,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -58047,6 +58209,7 @@ GameObject:
   - component: {fileID: 470484574}
   - component: {fileID: 470484573}
   - component: {fileID: 470484572}
+  - component: {fileID: 470484577}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -58173,6 +58336,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &470484577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470484565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 470484576}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &470712371
 GameObject:
   m_ObjectHideFlags: 0
@@ -60160,7 +60340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2.5
   Center: 1
   StartWidth: 1
   EndWidth: 1
@@ -60169,7 +60349,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 2
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -60356,6 +60536,7 @@ GameObject:
   - component: {fileID: 488113025}
   - component: {fileID: 488113024}
   - component: {fileID: 488113023}
+  - component: {fileID: 488113028}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -60482,6 +60663,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &488113028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488113016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 488113027}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &488895261
 GameObject:
   m_ObjectHideFlags: 0
@@ -60587,8 +60785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -60596,7 +60794,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -60874,8 +61072,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -60883,7 +61081,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -61300,6 +61498,7 @@ GameObject:
   - component: {fileID: 499492870}
   - component: {fileID: 499492869}
   - component: {fileID: 499492868}
+  - component: {fileID: 499492873}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -61426,6 +61625,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &499492873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499492861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 499492872}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &499645388
 GameObject:
   m_ObjectHideFlags: 0
@@ -62015,8 +62231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -62024,7 +62240,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -62837,6 +63053,7 @@ GameObject:
   - component: {fileID: 515799358}
   - component: {fileID: 515799357}
   - component: {fileID: 515799356}
+  - component: {fileID: 515799361}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -62963,6 +63180,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &515799361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515799349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 515799360}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &516231841
 GameObject:
   m_ObjectHideFlags: 0
@@ -63137,16 +63371,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -64408,6 +64642,7 @@ GameObject:
   - component: {fileID: 538656504}
   - component: {fileID: 538656503}
   - component: {fileID: 538656502}
+  - component: {fileID: 538656506}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -64515,6 +64750,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &538656506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538656496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 538656505}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &539019398
 GameObject:
   m_ObjectHideFlags: 0
@@ -64964,8 +65216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -64973,7 +65225,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -66143,8 +66395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -66152,7 +66404,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -66441,8 +66693,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -66450,7 +66702,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -69629,8 +69881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -69638,7 +69890,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -70043,6 +70295,7 @@ GameObject:
   - component: {fileID: 557618466}
   - component: {fileID: 557618465}
   - component: {fileID: 557618464}
+  - component: {fileID: 557618469}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -70169,6 +70422,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &557618469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557618457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 557618468}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &560973725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70273,6 +70543,7 @@ GameObject:
   - component: {fileID: 561008406}
   - component: {fileID: 561008405}
   - component: {fileID: 561008404}
+  - component: {fileID: 561008409}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -70399,6 +70670,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &561008409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561008397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 561008408}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &561356125
 GameObject:
   m_ObjectHideFlags: 0
@@ -70833,8 +71121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -70842,7 +71130,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -71534,16 +71822,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -73392,16 +73680,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -73542,6 +73830,7 @@ GameObject:
   - component: {fileID: 586786938}
   - component: {fileID: 586786937}
   - component: {fileID: 586786936}
+  - component: {fileID: 586786941}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -73668,6 +73957,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &586786941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586786929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 586786940}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &587601607
 GameObject:
   m_ObjectHideFlags: 0
@@ -73868,8 +74174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -73877,7 +74183,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -76748,8 +77054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -76757,7 +77063,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -78285,8 +78591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -78294,7 +78600,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -79272,8 +79578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79281,7 +79587,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -79466,8 +79772,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79475,7 +79781,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -79660,8 +79966,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79669,7 +79975,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -79953,8 +80259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -79962,7 +80268,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -81594,8 +81900,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -81603,7 +81909,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -82289,8 +82595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -82298,7 +82604,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -82439,6 +82745,7 @@ GameObject:
   - component: {fileID: 664629786}
   - component: {fileID: 664629785}
   - component: {fileID: 664629784}
+  - component: {fileID: 664629789}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -82565,6 +82872,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &664629789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664629777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 664629788}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &664738684
 GameObject:
   m_ObjectHideFlags: 0
@@ -83014,6 +83338,7 @@ GameObject:
   - component: {fileID: 672235983}
   - component: {fileID: 672235982}
   - component: {fileID: 672235981}
+  - component: {fileID: 672235986}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -83140,6 +83465,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &672235986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672235974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 672235985}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &672485504
 GameObject:
   m_ObjectHideFlags: 0
@@ -83563,8 +83905,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -83572,7 +83914,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -83854,8 +84196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -83863,7 +84205,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -84468,8 +84810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -84477,7 +84819,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -84707,6 +85049,7 @@ GameObject:
   - component: {fileID: 681102069}
   - component: {fileID: 681102068}
   - component: {fileID: 681102067}
+  - component: {fileID: 681102072}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -84833,6 +85176,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &681102072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681102060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 681102071}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &681681708
 GameObject:
   m_ObjectHideFlags: 0
@@ -85448,16 +85808,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -85734,8 +86094,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -85743,7 +86103,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -89504,8 +89864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -89513,7 +89873,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -93443,8 +93803,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -93452,7 +93812,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -93981,7 +94341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 100
 --- !u!1 &767527010
@@ -94973,16 +95333,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -95213,8 +95573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -95222,7 +95582,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -95551,8 +95911,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -95560,7 +95920,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -95792,8 +96152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -95801,7 +96161,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -97487,16 +97847,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -97928,16 +98288,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -98077,6 +98437,7 @@ GameObject:
   - component: {fileID: 800964714}
   - component: {fileID: 800964713}
   - component: {fileID: 800964712}
+  - component: {fileID: 800964716}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -98183,6 +98544,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &800964716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800964706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 800964715}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &802531412
 GameObject:
   m_ObjectHideFlags: 0
@@ -98242,8 +98620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -98251,7 +98629,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -99416,8 +99794,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -99425,7 +99803,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -99610,8 +99988,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -99619,7 +99997,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -100369,6 +100747,7 @@ GameObject:
   - component: {fileID: 818417392}
   - component: {fileID: 818417391}
   - component: {fileID: 818417390}
+  - component: {fileID: 818417395}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -100495,6 +100874,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &818417395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818417383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 818417394}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &818724929
 GameObject:
   m_ObjectHideFlags: 0
@@ -102000,8 +102396,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -102009,7 +102405,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -103963,8 +104359,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -103972,7 +104368,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -104205,6 +104601,7 @@ GameObject:
   - component: {fileID: 865078650}
   - component: {fileID: 865078649}
   - component: {fileID: 865078648}
+  - component: {fileID: 865078653}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -104331,6 +104728,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &865078653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865078641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 865078652}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &865829000
 GameObject:
   m_ObjectHideFlags: 0
@@ -106045,8 +106459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -106054,7 +106468,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -106195,6 +106609,7 @@ GameObject:
   - component: {fileID: 887475265}
   - component: {fileID: 887475264}
   - component: {fileID: 887475263}
+  - component: {fileID: 887475268}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -106321,6 +106736,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &887475268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887475256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 887475267}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &887511958
 GameObject:
   m_ObjectHideFlags: 0
@@ -106679,8 +107111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -106688,7 +107120,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -107436,8 +107868,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -107445,7 +107877,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -107790,6 +108222,7 @@ GameObject:
   - component: {fileID: 904754089}
   - component: {fileID: 904754088}
   - component: {fileID: 904754087}
+  - component: {fileID: 904754091}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -107897,6 +108330,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &904754091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904754081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 904754090}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &907360617
 GameObject:
   m_ObjectHideFlags: 0
@@ -108809,8 +109259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -108818,7 +109268,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -109442,8 +109892,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -109451,7 +109901,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -113047,16 +113497,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -113396,8 +113846,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -113405,7 +113855,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -113636,8 +114086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -113645,7 +114095,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -113928,8 +114378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -113937,7 +114387,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -114217,8 +114667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -114226,7 +114676,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -114457,8 +114907,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -114466,7 +114916,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -114798,6 +115248,7 @@ GameObject:
   - component: {fileID: 966547729}
   - component: {fileID: 966547728}
   - component: {fileID: 966547727}
+  - component: {fileID: 966547732}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -114924,6 +115375,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &966547732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966547720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 966547731}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &967814613
 GameObject:
   m_ObjectHideFlags: 0
@@ -115205,6 +115673,7 @@ GameObject:
   - component: {fileID: 970608478}
   - component: {fileID: 970608477}
   - component: {fileID: 970608476}
+  - component: {fileID: 970608481}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -115331,6 +115800,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &970608481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970608469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 970608480}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &971949711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115920,6 +116406,7 @@ GameObject:
   - component: {fileID: 975666179}
   - component: {fileID: 975666178}
   - component: {fileID: 975666177}
+  - component: {fileID: 975666182}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -116046,6 +116533,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &975666182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975666170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 975666181}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &976956938
 GameObject:
   m_ObjectHideFlags: 0
@@ -117705,8 +118209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -117714,7 +118218,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -120366,8 +120870,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -120375,7 +120879,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -120764,8 +121268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -120773,7 +121277,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -122504,8 +123008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -122513,7 +123017,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -122917,6 +123421,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 62173655}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122946,6 +123451,7 @@ MonoBehaviour:
   - ID: 3
     Targets:
     - {fileID: 212690640}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122975,6 +123481,7 @@ MonoBehaviour:
   - ID: 3
     Targets:
     - {fileID: 1380719762}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123004,6 +123511,7 @@ MonoBehaviour:
   - ID: 3
     Targets:
     - {fileID: 1145625124}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123093,6 +123601,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 1313826885}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123131,6 +123640,7 @@ MonoBehaviour:
   - ID: 6
     Targets:
     - {fileID: 448083914}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123166,6 +123676,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 9375231}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123204,6 +123715,7 @@ MonoBehaviour:
   - ID: 6
     Targets:
     - {fileID: 1614015847}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123239,6 +123751,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 1408792408}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123259,6 +123772,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 213962572}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123291,6 +123805,7 @@ MonoBehaviour:
   - ID: 4
     Targets:
     - {fileID: 2082370746}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123380,6 +123895,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 1305882502}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123415,6 +123931,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 1142109942}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123441,6 +123958,7 @@ MonoBehaviour:
   - ID: 2
     Targets:
     - {fileID: 1639058744}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123461,6 +123979,7 @@ MonoBehaviour:
   - ID: 0
     Targets:
     - {fileID: 1658893738}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123550,6 +124069,7 @@ MonoBehaviour:
   - ID: 23
     Targets:
     - {fileID: 99345073}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123582,6 +124102,7 @@ MonoBehaviour:
   - ID: 4
     Targets:
     - {fileID: 1764568246}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123617,6 +124138,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 2108704255}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123646,6 +124168,7 @@ MonoBehaviour:
   - ID: 3
     Targets:
     - {fileID: 586270512}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123675,6 +124198,7 @@ MonoBehaviour:
   - ID: 3
     Targets:
     - {fileID: 345331757}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123710,6 +124234,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 1100003076}
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &1036941223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123745,6 +124270,7 @@ MonoBehaviour:
   - ID: 5
     Targets:
     - {fileID: 1341107909}
+  autoRegisterRoot: {fileID: 0}
 --- !u!4 &1036941224
 Transform:
   m_ObjectHideFlags: 0
@@ -123821,6 +124347,7 @@ GameObject:
   - component: {fileID: 1039008070}
   - component: {fileID: 1039008069}
   - component: {fileID: 1039008068}
+  - component: {fileID: 1039008073}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -123947,6 +124474,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1039008073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039008061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1039008072}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1039198519
 GameObject:
   m_ObjectHideFlags: 0
@@ -125020,6 +125564,7 @@ GameObject:
   - component: {fileID: 1052581343}
   - component: {fileID: 1052581342}
   - component: {fileID: 1052581341}
+  - component: {fileID: 1052581346}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -125146,6 +125691,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1052581346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052581334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1052581345}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1053696454
 GameObject:
   m_ObjectHideFlags: 0
@@ -125559,8 +126121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -125568,7 +126130,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -126679,8 +127241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -126688,7 +127250,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -126829,6 +127391,7 @@ GameObject:
   - component: {fileID: 1069356728}
   - component: {fileID: 1069356727}
   - component: {fileID: 1069356726}
+  - component: {fileID: 1069356731}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -126955,6 +127518,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1069356731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069356719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1069356730}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1070755034
 GameObject:
   m_ObjectHideFlags: 0
@@ -127782,8 +128362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -127791,7 +128371,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -128399,8 +128979,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -128408,7 +128988,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -128771,6 +129351,7 @@ GameObject:
   - component: {fileID: 1091100327}
   - component: {fileID: 1091100326}
   - component: {fileID: 1091100325}
+  - component: {fileID: 1091100330}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -128897,6 +129478,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1091100330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091100318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1091100329}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1091594921
 GameObject:
   m_ObjectHideFlags: 0
@@ -132212,8 +132810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -132221,7 +132819,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -132593,8 +133191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -132602,7 +133200,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -133235,8 +133833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -133244,7 +133842,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -133522,8 +134120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -133531,7 +134129,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -134050,6 +134648,7 @@ GameObject:
   - component: {fileID: 1138714511}
   - component: {fileID: 1138714510}
   - component: {fileID: 1138714509}
+  - component: {fileID: 1138714514}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -134176,6 +134775,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1138714514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138714502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1138714513}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1139333931
 GameObject:
   m_ObjectHideFlags: 0
@@ -134190,6 +134806,7 @@ GameObject:
   - component: {fileID: 1139333939}
   - component: {fileID: 1139333938}
   - component: {fileID: 1139333937}
+  - component: {fileID: 1139333941}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -134297,6 +134914,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1139333941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139333931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1139333940}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1139901047
 GameObject:
   m_ObjectHideFlags: 0
@@ -134515,8 +135149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -134524,7 +135158,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -134760,8 +135394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -134769,7 +135403,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -135167,16 +135801,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -135999,16 +136633,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -136149,6 +136783,7 @@ GameObject:
   - component: {fileID: 1145859476}
   - component: {fileID: 1145859475}
   - component: {fileID: 1145859474}
+  - component: {fileID: 1145859479}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -136275,6 +136910,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1145859479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145859467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1145859478}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1146023962
 GameObject:
   m_ObjectHideFlags: 0
@@ -139398,8 +140050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -139407,7 +140059,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -139904,8 +140556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -139913,7 +140565,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -140431,16 +141083,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -141456,8 +142108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -141465,7 +142117,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -141786,8 +142438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -141795,7 +142447,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -141980,8 +142632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -141989,7 +142641,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -142269,6 +142921,7 @@ GameObject:
   - component: {fileID: 1188394005}
   - component: {fileID: 1188394004}
   - component: {fileID: 1188394003}
+  - component: {fileID: 1188394008}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -142395,6 +143048,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1188394008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188393996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1188394007}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1188455121
 GameObject:
   m_ObjectHideFlags: 0
@@ -143067,8 +143737,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -143076,7 +143746,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -143358,6 +144028,7 @@ GameObject:
   - component: {fileID: 1198096523}
   - component: {fileID: 1198096522}
   - component: {fileID: 1198096521}
+  - component: {fileID: 1198096526}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -143484,6 +144155,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1198096526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198096514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1198096525}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1198359034
 GameObject:
   m_ObjectHideFlags: 0
@@ -144223,6 +144911,7 @@ GameObject:
   - component: {fileID: 1204010156}
   - component: {fileID: 1204010155}
   - component: {fileID: 1204010154}
+  - component: {fileID: 1204010159}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -144349,6 +145038,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1204010159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204010147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1204010158}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1205005353
 GameObject:
   m_ObjectHideFlags: 0
@@ -144978,8 +145684,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -144987,7 +145693,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -146652,8 +147358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -146661,7 +147367,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -147980,8 +148686,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -147989,7 +148695,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -148632,16 +149338,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -148970,8 +149676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -148979,7 +149685,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -150290,8 +150996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -150299,7 +151005,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -150551,16 +151257,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -150812,16 +151518,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -151475,6 +152181,7 @@ GameObject:
   - component: {fileID: 1267932293}
   - component: {fileID: 1267932292}
   - component: {fileID: 1267932291}
+  - component: {fileID: 1267932296}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -151601,6 +152308,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1267932296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267932284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1267932295}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1269138799
 GameObject:
   m_ObjectHideFlags: 0
@@ -153539,8 +154263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -153548,7 +154272,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -154672,6 +155396,7 @@ GameObject:
   - component: {fileID: 1305882504}
   - component: {fileID: 1305882503}
   - component: {fileID: 1305882502}
+  - component: {fileID: 1305882506}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -154798,6 +155523,23 @@ MonoBehaviour:
   SendAlphaToProperty: 0
   AlphaProperty: 
   MultiplyWithAlpha: 0
+--- !u!114 &1305882506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305882494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1305882501}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1306804143
 GameObject:
   m_ObjectHideFlags: 0
@@ -155243,6 +155985,7 @@ GameObject:
   - component: {fileID: 1313826887}
   - component: {fileID: 1313826886}
   - component: {fileID: 1313826885}
+  - component: {fileID: 1313826890}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -155369,6 +156112,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1313826890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313826878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1313826889}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1315170937
 GameObject:
   m_ObjectHideFlags: 0
@@ -156514,8 +157274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -156523,7 +157283,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -156708,8 +157468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -156717,7 +157477,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -157154,8 +157914,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -157163,7 +157923,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -157830,6 +158590,7 @@ GameObject:
   - component: {fileID: 1339834063}
   - component: {fileID: 1339834062}
   - component: {fileID: 1339834061}
+  - component: {fileID: 1339834065}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -157937,6 +158698,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1339834065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339834055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1339834064}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1341077522
 GameObject:
   m_ObjectHideFlags: 0
@@ -158110,16 +158888,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -158953,16 +159731,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -161985,6 +162763,7 @@ GameObject:
   - component: {fileID: 1369729313}
   - component: {fileID: 1369729312}
   - component: {fileID: 1369729311}
+  - component: {fileID: 1369729316}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -162111,6 +162890,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1369729316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369729304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1369729315}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1372043252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162323,8 +163119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -162332,7 +163128,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -162565,6 +163361,7 @@ GameObject:
   - component: {fileID: 1374050150}
   - component: {fileID: 1374050149}
   - component: {fileID: 1374050148}
+  - component: {fileID: 1374050153}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -162691,6 +163488,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1374050153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374050141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1374050152}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1374404699
 GameObject:
   m_ObjectHideFlags: 0
@@ -163390,8 +164204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -163399,7 +164213,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -163809,6 +164623,7 @@ GameObject:
   - component: {fileID: 1387580005}
   - component: {fileID: 1387580004}
   - component: {fileID: 1387580003}
+  - component: {fileID: 1387580008}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -163935,6 +164750,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1387580008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387579996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1387580007}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1387663544
 GameObject:
   m_ObjectHideFlags: 0
@@ -164512,8 +165344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -164521,7 +165353,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -164866,16 +165698,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -165703,8 +166535,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -165712,7 +166544,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -166306,16 +167138,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -166551,8 +167383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -166560,7 +167392,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -167492,8 +168324,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -167501,7 +168333,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -167846,6 +168678,7 @@ GameObject:
   - component: {fileID: 1428065404}
   - component: {fileID: 1428065403}
   - component: {fileID: 1428065402}
+  - component: {fileID: 1428065406}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -167952,6 +168785,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1428065406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428065396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1428065405}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1430172289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -168330,8 +169180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -168339,7 +169189,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -168971,8 +169821,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -168980,7 +169830,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -170051,8 +170901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -170060,7 +170910,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -170475,6 +171325,7 @@ GameObject:
   - component: {fileID: 1454229407}
   - component: {fileID: 1454229406}
   - component: {fileID: 1454229405}
+  - component: {fileID: 1454229410}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -170601,6 +171452,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1454229410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454229398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1454229409}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1454463743
 GameObject:
   m_ObjectHideFlags: 0
@@ -170707,8 +171575,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -170716,7 +171584,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -171209,8 +172077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -171218,7 +172086,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -172687,8 +173555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -172696,7 +173564,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -174757,8 +175625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -174766,7 +175634,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -175093,8 +175961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -175102,7 +175970,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -176399,8 +177267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -176408,7 +177276,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -178021,8 +178889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -178030,7 +178898,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -178422,6 +179290,7 @@ GameObject:
   - component: {fileID: 1532999724}
   - component: {fileID: 1532999723}
   - component: {fileID: 1532999722}
+  - component: {fileID: 1532999727}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -178548,6 +179417,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1532999727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532999715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1532999726}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1533248323
 GameObject:
   m_ObjectHideFlags: 0
@@ -178983,8 +179869,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -178992,7 +179878,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -179832,6 +180718,7 @@ GameObject:
   - component: {fileID: 1544247766}
   - component: {fileID: 1544247765}
   - component: {fileID: 1544247764}
+  - component: {fileID: 1544247769}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -179958,6 +180845,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1544247769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544247757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1544247768}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1545159360
 GameObject:
   m_ObjectHideFlags: 0
@@ -180020,6 +180924,7 @@ GameObject:
   - component: {fileID: 1545265518}
   - component: {fileID: 1545265517}
   - component: {fileID: 1545265516}
+  - component: {fileID: 1545265521}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -180146,6 +181051,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1545265521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545265509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1545265520}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1545694498
 GameObject:
   m_ObjectHideFlags: 0
@@ -181716,8 +182638,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -181725,7 +182647,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -184319,16 +185241,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -186745,8 +187667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -186754,7 +187676,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -188494,8 +189416,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -188503,7 +189425,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -188643,6 +189565,7 @@ GameObject:
   - component: {fileID: 1614015849}
   - component: {fileID: 1614015848}
   - component: {fileID: 1614015847}
+  - component: {fileID: 1614015851}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -188749,6 +189672,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1614015851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614015841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1614015850}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1614214298
 GameObject:
   m_ObjectHideFlags: 0
@@ -188808,8 +189748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -188817,7 +189757,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -189750,16 +190690,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -191709,8 +192649,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -191718,7 +192658,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -192356,6 +193296,7 @@ GameObject:
   - component: {fileID: 1646977152}
   - component: {fileID: 1646977151}
   - component: {fileID: 1646977150}
+  - component: {fileID: 1646977155}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -192482,6 +193423,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1646977155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646977143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1646977154}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1647458769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -193068,8 +194026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -193077,7 +194035,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -193828,6 +194786,7 @@ GameObject:
   - component: {fileID: 1658888298}
   - component: {fileID: 1658888297}
   - component: {fileID: 1658888296}
+  - component: {fileID: 1658888301}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -193954,6 +194913,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1658888301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658888289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1658888300}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1658893731
 GameObject:
   m_ObjectHideFlags: 0
@@ -194133,8 +195109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -194142,7 +195118,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -194635,8 +195611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -194644,7 +195620,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -195053,16 +196029,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -196526,7 +197502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &1669782271
@@ -196588,8 +197564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -196597,7 +197573,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -196827,6 +197803,7 @@ GameObject:
   - component: {fileID: 1671060431}
   - component: {fileID: 1671060430}
   - component: {fileID: 1671060429}
+  - component: {fileID: 1671060434}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -196953,6 +197930,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1671060434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671060422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1671060433}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1672896217
 GameObject:
   m_ObjectHideFlags: 0
@@ -196967,6 +197961,7 @@ GameObject:
   - component: {fileID: 1672896225}
   - component: {fileID: 1672896224}
   - component: {fileID: 1672896223}
+  - component: {fileID: 1672896227}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -197074,6 +198069,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1672896227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672896217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1672896226}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1673273782
 GameObject:
   m_ObjectHideFlags: 0
@@ -198719,6 +199731,7 @@ GameObject:
   - component: {fileID: 1695911777}
   - component: {fileID: 1695911776}
   - component: {fileID: 1695911775}
+  - component: {fileID: 1695911780}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -198845,6 +199858,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1695911780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695911768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1695911779}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1698492426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -200095,8 +201125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -200104,7 +201134,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -200478,8 +201508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -200487,7 +201517,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -201203,8 +202233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -201212,7 +202242,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -201547,6 +202577,7 @@ GameObject:
   - component: {fileID: 1727310289}
   - component: {fileID: 1727310288}
   - component: {fileID: 1727310287}
+  - component: {fileID: 1727310291}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -201654,6 +202685,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1727310291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727310281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1727310290}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1728127614
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202111,8 +203159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -202120,7 +203168,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -207786,8 +208834,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -207795,7 +208843,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -208406,6 +209454,7 @@ GameObject:
   - component: {fileID: 1764568248}
   - component: {fileID: 1764568247}
   - component: {fileID: 1764568246}
+  - component: {fileID: 1764568250}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -208513,6 +209562,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1764568250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764568240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1764568249}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1765330559
 GameObject:
   m_ObjectHideFlags: 0
@@ -208946,8 +210012,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -208955,7 +210021,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -209903,6 +210969,7 @@ GameObject:
   - component: {fileID: 1776239890}
   - component: {fileID: 1776239889}
   - component: {fileID: 1776239888}
+  - component: {fileID: 1776239893}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -210029,6 +211096,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1776239893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776239881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1776239892}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &1776492828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -210690,16 +211774,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 15
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -213247,16 +214331,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -213396,6 +214480,7 @@ GameObject:
   - component: {fileID: 1805411794}
   - component: {fileID: 1805411793}
   - component: {fileID: 1805411792}
+  - component: {fileID: 1805411796}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -213502,6 +214587,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1805411796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805411786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1805411795}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1805502595
 GameObject:
   m_ObjectHideFlags: 0
@@ -214131,8 +215233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -214140,7 +215242,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -214391,16 +215493,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -214745,6 +215847,7 @@ GameObject:
   - component: {fileID: 1812000373}
   - component: {fileID: 1812000372}
   - component: {fileID: 1812000371}
+  - component: {fileID: 1812000376}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -214871,6 +215974,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1812000376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812000364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1812000375}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1814016887
 GameObject:
   m_ObjectHideFlags: 0
@@ -215041,8 +216161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -215050,7 +216170,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -215915,6 +217035,7 @@ GameObject:
   - component: {fileID: 1819215059}
   - component: {fileID: 1819215058}
   - component: {fileID: 1819215057}
+  - component: {fileID: 1819215062}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -216041,6 +217162,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1819215062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819215050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1819215061}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1819433688
 GameObject:
   m_ObjectHideFlags: 0
@@ -216630,8 +217768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -216639,7 +217777,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -217010,8 +218148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -217019,7 +218157,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -217204,8 +218342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -217213,7 +218351,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -217742,8 +218880,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -217751,7 +218889,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -219429,8 +220567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -219438,7 +220576,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -220527,6 +221665,7 @@ GameObject:
   - component: {fileID: 1864101965}
   - component: {fileID: 1864101964}
   - component: {fileID: 1864101963}
+  - component: {fileID: 1864101967}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -220634,6 +221773,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1864101967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864101957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1864101966}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1864723902
 GameObject:
   m_ObjectHideFlags: 0
@@ -220837,8 +221993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -220846,7 +222002,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -221447,16 +222603,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -222409,8 +223565,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -222418,7 +223574,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -222763,8 +223919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -222772,7 +223928,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -223097,8 +224253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -223106,7 +224262,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -223291,8 +224447,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -223300,7 +224456,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -223485,8 +224641,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -223494,7 +224650,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -224765,8 +225921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -224774,7 +225930,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -225006,8 +226162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -225015,7 +226171,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -225680,8 +226836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -225689,7 +226845,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -226355,6 +227511,7 @@ GameObject:
   - component: {fileID: 1907199148}
   - component: {fileID: 1907199147}
   - component: {fileID: 1907199146}
+  - component: {fileID: 1907199151}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -226481,6 +227638,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1907199151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907199139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1907199150}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1907239831
 GameObject:
   m_ObjectHideFlags: 0
@@ -227527,16 +228701,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -229751,8 +230925,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -229760,7 +230934,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -230515,8 +231689,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -230524,7 +231698,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -230755,8 +231929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -230764,7 +231938,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -232139,7 +233313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 120
 --- !u!1 &1953425952
@@ -232426,8 +233600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -232435,7 +233609,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -234492,6 +235666,7 @@ GameObject:
   - component: {fileID: 1986213067}
   - component: {fileID: 1986213066}
   - component: {fileID: 1986213065}
+  - component: {fileID: 1986213069}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -234599,6 +235774,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &1986213069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986213059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 1986213068}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &1986938314
 GameObject:
   m_ObjectHideFlags: 0
@@ -236071,16 +237263,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -238607,8 +239799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -238616,7 +239808,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -239415,6 +240607,7 @@ GameObject:
   - component: {fileID: 2044437991}
   - component: {fileID: 2044437990}
   - component: {fileID: 2044437989}
+  - component: {fileID: 2044437993}
   m_Layer: 14
   m_Name: StageMesh
   m_TagString: Untagged
@@ -239521,6 +240714,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &2044437993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044437983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 2044437992}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1 &2045403118
 GameObject:
   m_ObjectHideFlags: 0
@@ -241698,6 +242908,7 @@ GameObject:
   - component: {fileID: 2066281102}
   - component: {fileID: 2066281101}
   - component: {fileID: 2066281100}
+  - component: {fileID: 2066281105}
   m_Layer: 14
   m_Name: PillarControls
   m_TagString: Untagged
@@ -241824,6 +243035,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Renderers: []
+--- !u!114 &2066281105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066281093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5156779a5e6ce46adb88376c7bee9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materialPropertyBlockController: {fileID: 2066281104}
+  _floats: []
+  _vectors: []
+  _colors: []
+  _ints: []
 --- !u!1001 &2066741105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -243438,16 +244666,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -245198,8 +246426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 1000
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -245207,7 +246435,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -245874,16 +247102,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 40
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -246328,8 +247556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -246337,7 +247565,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -249438,8 +250666,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 0.1
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -249447,7 +250675,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.25
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0

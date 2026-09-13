@@ -24,7 +24,7 @@ namespace Beatmap.Containers
         [SerializeField] private TextMeshPro valueDisplay;
         [SerializeField] private LightGradientController lightGradientController;
         [SerializeField] private CreateEventTypeLabels labels;
-        [SerializeField] public TracksDefinitionSO TracksDefinition;
+        [SerializeField] public TrackDefinitionsSO TrackDefinitions;
 
         public BaseEvent EventData;
 
@@ -77,14 +77,14 @@ namespace Beatmap.Containers
         public static EventContainer SpawnEvent(
             EventGridContainer eventsContainer,
             BaseEvent data,
-            TracksDefinitionSO tracksDefinitionSo,
+            TrackDefinitionsSO trackDefinitions,
             ref GameObject prefab,
             ref CreateEventTypeLabels labels)
         {
             var container = Instantiate(prefab).GetComponent<EventContainer>();
             container.EventData = data;
             container.eventGridContainer = eventsContainer;
-            container.TracksDefinition = tracksDefinitionSo;
+            container.TrackDefinitions = trackDefinitions;
             container.labels = labels;
             container.transform.localEulerAngles = Vector3.zero;
             return container;
@@ -178,20 +178,20 @@ namespace Beatmap.Containers
 
         // Ring capabilities come from the active environment rather than conventional event-type numbers.
         private bool IsRingRotationEvent =>
-            TracksDefinition.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.RingRotation);
+            TrackDefinitions.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.RingRotation);
 
         private bool IsRingZoomEvent =>
-            TracksDefinition.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.RingZoom)
+            TrackDefinitions.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.RingZoom)
             || IsSmoothStepRingZoomEvent;
 
         // SmoothStepRingZoom only applies to The Second's legacy ring right now.
         private bool IsSmoothStepRingZoomEvent =>
-            TracksDefinition.GetBasicOrDefault(EventData.Type).Components
+            TrackDefinitions.GetBasicOrDefault(EventData.Type).Components
                 .HasFlag(BasicEventComponent.SmoothStepRingZoom);
 
         // Basic Event light-rotation consumers use speed as their primary visual magnitude.
         private bool IsLaserSpeedEvent =>
-            TracksDefinition.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.LightRotation);
+            TrackDefinitions.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.LightRotation);
 
         //you can do this instead//Change the scale of the event height based on the alpha of the event if alpha visualization is on
         private float GetHeight()
@@ -223,7 +223,7 @@ namespace Beatmap.Containers
             }
 
             // Non-light events should not have different heights
-            if (TracksDefinition.GetBasicOrDefault(EventData.Type).Kind != BasicEventKind.Lights) return 1f;
+            if (TrackDefinitions.GetBasicOrDefault(EventData.Type).Kind != BasicEventKind.Lights) return 1f;
 
             var height = EventData.FloatValue;
             if (EventData.CustomColor != null && Math.Abs(EventData.CustomColor.Value.a - 1) > 0.001)
@@ -247,7 +247,7 @@ namespace Beatmap.Containers
             BaseEvent transitionTarget = null)
         {
             // Use dev's singular serialized track-definition field.
-            if (!allowNonLight && TracksDefinition.GetBasicOrDefault(EventData.Type).Kind != BasicEventKind.Lights)
+            if (!allowNonLight && TrackDefinitions.GetBasicOrDefault(EventData.Type).Kind != BasicEventKind.Lights)
             {
                 lightGradientController.SetVisible(false);
                 return;
@@ -300,7 +300,7 @@ namespace Beatmap.Containers
         {
             if (visible != valueDisplay.gameObject.activeSelf) valueDisplay.gameObject.SetActive(visible);
             var isRotationEvent = IsRingRotationEvent
-                || TracksDefinition.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.LightRotation);
+                || TrackDefinitions.GetBasicOrDefault(EventData.Type).Components.HasFlag(BasicEventComponent.LightRotation);
 
             var lineCount = text.Split('\n').Length;
             var scaleFactor = 1f;

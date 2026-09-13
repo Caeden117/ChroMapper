@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: GagaEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: 
+  basicEntries:
+  - Name: Tower 1 Lights
+    Type: 10
+    Kind: 2
+    Components: 0
+  - Name: Tower 1 Heights
+    Type: 18
+    Kind: 5
+    Components: 0
+  - Name: Tower 2 Lights
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: Tower 2 Heights
+    Type: 16
+    Kind: 5
+    Components: 0
+  - Name: Tower 3 Lights
+    Type: 2
+    Kind: 2
+    Components: 0
+  - Name: Tower 3 Heights
+    Type: 12
+    Kind: 5
+    Components: 0
+  - Name: Tower 4 Lights
+    Type: 3
+    Kind: 2
+    Components: 0
+  - Name: Tower 4 Heights
+    Type: 13
+    Kind: 5
+    Components: 0
+  - Name: Tower 5 Lights
+    Type: 7
+    Kind: 2
+    Components: 0
+  - Name: Tower 5 Heights
+    Type: 17
+    Kind: 5
+    Components: 0
+  - Name: Tower 6 Lights
+    Type: 11
+    Kind: 2
+    Components: 0
+  - Name: Tower 6 Heights
+    Type: 19
+    Kind: 5
+    Components: 0
+  - Name: Aurora 1
+    Type: 0
+    Kind: 2
+    Components: 0
+  - Name: Aurora 2
+    Type: 1
+    Kind: 2
+    Components: 0
+  - Name: Logo
+    Type: 4
+    Kind: 2
+    Components: 0
+  - Name: Boost
+    Type: 5
+    Kind: 3
+    Components: 0
+  glsEntries: []

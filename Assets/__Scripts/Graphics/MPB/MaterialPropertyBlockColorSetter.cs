@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class MaterialPropertyBlockColorSetter : MonoBehaviour
 {
     public MaterialPropertyBlockController Controller;

@@ -13,8 +13,6 @@ public class ChainIndicatorPlacement : BasePlacement<BaseChain, ChainIndicatorCo
     [SerializeField] private DeleteToolController deleteToolController;
     [SerializeField] private LaserSpeedController laserSpeedController;
     [SerializeField] private BeatmapSharedNoteInputController beatmapSharedNoteInputController;
-    private bool hasPreviousSnappedState;
-    private Vector2 previousSnappedState;
 
     public override void Start()
     {
@@ -26,13 +24,6 @@ public class ChainIndicatorPlacement : BasePlacement<BaseChain, ChainIndicatorCo
     {
         base.OnDestroy();
         beatmapSharedNoteInputController.OnCutDirectionChanged -= HandleOnCutDirectionChanged;
-    }
-
-    protected override void ResetHysteresis()
-    {
-        base.ResetHysteresis();
-        hasPreviousSnappedState = false;
-        previousSnappedState = Vector2.zero;
     }
 
     private void HandleOnCutDirectionChanged(int value)
@@ -86,18 +77,11 @@ public class ChainIndicatorPlacement : BasePlacement<BaseChain, ChainIndicatorCo
             var rawX = (localPoint.x / BeatmapConstant.LaneSize) - (gridViewController.IsOdd ? 0.5f : 0f);
             var rawY = (localPoint.y - BeatmapConstant.YOffset - (BeatmapConstant.PlayerYOffset / 2f))
                 / BeatmapConstant.LaneSize;
-            var raw = new Vector2(rawX, rawY);
-            if (!hasPreviousSnappedState)
-            {
-                previousSnappedState = new Vector2(Mathf.Floor(raw.x), Mathf.Floor(raw.y));
-                hasPreviousSnappedState = true;
-            }
-            else
-                previousSnappedState = BeatmapPositionHelper.SnapWithHysteresis(raw, previousSnappedState);
+            var snappedPosition = SnapWithHysteresis(rawX, rawY);
 
             LanePosition = new Vector3(
-                previousSnappedState.x + (gridViewController.IsOdd ? 0.5f : 0f),
-                previousSnappedState.y,
+                snappedPosition.x + (gridViewController.IsOdd ? 0.5f : 0f),
+                snappedPosition.y,
                 0f);
             var snappedPoint = BeatmapPositionHelper.LanePositionToLocalPosition(
                 LanePosition,

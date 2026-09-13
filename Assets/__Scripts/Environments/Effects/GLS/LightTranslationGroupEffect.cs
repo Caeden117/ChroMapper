@@ -28,7 +28,11 @@ public class
         if (transformEntries.Exists(x => x.ID == id && x.Axis == axis))
             transformEntries.First(x => x.ID == id && x.Axis == axis).Transforms.Add(tr);
         else
-            transformEntries.Add(new() { ID = id, Transforms = new() { tr }, Axis = axis, Mirrored = mirrored });
+            transformEntries.Add(
+                new TransformEntry
+                {
+                    ID = id, Transforms = new List<Transform> { tr }, Axis = axis, Mirrored = mirrored
+                });
     }
 
     public void Unregister(int id, Axis axis) => transformEntries.RemoveAll(e => e.ID == id && e.Axis == axis);
@@ -42,7 +46,10 @@ public class
         {
             if (idToContainer.ContainsKey((entry.Axis, entry.ID))) continue;
 
-            idToContainer[(entry.Axis, entry.ID)] = new(entry.Transforms.ToArray(), entry.Axis, entry.Mirrored);
+            idToContainer[(entry.Axis, entry.ID)] = new LightTranslationGroupContainer(
+                entry.Transforms.ToArray(),
+                entry.Axis,
+                entry.Mirrored);
             var container = idToContainer[(entry.Axis, entry.ID)];
 
             var startEvent = new LightTranslationEventStateData(new BaseLightTranslationBase(), short.MinValue);
@@ -58,20 +65,22 @@ public class
             container.EventContainer.AddState(startEvent);
             container.EventContainer.AddState(endEvent);
 
-            var start = CreateState(new() { songBpmTime = short.MinValue, JsonTime = short.MinValue });
+            var start = CreateState(
+                new BaseLightTranslationEventBoxGroup { songBpmTime = short.MinValue, JsonTime = short.MinValue });
             start.Box = new BaseLightTranslationEventBox
             {
                 Axis = (int)entry.Axis,
-                IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                 Events = Array.Empty<BaseLightTranslationBase>()
             };
             start.LocalJsonTime = start.StartTime;
 
-            var end = CreateState(new() { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
+            var end = CreateState(
+                new BaseLightTranslationEventBoxGroup { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
             end.Box = new BaseLightTranslationEventBox
             {
                 Axis = (int)entry.Axis,
-                IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                 Events = Array.Empty<BaseLightTranslationBase>()
             };
             end.LocalJsonTime = end.StartTime = end.EndTime;

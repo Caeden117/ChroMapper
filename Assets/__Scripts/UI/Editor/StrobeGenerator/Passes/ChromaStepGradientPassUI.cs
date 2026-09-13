@@ -52,7 +52,7 @@ public class ChromaStepGradientPassUI : StrobeGeneratorPassUIController
             ? extraEasings[picked]
             : Easing.Named(Easing.DisplayNameToInternalName[picked]);
         return new StrobeStepGradientPass(
-            beatmapRuntimeContext.TracksDefinition,
+            beatmapRuntimeContext.TrackDefinitions,
             GetTypeFromEventIds(eventType.SelectedNum, values.SelectedNum),
             swapColors.isOn,
             float.Parse(strobeInterval.text),

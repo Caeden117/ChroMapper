@@ -19,7 +19,7 @@ public class GLSGroupPageViewController : MonoBehaviour
 
     private void Start()
     {
-        beatmapRuntimeContext.OnTracksDefinitionChanged += HandleTracksDefinitionChanged;
+        beatmapRuntimeContext.OnTrackDefinitionsChanged += HandleTrackDefinitionsChanged;
         editModeContext.OnEditModeChanged += HandleEditModeChanged;
         glsGroupGridProvider.OnGroupPageChanged += HandleGroupPageChanged;
 
@@ -28,12 +28,12 @@ public class GLSGroupPageViewController : MonoBehaviour
 
     private void OnDestroy()
     {
-        beatmapRuntimeContext.OnTracksDefinitionChanged -= HandleTracksDefinitionChanged;
+        beatmapRuntimeContext.OnTrackDefinitionsChanged -= HandleTrackDefinitionsChanged;
         editModeContext.OnEditModeChanged -= HandleEditModeChanged;
         glsGroupGridProvider.OnGroupPageChanged -= HandleGroupPageChanged;
     }
 
-    private void HandleTracksDefinitionChanged(TracksDefinitionSO td)
+    private void HandleTrackDefinitionsChanged(TrackDefinitionsSO td)
     {
         foreach (var text in loadedText) Destroy(text.gameObject);
         loadedText.Clear();

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Beatmap.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputAction;
@@ -23,7 +22,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     [SerializeField] private CustomStandaloneInputModule customStandaloneInputModule;
     [SerializeField] private LaneRotationProvider laneRotationProvider;
     [SerializeField] public Camera Camera;
-    public PostProcessLayer PostProcessLayer;
 
     [Header("Debug")] [SerializeField] private float x;
 
@@ -217,30 +215,10 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private void UpdateAA(object aaValue)
     {
-        switch ((int)aaValue)
-        {
-            case 0:
-                PostProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.None;
-                break;
-            case 1:
-                PostProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.FastApproximateAntialiasing;
-                break;
-            case 2:
-                PostProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
-                PostProcessLayer.subpixelMorphologicalAntialiasing.quality =
-                    SubpixelMorphologicalAntialiasing.Quality.Low;
-                break;
-            case 3:
-                PostProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
-                PostProcessLayer.subpixelMorphologicalAntialiasing.quality =
-                    SubpixelMorphologicalAntialiasing.Quality.Medium;
-                break;
-            case 4:
-                PostProcessLayer.antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
-                PostProcessLayer.subpixelMorphologicalAntialiasing.quality =
-                    SubpixelMorphologicalAntialiasing.Quality.High;
-                break;
-        }
+        // The game has no post-process AA (and ChroMapper's post processing stack
+        // is gone), so the option maps straight to camera MSAA sample counts.
+        // 0 and 1 (a no-op single sample) disable AA.
+        QualitySettings.antiAliasing = Mathf.Clamp((int)aaValue, 0, 4);
     }
 
     private void UpdateRenderScale(object renderScale)

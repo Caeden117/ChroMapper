@@ -24,7 +24,7 @@ public class LaserSpeedInterpolationUI : StrobeGeneratorPassUIController
 
     public override StrobeGeneratorPass GetPassForGeneration() =>
         new StrobeLaserSpeedInterpolationPass(
-            beatmapRuntimeContext.TracksDefinition,
+            beatmapRuntimeContext.TrackDefinitions,
             float.Parse(interval.text),
             Easing.DisplayNameToInternalName[valueEasings.captionText.text],
             spinDirection.SelectedNum,

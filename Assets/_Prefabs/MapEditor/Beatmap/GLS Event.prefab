@@ -61,7 +61,7 @@ MonoBehaviour:
   - {fileID: 8463894110379116219}
   - {fileID: 7153726087407678856}
   lightGradientController: {fileID: 3430681651377604802}
-  TracksDefinition: {fileID: 0}
+  TrackDefinitions: {fileID: 0}
 --- !u!1 &2044728350959948881
 GameObject:
   m_ObjectHideFlags: 0

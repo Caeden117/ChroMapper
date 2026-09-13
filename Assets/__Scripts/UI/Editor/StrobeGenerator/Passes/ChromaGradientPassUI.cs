@@ -22,7 +22,7 @@ public class ChromaGradientPassUI : StrobeGeneratorPassUIController
     {
         var internalName = Easing.DisplayNameToInternalName[chromaEventEasings.captionText.text];
         return new StrobeTransitionPass(
-            beatmapRuntimeContext.TracksDefinition,
+            beatmapRuntimeContext.TrackDefinitions,
             internalName,
             chromaLerpTypes.captionText.text);
     }

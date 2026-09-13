@@ -25,7 +25,11 @@ public class
         if (transformEntries.Exists(x => x.ID == id && x.Axis == axis))
             transformEntries.First(x => x.ID == id && x.Axis == axis).Transforms.Add(tr);
         else
-            transformEntries.Add(new() { ID = id, Transforms = new() { tr }, Axis = axis, Mirrored = mirrored });
+            transformEntries.Add(
+                new TransformEntry
+                {
+                    ID = id, Transforms = new List<Transform> { tr }, Axis = axis, Mirrored = mirrored
+                });
     }
 
     public void Unregister(int id, Axis axis) => transformEntries.RemoveAll(e => e.ID == id && e.Axis == axis);
@@ -39,7 +43,10 @@ public class
         {
             if (idToContainer.ContainsKey((entry.Axis, entry.ID))) continue;
 
-            idToContainer[(entry.Axis, entry.ID)] = new(entry.Transforms.ToArray(), entry.Axis, entry.Mirrored);
+            idToContainer[(entry.Axis, entry.ID)] = new LightRotationGroupContainer(
+                entry.Transforms.ToArray(),
+                entry.Axis,
+                entry.Mirrored);
             var container = idToContainer[(entry.Axis, entry.ID)];
 
             var startEvent = new LightRotationEventStateData(new BaseLightRotationBase(), short.MinValue);
@@ -55,20 +62,22 @@ public class
             container.EventContainer.AddState(startEvent);
             container.EventContainer.AddState(endEvent);
 
-            var start = CreateState(new() { songBpmTime = short.MinValue, JsonTime = short.MinValue });
+            var start = CreateState(
+                new BaseLightRotationEventBoxGroup { songBpmTime = short.MinValue, JsonTime = short.MinValue });
             start.Box = new BaseLightRotationEventBox
             {
                 Axis = (int)entry.Axis,
-                IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                 Events = Array.Empty<BaseLightRotationBase>()
             };
             start.LocalJsonTime = start.StartTime;
 
-            var end = CreateState(new() { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
+            var end = CreateState(
+                new BaseLightRotationEventBoxGroup { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
             end.Box = new BaseLightRotationEventBox
             {
                 Axis = (int)entry.Axis,
-                IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                 Events = Array.Empty<BaseLightRotationBase>()
             };
             end.LocalJsonTime = end.StartTime = end.EndTime;
@@ -150,7 +159,7 @@ public class
                 Axis.X => Quaternion.AngleAxis(rotation, Vector3.right),
                 Axis.Y => Quaternion.AngleAxis(rotation, Vector3.up),
                 Axis.Z => Quaternion.AngleAxis(rotation, Vector3.forward),
-                _ => Quaternion.identity,
+                _ => Quaternion.identity
             };
         }
     }

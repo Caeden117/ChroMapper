@@ -21,8 +21,8 @@ namespace Beatmap.Containers
         [SerializeField] private TracksManager tracksManager;
         [SerializeField] private TextMeshPro[] valueDisplays;
         [SerializeField] public LightGradientController lightGradientController;
-        // Keep the serialized field compatible with dev's TracksDefinitionSO asset type.
-        [SerializeField] public TracksDefinitionSO TracksDefinition;
+        // Keep the serialized field compatible with the active track-definition asset type.
+        [SerializeField] public TrackDefinitionsSO TrackDefinitions;
 
         public BaseEventBoxGroup EventBoxGroupData;
 
@@ -144,12 +144,12 @@ namespace Beatmap.Containers
 
         public static GLSGroupContainer SpawnGLSGroup(
             BaseEventBoxGroup data,
-            TracksDefinitionSO tracksDefinition,
+            TrackDefinitionsSO trackDefinitions,
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<GLSGroupContainer>();
             container.EventBoxGroupData = data;
-            container.TracksDefinition = tracksDefinition;
+            container.TrackDefinitions = trackDefinitions;
             return container;
         }
 
@@ -372,9 +372,9 @@ namespace Beatmap.Containers
             foreach (var textMeshPro in valueDisplays) textMeshPro.SetText(text);
         }
 
-        public static float GetPositionFromTrackDefinition(TracksDefinitionSO tracksDefinition, BaseEventBoxGroup data)
+        public static float GetPositionFromTrackDefinition(TrackDefinitionsSO trackDefinitions, BaseEventBoxGroup data)
         {
-            var track = tracksDefinition.GetGlsOrDefault(data.ID);
+            var track = trackDefinitions.GetGlsOrDefault(data.ID);
 
             var offset = 0f;
             if (track.ColorTrack)

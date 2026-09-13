@@ -513,8 +513,10 @@ namespace Beatmap.Animations
                 if (Colors.Count > 0)
                 {
                     var color = Colors.Get();
-                    container.MpbController.Mpb
-                        .SetColor(colorId, color);
+                    if (container is ObstacleContainer obstacle)
+                        obstacle.SetColor(color);
+                    else
+                        container.MpbController.Mpb.SetColor(colorId, color);
                 }
 
                 if (container is NoteContainer nc)
@@ -626,7 +628,7 @@ namespace Beatmap.Animations
                 case "offsetPosition":
                     AddPointDef(
                         source,
-                        v => OffsetPosition.Add(v),
+                        v => OffsetPosition.Add(v * BeatmapConstant.LaneSize),
                         PointDataParsers.ParseVector3,
                         p,
                         Vector3.zero);
@@ -635,7 +637,7 @@ namespace Beatmap.Animations
                 case "definitePosition":
                     AddPointDef(
                         source,
-                        v => WorldPosition.Add(v),
+                        v => WorldPosition.Add(v * BeatmapConstant.LaneSize),
                         PointDataParsers.ParseVector3,
                         p,
                         Vector3.zero);

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -44,9 +43,7 @@ public static class EnvironmentListUpdate
         foreach (var dataPath in envDataPaths)
         {
             var dataAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(dataPath);
-            var data = JsonConvert.DeserializeObject<EnvData>(
-                dataAsset.text,
-                new Vector3ArrayConverter());
+            var data = CreateUtils.JsonToEnvironmentData(dataAsset);
 
             var scene = AssetDatabase.LoadAssetAtPath<SceneAsset>(
                 PathUtils.Combine(environmentPath, data.Data.ID + ".unity"));
@@ -64,24 +61,24 @@ public static class EnvironmentListUpdate
                 ? AssetDatabase.LoadAssetAtPath<ColorSchemeSO>(colorSchemePath)
                 : ScriptableObject.CreateInstance<ColorSchemeSO>();
 
-            var tracksDefinitionPath = PathUtils.Combine(
+            var trackDefinitionsPath = PathUtils.Combine(
                 scriptPath,
-                "TracksDefinitions",
-                data.Data.ID + "TracksDefinition.asset");
-            var tracksDefinition = AssetDatabase.AssetPathExists(tracksDefinitionPath)
-                ? AssetDatabase.LoadAssetAtPath<TracksDefinitionSO>(tracksDefinitionPath)
-                : ScriptableObject.CreateInstance<TracksDefinitionSO>();
+                "TrackDefinitions",
+                data.Data.ID + "TrackDefinitions.asset");
+            var trackDefinitions = AssetDatabase.AssetPathExists(trackDefinitionsPath)
+                ? AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(trackDefinitionsPath)
+                : ScriptableObject.CreateInstance<TrackDefinitionsSO>();
 
             assetToReserialize.Add(colorScheme);
-            assetToReserialize.Add(tracksDefinition);
+            assetToReserialize.Add(trackDefinitions);
 
             data.Data.ColorScheme.CopyTo(colorScheme);
             if (data.Data.LightTracks != null)
                 // Build component capabilities from the exported object registrations without modifying exported data.
-                data.Data.LightTracks.CopyTo(tracksDefinition, data.Objects, data.Data.ID);
+                data.Data.LightTracks.CopyTo(trackDefinitions, data.Objects, data.Data.ID);
             else
             {
-                tracksDefinition.UnregisterAll();
+                trackDefinitions.UnregisterAll();
                 new TrackDefinitionBasic[]
                     {
                         new() { Kind = BasicEventKind.Lights, Type = 0, Name = "Back Light" },
@@ -94,7 +91,7 @@ public static class EnvironmentListUpdate
                         new() { Kind = BasicEventKind.IntValue, Type = 13, Name = "Right Speed" }
                     }
                     .ToList()
-                    .ForEach(tracksDefinition.Register);
+                    .ForEach(trackDefinitions.Register);
             }
 
             if (listSo.List.Exists(x => x.ID == data.Data.ID))
@@ -102,7 +99,7 @@ public static class EnvironmentListUpdate
                 var d = listSo.List.First(x => x.ID == data.Data.ID);
                 d.Name = data.Data.Title;
                 d.ColorScheme = colorScheme;
-                d.TracksDefinition = tracksDefinition;
+                d.TrackDefinitions = trackDefinitions;
             }
             else
             {
@@ -112,14 +109,14 @@ public static class EnvironmentListUpdate
                         Name = data.Data.Title,
                         ID = data.Data.ID,
                         ColorScheme = colorScheme,
-                        TracksDefinition = tracksDefinition
+                        TrackDefinitions = trackDefinitions
                     });
             }
 
             if (!AssetDatabase.AssetPathExists(colorSchemePath))
                 AssetDatabase.CreateAsset(colorScheme, colorSchemePath);
-            if (!AssetDatabase.AssetPathExists(tracksDefinitionPath))
-                AssetDatabase.CreateAsset(tracksDefinition, tracksDefinitionPath);
+            if (!AssetDatabase.AssetPathExists(trackDefinitionsPath))
+                AssetDatabase.CreateAsset(trackDefinitions, trackDefinitionsPath);
 
             updatedEnvironmentCount++;
         }

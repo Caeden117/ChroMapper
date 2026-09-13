@@ -15,7 +15,7 @@ MonoBehaviour:
   list:
   - Name: '0: 4Slotbox'
     Hash: ac22b8074992f28baa1d85d2ba4a208e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4963278629793272053, guid: b72fd97a7a73dcdc8b2856317905fdac, type: 3}
     Names:
     - 4Slotbox
     Environments:
@@ -26,7 +26,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '1: Arch_01'
     Hash: 07c42fd07251cf8cf29b4078c9ff2486
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5148675457564347737, guid: b5f9125bb280147e5a7b5d6a319c661d, type: 3}
     Names:
     - Arch_01
     Environments:
@@ -37,7 +37,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '2: Arch_DoubleTall_01'
     Hash: c97fc4dd9f47d1a91849fad80e6e6e2c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3106940635547796076, guid: 950f1713140307cee931bcd4acefe0b4, type: 3}
     Names:
     - Arch_DoubleTall_01
     Environments:
@@ -48,7 +48,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '3: Arch_Single_Bent_00'
     Hash: 966257f8ece1f504be1c546404446e09
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6954339467318505888, guid: 7d117dea3c295022a935ea822900f388, type: 3}
     Names:
     - Arch_Single_Bent_00
     Environments:
@@ -59,7 +59,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '4: arcs'
     Hash: cbea168feb96ef0e0f438b64599b4eca
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4565090821400707849, guid: e199be53c58b067dabcf95437017706b, type: 3}
     Names:
     - arcs
     Environments:
@@ -70,7 +70,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '5: Arena'
     Hash: de0589b6d61110bc21d2e62a9231d790
-    Mesh: {fileID: 4300000, guid: fe98929580c547b4839eae368c0e1535, type: 2}
+    Mesh: {fileID: 8563135981553767809, guid: 0a4dd284f9fd5b1908fbe8b7700d6f29, type: 3}
     Names:
     - Arena
     Environments:
@@ -81,7 +81,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '6: ArenaLight'
     Hash: a008b34f00e19e2c96feeeb1a939d214
-    Mesh: {fileID: 4300000, guid: 155927e56afcf950a8378678904cff1e, type: 2}
+    Mesh: {fileID: 8911752857398230966, guid: 533db23851f82022e9c296e69dfbb2b5, type: 3}
     Names:
     - ArenaLight
     Environments:
@@ -92,7 +92,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '7: ArmHeartBase'
     Hash: b534e68f58641cfd1ae60fda0f5b3a1c
-    Mesh: {fileID: 4300000, guid: 020d10d891a659a4ea4e20a8faaa13e9, type: 2}
+    Mesh: {fileID: 1585346885722672772, guid: 3dc14954ddba7631ca93bd5d80292753, type: 3}
     Names:
     - ArmHeartBase
     Environments:
@@ -104,7 +104,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '8: ArmHeartBloodLighting'
     Hash: 7c625181f5a610689c03d77c5a1917be
-    Mesh: {fileID: 4300000, guid: 795050978f071844b9190c3ff135738d, type: 2}
+    Mesh: {fileID: -5369036142035790288, guid: be53dac426537b80aa1f06dcf9c4b0ea, type: 3}
     Names:
     - ArmHeartBloodLighting
     Environments:
@@ -116,7 +116,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '9: ArmHeartLighting'
     Hash: a8e283a3309fdbe1b68841c89cbcea77
-    Mesh: {fileID: 4300000, guid: ce02105a46666de44a0b644d6dfc5954, type: 2}
+    Mesh: {fileID: -1258964236963549883, guid: 90c76b3fe57516da1b1bc08f6c0471ea, type: 3}
     Names:
     - ArmHeartLighting
     Environments:
@@ -128,7 +128,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '10: BackColumns'
     Hash: 23bf80a1591485fc0d1412ed148e9f4a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8920120567344130257, guid: eafa8e8bc209654989e4ee4bae101e16, type: 3}
     Names:
     - BackColumns
     Environments:
@@ -139,7 +139,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '11: BackCube'
     Hash: 8e6e28c9b4d71db5ce731adfc20ce8fe
-    Mesh: {fileID: 4300000, guid: a7d61f7661eb07644aa9d1bdd7794e62, type: 2}
+    Mesh: {fileID: 1824855564470757397, guid: 9db441e32510697599f8581ce7c6ab63, type: 3}
     Names:
     - BackCube
     Environments:
@@ -150,7 +150,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '12: BackgroundBuildings'
     Hash: 19c2b09cab2d0a133dbd46e03659bc8f
-    Mesh: {fileID: -1070722997458527621, guid: f612622d9e5539dfdb0c88fb267dab84, type: 3}
+    Mesh: {fileID: -1070722997458527621, guid: 7582a9f63cfc0cf78bb01a2665602906, type: 3}
     Names:
     - BackgroundBuildings
     Environments:
@@ -162,7 +162,7 @@ MonoBehaviour:
     Ignored: 0
   - Name: '13: BackMountains'
     Hash: bcb123268f1053469c1fa560d29d18bf
-    Mesh: {fileID: 4300000, guid: 6022a4379e8968d47bac1c5186a0840c, type: 2}
+    Mesh: {fileID: 1469236440850514011, guid: 6c0d2fcbed3fc288c93bcab393c38b6a, type: 3}
     Names:
     - BackMountains
     Environments:
@@ -171,9 +171,20 @@ MonoBehaviour:
     BoundsCenter: {x: -12.10318, y: 186.54744, z: 25.061054}
     Unused: 0
     Ignored: 0
-  - Name: '14: Base'
+  - Name: '14: Backplate'
+    Hash: a7e92018438f64f5bd3cb64eb4af74fb
+    Mesh: {fileID: 6078631570277100040, guid: 15388ca37605cc91a9874b3a71d43408, type: 3}
+    Names:
+    - Backplate
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 0.39748633, y: 2.189058, z: 0.06355822}
+    BoundsCenter: {x: 0, y: 1.094529, z: 0.053761497}
+    Unused: 0
+    Ignored: 0
+  - Name: '15: Base'
     Hash: 0aafde0fd5abbd503716e7b03341c80a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3909233067320746374, guid: f91e6fd2f4f40398aa59514d63eca740, type: 3}
     Names:
     - Base
     Environments:
@@ -182,9 +193,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 2.6848378, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '15: BaseBelow'
+  - Name: '16: BaseBelow'
     Hash: 619df503bc232ee5fa3dcc02da366d4a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8139160920610822282, guid: 7a10c7feee80d0b449e6796d14238904, type: 3}
     Names:
     - BaseBelow
     Environments:
@@ -193,9 +204,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.20999956, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '16: Basketball'
+  - Name: '17: Basketball'
     Hash: 177a8e8983e93ffb3016b45d208e373e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2342459666381787544, guid: 28cdee31b9d67581b8688879eee705bd, type: 3}
     Names:
     - Basketball
     Environments:
@@ -204,9 +215,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '17: BGSphere'
+  - Name: '18: BGSphere'
     Hash: b8e4ca404515de7bf67c9fe17861aafa
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -965440440492902644, guid: e56c85c1c829fdaba80de3697ea9f996, type: 3}
     Names:
     - BGSphere
     Environments:
@@ -215,9 +226,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '18: BigMirrorConstruction'
+  - Name: '19: BigMirrorConstruction'
     Hash: 553111138ac3435a618a7efa515b3123
-    Mesh: {fileID: 6980050762359926242, guid: 340ea92787c8a8745a6844645f54bcea, type: 3}
+    Mesh: {fileID: 6942448764332605775, guid: 3a4c0c3d44671409795894caa6c6b3c0, type: 3}
     Names:
     - BigMirrorConstruction
     Environments:
@@ -226,9 +237,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -80.10001, z: 12}
     Unused: 0
     Ignored: 0
-  - Name: '19: BigMirrorFloor'
+  - Name: '20: BigMirrorFloor'
     Hash: f3ae112e07cc1aef388ef93bcd586812
-    Mesh: {fileID: -3453918070883861244, guid: b322cf504473831c5bc2cffd77479296, type: 3}
+    Mesh: {fileID: -3453918070883861244, guid: b472849e2622dc8879f60136704d41df, type: 3}
     Names:
     - BigMirrorFloor
     Environments:
@@ -237,9 +248,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 46.375}
     Unused: 0
     Ignored: 0
-  - Name: '20: BillieClouds'
+  - Name: '21: BillieClouds'
     Hash: 176488ad84cb8a01fa26963c322ff299
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3540296374694345525, guid: 9582c6231437e01d79a22e230d676769, type: 3}
     Names:
     - BillieClouds
     Environments:
@@ -248,9 +259,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1.7939835, y: -0.3499012, z: 17.464584}
     Unused: 0
     Ignored: 0
-  - Name: '21: BillieRail'
+  - Name: '22: BillieRail'
     Hash: 1bde536e832984a324d6435164d92343
-    Mesh: {fileID: 4300000, guid: c0248b988c86fc146b58d7fbae9adaaa, type: 2}
+    Mesh: {fileID: 6521145164577850556, guid: d656b67046bba175fb498a631332a387, type: 3}
     Names:
     - BillieRail
     Environments:
@@ -259,9 +270,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 21.574997}
     Unused: 0
     Ignored: 0
-  - Name: '22: BlocksL'
+  - Name: '23: BlocksL'
     Hash: 2417c5161434f73b82531522a8caf345
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 57085871140381044, guid: c3de7211981af3e308e948446b6829b3, type: 3}
     Names:
     - BlocksL
     Environments:
@@ -270,9 +281,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.02475667, y: -0.024300352, z: -0.0000009536743}
     Unused: 0
     Ignored: 0
-  - Name: '23: BlocksR'
+  - Name: '24: BlocksR'
     Hash: 35a454c9eca7a41658c1659531e7128d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3734410840558661688, guid: e0176e73027835963a3e3c57a84e2bd9, type: 3}
     Names:
     - BlocksR
     Environments:
@@ -281,9 +292,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.02475667, y: -0.024300352, z: -0.0000009536743}
     Unused: 0
     Ignored: 0
-  - Name: '24: Body'
+  - Name: '25: Body'
     Hash: 24b182cfcd3022473ae608b13512b2f2
-    Mesh: {fileID: 4300000, guid: 917f8debb39cbbd4689e29115938a429, type: 2}
+    Mesh: {fileID: 2959467708922500008, guid: 4e48dcff633aaa360a9dca1f4f645145, type: 3}
     Names:
     - Body
     Environments:
@@ -292,9 +303,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.6832491, z: 0.033750534}
     Unused: 0
     Ignored: 0
-  - Name: '25: Body'
+  - Name: '26: Body'
     Hash: 349ac7fed7041b02eb1242d9bb2ddaa9
-    Mesh: {fileID: 4300000, guid: 34292f16052cd2d43a3f371a7124870f, type: 2}
+    Mesh: {fileID: 2959467708922500008, guid: 6caa3c6d79160d61db2964fa031694f1, type: 3}
     Names:
     - Body
     Environments:
@@ -303,9 +314,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.74430585, z: 0.083043694}
     Unused: 0
     Ignored: 0
-  - Name: '26: Body'
+  - Name: '27: Body'
     Hash: 84f024a1d64526d368a85f3d7aa1f540
-    Mesh: {fileID: 4300000, guid: 2ed527b55f5dd0444b9d5fe5a9e8fc5f, type: 2}
+    Mesh: {fileID: 2959467708922500008, guid: e722110bde17d3c9c93103ad5147f70f, type: 3}
     Names:
     - Body
     Environments:
@@ -314,9 +325,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.691474, z: -0.0042808056}
     Unused: 0
     Ignored: 0
-  - Name: '27: Body'
+  - Name: '28: Body'
     Hash: 997c1a37eb663f63722ef49f41da128c
-    Mesh: {fileID: 4300000, guid: bad84ca43815b624fb4ec671336d0504, type: 2}
+    Mesh: {fileID: 2959467708922500008, guid: db508c7ef5272c5ddad17fb8d2454cf0, type: 3}
     Names:
     - Body
     Environments:
@@ -325,9 +336,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.723676, z: 0.14165103}
     Unused: 0
     Ignored: 0
-  - Name: '28: Body'
+  - Name: '29: Body'
     Hash: d489a026a68a1b4296c7f4cfe38da81e
-    Mesh: {fileID: 4300000, guid: 41f6213c193afd3488b7c951177d704e, type: 2}
+    Mesh: {fileID: 2959467708922500008, guid: f713f33acef0e9dd3b58904792da9904, type: 3}
     Names:
     - Body
     Environments:
@@ -336,9 +347,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.50736517, z: -0.08319545}
     Unused: 0
     Ignored: 0
-  - Name: '29: BottomCones'
+  - Name: '30: BottomCones'
     Hash: 9a02bcf283503f73669ec360ac315be9
-    Mesh: {fileID: 3369057840214359300, guid: cebb0ad03f8cad23db576cc92f352c0d, type: 3}
+    Mesh: {fileID: 3369057840214359300, guid: 4ea36a43bf93dedbfab178b83d2f82fc, type: 3}
     Names:
     - BottomCones
     Environments:
@@ -348,9 +359,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 25.000004, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '30: BottomCones'
+  - Name: '31: BottomCones'
     Hash: a3f4adc679ba62701c8a204c6138cc1d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3369057840214359300, guid: 2d80f4f907aed7d83a806c2701a20065, type: 3}
     Names:
     - BottomCones
     Environments:
@@ -359,9 +370,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -31.999996, z: 45.520004}
     Unused: 0
     Ignored: 0
-  - Name: '31: Box001'
+  - Name: '32: Box001'
     Hash: 9eb97a8da4ab26b78f88c7285743e8f7
-    Mesh: {fileID: 4300000, guid: 8a2b1e6d8e6bf06478c41b30e0cf4930, type: 2}
+    Mesh: {fileID: 5060444177187149915, guid: 85a0ef01d8eb0ce3f948e42586b61b0a, type: 3}
     Names:
     - Box001
     Environments:
@@ -371,9 +382,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.034283064, z: 0.31786677}
     Unused: 0
     Ignored: 0
-  - Name: '32: Box004'
+  - Name: '33: Box004'
     Hash: f2568dec4130f8dd0b5f5dd470f8405e
-    Mesh: {fileID: 4300000, guid: 2155c766f5224954fba15cbf03730e81, type: 2}
+    Mesh: {fileID: -5613867604693661769, guid: 2718a88d310718b48bd8215cce5ccd17, type: 3}
     Names:
     - Box004
     Environments:
@@ -383,9 +394,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.034283064, z: 0.32025856}
     Unused: 0
     Ignored: 0
-  - Name: '33: Box007'
+  - Name: '34: Box007'
     Hash: 171af8cf2525ad287a32c4e11b67e210
-    Mesh: {fileID: 4300000, guid: 18f78f71f7e07564989a94d7595959b1, type: 2}
+    Mesh: {fileID: 2954858793080512207, guid: a555a9c7bbe3c9b649c8264b6989f106, type: 3}
     Names:
     - Box007
     Environments:
@@ -395,9 +406,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0.4139062}
     Unused: 0
     Ignored: 0
-  - Name: '34: Box008'
+  - Name: '35: Box008'
     Hash: 9e29d94a0c0ec947e91419d8324d1c8c
-    Mesh: {fileID: 4300000, guid: 50279111eb4968d439644251b0d8bfdf, type: 2}
+    Mesh: {fileID: 1226723149311242300, guid: 06a08016e1a6a82c7a3f1b91b60211e1, type: 3}
     Names:
     - Box008
     Environments:
@@ -407,9 +418,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0.4139062}
     Unused: 0
     Ignored: 0
-  - Name: '35: Box009'
+  - Name: '36: Box009'
     Hash: 6473d0c1640149a92f21c8b816e12a38
-    Mesh: {fileID: 4300000, guid: d76c57d1789700048bf665378961983d, type: 2}
+    Mesh: {fileID: 7485205316709286908, guid: 522fa40d8fe45525abf3d0a9b92e3cd4, type: 3}
     Names:
     - Box009
     Environments:
@@ -419,9 +430,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0.2254915}
     Unused: 0
     Ignored: 0
-  - Name: '36: Box010'
+  - Name: '37: Box010'
     Hash: 1ab540a601944f3db0ba88fe2814f155
-    Mesh: {fileID: 4300000, guid: 06dbf93a266a73e40870223263582c9f, type: 2}
+    Mesh: {fileID: -3613724358419971262, guid: 6a5e34c1a13440a4ab9f7f5b6f77c681, type: 3}
     Names:
     - Box010
     Environments:
@@ -431,9 +442,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0.062782384}
     Unused: 0
     Ignored: 0
-  - Name: '37: BTSConstruction'
+  - Name: '38: BTSConstruction'
     Hash: 2a7191de7f2222aa2a63d893400ac9bf
-    Mesh: {fileID: 6980050762359926242, guid: 52ee0da6675716d9191aafb4ba2b7d11, type: 3}
+    Mesh: {fileID: 8512664367050034900, guid: 5f8fb890ef26ab1d4a68a5b8c16fc328, type: 3}
     Names:
     - BTSConstruction
     Environments:
@@ -442,9 +453,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.051000003, z: 109.250465}
     Unused: 0
     Ignored: 0
-  - Name: '38: BuildingBG'
+  - Name: '39: BuildingBG'
     Hash: d492e26386945ad9b60ad9ecc45c0b56
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6814151406444666485, guid: 91404870ff0823e748a3a2384446b72d, type: 3}
     Names:
     - BuildingBG
     Environments:
@@ -453,9 +464,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1.0036621, y: 1991.7502, z: -3.7077637}
     Unused: 0
     Ignored: 0
-  - Name: '39: BurstFlipbook'
+  - Name: '40: BurstFlipbook'
     Hash: d1438b388733f8eb464dec20f9a281aa
-    Mesh: {fileID: 4300000, guid: 37067020eddce784391339a0cd7e29b2, type: 2}
+    Mesh: {fileID: 5883899844116009334, guid: 1cb8b08bad89aa0d0be74181a2db343f, type: 3}
     Names:
     - BurstFlipbook
     Environments:
@@ -464,9 +475,20 @@ MonoBehaviour:
     BoundsCenter: {x: -0.004023619, y: -0.0011389256, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '40: Cage'
+  - Name: '41: Cable'
+    Hash: db3f9478aef839353e36f666ebe606db
+    Mesh: {fileID: -7966592091268404495, guid: c7751c9bae0b14984ad9e9a717521fe5, type: 3}
+    Names:
+    - Cable
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 0.83685136, y: 9.710299, z: 0.09202652}
+    BoundsCenter: {x: -0.005223021, y: 8.223632, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '42: Cage'
     Hash: 9d86b06dc9109fb8dd60b2796bb00c1f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8634338456207152865, guid: 757c5a3f4cc752c8a8d050cfefec1738, type: 3}
     Names:
     - Cage
     Environments:
@@ -475,9 +497,9 @@ MonoBehaviour:
     BoundsCenter: {x: 3.471717, y: -1.9790901, z: -0.00014162064}
     Unused: 0
     Ignored: 0
-  - Name: '41: Castle'
+  - Name: '43: Castle'
     Hash: 1e2f07ec2cff8d005beb1150c8e20318
-    Mesh: {fileID: 4300000, guid: 83fcade6e492df94990f20d362a61e7b, type: 2}
+    Mesh: {fileID: 8104117749616084085, guid: 69a81df801016147685c2ebb9499e44d, type: 3}
     Names:
     - Castle
     Environments:
@@ -486,9 +508,9 @@ MonoBehaviour:
     BoundsCenter: {x: 5.885886, y: 11.771472, z: 0.63530487}
     Unused: 0
     Ignored: 0
-  - Name: '42: CatScreenMesh'
+  - Name: '44: CatScreenMesh'
     Hash: 6f48a6c856a29c07b52b6b09d3efc5af
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5233022568016344347, guid: b3771ed8a627ea0f5a4d07e4e3d08e3d, type: 3}
     Names:
     - CatScreenMesh
     Environments:
@@ -497,9 +519,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.05674815, y: 0.028482437, z: -4.5029716}
     Unused: 0
     Ignored: 0
-  - Name: '43: CeilingLight'
+  - Name: '45: CeilingLight'
     Hash: e6d59ddb57d726d3f4d1f63de9ea6b5c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 105548858874117898, guid: f0f2b30746072dc93950f2ad54d02139, type: 3}
     Names:
     - CeilingLight
     Environments:
@@ -508,9 +530,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.000008024275, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '44: CeilingNear'
+  - Name: '46: CeilingNear'
     Hash: b78d6171384298ccb8e5c77eb24a7921
-    Mesh: {fileID: 4300000, guid: 76adf9beca4748344bcafce41802acc5, type: 2}
+    Mesh: {fileID: 8375993449374190846, guid: 0c8237bfe0b3f525b9d554b2239a03d9, type: 3}
     Names:
     - CeilingNear
     Environments:
@@ -519,9 +541,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.0000000037252903, z: 2.750207}
     Unused: 0
     Ignored: 0
-  - Name: '45: Chevron'
+  - Name: '47: Chevron'
     Hash: 3fa71971af850c5718b056d0a5cf23c8
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1718363623661579603, guid: 3936e650b4f81dd09a6bc52dd4c18355, type: 3}
     Names:
     - Chevron
     Environments:
@@ -530,9 +552,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.6768093, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '46: Chevron'
+  - Name: '48: Chevron'
     Hash: b43b727fffab1e5cd2043c4d42951878
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1718363623661579603, guid: 6c28bcd826569fb73a051c0fcc47d6eb, type: 3}
     Names:
     - Chevron
     Environments:
@@ -541,21 +563,22 @@ MonoBehaviour:
     BoundsCenter: {x: -0.013132885, y: 0.025850497, z: 0.0000000037252903}
     Unused: 0
     Ignored: 0
-  - Name: '47: Chevron'
+  - Name: '49: Chevron'
     Hash: c825bffc2e68860f255fbdd190a5f415
-    Mesh: {fileID: 1718363623661579603, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 4300000, guid: 0730dbc120b6aa70885b5e3d7fba2541, type: 2}
     Names:
     - Chevron
     Environments:
     - GridEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 4.095761, y: 1.5977647, z: 0}
     BoundsCenter: {x: 0, y: -0.6768093, z: -0.099999994}
     Unused: 0
     Ignored: 0
-  - Name: '48: Chevron'
+  - Name: '50: Chevron'
     Hash: db0e68775ed5164f23d1a98a77a7b5f0
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1718363623661579603, guid: f73b8f32a363cde338a3af40cc602ad8, type: 3}
     Names:
     - Chevron
     Environments:
@@ -564,9 +587,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.48943657, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '49: Chevron'
+  - Name: '51: Chevron'
     Hash: e3a0a8da143953025ab89c8e5db199dc
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1718363623661579603, guid: 888272ef4a28dfba480eb48f4a2496b7, type: 3}
     Names:
     - Chevron
     Environments:
@@ -575,9 +598,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.091362715}
     Unused: 0
     Ignored: 0
-  - Name: '50: CircleStageConstruction'
+  - Name: '52: CircleStageCollider'
+    Hash: 997d000102592ac5bf2a51008e494b9e
+    Mesh: {fileID: 4300000, guid: 221ccaa1b9ebe86e584ab5503a0de40d, type: 2}
+    Names:
+    - CircleStageCollider
+    Environments:
+    - BritneyEnvironment
+    BoundsSize: {x: 19.039255, y: 0.47817, z: 19.039255}
+    BoundsCenter: {x: 0, y: -0.29933828, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '53: CircleStageConstruction'
     Hash: 5b425bde673bc620303c4fb4445dec28
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5546745815493186121, guid: 0097dafa55d5c658793e8544375651ec, type: 3}
     Names:
     - CircleStageConstruction
     Environments:
@@ -586,9 +620,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '51: Cloud_004'
+  - Name: '54: Cloud_004'
     Hash: 77dd13aadec8182c0ebf44aeed6018d3
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -9222537659601855002, guid: f3e0f569961af778987f5794afe25c27, type: 3}
     Names:
     - Cloud_004
     Environments:
@@ -597,9 +631,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1.6187811, y: 9.835916, z: -0.000018149614}
     Unused: 0
     Ignored: 0
-  - Name: '52: CloudShape1'
+  - Name: '55: CloudShape1'
     Hash: f33ed82de73265985b5e8e1aa9e75def
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4093727445231169713, guid: 2a2061c213ab291d680cf4b15470ce3e, type: 3}
     Names:
     - CloudShape1
     Environments:
@@ -608,9 +642,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00017133355, y: 0.00032258034, z: -0.02}
     Unused: 0
     Ignored: 0
-  - Name: '53: CloudShape2'
+  - Name: '56: CloudShape2'
     Hash: a9fb95c37c5fcacd42772bfb0744471e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3172819643452962774, guid: 04fa56dbd2ff7ca88bf5263ffb138a7e, type: 3}
     Names:
     - CloudShape2
     Environments:
@@ -619,9 +653,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.038292572, y: -0.0395844, z: -0.02}
     Unused: 0
     Ignored: 0
-  - Name: '54: Column'
+  - Name: '57: Column'
     Hash: 8ff2a071063dec2d62afc98f993faeee
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -1674268716328342803, guid: a6b12d3ce6d37e5c289ce4eacde07011, type: 3}
     Names:
     - Column
     Environments:
@@ -630,9 +664,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.024368286, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '55: ColumnInner'
+  - Name: '58: ColumnInner'
     Hash: b7129fd4da119d34d3bd253944648fdd
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -1627796017543317168, guid: 680ced44761c6cb8e98e126de94f9f98, type: 3}
     Names:
     - ColumnInner
     Environments:
@@ -641,9 +675,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1.5968046, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '56: CombinedMesh'
+  - Name: '59: CombinedMesh'
     Hash: 1116a964ca8b8d9aae28982accd5edfe
-    Mesh: {fileID: -8126256408004135652, guid: 468b700392762030994f47afbe339238, type: 3}
+    Mesh: {fileID: -6367921448538992654, guid: ff3be742ddb5e0f6aa6bf06f4e15f953, type: 3}
     Names:
     - CombinedMesh
     Environments:
@@ -652,9 +686,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.051, z: 107.78}
     Unused: 0
     Ignored: 0
-  - Name: '57: CombinedMesh'
+  - Name: '60: CombinedMesh'
     Hash: 381d721a1a34c1b4d7e8211cd9f43407
-    Mesh: {fileID: 894726906354375815, guid: e42d376ef9b5374aea47a7b5dd3d1f54, type: 3}
+    Mesh: {fileID: -6367921448538992654, guid: e7a37da600976a06e9db25986bd24bf9, type: 3}
     Names:
     - CombinedMesh
     Environments:
@@ -663,9 +697,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -70, z: -79}
     Unused: 0
     Ignored: 0
-  - Name: '58: CombinedMesh'
+  - Name: '61: CombinedMesh'
     Hash: 4f994fd984012889b1faaa627a293fee
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6367921448538992654, guid: e544745b488ad6da39c1d12c67bf8785, type: 3}
     Names:
     - CombinedMesh
     Environments:
@@ -674,9 +708,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000009536743, y: 3.7412972, z: 31.818563}
     Unused: 0
     Ignored: 0
-  - Name: '59: Cone'
+  - Name: '62: Cone'
     Hash: 6c038c08e2a41e48948e11ca406483a9
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3613567641014311022, guid: 2083da40b30b8548c92837c863f017b7, type: 3}
     Names:
     - Cone
     Environments:
@@ -685,9 +719,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -26.25, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '60: ConeBig'
+  - Name: '63: ConeBig'
     Hash: deadefbe0e1d9ce029f456d4acaeccf0
-    Mesh: {fileID: 2273851805500150652, guid: f33c16507a98ba311b77a2e126c96114, type: 3}
+    Mesh: {fileID: 3482259533573767567, guid: 6329ee948b9dca76fb38bf3fa2e66e2d, type: 3}
     Names:
     - ConeBig
     Environments:
@@ -696,9 +730,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1737.4806, z: 0.00000047683716}
     Unused: 0
     Ignored: 0
-  - Name: '61: ConeLight0'
+  - Name: '64: ConeLight0'
     Hash: 5a3285e5b393d6f6ca47ef2319d20dae
-    Mesh: {fileID: 4300000, guid: ffac464d7d5f0ed4ba9635fc31b8b353, type: 2}
+    Mesh: {fileID: 6752166601784326181, guid: e984f539f8957dc04a6d1d0442081f81, type: 3}
     Names:
     - ConeLight0
     Environments:
@@ -707,9 +741,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1.8192408, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '62: ConeLight1'
+  - Name: '65: ConeLight1'
     Hash: 2c31fdbc7e4155f51f35cfa234cae83b
-    Mesh: {fileID: 4300000, guid: 846dfd407bd599a49b52e59c30011759, type: 2}
+    Mesh: {fileID: -3706383166912668557, guid: ebbf81309ca66e04e9d6b2bc8c1efa82, type: 3}
     Names:
     - ConeLight1
     Environments:
@@ -718,9 +752,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000029802322, y: 2.0309045, z: 0.000000029802322}
     Unused: 0
     Ignored: 0
-  - Name: '63: ConeLight2'
+  - Name: '66: ConeLight2'
     Hash: 05032ad4d1ab9544f6828ff180b03291
-    Mesh: {fileID: 4300000, guid: 9c21581ecd36491fc80ae389c9ab457f, type: 2}
+    Mesh: {fileID: 1084316766399416745, guid: 13239be350c1574ea9a52454954a1afc, type: 3}
     Names:
     - ConeLight2
     Environments:
@@ -729,9 +763,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 2.094933, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '64: ConeLight3'
+  - Name: '67: ConeLight3'
     Hash: c646bbea9a98ff82eab96e1e5d0be3ff
-    Mesh: {fileID: 4300000, guid: 726eea3fdefeeb147b75dc7468c2eaa1, type: 2}
+    Mesh: {fileID: -3391868514307350464, guid: 9a04af257626f51f4a4a2cf560904743, type: 3}
     Names:
     - ConeLight3
     Environments:
@@ -740,9 +774,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000035762787, y: 2.6054306, z: -0.00000035762787}
     Unused: 0
     Ignored: 0
-  - Name: '65: ConeSmall'
+  - Name: '68: ConeSmall'
     Hash: 076670b9d66d7b7797a7082ed13bced2
-    Mesh: {fileID: 4300000, guid: 835a885f54cd9d1459a1817e24e3c7ed, type: 2}
+    Mesh: {fileID: -7811948906560276176, guid: 3abb6335b6d213fd1803e6c31c312711, type: 3}
     Names:
     - ConeSmall
     Environments:
@@ -751,9 +785,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 14.308991, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '66: Connector'
+  - Name: '69: Connector'
     Hash: 9fc38edad64d988f9f8e9c0a363dda00
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1583432573830374512, guid: 68f983126a25faaee8a6907c98957def, type: 3}
     Names:
     - Connector
     Environments:
@@ -762,9 +796,9 @@ MonoBehaviour:
     BoundsCenter: {x: 4.371558, y: -1.8176619, z: -0.00014162064}
     Unused: 0
     Ignored: 0
-  - Name: '67: Construction'
+  - Name: '70: Construction'
     Hash: a36d12f816d480f11d509aca16d4d2af
-    Mesh: {fileID: 6980050762359926242, guid: 1824e24850ab633d285d170af7ac2ee4, type: 3}
+    Mesh: {fileID: 4300000, guid: 9dd707842819f838b87719b320147da5, type: 2}
     Names:
     - Construction
     - ConstructionBottom
@@ -774,9 +808,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.099999994, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '68: Construction'
+  - Name: '71: Construction'
     Hash: ea5100cb59d175fcdc7ef55343855da5
-    Mesh: {fileID: 6980050762359926242, guid: e42d376ef9b5374aea47a7b5dd3d1f54, type: 3}
+    Mesh: {fileID: 6980050762359926242, guid: 7a4f81ffcf6777bf1852bb5240ecb8ff, type: 3}
     Names:
     - Construction
     - Construction_Monstercat
@@ -787,9 +821,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.04999999, z: 57.675}
     Unused: 0
     Ignored: 0
-  - Name: '69: Construction'
+  - Name: '72: Construction'
     Hash: f6fce848622bf6663a1e66987a215f78
-    Mesh: {fileID: 4300000, guid: 047fa64d8ee6ca54ba74052959dad7de, type: 2}
+    Mesh: {fileID: 6980050762359926242, guid: 1752c6e3ec5716631aa2d6256e400086, type: 3}
     Names:
     - Construction
     Environments:
@@ -798,9 +832,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000021338463, y: -0.0375, z: 32.59931}
     Unused: 0
     Ignored: 0
-  - Name: '70: Construction_Kaleidoscope'
+  - Name: '73: Construction_Kaleidoscope'
     Hash: 36b2ce0fdab51e3ccceeff33f8af944d
-    Mesh: {fileID: 6980050762359926242, guid: 52ee0da6675716d9191aafb4ba2b7d11, type: 3}
+    Mesh: {fileID: -8522616316284787400, guid: 85999666b5f292daf979df1fa92f0688, type: 3}
     Names:
     - Construction_Kaleidoscope
     Environments:
@@ -809,9 +843,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000059604645, y: -0.04897422, z: 109.250465}
     Unused: 0
     Ignored: 0
-  - Name: '71: Construction_KDA'
+  - Name: '74: Construction_KDA'
     Hash: 6cbe08a3b5d7a3eb0bd535faba321fba
-    Mesh: {fileID: 6980050762359926242, guid: 79a88a6ad1047509fa822942d5b66600, type: 3}
+    Mesh: {fileID: 6708212426198149121, guid: fdc9c49be7d25c2e5bf9576ea3634189, type: 3}
     Names:
     - Construction_KDA
     Environments:
@@ -820,9 +854,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -42.3, z: 7.8500137}
     Unused: 0
     Ignored: 0
-  - Name: '72: Construction_Origins'
+  - Name: '75: Construction_Origins'
     Hash: beb79d407c12a3eae02514a27d248257
-    Mesh: {fileID: 4300000, guid: 7562bc3ca1cf4168bf41cd8cdcdd2830, type: 2}
+    Mesh: {fileID: -4249741284504765902, guid: 3192dfecf30b4283e929d26721f17e69, type: 3}
     Names:
     - Construction_Origins
     Environments:
@@ -831,9 +865,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -49.949997, z: 8.75}
     Unused: 0
     Ignored: 0
-  - Name: '73: Construction_RocketLeague'
+  - Name: '76: Construction_RocketLeague'
     Hash: 9fa6dad8b42658c9089321963d93137e
-    Mesh: {fileID: -8554111741424386071, guid: c021e8144b3d75e4f8486359c5f2396d, type: 3}
+    Mesh: {fileID: 1122520252149484399, guid: 51762868d13cee6358feda0025318e8a, type: 3}
     Names:
     - Construction_RocketLeague
     Environments:
@@ -842,9 +876,9 @@ MonoBehaviour:
     BoundsCenter: {x: -2, y: -50.225, z: 58.347366}
     Unused: 0
     Ignored: 0
-  - Name: '74: ConstructionMesh'
+  - Name: '77: ConstructionMesh'
     Hash: 5de5fbbc0b62c15f65d6133e4f7862cf
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7225148259083420588, guid: 4c8be5dbaaee68601a08edf3e50ef102, type: 3}
     Names:
     - ConstructionMesh
     Environments:
@@ -853,9 +887,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.00000023841858, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '75: Core'
+  - Name: '78: Core'
     Hash: 961d649f6faff03010fa2e02f775025c
-    Mesh: {fileID: 4300000, guid: 756d983cb8f2d1344942502749a1ae0d, type: 2}
+    Mesh: {fileID: -5293335269154574413, guid: cc7f0ee250b831af6be578c7025b50c2, type: 3}
     Names:
     - Core
     Environments:
@@ -864,9 +898,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.3609438, y: -0.00000081956387, z: 9.70322}
     Unused: 0
     Ignored: 0
-  - Name: '76: CrowSitting'
+  - Name: '79: CrowSitting'
     Hash: 8abd8382dd512e6d112b0c282b6bc15e
-    Mesh: {fileID: 4300000, guid: e5c9d8d733f69174dacd6cb76a7f838d, type: 2}
+    Mesh: {fileID: 5345832035578946291, guid: 28c0b04288b2e79fc9bd784e654afb81, type: 3}
     Names:
     - CrowSitting
     Environments:
@@ -876,9 +910,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.123195484, z: -0.017760836}
     Unused: 0
     Ignored: 0
-  - Name: '77: Crystal'
+  - Name: '80: Crystal'
     Hash: 6af818c858c2ce4e235e30be6324a7e9
-    Mesh: {fileID: 4300000, guid: b6b1d92fb316c7c4caf29067cff9eeea, type: 3}
+    Mesh: {fileID: 4702925393065980420, guid: eb18dd631b9d7565cb8a6a95442b8a71, type: 3}
     Names:
     - Crystal
     Environments:
@@ -887,9 +921,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.41131392, z: 0.06961921}
     Unused: 0
     Ignored: 0
-  - Name: '78: Cube'
+  - Name: '81: Cube'
     Hash: 37617d71c907984032831e479e4305ef
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5495902117074765545, guid: 6cc88e404c680144cb6bcbdf5da335d9, type: 3}
     Names:
     - Cube
     Environments:
@@ -898,9 +932,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '79: Cube'
+  - Name: '82: Cube'
     Hash: 37b9ee90b0af1d6d04709deb7f95f699
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5495902117074765545, guid: 3775ac6af8408520d9ac3af0a647d632, type: 3}
     Names:
     - Cube
     Environments:
@@ -909,24 +943,60 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.000000014901161, z: 0.000000014901161}
     Unused: 0
     Ignored: 0
-  - Name: '80: Cube'
+  - Name: '83: Cube'
     Hash: d95eabb7a5540ab14d45186855612a23
-    Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    Mesh: {fileID: -442650110789157686, guid: 8dffa87e94e36b15eafaacde6472f3a8, type: 3}
     Names:
     - Cube
     Environments:
+    - GreenDayEnvironment
+    - PanicEnvironment
+    - LinkinPark2Environment
     - TheWeekndEnvironment
+    - NiceEnvironment
+    - LatticeEnvironment
     - Dragons2Environment
+    - GridEnvironment
+    - HalloweenEnvironment
+    - OriginsEnvironment
+    - ColdplayEnvironment
+    - LinkinParkEnvironment
+    - TimbalandEnvironment
+    - GreenDayGrenadeEnvironment
+    - BillieEnvironment
+    - LizzoEnvironment
     - BTSEnvironment
+    - HipHopEnvironment
+    - TheSecondEnvironment
+    - MetallicaEnvironment
+    - RocketEnvironment
+    - DefaultEnvironment
+    - TheRollingStonesEnvironment
+    - SkrillexEnvironment
+    - TriangleEnvironment
     - GlassDesertEnvironment
+    - InterscopeEnvironment
     - PyroEnvironment
+    - Panic2Environment
+    - DaftPunkEnvironment
+    - Monstercat2Environment
+    - Halloween2Environment
+    - CrabRaveEnvironment
+    - FitBeatEnvironment
+    - KDAEnvironment
+    - BritneyEnvironment
+    - DragonsEnvironment
+    - MonstercatEnvironment
+    - BigMirrorEnvironment
+    - ProdigyEnvironment
+    - ColliderEnvironment
     BoundsSize: {x: 1, y: 1, z: 1}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '81: Cube'
+  - Name: '84: Cube'
     Hash: fcedc7aac9b5a42fa3e5e9249dd5ab1b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5495902117074765545, guid: a008f7043a720e776aa5acc911f2a46f, type: 3}
     Names:
     - Cube
     Environments:
@@ -935,9 +1005,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000020861626, y: 0.22000009, z: 0.0000008940697}
     Unused: 0
     Ignored: 0
-  - Name: '82: Cube2'
+  - Name: '85: Cube2'
     Hash: 85ff37f2b35abc25574cc7138838245d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 904321418905787556, guid: 02ef3425c19dd303281cf4b03e4b34fd, type: 3}
     Names:
     - Cube2
     Environments:
@@ -946,9 +1016,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0.000000014901161}
     Unused: 0
     Ignored: 0
-  - Name: '83: CubeFloorLeft'
+  - Name: '86: CubeFloorLeft'
     Hash: d31488a2f02ba7cc495c8238ea943466
-    Mesh: {fileID: 3835514628808203203, guid: 1824e24850ab633d285d170af7ac2ee4, type: 3}
+    Mesh: {fileID: 4300000, guid: 26b52f254f569aeb99a7585b791257e5, type: 2}
     Names:
     - CubeFloorLeft
     Environments:
@@ -957,9 +1027,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.38588685, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '84: Cylinder'
+  - Name: '87: Cylinder'
     Hash: 1daceba4a244a18b7287699992e84148
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2534964839176971238, guid: 0f9ab9424197a9757919ef01c28df7a6, type: 3}
     Names:
     - Cylinder
     Environments:
@@ -968,9 +1038,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
     Unused: 0
     Ignored: 0
-  - Name: '85: Cylinder'
+  - Name: '88: Cylinder'
     Hash: 46876a2086d45772ad2ba759b2a003b2
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2534964839176971238, guid: 59f39c5b3694bec9aa86f0a4d7f40227, type: 3}
     Names:
     - Cylinder
     Environments:
@@ -979,7 +1049,7 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: 0, z: 1.2547731}
     Unused: 0
     Ignored: 0
-  - Name: '86: Cylinder'
+  - Name: '89: Cylinder'
     Hash: ea915d9805cdcc085c9e2acbd55be068
     Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
     Names:
@@ -990,9 +1060,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '87: CylinderGlow'
+  - Name: '90: CylinderGlow'
     Hash: f5d4e4af78290171ab7e85fb6790ab36
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8673309111601049222, guid: acdf6fe54334da24c8ae286c20a3d3b5, type: 3}
     Names:
     - CylinderGlow
     Environments:
@@ -1001,9 +1071,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '88: CylinderUV'
+  - Name: '91: CylinderUV'
     Hash: 1618e61a086141642305c8aa5341dfe5
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3328574418916150255, guid: 0f71f4e38e0540eb7b7234c983816115, type: 3}
     Names:
     - CylinderUV
     Environments:
@@ -1012,9 +1082,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '89: Diamond'
+  - Name: '92: Debris'
+    Hash: 1abdcf86ced42647a7d0d0f2ad3103f4
+    Mesh: {fileID: -9188728115170210297, guid: 589474b48e5b14a779addaae6febdddc, type: 3}
+    Names:
+    - Debris
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 0.6114632, y: 1.0759635, z: 1.5263258}
+    BoundsCenter: {x: 0.000000044703484, y: 0.000000059604645, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '93: Diamond'
     Hash: ac4a3c95b5be1a4882554c06bd0e18e4
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2401994324257950250, guid: b8e8d3ac813b0146ca30efe4e006ee8f, type: 3}
     Names:
     - Diamond
     Environments:
@@ -1023,9 +1104,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '90: Disc'
+  - Name: '94: Disc'
     Hash: 019dd9d777dbf84a9951ed821db75ee0
-    Mesh: {fileID: -7628182941106214636, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: -7628182941106214636, guid: 6e68d5a7cd3cf69a4b7bf964e9861004, type: 3}
     Names:
     - Disc
     Environments:
@@ -1034,20 +1115,21 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00041610003, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '91: Disc'
+  - Name: '95: Disc'
     Hash: ac4ca22183b0b2bb46aa1a51d02b0fe3
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7628182941106214636, guid: f5eaa9d9ef6c0013097150a336cfbbcc, type: 3}
     Names:
     - Disc
     Environments:
     - ColdplayEnvironment
+    - ProdigyEnvironment
     BoundsSize: {x: 2, y: 0, z: 2}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '92: Disk'
+  - Name: '96: Disk'
     Hash: 3175d84c7b67678ce47aafb907ff7ceb
-    Mesh: {fileID: 4300000, guid: 62791dbc7d9a3af41a1debd494975cd1, type: 2}
+    Mesh: {fileID: 1155475587722039879, guid: d21792558fe45934780b63cf9a2cd64a, type: 3}
     Names:
     - Disk
     Environments:
@@ -1056,9 +1138,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000023841858, y: -0.000000029802322, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '93: DiskFakeGlow'
+  - Name: '97: DiskFakeGlow'
     Hash: 2b8c1ff379f0f5429b17146b8bd08de1
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -42714386209433797, guid: 85d030397d0459eddbbfde0c2ea3bc1b, type: 3}
     Names:
     - DiskFakeGlow
     Environments:
@@ -1067,9 +1149,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.22155212, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '94: Dynamic3SliceSprite'
+  - Name: '98: Dynamic3SliceSprite'
     Hash: e6819d88d5c41ae3e598c9a361498d23
-    Mesh: {fileID: 4300000, guid: a96174836f8b90962b9d37a6d8d29363, type: 2}
+    Mesh: {fileID: 4300000, guid: 1532c880b5dd12aae94eb8e286c6c1fa, type: 2}
     Names:
     - Dynamic3SliceSprite
     Environments:
@@ -1118,14 +1200,15 @@ MonoBehaviour:
     - DragonsEnvironment
     - MonstercatEnvironment
     - BigMirrorEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 10, y: 5000, z: 0.1}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '95: Equalizer'
+  - Name: '99: Equalizer'
     Hash: 8c85771fd1b5268e6e8565ed51782365
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2045946323591504420, guid: a2c09c5a25aa8f3f4b91ac219c51400c, type: 3}
     Names:
     - Equalizer
     Environments:
@@ -1134,9 +1217,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '96: Eyes'
+  - Name: '100: Eyes'
     Hash: 8c11b7f9fbf3e227ab4c8f43d6e80204
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3359138182758997695, guid: e3c40dbbcdfe1ba3fb6394bb16ecf5ea, type: 3}
     Names:
     - Eyes
     Environments:
@@ -1145,9 +1228,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 4.8362503, z: 1.494716}
     Unused: 0
     Ignored: 0
-  - Name: '97: FarBuildings'
+  - Name: '101: FarBuildings'
     Hash: 45fa1f136240b379e1ee635309480447
-    Mesh: {fileID: -4571803516924918563, guid: e42d376ef9b5374aea47a7b5dd3d1f54, type: 3}
+    Mesh: {fileID: -4571803516924918563, guid: 8048d2338d82661ec88a6136de47e99a, type: 3}
     Names:
     - FarBuildings
     Environments:
@@ -1157,9 +1240,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -44.5, z: 66.75}
     Unused: 0
     Ignored: 0
-  - Name: '98: Flag'
+  - Name: '102: Flag'
     Hash: 87a4d54fab5ccef73b2b9e56cd98024b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6532508685850981849, guid: 9553e9cba051d36daba3a25c0d3f5afd, type: 3}
     Names:
     - Flag
     Environments:
@@ -1168,9 +1251,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 2.4142497, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '99: FlameHornBase'
+  - Name: '103: FlameHornBase'
     Hash: 9109c16cc8ee9b3b92a6765d10c9fe0b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6664222307961049522, guid: f5b3b3ee65b624652a2dcaef0770ad41, type: 3}
     Names:
     - FlameHornBase
     Environments:
@@ -1179,9 +1262,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1.651401, y: 3.8395667, z: -0.01138854}
     Unused: 0
     Ignored: 0
-  - Name: '100: FlareRect'
+  - Name: '104: FlareRect'
     Hash: ad8646412bfb117c3a327d6a8201902a
-    Mesh: {fileID: 7649823384841987304, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: -4229034614932086195, guid: 63f9c3e806da36fdc9ae1af81bafd1dd, type: 3}
     Names:
     - FlareRect
     Environments:
@@ -1190,9 +1273,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000029802322, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '101: Floor'
+  - Name: '105: Floor'
     Hash: 6164d118319a450bfb9252e43bc655fe
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -629719859055844128, guid: 43a439f6745e77791a39e95be9d639b4, type: 3}
     Names:
     - Floor
     Environments:
@@ -1201,9 +1284,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.018911716, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '102: Floor'
+  - Name: '106: Floor'
     Hash: 9bc37b5a0ed0fff214a5aca53cf08ecf
-    Mesh: {fileID: -629719859055844128, guid: 24764c19fb46928d9a6f164600daa28d, type: 3}
+    Mesh: {fileID: -629719859055844128, guid: ef7a68fff2de0498b810ee0b0dc62817, type: 3}
     Names:
     - Floor
     Environments:
@@ -1212,9 +1295,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.39918035, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '103: Floor'
+  - Name: '107: Floor'
     Hash: f9bf14061e02e73401ec7a7216a59871
-    Mesh: {fileID: 3084989908094321533, guid: b8b754f66198af33da057e2f69e47cc8, type: 3}
+    Mesh: {fileID: -629719859055844128, guid: b2b69b6b3f33585d0a22ddfaee401d92, type: 3}
     Names:
     - Floor
     Environments:
@@ -1223,9 +1306,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000038146973, y: -0.0000019073486, z: -0.12988019}
     Unused: 0
     Ignored: 0
-  - Name: '104: FloorBack'
+  - Name: '108: FloorBack'
     Hash: 5ee19eca2f4185620ea2caec11445f90
-    Mesh: {fileID: 4300000, guid: 506c5db82369c5c44abab0d723d65933, type: 2}
+    Mesh: {fileID: 4845167630879928080, guid: a94761ea30f1a0bcbbbb56adf85ca3a9, type: 3}
     Names:
     - FloorBack
     Environments:
@@ -1234,9 +1317,9 @@ MonoBehaviour:
     BoundsCenter: {x: 39.999996, y: 0, z: 163.90967}
     Unused: 0
     Ignored: 0
-  - Name: '105: FloorBackFar'
+  - Name: '109: FloorBackFar'
     Hash: bd909a95721f86166c8992d624815cc0
-    Mesh: {fileID: 4300000, guid: d9e12c4f34de995408a51a0018e9ff5f, type: 2}
+    Mesh: {fileID: 2461298265603427746, guid: 870ce31fede442bc4970adcb10041488, type: 3}
     Names:
     - FloorBackFar
     Environments:
@@ -1245,9 +1328,9 @@ MonoBehaviour:
     BoundsCenter: {x: 39.34999, y: 0, z: 100.509674}
     Unused: 0
     Ignored: 0
-  - Name: '106: FloorConstruction_Triangle'
+  - Name: '110: FloorConstruction_Triangle'
     Hash: 8ccac262eed25929bf20816300247c76
-    Mesh: {fileID: 7603745094228375939, guid: fbadc0e3b8bdfb506b16528f126dd986, type: 3}
+    Mesh: {fileID: -735721748286421680, guid: b024eeb2cd7952ff7b8e2ded8dedb46a, type: 3}
     Names:
     - FloorConstruction_Triangle
     Environments:
@@ -1256,9 +1339,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -80.125015, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '107: FloorFar'
+  - Name: '111: FloorFar'
     Hash: 4a7ed587cd17c4be2ad4d47ecce7f17f
-    Mesh: {fileID: 4300000, guid: 6a377f36bdd053e479e75a1d2a780c3b, type: 2}
+    Mesh: {fileID: 2295012876309067832, guid: a5f1146aebde6b06f8e2e044bf583151, type: 3}
     Names:
     - FloorFar
     - CeilingFar
@@ -1268,9 +1351,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '108: FrontMountains'
+  - Name: '112: FrontMountains'
     Hash: 85241bee28b279190f8cd87f364c4f7e
-    Mesh: {fileID: 4300000, guid: 4022005200fb9fcf8b18b52004035d93, type: 2}
+    Mesh: {fileID: -6249381741841854456, guid: 0e9ff6282ff4fa5d3a44ecba1cc33f9e, type: 3}
     Names:
     - FrontMountains
     Environments:
@@ -1279,9 +1362,9 @@ MonoBehaviour:
     BoundsCenter: {x: 54.294525, y: -174.54935, z: 25.107891}
     Unused: 0
     Ignored: 0
-  - Name: '109: FrontWheels'
+  - Name: '113: FrontWheels'
     Hash: 47460854bbf5910a8bb1f3cb92e5d122
-    Mesh: {fileID: 4300000, guid: 54e61b01e56a4874ba08bbf8ac51edeb, type: 2}
+    Mesh: {fileID: 4164666299690521892, guid: 43c59d621d499cea5808dd058c139cab, type: 3}
     Names:
     - FrontWheels
     Environments:
@@ -1290,9 +1373,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.32969722, z: 1.6305988}
     Unused: 0
     Ignored: 0
-  - Name: '110: GameBackColumns'
+  - Name: '114: GameBackColumns'
     Hash: 03803c2d3f7744738a76134bd7ebc53a
-    Mesh: {fileID: 8920120567344130257, guid: e28cddbb47b967e418ff18268c17d636, type: 3}
+    Mesh: {fileID: -1535640962241941941, guid: 3a9c9e4f30af44638bbb399747df522f, type: 3}
     Names:
     - GameBackColumns
     Environments:
@@ -1309,9 +1392,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -20.000069}
     Unused: 0
     Ignored: 0
-  - Name: '111: GateLight'
+  - Name: '115: GateLight'
     Hash: 1b60bd3f494d5570282383d1043cbfbf
-    Mesh: {fileID: 4300000, guid: 05c2aeeaaa73aabc6a86c29bc7a94669, type: 2}
+    Mesh: {fileID: -2191889991111087553, guid: f60fdfa4cc57a1dcca5d448f1c92255d, type: 3}
     Names:
     - GateLight
     Environments:
@@ -1320,9 +1403,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000047683716, y: 0.15156344, z: 3.505169}
     Unused: 0
     Ignored: 0
-  - Name: '112: Glow'
+  - Name: '116: Glow'
     Hash: dfff68a3bfa06dd9cd3d335b7cfc99fe
-    Mesh: {fileID: 4300000, guid: 83182270f78ae434b812821df631a299, type: 2}
+    Mesh: {fileID: -7768893903581495186, guid: ae0c0fe6ccb7c3588896e22becc484dd, type: 3}
     Names:
     - Glow
     Environments:
@@ -1331,9 +1414,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000060796738, y: 0, z: 0.000002861023}
     Unused: 0
     Ignored: 0
-  - Name: '113: Glow'
+  - Name: '117: Glow'
     Hash: ef9dc7ddc95d61940e7fcd47f7d2a393
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7768893903581495186, guid: aebeb1b29ac41240e8d387ca2c63b91b, type: 3}
     Names:
     - Glow
     Environments:
@@ -1342,9 +1425,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.028803565}
     Unused: 0
     Ignored: 0
-  - Name: '114: GraffitiDecals'
+  - Name: '118: GraffitiDecals'
     Hash: fc873120785f6e3d7235c836a7d6191a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1460815663578107538, guid: 06bd50031ed4a4abdb0a4875f2de3a36, type: 3}
     Names:
     - GraffitiDecals
     Environments:
@@ -1353,9 +1436,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.064480186, y: -0.10479212, z: 0.010896853}
     Unused: 0
     Ignored: 0
-  - Name: '115: GraffitiRibbons'
+  - Name: '119: GraffitiRibbons'
     Hash: b0ce4f8bae8ae84b0d7cfbdd32b59e02
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -9219692668951806000, guid: c697388ab079d3eb59764507adc61f74, type: 3}
     Names:
     - GraffitiRibbons
     Environments:
@@ -1364,9 +1447,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.08446282, y: 0.4301358, z: -1.7763568e-15}
     Unused: 0
     Ignored: 0
-  - Name: '116: GraffitiRibbonsUVId'
+  - Name: '120: GraffitiRibbonsUVId'
     Hash: 7b7719d2c93679d39e5789750b26eaaf
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -9061826103835541518, guid: 849b87c14b3c8a48fa7ce300b0fbf9df, type: 3}
     Names:
     - GraffitiRibbonsUVId
     Environments:
@@ -1375,9 +1458,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.22901118, y: -0.06888932, z: -0.07059434}
     Unused: 0
     Ignored: 0
-  - Name: '117: groupdelete1'
+  - Name: '121: groupdelete1'
     Hash: 1189d57662c169c3070a106e742ff084
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 300888449287155446, guid: 120c4a1e457c74dd6b19fcb8cefa2b40, type: 3}
     Names:
     - groupdelete1
     Environments:
@@ -1386,9 +1469,9 @@ MonoBehaviour:
     BoundsCenter: {x: -2.3283064e-10, y: -0.00021982542, z: 0.0038499997}
     Unused: 0
     Ignored: 0
-  - Name: '118: groupdelete1'
+  - Name: '122: groupdelete1'
     Hash: d224fc607dd5e4722ddaed26409f1799
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 300888449287155446, guid: b7b34ade0baf7887a99c95e8d6f52f2b, type: 3}
     Names:
     - groupdelete1
     Environments:
@@ -1397,9 +1480,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0000003427267, y: -0.49999994, z: 0.00000086426735}
     Unused: 0
     Ignored: 0
-  - Name: '119: HallConstruction'
+  - Name: '123: HallConstruction'
     Hash: 8cffaeecb21fceb9facb3514ee36308d
-    Mesh: {fileID: 8910656723046699030, guid: cedf2982bbc9fdc76a4dce64be952dbf, type: 3}
+    Mesh: {fileID: 8910656723046699030, guid: f310c7236f97c643888442668096182e, type: 3}
     Names:
     - HallConstruction
     Environments:
@@ -1409,9 +1492,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000005722046, y: -13.13136, z: 53.04211}
     Unused: 0
     Ignored: 0
-  - Name: '120: Handle'
+  - Name: '124: Handle'
     Hash: f126d6997caafc8cfa94c9a2196c3b59
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6659003102834268097, guid: c4f383eee4d94a4bc8db9fa7e96d677d, type: 3}
     Names:
     - Handle
     Environments:
@@ -1420,9 +1503,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0031901598, y: 0.22716343, z: -0.000000024214387}
     Unused: 0
     Ignored: 0
-  - Name: '121: HeadMesh'
+  - Name: '125: HeadMesh'
     Hash: 2ba849808e2844ac1764965ccd8eedba
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6403144306716230450, guid: ca3af033f21e7be519aab0d658101f12, type: 3}
     Names:
     - HeadMesh
     Environments:
@@ -1431,9 +1514,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1.188415, z: 0.22251463}
     Unused: 0
     Ignored: 0
-  - Name: '122: Heart'
+  - Name: '126: Heart'
     Hash: 4d5f24094e41198bd99dcc5a86284381
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3676728085192693422, guid: 622bb17e49e1d5dae9d41bcf95e0bc07, type: 3}
     Names:
     - Heart
     Environments:
@@ -1442,9 +1525,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.007527888, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '123: Heart'
+  - Name: '127: Heart'
     Hash: a05af070e709bf30f66fabeae97c510a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3676728085192693422, guid: ded9e2b199946dcbb86aa327195cd86f, type: 3}
     Names:
     - Heart
     Environments:
@@ -1453,9 +1536,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.000000029802322, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '124: Heart'
+  - Name: '128: Heart'
     Hash: cdbe84e761bb14ceb1c787ef16e44f04
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3676728085192693422, guid: ecfb8d3aca641878484db879543bb6d7, type: 3}
     Names:
     - Heart
     Environments:
@@ -1464,9 +1547,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '125: Helmet01Merged'
+  - Name: '129: Helmet01Collider'
+    Hash: 012f13d2bd9ea039593a99ce291eb8c4
+    Mesh: {fileID: 4300000, guid: 09bc6fe7be2b7de84b8ad10989edfdd9, type: 2}
+    Names:
+    - Helmet01Collider
+    Environments:
+    - DaftPunkEnvironment
+    BoundsSize: {x: 1.6683578, y: 1.9724265, z: 1.7905188}
+    BoundsCenter: {x: 0.0002092421, y: -0.0040670633, z: -0.0023334622}
+    Unused: 0
+    Ignored: 0
+  - Name: '130: Helmet01Merged'
     Hash: fab82241c578c503eeb59115307a82fb
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8430090389284740529, guid: 0fdbf710325512ab2972bd0d3eec8698, type: 3}
     Names:
     - Helmet01Merged
     Environments:
@@ -1475,9 +1569,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.000000059604645}
     Unused: 0
     Ignored: 0
-  - Name: '126: Helmet02Merged'
+  - Name: '131: Helmet02Collider'
+    Hash: ebb23facabd8ece4c93715b59087b312
+    Mesh: {fileID: 4300000, guid: df87c6f9e814daca582b890c3d777a11, type: 2}
+    Names:
+    - Helmet02Collider
+    Environments:
+    - DaftPunkEnvironment
+    BoundsSize: {x: 1.9312837, y: 1.9446933, z: 2.2218416}
+    BoundsCenter: {x: 0, y: 0.000051915646, z: -0.000010848045}
+    Unused: 0
+    Ignored: 0
+  - Name: '132: Helmet02Merged'
     Hash: 84b3f8d38370f087099037b95f40dfa6
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -9113897234901047209, guid: 9a00b0b20a01ae67cb8c6e9ab825047d, type: 3}
     Names:
     - Helmet02Merged
     Environments:
@@ -1486,9 +1591,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.00028064847, z: 0.00027763844}
     Unused: 0
     Ignored: 0
-  - Name: '127: Hemisphere'
+  - Name: '133: Hemisphere'
     Hash: bd51574395ef334f04141fcde15ea0d7
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2508796484986968503, guid: 37b579390f2d838688e08f573b4d4fac, type: 3}
     Names:
     - Hemisphere
     Environments:
@@ -1497,9 +1602,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00021362305, y: -0.00018310547, z: 500.00003}
     Unused: 0
     Ignored: 0
-  - Name: '128: Hemisphere'
+  - Name: '134: Hemisphere'
     Hash: f57805104e020de5f8c7f12b6f96ad56
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2508796484986968503, guid: 082f5621a751f6e8dba047173d9a377f, type: 3}
     Names:
     - Hemisphere
     Environments:
@@ -1508,9 +1613,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.00000023841858, z: 1.5226085}
     Unused: 0
     Ignored: 0
-  - Name: '129: HighClouds'
+  - Name: '135: HighClouds'
     Hash: 1ba13f4be12e237b13f8b0d5e88a8e5f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 084dbcc380b41ec62aaa0c4187431c40, type: 2}
     Names:
     - HighClouds
     Environments:
@@ -1519,9 +1624,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '130: HoopPiece'
+  - Name: '136: HoopPiece'
     Hash: 955c7f48da0cfd5913edfedf966013db
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -9192772645093480277, guid: ef95fc5306f10dee4a4d9e71336c0a5c, type: 3}
     Names:
     - HoopPiece
     Environments:
@@ -1530,9 +1635,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.07096494, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '131: Horn'
+  - Name: '137: Horn'
     Hash: 1e35e540cafd6b9fcb9eb3192bf97e81
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1629092342830211672, guid: 7daf0ecd3b81708af9c7fc4f4ba13939, type: 3}
     Names:
     - Horn
     Environments:
@@ -1541,9 +1646,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.76393175, z: -0.00000023841858}
     Unused: 0
     Ignored: 0
-  - Name: '132: HornTip'
+  - Name: '138: HornTip'
     Hash: cd8438177879109b581290b99f6af084
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -998831053896439325, guid: 1e99309fffb2574dcb8128777feea96c, type: 3}
     Names:
     - HornTip
     Environments:
@@ -1552,9 +1657,9 @@ MonoBehaviour:
     BoundsCenter: {x: 13.359999, y: 0.76393175, z: -0.00000023841858}
     Unused: 0
     Ignored: 0
-  - Name: '133: House'
+  - Name: '139: House'
     Hash: 6275056a157ea0ba28c6b1a8c183a6d3
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4887216478360415443, guid: 6c67ada3b73ae10e8827cf412f1b345c, type: 3}
     Names:
     - House
     Environments:
@@ -1563,9 +1668,9 @@ MonoBehaviour:
     BoundsCenter: {x: 1.5536518, y: 5.832041, z: 35.159737}
     Unused: 0
     Ignored: 0
-  - Name: '134: LampPost'
+  - Name: '140: LampPost'
     Hash: 600a9097f4200e90d3d477048d507254
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -1981681102287493673, guid: 04b7197f3334a53058b6ba2aa08e5685, type: 3}
     Names:
     - LampPost
     Environments:
@@ -1574,9 +1679,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.05}
     Unused: 0
     Ignored: 0
-  - Name: '135: LampRing'
+  - Name: '141: LampRing'
     Hash: 2c24044a2ef66497f7d67ffd074079cd
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8090558967937824619, guid: 3dda797cb43783b72ab75f1639e62d30, type: 3}
     Names:
     - LampRing
     Environments:
@@ -1585,9 +1690,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '136: LampRing1'
+  - Name: '142: LampRing1'
     Hash: 91e41e740c7ac4c9bb702ee131377b6a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4332205237590758800, guid: be9c22a867b6360adadb7e4524daa46c, type: 3}
     Names:
     - LampRing1
     Environments:
@@ -1596,9 +1701,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '137: LaserEmissionSphere'
+  - Name: '143: LaserEmissionSphere'
     Hash: c16fb17e874e7d1323acc96eb1f24bd2
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6052522251385157031, guid: e5b9b0630ff53ed18b16cb0d32fe1a38, type: 3}
     Names:
     - LaserEmissionSphere
     Environments:
@@ -1607,9 +1712,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.2499421, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '138: LaserSocket'
+  - Name: '144: LaserSocket'
     Hash: 3f5a7eee2cf075ff03dd57fbb85262fb
-    Mesh: {fileID: 8231845459518813846, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 8231845459518813846, guid: c20975e4e5935eeb9a44f69d48cc0470, type: 3}
     Names:
     - LaserSocket
     Environments:
@@ -1620,9 +1725,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '139: LaserSocket'
+  - Name: '145: LaserSocket'
     Hash: d3cf43618740bb7ff000bac109a8cae9
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8231845459518813846, guid: f9ff993ade6214c45addebf52758362f, type: 3}
     Names:
     - LaserSocket
     Environments:
@@ -1631,9 +1736,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '140: LatticeCube'
+  - Name: '146: LatticeCube'
     Hash: 0aa672f3cf91ba3af6b058767d8ab186
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2203301735960035271, guid: 8b9954091243b7855acd215592fe94ff, type: 3}
     Names:
     - LatticeCube
     Environments:
@@ -1642,9 +1747,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '141: LatticeCube'
+  - Name: '147: LatticeCube'
     Hash: 1b2f786c95b7e10ecf3b21d702642d9a
-    Mesh: {fileID: -1930834793777943016, guid: 59efa62f3d099c287a622272039af093, type: 3}
+    Mesh: {fileID: -2203301735960035271, guid: f92b6dde2c96cee90b4403b0db7f4c17, type: 3}
     Names:
     - LatticeCube
     Environments:
@@ -1653,9 +1758,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '142: LeftNearBuilding'
+  - Name: '148: LeftNearBuilding'
     Hash: 8e496436ea23b95d25ba4b01bef82ed4
-    Mesh: {fileID: 4300000, guid: a28773e0a2664413890a1a1445cc38ed, type: 2}
+    Mesh: {fileID: -2934972081729557962, guid: 22dd231ed26ca1c94afa8e04d25c4739, type: 3}
     Names:
     - LeftNearBuilding
     Environments:
@@ -1671,9 +1776,9 @@ MonoBehaviour:
     BoundsCenter: {x: -28, y: -40.25, z: 29}
     Unused: 0
     Ignored: 0
-  - Name: '143: Light'
+  - Name: '149: Light'
     Hash: bd5859f88e9b44c0c2f278eacdc9b29a
-    Mesh: {fileID: -8825038141534415262, guid: d372e66b4c4cdc39ea1f0810b1530546, type: 3}
+    Mesh: {fileID: 8148188476708289613, guid: 45dd3d1a84405b91f89405ec6cd2e49a, type: 3}
     Names:
     - Light
     Environments:
@@ -1685,9 +1790,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000014901161, y: 0.03165913, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '144: LightBloom'
+  - Name: '150: LightBloom'
     Hash: 41549e6f366a6d007c09342be31ddf74
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5840947078186863824, guid: fcec02a96c448e8fb82f6e6dbff2c2da, type: 3}
     Names:
     - LightBloom
     Environments:
@@ -1696,9 +1801,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0006751567, y: 0.00000010430813, z: 0.025000026}
     Unused: 0
     Ignored: 0
-  - Name: '145: LightGlow'
+  - Name: '151: LightGlow'
     Hash: 4dad1a70222291080201bd22e8e3293c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 385675676071886462, guid: 2e594844968ead47b92db98e5ff804e7, type: 3}
     Names:
     - LightGlow
     Environments:
@@ -1710,9 +1815,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '146: LightGlow'
+  - Name: '152: LightGlow'
     Hash: 5d2d75f2bc31a9a2364051095409a945
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 385675676071886462, guid: ad35477cd3be63721bdf4cf6fc399481, type: 3}
     Names:
     - LightGlow
     Environments:
@@ -1721,9 +1826,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '147: LightGlow'
+  - Name: '153: LightGlow'
     Hash: 92edae0aa6c7ed070b71b8e1fb8ceb0d
-    Mesh: {fileID: 4300000, guid: 5c3a0a3cc4af7e72d930917f6892361d, type: 2}
+    Mesh: {fileID: 385675676071886462, guid: ecf0f3ce78057cd31b19f7de77f2f05b, type: 3}
     Names:
     - LightGlow
     Environments:
@@ -1733,9 +1838,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '148: LightGlow'
+  - Name: '154: LightGlow'
     Hash: cfb7afbd78bf15777e5097e6eb281a80
-    Mesh: {fileID: 385675676071886462, guid: 59efa62f3d099c287a622272039af093, type: 3}
+    Mesh: {fileID: 385675676071886462, guid: 8de8c8e6ccdd619fd97dc79d26f429a3, type: 3}
     Names:
     - LightGlow
     Environments:
@@ -1746,13 +1851,14 @@ MonoBehaviour:
     - EDMEnvironment
     - LizzoEnvironment
     - Monstercat2Environment
+    - ProdigyEnvironment
     BoundsSize: {x: 0.057052556, y: 0.05705256, z: 0.0000000037252903}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '149: LightingBolt'
+  - Name: '155: LightingBolt'
     Hash: 2f7ec76cb8b36a456a6008198850b616
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4989151946609813248, guid: 7c397da48b1d06d7589582461cbebf2c, type: 3}
     Names:
     - LightingBolt
     Environments:
@@ -1761,9 +1867,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.052104652, y: -0.00000011920929, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '150: LightPanelMesh'
+  - Name: '156: LightPanelMesh'
     Hash: f1823e128f2d360c696a27e191cfcfa4
-    Mesh: {fileID: -6425891436909223755, guid: 57b9fd33b981fb8e4b22531353035412, type: 3}
+    Mesh: {fileID: -8746964626124029229, guid: e6dcf1aaa40547aa58ad932fbf1a0f8a, type: 3}
     Names:
     - LightPanelMesh
     Environments:
@@ -1772,9 +1878,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000029802322, y: 0, z: 0.000000029802322}
     Unused: 0
     Ignored: 0
-  - Name: '151: LizzoBackground'
+  - Name: '157: LizzoBackground'
     Hash: a00cfe6c1e5b7ad5d8d93c98733075c6
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6708316345654901940, guid: 49313ccfb8b2abb819b428e2e7785119, type: 3}
     Names:
     - LizzoBackground
     Environments:
@@ -1783,9 +1889,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1.8600159, y: 42.452072, z: 7.669983}
     Unused: 0
     Ignored: 0
-  - Name: '152: LizzoBackgroundGlossy'
+  - Name: '158: LizzoBackgroundGlossy'
     Hash: c66baf8ee0a0f633b0fde2118ac2370f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3899507911729894850, guid: 7ecf47a966903f4cc8184bd622653437, type: 3}
     Names:
     - LizzoBackgroundGlossy
     Environments:
@@ -1794,9 +1900,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.06163311, y: 8.53018, z: 39.70408}
     Unused: 0
     Ignored: 0
-  - Name: '153: LizzoLi'
+  - Name: '159: LizzoLi'
     Hash: ac073969441c5d319ffc6cb61e8131ac
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3886191205931529430, guid: 1ac688e84dcbd65689ba5ced7819d61d, type: 3}
     Names:
     - LizzoLi
     Environments:
@@ -1805,9 +1911,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1.8621527, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '154: LizzoO'
+  - Name: '160: LizzoO'
     Hash: 5b9b8afe93c66ff78f994fc2baf49998
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8286041112118170579, guid: c554f3667f362ede3a8301d80978cffa, type: 3}
     Names:
     - LizzoO
     Environments:
@@ -1816,9 +1922,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000011920929, y: 1.9617014, z: 0.19999999}
     Unused: 0
     Ignored: 0
-  - Name: '155: LizzoZ'
+  - Name: '161: LizzoZ'
     Hash: 3fd287ed86cc2ff40e553af4dc6e847c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5729186232473595122, guid: 1c27aff5762368b7492ea63ae44ecfab, type: 3}
     Names:
     - LizzoZ
     Environments:
@@ -1827,9 +1933,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000089645386, y: 1.8630078, z: 0.19999999}
     Unused: 0
     Ignored: 0
-  - Name: '156: Logo.001'
+  - Name: '162: Logo.001'
     Hash: 461a590700e5154c4941d21febf25c39
-    Mesh: {fileID: 4300000, guid: 40b023ad61bf9074195e58c511a06b17, type: 2}
+    Mesh: {fileID: 786266605806604149, guid: 32c2d521b1a39e1c39fd88079bcbe45d, type: 3}
     Names:
     - Logo.001
     Environments:
@@ -1838,9 +1944,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000009536743, y: 3.6193838, z: 0.15544522}
     Unused: 0
     Ignored: 0
-  - Name: '157: LogoFlipbook'
+  - Name: '163: LogoFlipbook'
     Hash: 99190fad05c512a996d9311928d767e0
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2790690353992215595, guid: 6eb362701f8b27398ad6f7490e31af0c, type: 3}
     Names:
     - LogoFlipbook
     Environments:
@@ -1849,9 +1955,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0036448091, y: 0.016892523, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '158: LoopableFlipbook'
+  - Name: '164: LoopableFlipbook'
     Hash: b8cc987014df18232633bacc6526c823
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4753596187211396190, guid: f357ee159f0316d4dad4eb9908fba687, type: 3}
     Names:
     - LoopableFlipbook
     Environments:
@@ -1861,9 +1967,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00868877, y: -0.058227494, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '159: LowClouds'
+  - Name: '165: LowClouds'
     Hash: 056758374e2f3e8080da41a581fdf198
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 1566e6e4c9f2e7ff5b04a2fd6b20c281, type: 2}
     Names:
     - LowClouds
     Environments:
@@ -1872,9 +1978,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '160: MainBeamDisk'
+  - Name: '166: Main'
+    Hash: 0c20685170336f035843c5aaeb344b98
+    Mesh: {fileID: 8643041769963566295, guid: 120f483690158320491a7b0819c76956, type: 3}
+    Names:
+    - Main
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 10.654506, y: 2.4833965, z: 1.4992236}
+    BoundsCenter: {x: 0, y: -0.072039306, z: -0.22165406}
+    Unused: 0
+    Ignored: 0
+  - Name: '167: MainBeamDisk'
     Hash: bfb3c36ceada02c91a71d90cf453d941
-    Mesh: {fileID: 4300000, guid: 2a99955b5417857439dd03693c0dcaf6, type: 2}
+    Mesh: {fileID: -8938836210763452102, guid: e7e275b3b963076f1afcb3c9ff135d0a, type: 3}
     Names:
     - MainBeamDisk
     Environments:
@@ -1883,9 +2000,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.000002026558, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '161: MainStage'
+  - Name: '168: MainStage'
     Hash: a5761e389307b3bfccea855851ebfb9c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4925944890667561418, guid: 62acd8571473dd3c292a1936c0599bff, type: 3}
     Names:
     - MainStage
     Environments:
@@ -1894,9 +2011,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.00000011920929, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '162: MainStructure_Timbaland'
+  - Name: '169: MainStructure_Timbaland'
     Hash: 815a592c7a9273a4c85a6acbb360099a
-    Mesh: {fileID: 9057780481872734413, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: 3918223348212138242, guid: f0f1e631c9150877a9b4f64ba47d8138, type: 3}
     Names:
     - MainStructure_Timbaland
     Environments:
@@ -1905,9 +2022,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000076293945, y: 0, z: 60}
     Unused: 0
     Ignored: 0
-  - Name: '163: Mesh'
+  - Name: '170: Mesh'
     Hash: 5d52c8b7726ec5550534d1fedec1c1c2
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5523277661179574252, guid: 2e2dcf1e1673f6e848a9a3c41a2d2a40, type: 3}
     Names:
     - Mesh
     Environments:
@@ -1916,9 +2033,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '164: Mirror'
+  - Name: '171: Mirror'
     Hash: 1cdf5eb3bb475b8ee9c8959d7bbe9ee1
-    Mesh: {fileID: 4300000, guid: 5f0cf210d5ad4ec8a700950a6237fea0, type: 2}
+    Mesh: {fileID: -2723260613333405795, guid: 70f154d8d5098054eb843e5548977eea, type: 3}
     Names:
     - Mirror
     - PlayersPlaceCore
@@ -1968,14 +2085,15 @@ MonoBehaviour:
     - DragonsEnvironment
     - MonstercatEnvironment
     - BigMirrorEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 3, y: 0.00000023841858, z: 2.0000002}
     BoundsCenter: {x: 0, y: -0.0001, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '165: Mirror'
+  - Name: '172: Mirror'
     Hash: 2c834147bbe102f18bbd05910bfac5b4
-    Mesh: {fileID: 5645350251375654808, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: -2723260613333405795, guid: 598ecc6588293f70588919bf1a9b7b3a, type: 3}
     Names:
     - Mirror
     Environments:
@@ -1984,9 +2102,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '166: Mirror'
+  - Name: '173: Mirror'
     Hash: fe56c8115d3064ed6ea59db0cd2579f1
-    Mesh: {fileID: 4300000, guid: 4185c5e8e8aa2294391bfddd00f6c8a4, type: 2}
+    Mesh: {fileID: -2723260613333405795, guid: e0664770e6c005ee1b0b40216c8a15b7, type: 3}
     Names:
     - Mirror
     Environments:
@@ -1995,9 +2113,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000021457672, y: 0, z: 32.59931}
     Unused: 0
     Ignored: 0
-  - Name: '167: Mirror_RocketLeague'
+  - Name: '174: Mirror_RocketLeague'
     Hash: a58dced66f667557cb9c6d5f9d2afef7
-    Mesh: {fileID: -2723260613333405795, guid: 7d993c47b8cbc69d79c80a121c7c27b6, type: 3}
+    Mesh: {fileID: -1969896476962954900, guid: a711cda59bdad5c1c8e578ea96df91ca, type: 3}
     Names:
     - Mirror_RocketLeague
     Environments:
@@ -2006,9 +2124,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 95.375}
     Unused: 0
     Ignored: 0
-  - Name: '168: MirrorPannel'
+  - Name: '175: MirrorPannel'
     Hash: 7063024e97afc00853f9636a8bab3830
-    Mesh: {fileID: -4946727144563266745, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 7218427963700435068, guid: ce58ffc5afac7b13186b3bb55d93e855, type: 3}
     Names:
     - MirrorPannel
     Environments:
@@ -2017,9 +2135,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '169: MirrorPannel'
+  - Name: '176: MirrorPannel'
     Hash: 94154a75fb37e3eb39f65937879e6e52
-    Mesh: {fileID: -4472967806642792387, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 4300000, guid: 89bbaa143ef4232a6abc1f9090f523b1, type: 2}
     Names:
     - MirrorPannel
     Environments:
@@ -2028,9 +2146,9 @@ MonoBehaviour:
     BoundsCenter: {x: 1, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '170: MirrorPannel'
+  - Name: '177: MirrorPannel'
     Hash: a168f0aa06579148eca64a3ca49ab1db
-    Mesh: {fileID: 5598133014207359719, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 4300000, guid: 4a01f4712324bfb058cbb09dc3d3eb69, type: 2}
     Names:
     - MirrorPannel
     Environments:
@@ -2039,9 +2157,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.00000047683716, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '171: Moonrise'
+  - Name: '178: Moonrise'
     Hash: db41cc555a7e520b242aed84168b7b9a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -1481758420840662443, guid: 7fc3c64e8ac30447299507eed59c63ab, type: 3}
     Names:
     - Moonrise
     Environments:
@@ -2050,9 +2168,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.7117158, z: -0.6436568}
     Unused: 0
     Ignored: 0
-  - Name: '172: MountainGlowReduced_UVs_Normalized'
+  - Name: '179: MountainGlowReduced_UVs_Normalized'
     Hash: 3409903e376e81e45156757fd8763471
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7820753379708456857, guid: 25f97685446bc0171b954b3491054d6a, type: 3}
     Names:
     - MountainGlowReduced_UVs_Normalized
     Environments:
@@ -2061,9 +2179,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.60282516, y: 19.580276, z: 68.5675}
     Unused: 0
     Ignored: 0
-  - Name: '173: Mountains'
+  - Name: '180: Mountains'
     Hash: 4f389b0272146ea3405cbc15dac1c1a5
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2453071139370052643, guid: 645b31dd86b1b86e596392e0f9eec375, type: 3}
     Names:
     - Mountains
     Environments:
@@ -2072,9 +2190,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.91825867, y: 20.023552, z: 69.35578}
     Unused: 0
     Ignored: 0
-  - Name: '174: Orbit'
+  - Name: '181: Orbit'
     Hash: 17d2f13b35d7e3d89dba8e608989c34b
-    Mesh: {fileID: -118424009166941876, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: -118424009166941876, guid: 2f99cb8eda17b621891d3f4ea7f07d2d, type: 3}
     Names:
     - Orbit
     Environments:
@@ -2083,9 +2201,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '175: PackedMeshPillar'
+  - Name: '182: PackedMeshPillar'
     Hash: c96f6c457f7321bca622220622c96763
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5577626286838350844, guid: 4f3585d88eadfc242b3ad18e39a0ae4e, type: 3}
     Names:
     - PackedMeshPillar
     Environments:
@@ -2094,9 +2212,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000101447105, y: 0, z: 0.000001013279}
     Unused: 0
     Ignored: 0
-  - Name: '176: PackedMeshPillarFlipped'
+  - Name: '183: PackedMeshPillarFlipped'
     Hash: d833971e8d1451f2c8bbc749a31d5d97
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2456874956338675232, guid: 6f92f29fd23d1c8e68a899f864495cfb, type: 3}
     Names:
     - PackedMeshPillarFlipped
     Environments:
@@ -2105,9 +2223,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000101447105, y: 0, z: -0.000001013279}
     Unused: 0
     Ignored: 0
-  - Name: '177: Pannel'
+  - Name: '184: Pannel'
     Hash: 43224752a1ea8df17b4e6402d326e50b
-    Mesh: {fileID: 2401994324257950250, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 4300000, guid: ba709c602f61d6bf288516e254133fdd, type: 2}
     Names:
     - Pannel
     Environments:
@@ -2116,9 +2234,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '178: Pannel'
+  - Name: '185: Pannel'
     Hash: 8aba307fc196b8fd9408de3f70b31e31
-    Mesh: {fileID: -3298800115395149385, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 8672919400134863198, guid: 1c256e70a193aedbcb019f512c887194, type: 3}
     Names:
     - Pannel
     Environments:
@@ -2127,9 +2245,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '179: ParametricBox'
+  - Name: '186: ParametricBox'
     Hash: 918b6e6683288362624bdc36ef36ef62
-    Mesh: {fileID: 4300000, guid: 21646711ddd79c14aa44e5a5e0debec8, type: 2}
+    Mesh: {fileID: 993863085501508701, guid: 57f0d192930b247dcabfcdba05e73af7, type: 3}
     Names:
     - ParametricBox
     Environments:
@@ -2178,14 +2296,15 @@ MonoBehaviour:
     - DragonsEnvironment
     - MonstercatEnvironment
     - BigMirrorEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 2, y: 2, z: 2}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '180: ParametricCylinder'
+  - Name: '187: ParametricCylinder'
     Hash: 475b521a0a230b68cae0d2d33ddd03d8
-    Mesh: {fileID: 4300000, guid: d0c3325d14b5ca843a9ce3ddc758486c, type: 2}
+    Mesh: {fileID: -3501766204621627694, guid: 7f2e90fba079983cabab46f742bde3ec, type: 3}
     Names:
     - ParametricCylinder
     Environments:
@@ -2194,9 +2313,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000029802322, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '181: pCube16'
+  - Name: '188: pCube16'
     Hash: 0407f2ce169924b48c331014fc208824
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2735251984287490357, guid: c2bf2c8d40377a26d89cd98fd3af05da, type: 3}
     Names:
     - pCube16
     Environments:
@@ -2205,9 +2324,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 12.619588, z: 18.511318}
     Unused: 0
     Ignored: 0
-  - Name: '182: pCube3'
+  - Name: '189: pCube3'
     Hash: 5783308f453dec4b0d0a992d2bb85d07
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3369316746193770658, guid: f111aa2bf8ca0ed948a51a94f5b6d3d7, type: 3}
     Names:
     - pCube3
     Environments:
@@ -2216,9 +2335,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.04677522, y: 5.168136, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '183: Peach01Thin'
+  - Name: '190: Peach01Thin'
     Hash: 43d0537d732c03d8b378e929168335ec
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4446086881476802726, guid: 928e2d407c967d4f6899b37843426b49, type: 3}
     Names:
     - Peach01Thin
     Environments:
@@ -2227,9 +2346,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0023545027, y: 0.79864985, z: -0.03938732}
     Unused: 0
     Ignored: 0
-  - Name: '184: Pillar'
+  - Name: '191: Pillar'
     Hash: 257117e8c07555e38d486f4d3f6a9185
-    Mesh: {fileID: 4300000, guid: ba7074de0160ee341b69f0a84237b822, type: 2}
+    Mesh: {fileID: -8116138440861595531, guid: ba328ffe687df7934bebb08d79080f2f, type: 3}
     Names:
     - Pillar
     Environments:
@@ -2238,9 +2357,130 @@ MonoBehaviour:
     BoundsCenter: {x: -6.5353556, y: 2, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '185: PillarFull'
+  - Name: '192: Pillar'
+    Hash: 9df3dcde4d876a2b5cbc8de59581cede
+    Mesh: {fileID: -8116138440861595531, guid: d93c5c7417b8c8cc98be1e934218e912, type: 3}
+    Names:
+    - Pillar
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 2.9416947, y: 47.10716, z: 2.941695}
+    BoundsCenter: {x: 0.0027551055, y: 17.36315, z: 0.0027552843}
+    Unused: 0
+    Ignored: 0
+  - Name: '193: pillar_piece0'
+    Hash: f3806c1501fd97179bdc506ff5ca49b3
+    Mesh: {fileID: 4300000, guid: 2ebeeea0c56342efea2707399566f202, type: 2}
+    Names:
+    - pillar_piece0
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.1548841, y: 2.896656, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '194: pillar_piece0'
+    Hash: fb4a55b98f4cd005e6139001eccfd75f
+    Mesh: {fileID: 4300000, guid: 2ebeeea0c56342efea2707399566f202, type: 2}
+    Names:
+    - pillar_piece0
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.1548841, y: 2.896656, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '195: pillar_piece1'
+    Hash: 594968f0fba3e15f8c2303cd34d05598
+    Mesh: {fileID: 4300000, guid: b1eaa58d9f18593b886594232370120c, type: 2}
+    Names:
+    - pillar_piece1
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.085863, y: 4.2137785, z: 2.0000272}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '196: pillar_piece1'
+    Hash: c06d0d73c8db40726b699ec9e74185ba
+    Mesh: {fileID: 4300000, guid: b1eaa58d9f18593b886594232370120c, type: 2}
+    Names:
+    - pillar_piece1
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.085863, y: 4.2137785, z: 2.0000272}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '197: pillar_piece2'
+    Hash: 49978b8068289facd1790f3f17dd662d
+    Mesh: {fileID: 4300000, guid: 2a19cb3d0dbb6cd1c8a2c3007a33ffe3, type: 2}
+    Names:
+    - pillar_piece2
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.15595841, y: 3.5337791, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '198: pillar_piece2'
+    Hash: 7c0f03e9c52c03fc58aaf285f81cb046
+    Mesh: {fileID: 4300000, guid: 2a19cb3d0dbb6cd1c8a2c3007a33ffe3, type: 2}
+    Names:
+    - pillar_piece2
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.15595841, y: 3.5337791, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '199: pillar_piece3'
+    Hash: 43ccb9bf03d72655825b27d014f08709
+    Mesh: {fileID: 4300000, guid: de8d3013cac069bce811101d5ea5da7e, type: 2}
+    Names:
+    - pillar_piece3
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.15000013, y: 2.8968897, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '200: pillar_piece3'
+    Hash: 6aa7cec58d1aefcf2b649a63fcc9c960
+    Mesh: {fileID: 4300000, guid: de8d3013cac069bce811101d5ea5da7e, type: 2}
+    Names:
+    - pillar_piece3
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 0.15000013, y: 2.8968897, z: 2}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '201: PillarBG'
+    Hash: 4457f65d44efb3441b4ce2326c0102ab
+    Mesh: {fileID: 490240645569728856, guid: 778fbe1c985c464b390102f35ce9f4c3, type: 3}
+    Names:
+    - PillarBG
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 3.0213737, y: 72.993065, z: 2.616586}
+    BoundsCenter: {x: 0.039071202, y: 30.402637, z: -0.00000011920929}
+    Unused: 0
+    Ignored: 0
+  - Name: '202: PillarBroken_NEW'
+    Hash: 50de4c54f75b05cea36688e1d58fb896
+    Mesh: {fileID: -137266612405608912, guid: eab218b337c68ef7c97c197207695871, type: 3}
+    Names:
+    - PillarBroken_NEW
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 2.4888709, y: 19.433979, z: 2.2395864}
+    BoundsCenter: {x: 0, y: 0.58863735, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '203: PillarFull'
     Hash: d0e0e256c9e73eddaff1389b18a0c3ee
-    Mesh: {fileID: 4300000, guid: 37067020eddce784391339a0cd7e29b2, type: 2}
+    Mesh: {fileID: -7999544519693052967, guid: 1116f8909e10867daa641e5d1e0e8213, type: 3}
     Names:
     - PillarFull
     Environments:
@@ -2249,9 +2489,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -56.372498, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '186: PillarMesh'
+  - Name: '204: PillarMesh'
     Hash: 428a3d040100bfc1eaf83408e1c710ef
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7422763697866272472, guid: 4fac7e70ec82ca5078f1a78bc6e747cf, type: 3}
     Names:
     - PillarMesh
     Environments:
@@ -2260,7 +2500,7 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.00000023841858, z: -0.099999994}
     Unused: 0
     Ignored: 0
-  - Name: '187: Plane'
+  - Name: '205: Plane'
     Hash: 21dbc7f929c770b5b0df8c74c4d22b4b
     Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
     Names:
@@ -2274,9 +2514,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '188: Platform'
+  - Name: '206: Platform'
     Hash: a54ef9a110a90cc8de0799d9a5c58861
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1149973307703454695, guid: 1bb6b60b39e9e74368d5e599440928cf, type: 3}
     Names:
     - Platform
     Environments:
@@ -2285,9 +2525,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.000000007450581, z: -0.021570707}
     Unused: 0
     Ignored: 0
-  - Name: '189: PlatformBase'
+  - Name: '207: PlatformBase'
     Hash: 5edc6bcd687180fbe647cfb29a3084b0
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7538881573309687323, guid: 0f0554013fdcf9ad3bbc7678d1be4c0c, type: 3}
     Names:
     - PlatformBase
     Environments:
@@ -2296,9 +2536,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.039499994, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '190: PlatformBrick'
+  - Name: '208: PlatformBrick'
     Hash: 8b55c6a0bae9f4e34376b8b197f971ae
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2271531623423340501, guid: 711b532b942fe3ec19a1c896151d850a, type: 3}
     Names:
     - PlatformBrick
     Environments:
@@ -2307,9 +2547,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '191: PlatformMirror'
+  - Name: '209: PlatformMirror'
     Hash: 2d756fbf3447f9a02e690c3ab353b85e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3855241436355652299, guid: 08c3f7f0ad396d9dda53225dcfba4b14, type: 3}
     Names:
     - PlatformMirror
     Environments:
@@ -2318,9 +2558,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.0014999937, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '192: Platforms'
+  - Name: '210: Platforms'
     Hash: 00907bc6fa1948a3a0c715cad635499f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5002821279924888576, guid: 4614f80a6ffd9435daf288698f1d8daf, type: 3}
     Names:
     - Platforms
     Environments:
@@ -2329,9 +2569,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 5.613801, z: 98.53902}
     Unused: 0
     Ignored: 0
-  - Name: '193: PlayerPlatformDesign'
+  - Name: '211: PlayerPlatformDesign'
     Hash: a15836089fdd07ef32ee2954ac3a720c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2027378639792262673, guid: 7d4b246e82843faa6913d21867b9c34b, type: 3}
     Names:
     - PlayerPlatformDesign
     Environments:
@@ -2340,9 +2580,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000011920929, y: -0.0003662482, z: -0.00000017881393}
     Unused: 0
     Ignored: 0
-  - Name: '194: PlayerPlatformFrame'
+  - Name: '212: PlayerPlatformFrame'
     Hash: 8676ae46f5d5acd94eb67f1a744da47a
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5343234948947230646, guid: 980d29927013f055e9c3b648d908aa23, type: 3}
     Names:
     - PlayerPlatformFrame
     Environments:
@@ -2351,9 +2591,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.061339147, z: -0.00031250715}
     Unused: 0
     Ignored: 0
-  - Name: '195: PlayersPlaceConstruction'
+  - Name: '213: PlayersPlaceConstruction'
     Hash: d3ca75607c073a4d2ff24d9950b343e9
-    Mesh: {fileID: 8777213760027499154, guid: 318b6f113ad280f6ebbe977c880a453f, type: 3}
+    Mesh: {fileID: 8777213760027499154, guid: 1aaafbd32e137b1afb0b1f54be5c5e4f, type: 3}
     Names:
     - PlayersPlaceConstruction
     Environments:
@@ -2400,14 +2640,15 @@ MonoBehaviour:
     - DragonsEnvironment
     - MonstercatEnvironment
     - BigMirrorEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 3, y: 112.755005, z: 2}
     BoundsCenter: {x: 0, y: -56.372498, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '196: Projector'
+  - Name: '214: Projector'
     Hash: b5d644a27b41ffd052e66e3a9410e8e2
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7089071067092359508, guid: 4ad7d10ff9d4cb7a6aabcf811ac18b2d, type: 3}
     Names:
     - Projector
     Environments:
@@ -2416,9 +2657,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '197: PumpkinLightBloom'
+  - Name: '215: PumpkinLightBloom'
     Hash: c56d554b66dccb6eb999d34a003689f4
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6972926314016350136, guid: fae1b5814a0b7a4b3a5632915bf00f67, type: 3}
     Names:
     - PumpkinLightBloom
     Environments:
@@ -2427,9 +2668,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.2364583, y: 1.9199258, z: 23.79964}
     Unused: 0
     Ignored: 0
-  - Name: '198: PumpkinsLight'
+  - Name: '216: PumpkinsLight'
     Hash: f52eec15dd5df64c15d93d6d5c78c162
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6438453057466644804, guid: 054fc440ba5f8563fbd62c1355ca1c89, type: 3}
     Names:
     - PumpkinsLight
     Environments:
@@ -2438,9 +2679,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.29860878, y: 2.0618663, z: 23.802746}
     Unused: 0
     Ignored: 0
-  - Name: '199: PumpkinsMain'
+  - Name: '217: PumpkinsMain'
     Hash: e01dbdf4fae0f6ee004dae1982305f8b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2393074094701357970, guid: 8acdbf6edfd35938aa64ef3fa6fd4563, type: 3}
     Names:
     - PumpkinsMain
     Environments:
@@ -2449,7 +2690,7 @@ MonoBehaviour:
     BoundsCenter: {x: 0.3364954, y: 2.0034442, z: 22.75722}
     Unused: 0
     Ignored: 0
-  - Name: '200: Quad'
+  - Name: '218: Quad'
     Hash: 995497ce8e37c3fbc5aeb80e4482f549
     Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     Names:
@@ -2469,14 +2710,28 @@ MonoBehaviour:
     - Monstercat2Environment
     - Halloween2Environment
     - BritneyEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 1, y: 1, z: 6.1232336e-17}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '201: QuadMesh'
+  - Name: '219: Quad16x2'
+    Hash: 96ef7856444427764c5967e81dc1068f
+    Mesh: {fileID: -31674862034404420, guid: 0a111939ea203b75895613f595858b68, type: 3}
+    Names:
+    - Quad16x2
+    Environments:
+    - Dragons2Environment
+    - OriginsEnvironment
+    - DragonsEnvironment
+    BoundsSize: {x: 2, y: 16, z: 0}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '220: QuadMesh'
     Hash: af2ae3740ca56925df7781e4ecf87e7d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 379665438164353332, guid: 8b26a152c9b3fab06842e3178a52ae3d, type: 3}
     Names:
     - QuadMesh
     Environments:
@@ -2485,9 +2740,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '202: RailingCurve'
+  - Name: '221: RailingCurve'
     Hash: 8418cad74f47799af65a608f36b35e67
-    Mesh: {fileID: 4300000, guid: 1efe06a89a80ce246bbcb689b34a7b35, type: 2}
+    Mesh: {fileID: 9181896177645884486, guid: 04ce1c58675e2b31aa5168746d068ac1, type: 3}
     Names:
     - RailingCurve
     Environments:
@@ -2496,9 +2751,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000035762787, y: 0.15001808, z: 0.0036374964}
     Unused: 0
     Ignored: 0
-  - Name: '203: RailingFull'
+  - Name: '222: RailingFull'
     Hash: 061584d665077785f848f82a8a1c1cc6
-    Mesh: {fileID: 4300000, guid: d042e80525940d142a765b96a32f301b, type: 2}
+    Mesh: {fileID: -7160444207734402109, guid: 7732b736a8e8fc7898a6a928dbe40230, type: 3}
     Names:
     - RailingFull
     Environments:
@@ -2507,9 +2762,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000031232834, y: -1.2340975, z: -0.037809275}
     Unused: 0
     Ignored: 0
-  - Name: '204: Rain Instance'
+  - Name: '223: Rain Instance'
     Hash: b0548c046c993d5071bb00a45dc7a835
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 4bbe4467a379673f7a70e026b3ed1770, type: 2}
     Names:
     - Rain Instance
     Environments:
@@ -2518,9 +2773,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '205: RampFar'
+  - Name: '224: RampFar'
     Hash: 3bf23a69f7249ae80d02876b05da543a
-    Mesh: {fileID: 4300000, guid: 886d04f1d93cda648a56ef9404226a3f, type: 2}
+    Mesh: {fileID: 2900460428843418338, guid: 8a4ef6a36deedc37983be3503536af41, type: 3}
     Names:
     - RampFar
     Environments:
@@ -2529,9 +2784,9 @@ MonoBehaviour:
     BoundsCenter: {x: 40, y: 0, z: 86.875}
     Unused: 0
     Ignored: 0
-  - Name: '206: RearPillar_A'
+  - Name: '225: RearPillar_A'
     Hash: 028bf45844c5213296ec02afbf4d9f04
-    Mesh: {fileID: 4300000, guid: ba7074de0160ee341b69f0a84237b822, type: 2}
+    Mesh: {fileID: 8715324571291102287, guid: 696591b5e3c876e28b6ea04c23924f17, type: 3}
     Names:
     - RearPillar_A
     Environments:
@@ -2540,9 +2795,9 @@ MonoBehaviour:
     BoundsCenter: {x: -6.5353556, y: 2, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '207: RearPillar_B'
+  - Name: '226: RearPillar_B'
     Hash: 98b4d3656faf1884d503e129f39bb005
-    Mesh: {fileID: 4300000, guid: ebc2cd9b0e0cb6740acb232898eea7f5, type: 2}
+    Mesh: {fileID: -4202065705873799864, guid: 8950a14bc24ec9548a9a64faf33fe29f, type: 3}
     Names:
     - RearPillar_B
     Environments:
@@ -2551,9 +2806,9 @@ MonoBehaviour:
     BoundsCenter: {x: -4.4853554, y: 2, z: 0.000000029802322}
     Unused: 0
     Ignored: 0
-  - Name: '208: RearPillar_C'
+  - Name: '227: RearPillar_C'
     Hash: 5bee294b504ede603850ffcdf01530ae
-    Mesh: {fileID: 4300000, guid: a606333708b34ce47b865c67aec29a97, type: 2}
+    Mesh: {fileID: 598631091767539958, guid: 2304fb11f3bdf8ee3a0eb347a6985c01, type: 3}
     Names:
     - RearPillar_C
     Environments:
@@ -2562,9 +2817,9 @@ MonoBehaviour:
     BoundsCenter: {x: -4.961725, y: 2, z: -0.00000032782555}
     Unused: 0
     Ignored: 0
-  - Name: '209: RearWheels'
+  - Name: '228: RearWheels'
     Hash: cc21cfc69320577461897606e7525253
-    Mesh: {fileID: 4300000, guid: 4968dc2855ed0334f9c1fb0c8714a678, type: 2}
+    Mesh: {fileID: 4706844853333945916, guid: 5f94166cd4b2b754190c3b83a326e8b8, type: 3}
     Names:
     - RearWheels
     Environments:
@@ -2573,9 +2828,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.040410176, z: -0.000000074505806}
     Unused: 0
     Ignored: 0
-  - Name: '210: RectangleFakeGlow'
+  - Name: '229: RectangleFakeGlow'
     Hash: 82ea09b58af4dc40242a50a3224b8176
-    Mesh: {fileID: 4300000, guid: 4f34ecd22d88423bb252acc88d5b47f7, type: 2}
+    Mesh: {fileID: -18914880725366958, guid: 64a38f7ce1c2dfc1eaad834a823c299b, type: 3}
     Names:
     - RectangleFakeGlow
     Environments:
@@ -2622,14 +2877,15 @@ MonoBehaviour:
     - DragonsEnvironment
     - MonstercatEnvironment
     - BigMirrorEnvironment
+    - ProdigyEnvironment
     - ColliderEnvironment
     BoundsSize: {x: 3, y: 3, z: 0}
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '211: RectangleFakeGlow'
+  - Name: '230: RectangleFakeGlow'
     Hash: 89879ae74ad423a5c191333052ed88ab
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -18914880725366958, guid: f463f58201b5c0705a36cb1ba6b7f530, type: 3}
     Names:
     - RectangleFakeGlow
     Environments:
@@ -2638,9 +2894,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.024011934, z: -0.0012463331}
     Unused: 0
     Ignored: 0
-  - Name: '212: Reflector'
+  - Name: '231: Reflector'
     Hash: 883e8dc7353e809d33fc64719de14b4e
-    Mesh: {fileID: 4300000, guid: 6773297e2405bc04ab32a3341ac800f1, type: 2}
+    Mesh: {fileID: -5968363022016230744, guid: 7da911cbced6e9613a8448b98b4e738c, type: 3}
     Names:
     - Reflector
     Environments:
@@ -2649,9 +2905,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.00000032782555, z: 0.2058636}
     Unused: 0
     Ignored: 0
-  - Name: '213: Ribbon'
+  - Name: '232: Ribbon'
     Hash: 979ae153b47604cb2d21aa3070cb22a5
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5525736560380694924, guid: 75ab567b88a1d34d583d65773dac2111, type: 3}
     Names:
     - Ribbon
     Environments:
@@ -2660,9 +2916,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.08055508, y: 1.58785, z: 0.085267186}
     Unused: 0
     Ignored: 0
-  - Name: '214: RibbonCircle'
+  - Name: '233: RibbonCircle'
     Hash: c65d93b6d1b9129b9436bff1c0f7015b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7550210505528942307, guid: a06f29be3c4a4eee29a1345493f4f0e5, type: 3}
     Names:
     - RibbonCircle
     Environments:
@@ -2671,9 +2927,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0044029355, y: 0.009241998, z: 0.000012002885}
     Unused: 0
     Ignored: 0
-  - Name: '215: RibbonCurve01'
+  - Name: '234: RibbonCurve01'
     Hash: 9a76a1fe6038665b906dcbfc4d4ac898
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5212124631128162880, guid: 0d8cb8fc427f36caeb52f1ab3cdd9902, type: 3}
     Names:
     - RibbonCurve01
     Environments:
@@ -2682,9 +2938,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.09907362, y: -0.08440855, z: 0.17155468}
     Unused: 0
     Ignored: 0
-  - Name: '216: RightNearBuilding'
+  - Name: '235: RightNearBuilding'
     Hash: b5ebd93d903f2572d7673e5d8407ea6d
-    Mesh: {fileID: 4300000, guid: eae3ef56f21c47f5876be6f7d4b81733, type: 2}
+    Mesh: {fileID: 5666765783794163771, guid: 264e20f0a2a7d5b12911f6f7e4979e00, type: 3}
     Names:
     - RightNearBuilding
     Environments:
@@ -2700,9 +2956,9 @@ MonoBehaviour:
     BoundsCenter: {x: 28, y: -40.25, z: 29}
     Unused: 0
     Ignored: 0
-  - Name: '217: Ring'
+  - Name: '236: Ring'
     Hash: 24482fa2e8132f164c8dcd0dde6c4bd8
-    Mesh: {fileID: 4300000, guid: 7a148f0f214ddd749956f663f28f8294, type: 3}
+    Mesh: {fileID: -8264766115119967290, guid: 5de9571d7c5eefa93ba913408f91b7c5, type: 3}
     Names:
     - Ring
     Environments:
@@ -2718,9 +2974,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '218: Ring'
+  - Name: '237: Ring'
     Hash: 9e042e1b7d77f0e633929e3befc56b19
-    Mesh: {fileID: -8264766115119967290, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: 4300000, guid: d5d4f0e6d2ed54eaa9524d0e8b5ad672, type: 2}
     Names:
     - Ring
     Environments:
@@ -2729,9 +2985,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.101679996, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '219: Ring'
+  - Name: '238: Ring'
     Hash: c3c8adefaf53c8e1ca5a4fd591dbec7f
-    Mesh: {fileID: 4300000, guid: ef227a3b50bd4812b7c7ae092609ebd1, type: 2}
+    Mesh: {fileID: -8264766115119967290, guid: 80f454a23f8b68028a9d48d7e6b5902d, type: 3}
     Names:
     - Ring
     Environments:
@@ -2744,9 +3000,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.04789859, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '220: Ring'
+  - Name: '239: Ring'
     Hash: e02a7a60ab6dae19aa90c2e647e79867
-    Mesh: {fileID: 4300000, guid: e6370ba8555081c4cb929f08a423343f, type: 3}
+    Mesh: {fileID: -8264766115119967290, guid: b324afe5a6971ec068b75ca7f5302bc6, type: 3}
     Names:
     - Ring
     Environments:
@@ -2755,9 +3011,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.49865198, y: 0.00000047683716, z: -1.2352753}
     Unused: 0
     Ignored: 0
-  - Name: '221: RLCar'
+  - Name: '240: RLCar'
     Hash: a7122540a2bff996dfb312f9dd3130a7
-    Mesh: {fileID: 4300000, guid: fd64d9d373a14a0f90efbafa910ea4d3, type: 2}
+    Mesh: {fileID: -8117758677001201819, guid: 1e14eb8bf9348282789a7956512d0fde, type: 3}
     Names:
     - RLCar
     Environments:
@@ -2766,9 +3022,9 @@ MonoBehaviour:
     BoundsCenter: {x: 2.288333, y: 0.30772996, z: 5.8620396}
     Unused: 0
     Ignored: 0
-  - Name: '222: RockScreensMerged'
+  - Name: '241: RockScreensMerged'
     Hash: a5e4b1852908f306bfcf4ee7d0058585
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7366989839082859045, guid: 7b0fae6ebe788622b8ce1df574b88361, type: 3}
     Names:
     - RockScreensMerged
     Environments:
@@ -2777,9 +3033,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.093579054, y: -0.66681004, z: 2.8630698}
     Unused: 0
     Ignored: 0
-  - Name: '223: Roof'
+  - Name: '242: Roof'
     Hash: ff4a318421c1a1da338d9568b12ed1b5
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3562073674547505438, guid: 6330f97c816cf4e8eb709844c62fcc21, type: 3}
     Names:
     - Roof
     Environments:
@@ -2788,9 +3044,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 12.14025, z: 100.89389}
     Unused: 0
     Ignored: 0
-  - Name: '224: Rotating4Panels'
+  - Name: '243: Rotating4Panels'
     Hash: 9036494af7c6140c7e746a37694307c3
-    Mesh: {fileID: 4300000, guid: 4d2889e7084f7544694bdee4f3b3c87e, type: 2}
+    Mesh: {fileID: 8736489058942940859, guid: 2cfface58ac126857b0b95839586a686, type: 3}
     Names:
     - Rotating4Panels
     Environments:
@@ -2799,9 +3055,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '225: RotatingPanels'
+  - Name: '244: RotatingPanels'
     Hash: 461d1a8bfb54f66625826d144e8fcf7c
-    Mesh: {fileID: 4111710332405693404, guid: cedf2982bbc9fdc76a4dce64be952dbf, type: 3}
+    Mesh: {fileID: 4111710332405693404, guid: e6c7324446f2f67ada1a2fa112e645f5, type: 3}
     Names:
     - RotatingPanels
     Environments:
@@ -2811,9 +3067,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.00000023841858, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '226: RotatingPanels'
+  - Name: '245: RotatingPanels'
     Hash: b0790733a27310ebadecf6a09a90d0fd
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4111710332405693404, guid: 299959da27227b060a5d055823a7a5fc, type: 3}
     Names:
     - RotatingPanels
     Environments:
@@ -2822,9 +3078,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 4, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '227: RotationBase'
+  - Name: '246: RotationBase'
     Hash: f9670639bb23a079232e361904bf23e9
-    Mesh: {fileID: -6484511542920440614, guid: d372e66b4c4cdc39ea1f0810b1530546, type: 3}
+    Mesh: {fileID: -4267547422556567240, guid: 850dbf4147ef8aad78e0e6a928ea1c36, type: 3}
     Names:
     - RotationBase
     Environments:
@@ -2836,9 +3092,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000007450581, y: 0.19075283, z: -0.000000007450581}
     Unused: 0
     Ignored: 0
-  - Name: '228: Runway'
+  - Name: '247: Runway'
     Hash: 46f8638c7a854c58e287b7234a1bff2e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5704420323510309740, guid: 8a8d23dea02ab1b6a9d92b99f8d16c99, type: 3}
     Names:
     - Runway
     Environments:
@@ -2847,9 +3103,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '229: Runway'
+  - Name: '248: Runway'
     Hash: f20dafd29a14a1ae69bd7ff35346ce6f
-    Mesh: {fileID: 5704420323510309740, guid: a716b32034b2ffd4da6a85ddb9c37384, type: 3}
+    Mesh: {fileID: 5704420323510309740, guid: ea1fbe18d8e83ad7d9eac147114b7587, type: 3}
     Names:
     - Runway
     Environments:
@@ -2858,9 +3114,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '230: Runway2'
+  - Name: '249: Runway2'
     Hash: ac19448470c2458787928ed419704018
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6505367851529382380, guid: 762784bb0a383513e8e6d76c46e67fbb, type: 3}
     Names:
     - Runway2
     Environments:
@@ -2869,9 +3125,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00012290478, y: -6.264104, z: 130.41074}
     Unused: 0
     Ignored: 0
-  - Name: '231: RunwayCollisions'
+  - Name: '250: RunwayCollisions'
     Hash: 74735d7fa8582eb486bf8047b6353df6
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: fd165960fc27e41b29022eb812788a31, type: 2}
     Names:
     - RunwayCollisions
     Environments:
@@ -2880,9 +3136,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 77.61}
     Unused: 0
     Ignored: 0
-  - Name: '232: RunwayFrame'
+  - Name: '251: RunwayFrame'
     Hash: b70755b6207e066bc7e69d92f71735e8
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 833332143620338836, guid: 121d6a6299f9ba75f9b76d0b42b8101d, type: 3}
     Names:
     - RunwayFrame
     Environments:
@@ -2891,9 +3147,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000011920929, y: -0.3443262, z: 32.902878}
     Unused: 0
     Ignored: 0
-  - Name: '233: RunwayMirror'
+  - Name: '252: RunwayMirror'
     Hash: 3a8ba57b17c3ecbc8f99988ac041d64e
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 5696d0afbc672eded87823d68990bc75, type: 2}
     Names:
     - RunwayMirror
     Environments:
@@ -2902,9 +3158,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '234: RunwayMirror'
+  - Name: '253: RunwayMirror'
     Hash: 3db23d6d89adf15bc380ca874f0d4f82
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: c950ff90884b77a50985e0f43f6fcb1f, type: 2}
     Names:
     - RunwayMirror
     Environments:
@@ -2913,9 +3169,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 77.61}
     Unused: 0
     Ignored: 0
-  - Name: '235: RunwayMirror'
+  - Name: '254: RunwayMirror'
     Hash: 7cfdab735271f9c979ee993cb68d0922
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2242654540910243839, guid: 3e6580757badfe09e823f421962ec614, type: 3}
     Names:
     - RunwayMirror
     Environments:
@@ -2924,9 +3180,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.000000029802322, z: 29.36052}
     Unused: 0
     Ignored: 0
-  - Name: '236: RunwayPieces'
+  - Name: '255: RunwayPieces'
     Hash: 4e23d587f8cbc97e38c72883d39e7f55
-    Mesh: {fileID: 5704420323510309740, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: 8587339309351417461, guid: 400f077264bf5ffb69ecf5d0e61ecc70, type: 3}
     Names:
     - RunwayPieces
     Environments:
@@ -2935,9 +3191,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0003681183, y: 0.082, z: -0.0009942055}
     Unused: 0
     Ignored: 0
-  - Name: '237: RunwayPier'
+  - Name: '256: RunwayPier'
     Hash: 8a955c6c0c1403ce8c42348338302498
-    Mesh: {fileID: 4300000, guid: ebbc884e16df0ff47acf4d1c51f110af, type: 2}
+    Mesh: {fileID: 1282658609515316885, guid: 3ecabdd569458f364b76f8685a9eef8c, type: 3}
     Names:
     - RunwayPier
     Environments:
@@ -2946,9 +3202,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.13144118, y: 0.013556242, z: -19.242199}
     Unused: 0
     Ignored: 0
-  - Name: '238: RunwayPier'
+  - Name: '257: RunwayPier'
     Hash: d4ddb050fa5c3c1acc2e1a29cffaed0d
-    Mesh: {fileID: 4300000, guid: ae6eda08b38cf7a43b716d762eb59d18, type: 2}
+    Mesh: {fileID: 1282658609515316885, guid: 76877f03dc246c5db942b67ef449a5ba, type: 3}
     Names:
     - RunwayPier
     Environments:
@@ -2957,9 +3213,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.15817454, y: 0.013556242, z: -6.2152863}
     Unused: 0
     Ignored: 0
-  - Name: '239: RunwayReflections'
+  - Name: '258: RunwayReflections'
     Hash: 232d5b88307bedc6d391d0d61adf1f2b
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: d9894b25878c7aeb683d6b148ea787ed, type: 2}
     Names:
     - RunwayReflections
     Environments:
@@ -2968,9 +3224,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 77.61}
     Unused: 0
     Ignored: 0
-  - Name: '240: RunwayRing'
+  - Name: '259: RunwayRing'
     Hash: bb19d540097d12667a2b60c72b11f394
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5659340036329553533, guid: 6dbf1333780c90d378aeea1cecd7128f, type: 3}
     Names:
     - RunwayRing
     Environments:
@@ -2979,9 +3235,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000029802322, y: 0, z: 0.0000009536743}
     Unused: 0
     Ignored: 0
-  - Name: '241: RunwaySides'
+  - Name: '260: RunwaySides'
     Hash: 02a6a9b014437f6237b773d86ec725b1
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8230729347399817412, guid: 5989c1505ea27b029b22d9eaf33b18fa, type: 3}
     Names:
     - RunwaySides
     Environments:
@@ -2990,9 +3246,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -10.000001, z: 29.296268}
     Unused: 0
     Ignored: 0
-  - Name: '242: RunwaySides'
+  - Name: '261: RunwaySides'
     Hash: 2da35fedb1a951c17dd9239766b35544
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 70b8a3f57258b946fbb2a8b513a9cceb, type: 2}
     Names:
     - RunwaySides
     Environments:
@@ -3001,9 +3257,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.146, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '243: ScafoldCirclular'
+  - Name: '262: Scaffolding_NEW'
+    Hash: c7c94abfc757b9bc3feb2357787e953f
+    Mesh: {fileID: -8221569460150472960, guid: b89ba8015b906b6979b5beb53a4848b4, type: 3}
+    Names:
+    - Scaffolding_NEW
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 2.0829318, y: 18.103947, z: 9.531838}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '263: ScafoldCirclular'
     Hash: 71847f4d87e4fff2c16b6d0bce317e59
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4770764053811474500, guid: 585af5d19d89af886b1aaf3160a1a441, type: 3}
     Names:
     - ScafoldCirclular
     Environments:
@@ -3012,9 +3279,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.0000012218952, z: -3.0786238}
     Unused: 0
     Ignored: 0
-  - Name: '244: ScafoldTriangular'
+  - Name: '264: ScafoldTriangular'
     Hash: 5949264d7e5354b77054a3c79c50c47c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7807457293524405234, guid: 093ef30f84efc2446a949493f2942943, type: 3}
     Names:
     - ScafoldTriangular
     Environments:
@@ -3023,9 +3290,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0006043315, y: 1.4999992, z: 0.021679565}
     Unused: 0
     Ignored: 0
-  - Name: '245: ScreenMesh'
+  - Name: '265: ScreenMesh'
     Hash: 02e3fd41f4abf287188651f03ac93d00
-    Mesh: {fileID: 5116657784475969176, guid: 57b9fd33b981fb8e4b22531353035412, type: 3}
+    Mesh: {fileID: 4346125808089926918, guid: a9f2824ed7ff3c9b0baa55bdf1e6b7fd, type: 3}
     Names:
     - ScreenMesh
     Environments:
@@ -3034,9 +3301,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0062344074, y: -0.000051498413, z: 0.000020503998}
     Unused: 0
     Ignored: 0
-  - Name: '246: ScreenSquareMesh'
+  - Name: '266: ScreenSquareMesh'
     Hash: 27a101c5af08f3d6e0361fb0a48738a9
-    Mesh: {fileID: -1875780437015597444, guid: 57b9fd33b981fb8e4b22531353035412, type: 3}
+    Mesh: {fileID: -6292374414808348859, guid: 966a68204c814c8bda7eb03887e3977e, type: 3}
     Names:
     - ScreenSquareMesh
     Environments:
@@ -3045,9 +3312,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000059604645, y: 0.000000059604645, z: -0.000000014901161}
     Unused: 0
     Ignored: 0
-  - Name: '247: Side'
+  - Name: '267: Side'
     Hash: 23381da0b4652edd1516466dbd89377f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6846980478796422165, guid: f5ca803d95b9ee3d6b772eb89c26f60e, type: 3}
     Names:
     - Side
     Environments:
@@ -3056,9 +3323,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 2.7434702, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '248: SideLasersConstruction'
+  - Name: '268: SideLasersConstruction'
     Hash: ac1d23449bc538f1ba3544ba71c4c379
-    Mesh: {fileID: 7258109410040748789, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: 7258109410040748789, guid: 8d1290def869b6a6781d28bc30363878, type: 3}
     Names:
     - SideLasersConstruction
     Environments:
@@ -3067,9 +3334,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.12500001, z: 0.000000059604645}
     Unused: 0
     Ignored: 0
-  - Name: '249: Silhouette_Chevron'
+  - Name: '269: Silhouette_Chevron'
     Hash: 8f419fd445bf1308d5e84a72491b7ff1
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3389076453545902217, guid: 02d0e6ae4a37730a08910aa622a7f356, type: 3}
     Names:
     - Silhouette_Chevron
     Environments:
@@ -3078,9 +3345,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000029802322, y: -0.000004053116, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '250: Silhouette_Deacon'
+  - Name: '270: Silhouette_Deacon'
     Hash: 68fda4a0dabda180a34486fc79f52230
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5034317709315006991, guid: e7c95e876642a649980adeb4ee18e0b9, type: 3}
     Names:
     - Silhouette_Deacon
     Environments:
@@ -3089,9 +3356,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.030029297, y: -0.0859375, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '251: Silhouette_May'
+  - Name: '271: Silhouette_May'
     Hash: d5dc15b639e2699696b6b07419d56d92
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -104201475965905626, guid: 3603feb85acb63888a9dae1ed26bd027, type: 3}
     Names:
     - Silhouette_May
     Environments:
@@ -3100,9 +3367,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.010986358, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '252: Silhouette_Mercury'
+  - Name: '272: Silhouette_Mercury'
     Hash: e702827efbb4be2eab567a7ceca11822
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4556489151202395431, guid: 52205be0ef899de709f4fe2dfc8a7d33, type: 3}
     Names:
     - Silhouette_Mercury
     Environments:
@@ -3111,9 +3378,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0036621094, y: -0.0017089844, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '253: Silhouette_Taylor'
+  - Name: '273: Silhouette_Taylor'
     Hash: 26451d36360f05340c2dbfbb3ea37bd3
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2571541039099672763, guid: 29c3de3909e8bffc8a8b245f94a3854c, type: 3}
     Names:
     - Silhouette_Taylor
     Environments:
@@ -3122,9 +3389,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.06665039, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '254: SkeletonHand'
+  - Name: '274: SkeletonHand'
     Hash: 471fb9b3ab395a12905253ab95b9cd40
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1234466021985745961, guid: cb67b7245b1f3b463918fba2ca4570ae, type: 3}
     Names:
     - SkeletonHand
     Environments:
@@ -3133,9 +3400,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.01145792, y: 0.33628663, z: -0.06375113}
     Unused: 0
     Ignored: 0
-  - Name: '255: SkrillexTrackPlaneC'
+  - Name: '275: SkrillexTrackPlaneC'
     Hash: e624e0a8e2e17f6b5766fc03aa8e0e54
-    Mesh: {fileID: 4300000, guid: 3a5ab38c9d00dab408de57357fb175e7, type: 2}
+    Mesh: {fileID: -2156889011810087327, guid: 68d8a5e2670007d05941be20cd2f4cd7, type: 3}
     Names:
     - SkrillexTrackPlaneC
     Environments:
@@ -3144,9 +3411,9 @@ MonoBehaviour:
     BoundsCenter: {x: -9.75, y: -9.625, z: 12.5}
     Unused: 0
     Ignored: 0
-  - Name: '256: SourceCube'
+  - Name: '276: SourceCube'
     Hash: 9a6b0fa7ff4de937b5b90690783d4ff0
-    Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    Mesh: {fileID: -442650110789157686, guid: 8dffa87e94e36b15eafaacde6472f3a8, type: 3}
     Names:
     - SourceCube
     Environments:
@@ -3155,9 +3422,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '257: Speaker'
+  - Name: '277: Speaker'
     Hash: 0da18dfb8ad1513dd1fd2812832bad1d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8089888234731176865, guid: 0fea4e82f554ac9f8956d26b0a41a4fd, type: 3}
     Names:
     - Speaker
     Environments:
@@ -3166,9 +3433,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.79973876, z: 0.027115934}
     Unused: 0
     Ignored: 0
-  - Name: '258: SpeakerHigh'
+  - Name: '278: Speaker'
+    Hash: 8afe065c224a3234e696751cb4ce27e0
+    Mesh: {fileID: -8089888234731176865, guid: 570e0a94c89745e9e9781d6749c02237, type: 3}
+    Names:
+    - Speaker
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 1.138148, y: 1.1381481, z: 1.138148}
+    BoundsCenter: {x: 0.000000059604645, y: -0.000000029802322, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '279: SpeakerHigh'
     Hash: cddba02ddb391b3361878166bd68cd32
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6994054893630796674, guid: 32bc682da092ba28294baa040dc56b90, type: 3}
     Names:
     - SpeakerHigh
     Environments:
@@ -3177,9 +3455,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.80304444, z: -0.00018022954}
     Unused: 0
     Ignored: 0
-  - Name: '259: SpeakersLeft'
+  - Name: '280: SpeakersLeft'
     Hash: 9c9b925961d718256e653aa809f172ac
-    Mesh: {fileID: -159641085283010503, guid: f612622d9e5539dfdb0c88fb267dab84, type: 3}
+    Mesh: {fileID: -159641085283010503, guid: 050f8d544005b43ffbcc508481a1ce65, type: 3}
     Names:
     - SpeakersLeft
     Environments:
@@ -3189,9 +3467,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1070.1488, y: -5330.912, z: 2814.7324}
     Unused: 0
     Ignored: 0
-  - Name: '260: SpeakersRight'
+  - Name: '281: SpeakersRight'
     Hash: 8eb3b29341213e127461ae8002851f30
-    Mesh: {fileID: -988110178716627173, guid: f612622d9e5539dfdb0c88fb267dab84, type: 3}
+    Mesh: {fileID: -988110178716627173, guid: c07c0e1ad955464b6b4d48095d564217, type: 3}
     Names:
     - SpeakersRight
     Environments:
@@ -3201,9 +3479,9 @@ MonoBehaviour:
     BoundsCenter: {x: -1070.1488, y: -5294.702, z: 2814.7324}
     Unused: 0
     Ignored: 0
-  - Name: '261: Spear'
+  - Name: '282: Spear'
     Hash: 7f0b2e47ea93d41fad8a8924c96c4e32
-    Mesh: {fileID: 4300000, guid: 15f402cea4c02ae48ac6785444e1f35f, type: 3}
+    Mesh: {fileID: -6280669117017369944, guid: b47e2f0753d7aa5d0852e232aced1972, type: 3}
     Names:
     - Spear
     Environments:
@@ -3212,9 +3490,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -1.1904923, z: -0.00049842894}
     Unused: 0
     Ignored: 0
-  - Name: '262: Spectrogram'
+  - Name: '283: Spectrogram'
     Hash: 43c9f8b3f18a510b9c39352a244b6e52
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8467187638049099546, guid: b436b25e3484eab1289887a56f2a7ca0, type: 3}
     Names:
     - Spectrogram
     Environments:
@@ -3223,9 +3501,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000007450581, y: 15.75, z: 0.9633827}
     Unused: 0
     Ignored: 0
-  - Name: '263: Spectrogram'
+  - Name: '284: Spectrogram'
     Hash: a1e2f3ff1c0041c6cfb1a340b7f15b98
-    Mesh: {fileID: 8467187638049099546, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: 8467187638049099546, guid: e0616f280e0cca0fe99366343d45addb, type: 3}
     Names:
     - Spectrogram
     Environments:
@@ -3234,9 +3512,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 31.5, z: 1}
     Unused: 0
     Ignored: 0
-  - Name: '264: Spectrogram0'
+  - Name: '285: Spectrogram0'
     Hash: d394434d1bb3f7ff55a5801858d14da1
-    Mesh: {fileID: 8238189971599906015, guid: 23f66dce4b659ce6b84e782a1d5375d9, type: 3}
+    Mesh: {fileID: 8238189971599906015, guid: c025d24cf316d991f9f42e8dda4bf12f, type: 3}
     Names:
     - Spectrogram0
     Environments:
@@ -3256,9 +3534,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000014901161, y: 70.87501, z: -30}
     Unused: 0
     Ignored: 0
-  - Name: '265: Spectrogram1'
+  - Name: '286: Spectrogram1'
     Hash: 3a285cd37fdf7acdcd6442fb68b6fc37
-    Mesh: {fileID: -1591521447197356373, guid: 23f66dce4b659ce6b84e782a1d5375d9, type: 3}
+    Mesh: {fileID: -1591521447197356373, guid: c00ad0b96402ed6b4922c8949f3f31af, type: 3}
     Names:
     - Spectrogram1
     Environments:
@@ -3278,9 +3556,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000000014901161, y: -70.87501, z: -30}
     Unused: 0
     Ignored: 0
-  - Name: '266: SpectrogramCube'
+  - Name: '287: SpectrogramCube'
     Hash: c4c6f04fdb6b8c1f4fa4f7f835a59261
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -154618504014925982, guid: 9828da5837b96adb8868d4c03358542f, type: 3}
     Names:
     - SpectrogramCube
     Environments:
@@ -3289,9 +3567,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.00000047683716, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '267: Sphere'
+  - Name: '288: Sphere'
     Hash: 372a9a3a5b7be8f1f92938422167dd29
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4711208715938537054, guid: 4cebab986291287b8a0475c4c6ea7c4a, type: 3}
     Names:
     - Sphere
     Environments:
@@ -3300,7 +3578,7 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '268: Sphere'
+  - Name: '289: Sphere'
     Hash: 6627ddee7e0b514118c11f7d039fe19a
     Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     Names:
@@ -3311,7 +3589,7 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '269: Sphere'
+  - Name: '290: Sphere'
     Hash: dee0b2fed3ca66c191a738db842da1c6
     Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     Names:
@@ -3322,9 +3600,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000007122755, y: 0, z: -0.0000003874302}
     Unused: 0
     Ignored: 0
-  - Name: '270: SpiralTube'
+  - Name: '291: SpiralTube'
     Hash: b5b45dad9fa8ce63f4d80a8adf9eb4c4
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 7430eec9ed01dc460adfbbe2cd84bd1b, type: 2}
     Names:
     - SpiralTube
     Environments:
@@ -3333,9 +3611,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.0000009536743, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '271: Splinters'
+  - Name: '292: Splash'
+    Hash: 6be9b50f3ad8904df3a0fa446dd2653c
+    Mesh: {fileID: 4300000, guid: 8269a3cd587eb322a9d5949dc1c42af5, type: 2}
+    Names:
+    - Splash
+    Environments:
+    - BillieEnvironment
+    BoundsSize: {x: 3.5365412, y: 1.2011828, z: 3.5189521}
+    BoundsCenter: {x: 0.0074739456, y: 0.6005914, z: 0.031444192}
+    Unused: 0
+    Ignored: 0
+  - Name: '293: Splinters'
     Hash: 5bf3d1373f9b262cb023ff3b60709302
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3783573585098283747, guid: 3925bf0e3d6dd3d04984a0836e7d7c15, type: 3}
     Names:
     - Splinters
     Environments:
@@ -3344,9 +3633,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0041498095, y: 0.3212481, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '272: Spooky2_2DTrees'
+  - Name: '294: Spooky2_2DTrees'
     Hash: e8a0642dcb7a4c7c667b595131c0c729
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 7825049566143277288, guid: 49a6a15fe3b41772db9cdc7d084328a5, type: 3}
     Names:
     - Spooky2_2DTrees
     Environments:
@@ -3355,9 +3644,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.22052121, y: 5.0006027, z: 28.959179}
     Unused: 0
     Ignored: 0
-  - Name: '273: Spooky2_3DTrees'
+  - Name: '295: Spooky2_3DTrees'
     Hash: 9d8af919e1541c610b2f9fb7fc0a33da
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -7068635929380232648, guid: 2fe9ec9a7218b7f73b8bcecb73efc2c8, type: 3}
     Names:
     - Spooky2_3DTrees
     Environments:
@@ -3366,9 +3655,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.30698657, y: 3.7997606, z: 5.5548606}
     Unused: 0
     Ignored: 0
-  - Name: '274: SpotlightStructure'
+  - Name: '296: SpotlightStructure'
     Hash: 44979f4c57a1b7ca8ffcc1b3f29e0013
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4636980869533993403, guid: 8b7687f97b5794ef5ab4b2613e91e064, type: 3}
     Names:
     - SpotlightStructure
     Environments:
@@ -3377,9 +3666,86 @@ MonoBehaviour:
     BoundsCenter: {x: 0.041554928, y: 0, z: -1.3459301}
     Unused: 0
     Ignored: 0
-  - Name: '275: Stairs1'
+  - Name: '297: StageMesh0'
+    Hash: 954daece55ce11906da33ff45919fcfa
+    Mesh: {fileID: 4300000, guid: 53335eb8cce7b89248b0846d0d4d746c, type: 2}
+    Names:
+    - StageMesh0
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.0000002, y: 3.0137691, z: 1.47435}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '298: StageMesh1'
+    Hash: 9764bd3affd2a13bf113fa9fd7d8c852
+    Mesh: {fileID: 4300000, guid: 28d90a5412ee536cdabb5212a4c15167, type: 2}
+    Names:
+    - StageMesh1
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.0000002, y: 0.14999866, z: 1.5}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '299: StageMesh2'
+    Hash: a40797380b7536fbd48417d97fea32d0
+    Mesh: {fileID: 4300000, guid: dcd88c33f224f05ef906997acedd7f8a, type: 2}
+    Names:
+    - StageMesh2
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2, y: 0.14999771, z: 1.5}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '300: StageMesh3'
+    Hash: ed2fb6a84f842897878cf1e6d55c8cb0
+    Mesh: {fileID: 4300000, guid: 587f236a467f767bc908ef67c7e32728, type: 2}
+    Names:
+    - StageMesh3
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2, y: 0.14999962, z: 1.493}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '301: StageMesh4'
+    Hash: 52494405f437ef6327f3b6eb20d1b447
+    Mesh: {fileID: 4300000, guid: dc3239d53e476a5a1a0b5576699b7405, type: 2}
+    Names:
+    - StageMesh4
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.0000002, y: 0.14999676, z: 1.5}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '302: StageMesh5'
+    Hash: c66bf6fd1b9f3e2ee6fb394fc572d46f
+    Mesh: {fileID: 4300000, guid: f08e16a182f3703f1a6d5532884f7939, type: 2}
+    Names:
+    - StageMesh5
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.0000007, y: 3.013772, z: 7.46735}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '303: StageMesh6'
+    Hash: a9d9a3a54cef91c19a1dd8d99fa0b308
+    Mesh: {fileID: 4300000, guid: 498e40d8b4823c76d981b311e4e35fed, type: 2}
+    Names:
+    - StageMesh6
+    Environments:
+    - MetallicaEnvironment
+    BoundsSize: {x: 2.0000005, y: 7.467349, z: 3.013771}
+    BoundsCenter: {x: 0, y: 0, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '304: Stairs1'
     Hash: 4b4ca483ae3995d10f6a8f00fe5e32ba
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4647092689747226659, guid: 4b7a4d6c1d3bbdcb0b30b54385ac7eca, type: 3}
     Names:
     - Stairs1
     Environments:
@@ -3388,9 +3754,9 @@ MonoBehaviour:
     BoundsCenter: {x: -16.899998, y: -0.20966733, z: 75.92}
     Unused: 0
     Ignored: 0
-  - Name: '276: Stars'
+  - Name: '305: Stars'
     Hash: 508edf2a5e4ba4c41f761ba33ddf7893
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5114388211515392681, guid: 8ce86e3d129e21691aba1dd53f5b7483, type: 3}
     Names:
     - Stars
     Environments:
@@ -3399,9 +3765,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.10780907, y: -0.090278625, z: 0.30366135}
     Unused: 0
     Ignored: 0
-  - Name: '277: Static'
+  - Name: '306: Static'
     Hash: 38761f0048af12fb61d77fb86ba3a1e9
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2465145340998106290, guid: 4de464b346e2170df8d9658671ead4ee, type: 3}
     Names:
     - Static
     Environments:
@@ -3410,9 +3776,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 1.5000229, z: 104.06296}
     Unused: 0
     Ignored: 0
-  - Name: '278: StaticBase'
+  - Name: '307: StaticBase'
     Hash: e5510257d02fbbb5cb24b4b04a26de9b
-    Mesh: {fileID: -7093784576113755215, guid: d372e66b4c4cdc39ea1f0810b1530546, type: 3}
+    Mesh: {fileID: -6443048425034128031, guid: fefd1fb607977f3d9bb574f904fe5113, type: 3}
     Names:
     - StaticBase
     Environments:
@@ -3422,9 +3788,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -91.16175, z: 0.0000025569461}
     Unused: 0
     Ignored: 0
-  - Name: '279: StaticBatchMaterial'
+  - Name: '308: StaticBatchMaterial'
     Hash: 620e61cb9294041f8174c27759dcf260
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2531820041638397960, guid: eba111b1c6aa6baaf9db818607debf52, type: 3}
     Names:
     - StaticBatchMaterial
     Environments:
@@ -3433,9 +3799,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000047683716, y: -48.004948, z: 111.39788}
     Unused: 0
     Ignored: 0
-  - Name: '280: Strip'
+  - Name: '309: Strip'
     Hash: cb07e672a2e81a54cf7fc9a34a1ab812
-    Mesh: {fileID: 4300000, guid: 098c0032f459691318013785715a366a, type: 2}
+    Mesh: {fileID: 4300000, guid: f462d7f5a10f0cbf89f986184ca35613, type: 2}
     Names:
     - Strip
     Environments:
@@ -3445,9 +3811,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '281: TeslaTowerMesh'
+  - Name: '310: TeslaTowerMesh'
     Hash: 2201d4ba1cc4eb3726c25ed05fb7b5c5
-    Mesh: {fileID: 4300000, guid: f6bc4f429f02c4342936c6bb13f7ed41, type: 2}
+    Mesh: {fileID: 4045085219729352397, guid: 180e3c2f49ad1dff1b6aa8db3cc2d637, type: 3}
     Names:
     - TeslaTowerMesh
     Environments:
@@ -3456,9 +3822,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.01475668, y: -47.615833, z: 0.011000872}
     Unused: 0
     Ignored: 0
-  - Name: '282: Tombstone'
+  - Name: '311: Tombstone'
     Hash: dbfa38a13d978ddc9a2bfc86ea5490f6
-    Mesh: {fileID: 4300000, guid: 2f8689f4773d7b54c989a0b00daee072, type: 2}
+    Mesh: {fileID: 8988195469373291705, guid: 0d5e5be416c7e44a38a9ac5070acb275, type: 3}
     Names:
     - Tombstone
     Environments:
@@ -3468,9 +3834,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000044703484, y: 0.3031856, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '283: ToothMeshRound'
+  - Name: '312: ToothMeshRound'
     Hash: 9dfa36cdd0eb7120363d7ad38ec6798c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3252298121966727403, guid: 07d1a2c87b0ce871fa130788e2c510c6, type: 3}
     Names:
     - ToothMeshRound
     Environments:
@@ -3479,9 +3845,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000009536743, y: 0, z: -0.0000021755695}
     Unused: 0
     Ignored: 0
-  - Name: '284: Top'
+  - Name: '313: Top'
     Hash: 46340d6463727111e46ff98cb60e39c2
-    Mesh: {fileID: 6579854803598935165, guid: b8b754f66198af33da057e2f69e47cc8, type: 3}
+    Mesh: {fileID: 8201437419870775723, guid: 80bd06ff81bbdbdb39e74066eb9d1e58, type: 3}
     Names:
     - Top
     Environments:
@@ -3490,9 +3856,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000038146973, y: -0.0000019073486, z: 2.255568}
     Unused: 0
     Ignored: 0
-  - Name: '285: TopCones'
+  - Name: '314: TopCones'
     Hash: 455bdd07843086c69ca894493c81a852
-    Mesh: {fileID: -7073138304568552466, guid: cebb0ad03f8cad23db576cc92f352c0d, type: 3}
+    Mesh: {fileID: -7073138304568552466, guid: 211c5166ee83ba6e8b99c8fb66c28351, type: 3}
     Names:
     - TopCones
     Environments:
@@ -3501,9 +3867,9 @@ MonoBehaviour:
     BoundsCenter: {x: 41, y: 7.3223286, z: 27}
     Unused: 0
     Ignored: 0
-  - Name: '286: TopLightMesh'
+  - Name: '315: TopLightMesh'
     Hash: 401aa2e7ed1b8240302d1f0f937aaed9
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4840574369223162308, guid: a37250cfda270e33ab0ff617f8ed3c7a, type: 3}
     Names:
     - TopLightMesh
     Environments:
@@ -3512,9 +3878,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.5, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '287: TopStructure_Timbaland'
+  - Name: '316: TopStructure_Timbaland'
     Hash: 7d0e12a45e0d873aad80727a3f47083c
-    Mesh: {fileID: 2590640734381020822, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: -4226713261942244730, guid: 9b6fb3cbf72685664bbd1c41c3e08fab, type: 3}
     Names:
     - TopStructure_Timbaland
     Environments:
@@ -3523,9 +3889,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -1.9169183, z: 39.56585}
     Unused: 0
     Ignored: 0
-  - Name: '288: Track2'
+  - Name: '317: Track2'
     Hash: 6cecc4183b65dadcc42f1127f111dcee
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5748660653527939909, guid: dad33055092a11242a211fb0a4087069, type: 3}
     Names:
     - Track2
     Environments:
@@ -3534,9 +3900,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.000009881206, z: 130.49113}
     Unused: 0
     Ignored: 0
-  - Name: '289: TrackConstruction'
+  - Name: '318: TrackConstruction'
     Hash: 3754194f28f983963afcbc4de02a0c78
-    Mesh: {fileID: 4300000, guid: badffffb520e0ea448d3e574c8ea940d, type: 2}
+    Mesh: {fileID: -8126256408004135652, guid: 579447826b151b8c68394f48ec7399ad, type: 3}
     Names:
     - TrackConstruction
     Environments:
@@ -3545,9 +3911,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9, y: 0.0005000029, z: 0.010002136}
     Unused: 0
     Ignored: 0
-  - Name: '290: TrackConstruction'
+  - Name: '319: TrackConstruction'
     Hash: 7cc0bc8f4b73068b40fd6f6eea9ae6c2
-    Mesh: {fileID: 4300000, guid: badffffb520e0ea448d3e574c8ea940d, type: 2}
+    Mesh: {fileID: -8126256408004135652, guid: 579447826b151b8c68394f48ec7399ad, type: 3}
     Names:
     - TrackConstruction
     - TrackConstruction_Panic2
@@ -3560,9 +3926,20 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9000001, y: 0.0005000029, z: 0.010002136}
     Unused: 0
     Ignored: 0
-  - Name: '291: TrackConstruction_Dragons2'
+  - Name: '320: TrackConstruction'
+    Hash: d346d558cf579906c8112246d31b01cd
+    Mesh: {fileID: -8126256408004135652, guid: 2fe0adc686ec4c5d2ae08669193d9518, type: 3}
+    Names:
+    - TrackConstruction
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 4.7961197, y: 7.3099527, z: 101.46437}
+    BoundsCenter: {x: 0, y: -3.6549764, z: 58.4329}
+    Unused: 0
+    Ignored: 0
+  - Name: '321: TrackConstruction_Dragons2'
     Hash: 15b488269d626b57bba8db1d4e13bd6e
-    Mesh: {fileID: -8126256408004135652, guid: cedf2982bbc9fdc76a4dce64be952dbf, type: 3}
+    Mesh: {fileID: 7804007363076664207, guid: a395180f87c885f1189b9b00ab649a94, type: 3}
     Names:
     - TrackConstruction_Dragons2
     - TrackConstruction
@@ -3573,9 +3950,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.8999999, y: 0.0005000029, z: -0.06499863}
     Unused: 0
     Ignored: 0
-  - Name: '292: TrackConstruction_LinkinPark2'
+  - Name: '322: TrackConstruction_LinkinPark2'
     Hash: 0c3d60c6d83ba726ebccd4c5be8ff324
-    Mesh: {fileID: 4300000, guid: 779c6d6d8d8124f47ab4f33f7be54cda, type: 2}
+    Mesh: {fileID: -7942040027573035603, guid: a4f59c513be4087d485ec547b7ed514d, type: 3}
     Names:
     - TrackConstruction_LinkinPark2
     - TrackConstruction_LinkinPark
@@ -3586,9 +3963,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9000001, y: 0.0005000029, z: -39.037758}
     Unused: 0
     Ignored: 0
-  - Name: '293: TrackConstruction_Second'
+  - Name: '323: TrackConstruction_Second'
     Hash: 059bf71c823df5f58912d7262e51a992
-    Mesh: {fileID: 6980050762359926242, guid: 187d06887a3843b40a1b19ba4ba8f429, type: 3}
+    Mesh: {fileID: -6146018263196991415, guid: b90a3aafa6e3c784fb283eb8e1ad5bd1, type: 3}
     Names:
     - TrackConstruction_Second
     - TrackConstruction_Default
@@ -3599,9 +3976,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -80.125015, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '294: TrackConstruction_Timbaland'
+  - Name: '324: TrackConstruction_Timbaland'
     Hash: 6034e9ab7c4c3ab12b826e62dfb42127
-    Mesh: {fileID: -8126256408004135652, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: 3363366360869640025, guid: 1b64b9d49c33279d989e18d9134593e3, type: 3}
     Names:
     - TrackConstruction_Timbaland
     Environments:
@@ -3610,9 +3987,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -67.8407, z: 87.84276}
     Unused: 0
     Ignored: 0
-  - Name: '295: TrackLightL'
+  - Name: '325: TrackLightL'
     Hash: 16f500512b54cf0eb09621492349ca0f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2509468021314743083, guid: ad471b4bcd5efbe8ea7852bec7838b20, type: 3}
     Names:
     - TrackLightL
     Environments:
@@ -3621,9 +3998,20 @@ MonoBehaviour:
     BoundsCenter: {x: -2.1168177, y: 0.0001, z: 54.388657}
     Unused: 0
     Ignored: 0
-  - Name: '296: TrackMirror'
+  - Name: '326: TrackMirror'
+    Hash: 4de78fe1a901fa79c6b7eddbfd763a75
+    Mesh: {fileID: -6698513248298829829, guid: db628cdcc6b2a955ab1a046c9876b027, type: 3}
+    Names:
+    - TrackMirror
+    Environments:
+    - ProdigyEnvironment
+    BoundsSize: {x: 4.75, y: 0.6588474, z: 100.835625}
+    BoundsCenter: {x: 0, y: -0.3294237, z: 58.747272}
+    Unused: 0
+    Ignored: 0
+  - Name: '327: TrackMirror'
     Hash: 526736eb7ca4ad6f83b8b3d32ba73802
-    Mesh: {fileID: 4300000, guid: 255dd747dc0406041a9f8b391bb92a24, type: 2}
+    Mesh: {fileID: -6698513248298829829, guid: 37bae80e305664ef8ad46ead795ee2a1, type: 3}
     Names:
     - TrackMirror
     - TrackMirror_Panic
@@ -3637,9 +4025,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9, y: 0, z: 123.6}
     Unused: 0
     Ignored: 0
-  - Name: '297: TrackMirror_BTS'
+  - Name: '328: TrackMirror_BTS'
     Hash: a0bbb3c796865cdbcf9353019aa626a5
-    Mesh: {fileID: -6698513248298829829, guid: 52ee0da6675716d9191aafb4ba2b7d11, type: 3}
+    Mesh: {fileID: 6771330795571092119, guid: a53a834395a2106358a6932d7f5fe777, type: 3}
     Names:
     - TrackMirror_BTS
     - TrackMirror_Kaleidoscope
@@ -3650,9 +4038,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.29999998, y: 0, z: 125.45}
     Unused: 0
     Ignored: 0
-  - Name: '298: TrackMirror_CrabRave'
+  - Name: '329: TrackMirror_CrabRave'
     Hash: 42513ebcd96823ee590171283adf8e51
-    Mesh: {fileID: -6698513248298829829, guid: e42d376ef9b5374aea47a7b5dd3d1f54, type: 3}
+    Mesh: {fileID: -8169394594927182168, guid: 71d54122244fd702b8d11745a99e1e17, type: 3}
     Names:
     - TrackMirror_CrabRave
     - TrackMirror_Monstercat
@@ -3663,9 +4051,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 123.575}
     Unused: 0
     Ignored: 0
-  - Name: '299: TrackMirror_Default'
+  - Name: '330: TrackMirror_Default'
     Hash: b1195756de641ad0e0a3a9004b5ca020
-    Mesh: {fileID: -6698513248298829829, guid: 2b9cf63ab2fcdc1d0b6fef6461475627, type: 3}
+    Mesh: {fileID: -4757549978013491633, guid: 6f2d751223a3558719369050de05c4fb, type: 3}
     Names:
     - TrackMirror_Default
     - TrackMirror_Second
@@ -3680,9 +4068,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 123.575}
     Unused: 0
     Ignored: 0
-  - Name: '300: TrackMirror_Dragons2'
+  - Name: '331: TrackMirror_Dragons2'
     Hash: b0216d266fe0b0dc876935c61869aae4
-    Mesh: {fileID: -6698513248298829829, guid: cedf2982bbc9fdc76a4dce64be952dbf, type: 3}
+    Mesh: {fileID: 3940530254594928519, guid: 6bddc600be1a6451c997c5a82cc0fc28, type: 3}
     Names:
     - TrackMirror_Dragons2
     - TrackMirror_Dragons
@@ -3693,9 +4081,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9, y: 0, z: 84.76295}
     Unused: 0
     Ignored: 0
-  - Name: '301: TrackMirror_FitBeat'
+  - Name: '332: TrackMirror_FitBeat'
     Hash: 5ca8399f957076da3d8e9be8546cd6ca
-    Mesh: {fileID: 4300000, guid: 255dd747dc0406041a9f8b391bb92a24, type: 2}
+    Mesh: {fileID: 471734582876828052, guid: e4aeb0afaaba612a49745239c33a6e09, type: 3}
     Names:
     - TrackMirror_FitBeat
     Environments:
@@ -3704,9 +4092,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.9, y: 0, z: 123.594345}
     Unused: 0
     Ignored: 0
-  - Name: '302: TrackMirror_GlassDesert'
+  - Name: '333: TrackMirror_GlassDesert'
     Hash: dc03145940e319748c0bf774125ea00c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -601882764554497887, guid: a34f89e9bbe14611b86c614a71170f62, type: 3}
     Names:
     - TrackMirror_GlassDesert
     Environments:
@@ -3715,9 +4103,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '303: TrackMirror_Interscope'
+  - Name: '334: TrackMirror_Interscope'
     Hash: 6f0b81e4722dfe4e9a22d461f7303373
-    Mesh: {fileID: 4300000, guid: 81583b752cdf23d41b73892b72a29197, type: 2}
+    Mesh: {fileID: 6718564821772749016, guid: 24568f63af754a38080624cfccd2aa3c, type: 3}
     Names:
     - TrackMirror_Interscope
     Environments:
@@ -3726,9 +4114,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.0000000037252903, z: 0.74595165}
     Unused: 0
     Ignored: 0
-  - Name: '304: TrackMirror_KDA'
+  - Name: '335: TrackMirror_KDA'
     Hash: f3dd6ad04056172aa95927b39f86bf42
-    Mesh: {fileID: 6453859232557588242, guid: 79a88a6ad1047509fa822942d5b66600, type: 3}
+    Mesh: {fileID: -3149546327805211678, guid: 9f3ecab3e7b471e5c91ce09afb1e4eaa, type: 3}
     Names:
     - TrackMirror_KDA
     Environments:
@@ -3737,9 +4125,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 15.25}
     Unused: 0
     Ignored: 0
-  - Name: '305: TrackMirror_LinkinPark'
+  - Name: '336: TrackMirror_LinkinPark'
     Hash: c867406766bb229631a7190b919e294f
-    Mesh: {fileID: 4300000, guid: 28dfe1f73dcdf334d8834a3a8d533d4e, type: 2}
+    Mesh: {fileID: 9216303011658573748, guid: 6e942f5fd6fca7029a073f24db41e41e, type: 3}
     Names:
     - TrackMirror_LinkinPark
     Environments:
@@ -3748,9 +4136,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.29999998, y: 0, z: 61.699997}
     Unused: 0
     Ignored: 0
-  - Name: '306: TrackMirror_LinkinPark2'
+  - Name: '337: TrackMirror_LinkinPark2'
     Hash: 7a85d2a96da364221a323133182b1c81
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 5537763773595568581, guid: fdda358a56071f505af31d1f7f8f721f, type: 3}
     Names:
     - TrackMirror_LinkinPark2
     Environments:
@@ -3759,9 +4147,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.29999998, y: 0, z: 61.699997}
     Unused: 0
     Ignored: 0
-  - Name: '307: TrackMirror_Origins'
+  - Name: '338: TrackMirror_Origins'
     Hash: a996ebbd15f12f3a102242da0b252bf4
-    Mesh: {fileID: -6698513248298829829, guid: 468b700392762030994f47afbe339238, type: 3}
+    Mesh: {fileID: 8364635820621302641, guid: 606c786b552b09f51874287a9548055f, type: 3}
     Names:
     - TrackMirror_Origins
     Environments:
@@ -3770,9 +4158,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.29999995, y: 0, z: 123.575}
     Unused: 0
     Ignored: 0
-  - Name: '308: TrackMirror_Pyro'
+  - Name: '339: TrackMirror_Pyro'
     Hash: 43c475644f37fbb0aca68bc305088f66
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6249877974710667471, guid: fe34ef88f70ef8357b38e502d09e518a, type: 3}
     Names:
     - TrackMirror_Pyro
     Environments:
@@ -3781,9 +4169,9 @@ MonoBehaviour:
     BoundsCenter: {x: 2.25, y: 0, z: 150}
     Unused: 0
     Ignored: 0
-  - Name: '309: TrackMirror_RockMixtape'
+  - Name: '340: TrackMirror_RockMixtape'
     Hash: 7f8f4109d2b791aa5558c6da76c6e4d0
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 8582259630994437909, guid: 8e3e3de9f00e6bb97bcfc986d0a84975, type: 3}
     Names:
     - TrackMirror_RockMixtape
     Environments:
@@ -3792,9 +4180,9 @@ MonoBehaviour:
     BoundsCenter: {x: 2.25, y: 0, z: 150}
     Unused: 0
     Ignored: 0
-  - Name: '310: TrackMirror_Timbaland'
+  - Name: '341: TrackMirror_Timbaland'
     Hash: 2807a8508fadc5da707abc141aa2cb87
-    Mesh: {fileID: -6698513248298829829, guid: b560138687c023a4c9751a1c0ecc1726, type: 3}
+    Mesh: {fileID: 5076955914269563639, guid: 5db1655c5b4ef5bc488d549c9d484363, type: 3}
     Names:
     - TrackMirror_Timbaland
     Environments:
@@ -3803,9 +4191,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 123.57339}
     Unused: 0
     Ignored: 0
-  - Name: '311: TrackMirror_Weeknd'
+  - Name: '342: TrackMirror_Weeknd'
     Hash: 50dd37f0f793e4d70c63245e4d7050dc
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4848641702144705501, guid: c33020e06e7acd93d9cf2b1f3a2d7541, type: 3}
     Names:
     - TrackMirror_Weeknd
     - TrackMirror_Lizzo
@@ -3816,9 +4204,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 123.575}
     Unused: 0
     Ignored: 0
-  - Name: '312: Trail'
+  - Name: '343: Trail'
     Hash: 41b2b64014361109d9685638cae33196
-    Mesh: {fileID: 4300000, guid: 9558c04ac5c3ea043aa2e451d8b81656, type: 3}
+    Mesh: {fileID: 4723664936506294608, guid: 13941af4a34876143b372ad47548f80f, type: 3}
     Names:
     - Trail
     Environments:
@@ -3827,9 +4215,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.20741415, y: 15.585375, z: 7.406809}
     Unused: 0
     Ignored: 0
-  - Name: '313: TrainWindow'
+  - Name: '344: TrainWindow'
     Hash: 98aeabf7ef00cd581d82e8cd64cff22c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6434561423807809201, guid: f943ea4322596a56d995ca1744636c9a, type: 3}
     Names:
     - TrainWindow
     Environments:
@@ -3838,9 +4226,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '314: transform1'
+  - Name: '345: transform1'
     Hash: 6712b180aee4a4eaaadbad3d8e1ceed0
-    Mesh: {fileID: 4300000, guid: ec9d67daa3db8854eb1c69a5b39e5823, type: 2}
+    Mesh: {fileID: 7605792779696668132, guid: 0054438fc5fb12071bcd111d15b1c37d, type: 3}
     Names:
     - transform1
     Environments:
@@ -3850,9 +4238,9 @@ MonoBehaviour:
     BoundsCenter: {x: -4.5091476, y: -8.305391, z: -26.358902}
     Unused: 0
     Ignored: 0
-  - Name: '315: Tree1'
+  - Name: '346: Tree1'
     Hash: 0afbda35c1fe141ef7958dedfe6fc2cb
-    Mesh: {fileID: 4300000, guid: c45796a61781e784fa72fc7c26f461fd, type: 2}
+    Mesh: {fileID: -3142649664740890969, guid: 9e1d68266c2b43dba9ed144968b83d7c, type: 3}
     Names:
     - Tree1
     Environments:
@@ -3861,9 +4249,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.4904766, y: 3.6727874, z: 0.20484449}
     Unused: 0
     Ignored: 0
-  - Name: '316: Tree1Depth'
+  - Name: '347: Tree1Depth'
     Hash: 4efe6da34c0448920ff4956f200145f0
-    Mesh: {fileID: 4300000, guid: 1e25a2399eca0864193651f9b7097f6b, type: 2}
+    Mesh: {fileID: 2869300087635151702, guid: 60ef3dbe63d34a4e297818c76c30d14c, type: 3}
     Names:
     - Tree1Depth
     Environments:
@@ -3872,9 +4260,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.026399374, y: 3.6175914, z: -0.17024946}
     Unused: 0
     Ignored: 0
-  - Name: '317: Tree2'
+  - Name: '348: Tree2'
     Hash: c9f2c295ef5a7e3cd0b0ec6e48659fc8
-    Mesh: {fileID: 4300000, guid: 648e3bcf3b43602488123afa3815d1fb, type: 2}
+    Mesh: {fileID: -5700080643567655694, guid: c1a664b43ed8e01378a852c6d051b6b3, type: 3}
     Names:
     - Tree2
     Environments:
@@ -3883,9 +4271,9 @@ MonoBehaviour:
     BoundsCenter: {x: 2.2496982, y: 7.3676577, z: -0.000000009820049}
     Unused: 0
     Ignored: 0
-  - Name: '318: Tree3'
+  - Name: '349: Tree3'
     Hash: 207db7ebc92184af653d279096ed87d0
-    Mesh: {fileID: 4300000, guid: db77fbe7295749a4bba961dfa69979a4, type: 2}
+    Mesh: {fileID: -7672157882097804489, guid: ff7d5a481586f3331b0336045466803a, type: 3}
     Names:
     - Tree3
     Environments:
@@ -3894,9 +4282,9 @@ MonoBehaviour:
     BoundsCenter: {x: 2.1978462, y: 4.221666, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '319: Triangle'
+  - Name: '350: Triangle'
     Hash: d10c109cb24ed186583de7906e16b8ed
-    Mesh: {fileID: 2443237146360861554, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: 4300000, guid: ab3cb1bfa74bad30c8076892b5708d72, type: 2}
     Names:
     - Triangle
     Environments:
@@ -3905,9 +4293,20 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000011920929, y: 0.28867498, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '320: TriWallConstruction'
+  - Name: '351: TriWallCollider'
+    Hash: 756a1497b7124b95ff1a375138ba5d21
+    Mesh: {fileID: 4300000, guid: 8ce14198eccfc7b9a976a4e4aa9c9d36, type: 2}
+    Names:
+    - TriWallCollider
+    Environments:
+    - DaftPunkEnvironment
+    BoundsSize: {x: 6, y: 8.6617, z: 0.5}
+    BoundsCenter: {x: 12, y: 5.41515, z: 0}
+    Unused: 0
+    Ignored: 0
+  - Name: '352: TriWallConstruction'
     Hash: a735df9153d91e2e9b741191f0bc03cb
-    Mesh: {fileID: 8817918488262685710, guid: f86c0fc3ce93ae06ea9c92a75d762390, type: 3}
+    Mesh: {fileID: 8817918488262685710, guid: 70d79251adb45a1eb91444d31b65ab7a, type: 3}
     Names:
     - TriWallConstruction
     Environments:
@@ -3916,9 +4315,9 @@ MonoBehaviour:
     BoundsCenter: {x: 12, y: 5.41515, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '321: TRSLips'
+  - Name: '353: TRSLips'
     Hash: 56dfa9e79381946bed98cc55743f3fdc
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4743982691497532298, guid: 1c324bb56a4f0a4c0a297c0a1755f188, type: 3}
     Names:
     - TRSLips
     Environments:
@@ -3927,9 +4326,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.0000000037252903}
     Unused: 0
     Ignored: 0
-  - Name: '322: TRSLipsPlane'
+  - Name: '354: TRSLipsPlane'
     Hash: 46c8ffc380061d98ae7aaa8239ec34ff
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4327916355009092441, guid: bf3367f02f93d5a9884e3f1918737527, type: 3}
     Names:
     - TRSLipsPlane
     Environments:
@@ -3938,9 +4337,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: -0.0000000037252903}
     Unused: 0
     Ignored: 0
-  - Name: '323: TubeDisplay'
+  - Name: '355: TubeDisplay'
     Hash: 821b7a2d96b56fba065c2bf2cdf16439
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: fab195fa95d72cf7ba9a2a46c425dbef, type: 2}
     Names:
     - TubeDisplay
     Environments:
@@ -3949,9 +4348,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '324: TubeDisplayUVMesh'
+  - Name: '356: TubeDisplayUVMesh'
     Hash: b8b4051b418594232b8a753c6605a3b9
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -8976055238212752129, guid: ef9ef6d204c7ae8e89075db786cbc3d3, type: 3}
     Names:
     - TubeDisplayUVMesh
     Environments:
@@ -3960,9 +4359,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -0.003000021, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '325: TubeElement'
+  - Name: '357: TubeElement'
     Hash: 5de43523e91fefef300547b70d5e7951
-    Mesh: {fileID: 4300000, guid: 6d00ea273b3afc949b8ecdfaca3490a3, type: 2}
+    Mesh: {fileID: 513908141169785934, guid: f00395323cbe312828e6d4c3131a114b, type: 3}
     Names:
     - TubeElement
     Environments:
@@ -3971,9 +4370,9 @@ MonoBehaviour:
     BoundsCenter: {x: -5.9538574, y: -21.204458, z: -40.85345}
     Unused: 0
     Ignored: 0
-  - Name: '326: tubes'
+  - Name: '358: tubes'
     Hash: 183bcae30c384e90aa2db556257170bb
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4159260838372118994, guid: 7b3c550cd0d79327ba49f33ec70e8704, type: 3}
     Names:
     - tubes
     Environments:
@@ -3982,9 +4381,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.9067561, z: -2.30869}
     Unused: 0
     Ignored: 0
-  - Name: '327: TubeStageConstruction'
+  - Name: '359: TubeStageConstruction'
     Hash: 952ad7f5cbe1ba35b3049d640cf835b7
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 4300000, guid: 91da279b934823347b4c338059410143, type: 2}
     Names:
     - TubeStageConstruction
     Environments:
@@ -3993,9 +4392,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000009536743, y: -0.4044, z: 13.384123}
     Unused: 0
     Ignored: 0
-  - Name: '328: Tunnel'
+  - Name: '360: Tunnel'
     Hash: e632ff31a0194c84c722970fb9b3bfed
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -6940246184706110475, guid: 237247d7d1c29ba9dbcfd31c0f5f2365, type: 3}
     Names:
     - Tunnel
     Environments:
@@ -4004,9 +4403,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: -11.277856, z: 2.9512186}
     Unused: 0
     Ignored: 0
-  - Name: '329: TunnelPiece'
+  - Name: '361: TunnelPiece'
     Hash: 44b1c019119d94864f2d533d896349e1
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -4331513527333247464, guid: 14bd7457374feab8f801288d1da4be0c, type: 3}
     Names:
     - TunnelPiece
     Environments:
@@ -4015,9 +4414,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.0002404996, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '330: TunnelPiece01'
+  - Name: '362: TunnelPiece01'
     Hash: a876302634dc9eb3ff17044308e4b748
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 6730452492454902859, guid: bf9546865bd16ddb9b777f53c790e2a2, type: 3}
     Names:
     - TunnelPiece01
     Environments:
@@ -4026,9 +4425,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.8817885, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '331: TunnelPiece02'
+  - Name: '363: TunnelPiece02'
     Hash: 56dfe1dc8dcc042743492a6598b61f72
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3630365247459861705, guid: ec2371d7fb05acd7592e4b12fe020148, type: 3}
     Names:
     - TunnelPiece02
     Environments:
@@ -4037,9 +4436,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.8817885, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '332: TunnelPiece03'
+  - Name: '364: TunnelPiece03'
     Hash: 2b91e6a8b07d2f2a9abd8501bcd1a602
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3882255384834107269, guid: b68f7c28f268544e7b6fa03964719ae8, type: 3}
     Names:
     - TunnelPiece03
     Environments:
@@ -4048,9 +4447,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '333: TunnelPieceMeshGlow'
+  - Name: '365: TunnelPieceMeshGlow'
     Hash: f590db699e6bd91cddf52a3eae375f4d
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -2365781925902970973, guid: f99dea973f7428a749763d7ad8160751, type: 3}
     Names:
     - TunnelPieceMeshGlow
     Environments:
@@ -4059,9 +4458,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.0004361443, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '334: TunnelRings'
+  - Name: '366: TunnelRings'
     Hash: bc0f40f617298470c104135b7a9837bd
-    Mesh: {fileID: -3242808696521743756, guid: b8b754f66198af33da057e2f69e47cc8, type: 3}
+    Mesh: {fileID: -3242808696521743756, guid: bb01f48d27a5d7992b3ad092a1aea47e, type: 3}
     Names:
     - TunnelRings
     Environments:
@@ -4070,9 +4469,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.0000014305115, y: 24.705015, z: 2.0812466}
     Unused: 0
     Ignored: 0
-  - Name: '335: TunnelSpectrogram'
+  - Name: '367: TunnelSpectrogram'
     Hash: 0f4083cce876b032786cbe9af8e93338
-    Mesh: {fileID: 8467187638049099546, guid: b8b754f66198af33da057e2f69e47cc8, type: 3}
+    Mesh: {fileID: -1017715556510563284, guid: 4219962bb0997085696257af188e8713, type: 3}
     Names:
     - TunnelSpectrogram
     Environments:
@@ -4081,9 +4480,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 30.369045, z: 0.333777}
     Unused: 0
     Ignored: 0
-  - Name: '336: TunnelSpectrogram'
+  - Name: '368: TunnelSpectrogram'
     Hash: 11e359a231f3a4d4aba2170415642edc
-    Mesh: {fileID: 8467187638049099546, guid: e0ea96845b7995a08b71b863d6e1d8bf, type: 3}
+    Mesh: {fileID: -1017715556510563284, guid: 3bc78de0919c4fddc9c261c698b454bb, type: 3}
     Names:
     - TunnelSpectrogram
     Environments:
@@ -4092,9 +4491,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 30.369045, z: -0.0022556633}
     Unused: 0
     Ignored: 0
-  - Name: '337: TunnelSpectrogram'
+  - Name: '369: TunnelSpectrogram'
     Hash: 2b751ad5b3f9a5891d0ffa14fd8a7bc1
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -1017715556510563284, guid: 92089a47f5da9d9cc8c2455d39b2bc06, type: 3}
     Names:
     - TunnelSpectrogram
     Environments:
@@ -4103,9 +4502,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.987, y: 0.75, z: -0.0020000339}
     Unused: 0
     Ignored: 0
-  - Name: '338: Underground'
+  - Name: '370: Underground'
     Hash: bb7d9a74d837ea29270ef6b20d9ce08b
-    Mesh: {fileID: -4152543247223245100, guid: cedf2982bbc9fdc76a4dce64be952dbf, type: 3}
+    Mesh: {fileID: -4152543247223245100, guid: 03a698001f0e7e4679d1a468c85a660a, type: 3}
     Names:
     - Underground
     Environments:
@@ -4114,9 +4513,9 @@ MonoBehaviour:
     BoundsCenter: {x: 1, y: -30.05, z: 23.5}
     Unused: 0
     Ignored: 0
-  - Name: '339: VConstruction'
+  - Name: '371: VConstruction'
     Hash: 3f8159522c7849d8ff562f01d511a303
-    Mesh: {fileID: -7345459072099534990, guid: e42d376ef9b5374aea47a7b5dd3d1f54, type: 3}
+    Mesh: {fileID: -7345459072099534990, guid: b2d2602bc9e5d36759b631a34d86491a, type: 3}
     Names:
     - VConstruction
     Environments:
@@ -4126,9 +4525,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.0000038146973, y: -55, z: 15}
     Unused: 0
     Ignored: 0
-  - Name: '340: VerticalPipe'
+  - Name: '372: VerticalPipe'
     Hash: 6f49d3e56662668670b6dd08a7b4c688
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1194957313656611916, guid: c3c88ff514c8f8107aa27ae9e9cae7ca, type: 3}
     Names:
     - VerticalPipe
     Environments:
@@ -4137,9 +4536,9 @@ MonoBehaviour:
     BoundsCenter: {x: 4.3715577, y: -2.0554645, z: 0.19485839}
     Unused: 0
     Ignored: 0
-  - Name: '341: Vinyl'
+  - Name: '373: Vinyl'
     Hash: a08bce849a238e048ff62a1fb169474c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 3222875399155513590, guid: 3e752fd5d30c6daef810b448957d2acf, type: 3}
     Names:
     - Vinyl
     Environments:
@@ -4148,9 +4547,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000014901161, y: 0, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '342: VisorSpectrogram'
+  - Name: '374: VisorSpectrogram'
     Hash: a91f48b99a7ba64303a3de781cd7ff4f
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -3988275167333627471, guid: 9e909a2a5fae7c2fdaaae16467c5e09c, type: 3}
     Names:
     - VisorSpectrogram
     Environments:
@@ -4159,9 +4558,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000500679, y: -0.059104607, z: 0.53834206}
     Unused: 0
     Ignored: 0
-  - Name: '343: VisorSpectrogram01'
+  - Name: '375: VisorSpectrogram01'
     Hash: 1aa88b0c20beeaee45598a849e348f4c
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1693658587778308456, guid: a90f245c917cbe9d9b8a53ebede2b3ad, type: 3}
     Names:
     - VisorSpectrogram01
     Environments:
@@ -4170,9 +4569,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000022619963, y: 2.3751683, z: 0.33595863}
     Unused: 0
     Ignored: 0
-  - Name: '344: VisorText'
+  - Name: '376: VisorText'
     Hash: 7885bc5e09ab03cac421b4316f3622af
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5714890237145203321, guid: f2c85b470ff504893a1206503aeb65c9, type: 3}
     Names:
     - VisorText
     Environments:
@@ -4181,9 +4580,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00004592538, y: -0.05995691, z: 0.4643771}
     Unused: 0
     Ignored: 0
-  - Name: '345: VisorText01'
+  - Name: '377: VisorText01'
     Hash: 489b87e5fa8b2c052f893ae473f50dcf
-    Mesh: {fileID: 0}
+    Mesh: {fileID: -5427786287469619135, guid: 349a5ca32f37a3c8a9439d74ee4d1c57, type: 3}
     Names:
     - VisorText01
     Environments:
@@ -4192,9 +4591,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.000022619963, y: 2.3751683, z: 0.335758}
     Unused: 0
     Ignored: 0
-  - Name: '346: Walls'
+  - Name: '378: Walls'
     Hash: 3be7d1e3d223b451522f005c8bf0ad40
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 2186430941476567602, guid: 66f3baf551773a6b798f9f934c7c922e, type: 3}
     Names:
     - Walls
     Environments:
@@ -4203,9 +4602,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: -5.4368973, z: 100.89389}
     Unused: 0
     Ignored: 0
-  - Name: '347: WaterfallFalling'
+  - Name: '379: WaterfallFalling'
     Hash: d1bb154ca084ad0e9a56e3d5cb01ca7f
-    Mesh: {fileID: 4300000, guid: eb1eb8da2429fbc4e8e8df170826aec6, type: 2}
+    Mesh: {fileID: 2755723672749234839, guid: d786532a32879b5d79221ce8baffb798, type: 3}
     Names:
     - WaterfallFalling
     Environments:
@@ -4214,9 +4613,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0.00000023841858, y: -6.670905, z: -0.7403538}
     Unused: 0
     Ignored: 0
-  - Name: '348: WaterfallFlatClose'
+  - Name: '380: WaterfallFlatClose'
     Hash: feec5be6962d1b97b402d08b48532278
-    Mesh: {fileID: 4300000, guid: a09d9cc663d5e7f48b8d12f2314e474c, type: 2}
+    Mesh: {fileID: -7294483609092118873, guid: 202422e52c67c0bae9a3e9793464d03a, type: 3}
     Names:
     - WaterfallFlatClose
     Environments:
@@ -4225,9 +4624,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: -0.00000013426447, z: 34.050007}
     Unused: 0
     Ignored: 0
-  - Name: '349: WaterfallFlatFar'
+  - Name: '381: WaterfallFlatFar'
     Hash: ff5bb935a1c22995f35956883a9cf4c1
-    Mesh: {fileID: 3614411430583016881, guid: 0d6c22b25d749736e896de9b0879a747, type: 3}
+    Mesh: {fileID: -3509522790917722560, guid: 43e23bf6849e164979ee8ec503212eab, type: 3}
     Names:
     - WaterfallFlatFar
     Environments:
@@ -4236,9 +4635,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: -0.00000013426447, z: 69.17501}
     Unused: 0
     Ignored: 0
-  - Name: '350: WaterfallSetDepthOnly'
+  - Name: '382: WaterfallSetDepthOnly'
     Hash: 2024266e198bf5128227c39c8877fc49
-    Mesh: {fileID: -8945619898293919839, guid: 0d6c22b25d749736e896de9b0879a747, type: 3}
+    Mesh: {fileID: -1150581691562547966, guid: 176c2a6b2b2215e6d94ce5213fe3e1c4, type: 3}
     Names:
     - WaterfallSetDepthOnly
     Environments:
@@ -4247,9 +4646,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: -0.00000013416837, z: 103.049995}
     Unused: 0
     Ignored: 0
-  - Name: '351: WaterfallTransition'
+  - Name: '383: WaterfallTransition'
     Hash: 2f6876a03ec03fd593c1025edbb3158e
-    Mesh: {fileID: 4300000, guid: 2b7a4592dd2c60840ae08ad1a4a4c186, type: 2}
+    Mesh: {fileID: 2170498300800364348, guid: f7b02243218809be5926784b6c27e1b2, type: 3}
     Names:
     - WaterfallTransition
     Environments:
@@ -4258,9 +4657,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.00000023841858, y: 0.021016717, z: 0.6962395}
     Unused: 0
     Ignored: 0
-  - Name: '352: WheelsFront'
+  - Name: '384: WheelsFront'
     Hash: 018b4d8d8cd0d64d2e35223f6d5607fd
-    Mesh: {fileID: 4300000, guid: e0259d2a830142744968efc9e1468c56, type: 2}
+    Mesh: {fileID: -2519843790263799628, guid: 1b1f591bd6aed412889270f563752400, type: 3}
     Names:
     - WheelsFront
     Environments:
@@ -4269,9 +4668,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.36073077, z: 1.5367014}
     Unused: 0
     Ignored: 0
-  - Name: '353: WheelsFront'
+  - Name: '385: WheelsFront'
     Hash: 8f90f17815ba09ad497a830dcfd0125c
-    Mesh: {fileID: 4300000, guid: 4ce8c27657270da48a16a05d2a80cba0, type: 2}
+    Mesh: {fileID: -2519843790263799628, guid: 0980328a3ad7a1eda82754914379dd06, type: 3}
     Names:
     - WheelsFront
     Environments:
@@ -4280,9 +4679,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.33077797, z: 1.4388463}
     Unused: 0
     Ignored: 0
-  - Name: '354: WheelsFront'
+  - Name: '386: WheelsFront'
     Hash: ef58d420fadbc3a585aa7655d714e002
-    Mesh: {fileID: 4300000, guid: a6886d30668d21f4ebb956d2806523f7, type: 2}
+    Mesh: {fileID: -2519843790263799628, guid: cc65c0ccb6b859abe805c8dfa9799127, type: 3}
     Names:
     - WheelsFront
     Environments:
@@ -4291,9 +4690,9 @@ MonoBehaviour:
     BoundsCenter: {x: 0, y: 0.3298381, z: 1.4528631}
     Unused: 0
     Ignored: 0
-  - Name: '355: Window'
+  - Name: '387: Window'
     Hash: 757a6a217ff945943cdc8a2d955f69cc
-    Mesh: {fileID: 0}
+    Mesh: {fileID: 1049928748687988745, guid: 03d345913516a31d08435454a070b8b9, type: 3}
     Names:
     - Window
     Environments:
@@ -4302,9 +4701,9 @@ MonoBehaviour:
     BoundsCenter: {x: -0.000000014901161, y: -0.0061278343, z: 0}
     Unused: 0
     Ignored: 0
-  - Name: '356: ZombieHand'
+  - Name: '388: ZombieHand'
     Hash: ee6c5db1cafa2e9863b8250078202a65
-    Mesh: {fileID: 4300000, guid: 95a45d2f41dc7014aa5a55e91bcd64c7, type: 2}
+    Mesh: {fileID: -4902822455683172873, guid: 791255a3d8606018bb2d0d9ad49be22a, type: 3}
     Names:
     - ZombieHand
     Environments:

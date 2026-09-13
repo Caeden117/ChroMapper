@@ -70,7 +70,7 @@ public class CreateEventTypeLabels : MonoBehaviour
                     var textMesh = instantiate.GetComponentInChildren<TextMeshProUGUI>();
                     textMesh.text = i == 0
                         ? "All Lights"
-                        : $"{context.TracksDefinition.GetBasicOrDefault(eventType).Name} ID {LaneToLightID(eventType, i - 1)}";
+                        : $"{context.TrackDefinitions.GetBasicOrDefault(eventType).Name} ID {LaneToLightID(eventType, i - 1)}";
                 }
                 catch { }
             }
@@ -84,7 +84,7 @@ public class CreateEventTypeLabels : MonoBehaviour
     {
         // SkrillexBasicEventLanesUseEnvironmentPresentationOrder relies on generated track-definition order so the
         // runtime label builder remains environment-agnostic and newly generated assets reproduce the same lanes.
-        foreach (var entry in context.TracksDefinition.Basic)
+        foreach (var entry in context.TrackDefinitions.Basic)
         {
             var definition = entry.Value;
             if ((definition.Kind == selectedKind) != matchingKind)
@@ -162,7 +162,7 @@ public class CreateEventTypeLabels : MonoBehaviour
         var seenTypes = new HashSet<int>();
         foreach (var entry in laneObjs)
         {
-            if (context.TracksDefinition.GetBasicOrDefault(entry.type).Kind != BasicEventKind.Lights
+            if (context.TrackDefinitions.GetBasicOrDefault(entry.type).Kind != BasicEventKind.Lights
                 || !seenTypes.Add(entry.type))
                 continue;
             lightTypes.Add(entry.type);

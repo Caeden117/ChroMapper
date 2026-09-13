@@ -27,16 +27,16 @@ TagManager:
   - 
   - HMDOnly
   - DesktopOnly
-  - 
+  - NonReflectedParticles
   - Physics
-  - 
+  - AlwaysVisible
   - Event
   - DesktopOnlyAndReflected
   - HmdOnlyAndReflected
   - 
-  - 
-  - 
-  - 
+  - AlwaysVisibleAndReflected
+  - DontShowInExternalMRCamera
+  - PlayersPlace
   - Skybox
   - 
   - Post Processing

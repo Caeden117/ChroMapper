@@ -13,7 +13,9 @@ This GitHub repository comes with the assets and scripts you need to easily open
 * Open the project. Project dependencies should download automatically.
 
 ## Running the project
-* Select "File" -> "Build and Run" within Unity.
+* Open scene `00 Bootup` from the Project window before running or building.
+  * Hitting the **Play button** in Unity on this scene will launch ChroMapper directly in the editor — much faster to iterate than a full build.
+* Select "File" -> "Build and Run" within Unity for a standalone build.
   * It is recommended to always build with Mono; building with IL2CPP will cause issues in areas that utilize [Harmony](https://github.com/pardeike/Harmony) patches, including post processing and input.
 * Most errors, including "Missing Project ID" and "Discord RPC error", can be ignored.
 

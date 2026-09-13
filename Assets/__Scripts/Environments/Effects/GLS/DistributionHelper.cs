@@ -5,7 +5,7 @@ public static class DistributionHelper
 {
     public static int GetDurationCount(IndexFilterHelper.IndexFilter indexFilter) =>
         indexFilter.LimitsDuration ? indexFilter.VisibleCount : indexFilter.Count;
-    
+
     public static int GetDistributionCount(IndexFilterHelper.IndexFilter indexFilter) =>
         indexFilter.LimitsDistribution ? indexFilter.VisibleCount : indexFilter.Count;
 

@@ -12,12 +12,11 @@ public class LightColorGroupEffectManager : MonoBehaviour
 
     private void Awake() => IdToEffect = effectEntries.ToDictionary(x => x.Group, x => x.Effect);
 
-    public void Initialize(AudioTimeSyncController atsc, ColorSchemeSO colorScheme)
+    public void Initialize(AudioTimeSyncController atsc)
     {
         foreach (var effect in IdToEffect.Values)
         {
             effect.Atsc = atsc;
-            effect.ColorScheme = colorScheme;
             effect.Initialize();
         }
     }

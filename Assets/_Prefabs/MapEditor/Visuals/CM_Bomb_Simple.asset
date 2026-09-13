@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30962ae2c9de428e8466f26886cc927d, type: 3}
+  m_Name: CM_Bomb_Simple
+  m_EditorClassIdentifier:
+  Name: CM_Bomb_Simple
+  Prefab: {fileID: 9221522305038936411, guid: adf2cc415bea87f7b8217f013294060e, type: 3}
+  Collider: {fileID: -6548247349681776351, guid: d700f6006df1d3968b8926c5c8f8d150,
+    type: 3}
+  DisableAux: 0
+  AlternateShader: 0

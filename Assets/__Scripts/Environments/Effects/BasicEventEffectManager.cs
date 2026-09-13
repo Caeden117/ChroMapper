@@ -27,19 +27,13 @@ public class BasicEventEffectManager : MonoBehaviour
         }
     }
 
-    public void Initialize(AudioTimeSyncController atsc, ColorSchemeSO colorScheme)
+    public void Initialize(AudioTimeSyncController atsc)
     {
         foreach (var manager in Effects)
         {
             manager.Atsc = atsc;
             switch (manager)
             {
-                case BasicLightEffect blm:
-                    blm.ColorScheme = colorScheme;
-                    break;
-                case ColorBoostEffect cbm:
-                    cbm.ColorScheme = colorScheme;
-                    break;
                 case TrackLaneRingsRotationEffect tlrre:
                     if (tlrre.Visual != null && tlrre.Visual.Manager != null)
                         tlrre.Visual.Manager.Atsc = atsc;

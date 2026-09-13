@@ -19,14 +19,14 @@ public class StrobeLightingPass : StrobeGeneratorPass
     private readonly bool easeValue;
 
     public StrobeLightingPass(
-        TracksDefinitionSO tracksDefinition,
+        TrackDefinitionsSO trackDefinitions,
         IEnumerable<int> alternatingValues,
         bool switchColors,
         bool dynamicStrobe,
         float strobePrecision,
         string strobeEasing,
         bool easingTimeSwitch,
-        bool easingValueSwitch) : base(tracksDefinition)
+        bool easingValueSwitch) : base(trackDefinitions)
     {
         values = alternatingValues;
         alternateColors = switchColors;
@@ -38,7 +38,7 @@ public class StrobeLightingPass : StrobeGeneratorPass
     }
 
     public override bool IsEventValidForPass(BaseEvent evt) =>
-        TracksDefinition.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights && !evt.IsLegacyChroma;
+        TrackDefinitions.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights && !evt.IsLegacyChroma;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(
         IEnumerable<BaseEvent> original,

@@ -82,6 +82,7 @@ namespace Beatmap.Base
         // should only be set directly when initializing
         // read from SongBpmTime instead, and write to JsonTime to update this
         // really should be private but we need to set this from BaseDifficulty on init
+        // TODO: this is not song BPM time, it's grid or timeline position
         internal float? songBpmTime;
         public float SongBpmTime => (float)songBpmTime;
 

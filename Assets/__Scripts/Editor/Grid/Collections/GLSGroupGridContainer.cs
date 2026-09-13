@@ -121,7 +121,7 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
     public override ObjectContainer CreateContainer() =>
         GLSGroupContainer.SpawnGLSGroup(
             null,
-            BeatmapContext.TracksDefinition,
+            BeatmapContext.TrackDefinitions,
             ref eventPrefab);
 
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
@@ -134,7 +134,7 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
             false);
 
         var pos = con.transform.localPosition;
-        pos.x = 0.5f + GLSGroupContainer.GetPositionFromTrackDefinition(BeatmapContext.TracksDefinition, e);
+        pos.x = 0.5f + GLSGroupContainer.GetPositionFromTrackDefinition(BeatmapContext.TrackDefinitions, e);
         pos.y = 0.5f;
         con.transform.localPosition = pos;
 

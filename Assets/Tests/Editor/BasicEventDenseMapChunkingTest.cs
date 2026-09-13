@@ -526,7 +526,7 @@ namespace Tests.Editor
             for (var sourceIndex = 0; sourceIndex < eventsContainer.MapObjects.Count; sourceIndex++)
             {
                 var source = eventsContainer.MapObjects[sourceIndex];
-                if (eventsContainer.BeatmapContext.TracksDefinition.GetBasicOrDefault(source.Type).Kind
+                if (eventsContainer.BeatmapContext.TrackDefinitions.GetBasicOrDefault(source.Type).Kind
                         != BasicEventKind.Lights
                     || source.IsFade
                     || source.IsFlash)

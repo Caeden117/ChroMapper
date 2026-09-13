@@ -12,235 +12,84 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - DIFFUSE
-  - SPECULAR
+  - RIM_DIM
+  - ZWRITE
   m_InvalidKeywords:
-  - _ACES_APPROACH_AFTER_EMISSIVE
-  - _BLOOMTYPE_NONE
-  - _CUSTOM_TIME_STANDARD
-  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
-  - _EMISSIONBLOOMTYPE_FLAT
-  - _EMISSIONTEXTURE_NONE
-  - _EMISSION_ALPHA_SOURCE_EMISSION_G
-  - _EMISSION_TEXTURE_SOURCE_TEXTURE
-  - _MASKBLEND_MULTIPLY
-  - _METALLIC_TEXTURE_SOURCE_NONE
-  - _SECONDARY_MASKBLEND_MULTIPLY
-  - _SECONDARY_UVS_NONE
-  - _SMOOTHNESS_TEXTURE_SOURCE_NONE
-  - _SPECTROGRAM_NONE
-  - _VERTEX_BLOOMTYPE_NONE
-  - _VERTEX_NONE
+  - ENABLE_COLOR_INSTANCING
+  - ENABLE_CUTOUT
+  - ENABLE_RIM_DIM
+  - _FOGTYPE_NONE
   - _ZWRITE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2004
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DiffuseTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionGradientTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionTex:
-        m_Texture: {fileID: 0}
+    - _EnvironmentReflectionCube:
+        m_Texture: {fileID: 8900000, guid: a045335ad145d3f6abed423ec1fe0c56, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MetalSmoothnessTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SecondaryEmissionMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ACES_Approach: 0
-    - _AlbedoMultiplier: 1
-    - _AlphaCutout: 0
     - _AlwaysTranslucent: 0
-    - _AmbientMinimalValue: 0
-    - _AmbientMultiplier: 1
     - _AnimationSpawned: 0
-    - _BloomType: 0
-    - _BothSidesDiffuseMultiplier: 1
-    - _BumpScale: 1
-    - _CircleRadius: 1
+    - _BlendDstFactor: 0
+    - _BlendDstFactorA: 0
+    - _BlendSrcFactor: 1
+    - _BlendSrcFactorA: 1
     - _ColorMultiplier: 1
     - _CullMode: 2
-    - _Custom_Time: 0
-    - _Cutoff: 0.5
+    - _CutPlaneEdgeGlowWidth: 0.01
     - _Cutout: 0
-    - _CutoutEdgeGlow: 0.5
-    - _CutoutEdgeWidth: 0.05
-    - _CutoutSize: 1
-    - _DarkeningIntensity: 1
-    - _DarkeningScale: 0.35
-    - _DetailNormalMapScale: 1
-    - _Diffuse_Texture_Source: 0
-    - _DisplacementBidirectional: 0
-    - _DisplacementSpatial: 0
-    - _DisplacementStrength: 0.1
-    - _DstBlend: 0
-    - _EmissionBloomIntensity: 1
-    - _EmissionBloomType: 0
-    - _EmissionBrightness: 1
-    - _EmissionFogSuppression: 0
-    - _EmissionGradientIntensity: 1
-    - _EmissionGradientPanningSpeed: 0
-    - _EmissionGradientPosition: 0.5
-    - _EmissionMaskIntensity: 1
-    - _EmissionMaskStepValue: 0.5
-    - _EmissionMaskStepWidth: 0.1
-    - _EmissionStrength: 1
-    - _EmissionTexBloomIntensity: 1
-    - _EmissionTexWhiteBoostMultiplier: 1
-    - _EmissionTexture: 0
-    - _EmissionThreshold: 0
-    - _EmissionThresholdAngle: 0
-    - _Emission_Alpha_Source: 0
-    - _Emission_Texture_Source: 0
-    - _EnableBothSidesDiffuse: 0
-    - _EnableDiffuse: 1
-    - _EnableDiffuseTexture: 0
-    - _EnableDistanceDarkening: 0
-    - _EnableEmissionAngleDisappear: 0
-    - _EnableEmissionMask: 0
-    - _EnableFog: 0
-    - _EnableGroundFade: 0
+    - _CutoutTexScale: 0.5
+    - _EnableColorInstancing: 1
+    - _EnableCutout: 0
     - _EnableHeightFog: 0
-    - _EnableLightFalloff: 0
-    - _EnableMetalSmoothnessTex: 0
-    - _EnablePrivatePointLight: 0
-    - _EnableRimDim: 0
-    - _EnableSecondaryEmissionMask: 0
-    - _EnableSpecular: 1
-    - _FadeSize: 50
-    - _FlipbookBlendingOff: 0
-    - _FlipbookColumns: 8
-    - _FlipbookNonloopableFrames: 0
-    - _FlipbookRows: 8
-    - _FlipbookSpeed: 1
+    - _EnablePlaneCut: 0
+    - _EnableReflectionMap: 0
+    - _EnableRimDim: 1
+    - _FakeMirrorTransparencyEnabled: 0
+    - _FakeMirrorTransparencyMultiplier: 1
+    - _FinalColorMul: 1
     - _FogHeightOffset: 0
-    - _FogHeightScale: 1
-    - _FogScale: 1
-    - _FogStartOffset: 1
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _GroundFadeOffset: 1
-    - _GroundFadeScale: 0.5
-    - _InvertRimDim: 0
-    - _MainAlpha: 1
-    - _MainEffectFogSuppression: 0
-    - _MaskBlend: 0
-    - _Metallic: 0
-    - _Metallic_Texture_Source: 0
-    - _Mode: 0
-    - _ObjectTime: 9999
-    - _OcclusionStrength: 1
+    - _FogHeightScale: 2.5
+    - _FogScale: 0.5
+    - _FogStartOffset: 100
+    - _FogType: 0
+    - _NoteSize: 0.25
+    - _ObjectTime: 0
     - _OutlineWidth: 0.05
-    - _Parallax: 0.02
-    - _PointLightPositionLocal: 0
-    - _PreciseNormal: 0
-    - _PrivatePointLightIntensity: 1
-    - _RimDarkening: 0
-    - _RimDistanceOffset: 2
-    - _RimDistanceScale: 0.3
-    - _RimOffset: 1
-    - _RimScale: 1
-    - _RimSmoothness: 1
+    - _PreciseFog: 0
+    - _RimCameraDistanceOffset: 5
+    - _RimCameraDistanceScale: 0.03
+    - _RimDarkening: 0.5
+    - _RimOffset: -0.025
+    - _RimScale: 4
     - _Rotation: 0
-    - _SecondaryEmissionMaskIntensity: 1
-    - _SecondaryUVsEmissionTex: 0
-    - _SecondaryUVsMask: 0
-    - _SecondaryUVsMask2: 0
-    - _Secondary_MaskBlend: 0
-    - _Secondary_UVs: 0
     - _Smoothness: 1
-    - _SmoothnessTextureChannel: 0
-    - _Smoothness_Texture_Source: 0
-    - _Spectrogram: 0
-    - _SpecularHighlights: 1
-    - _SpecularIntensity: 1
-    - _SrcBlend: 1
-    - _TranslucentAlpha: 0.5
-    - _UVSec: 0
-    - _UseColorArray: 0
-    - _Vertex: 0
-    - _Vertex_BloomType: 0
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _StrobeColorEnabled: 0
+    - _TranslucentAlpha: 0.45
+    - _WhiteBoostType: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _AdditiveUVOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.25, g: 0.25, b: 0.25, a: 1}
-    - _ColorBase: {r: 0, g: 0, b: 0, a: 0}
-    - _ColorTint: {r: 1, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _CutPlane: {r: 0, g: 0, b: 0, a: 0}
     - _CutoutTexOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _DarkeningCenter: {r: 0, g: 0, b: 0, a: 0}
-    - _DarkeningDirection: {r: 1, g: 1, b: 1, a: 1}
-    - _DisplacementAxisMultiplier: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionMaskSpeed: {r: 0, g: 1, b: 0, a: 0}
-    - _EmissionTexColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionTexSpeed: {r: 0, g: 0, b: 0, a: 0}
-    - _InputUvMultiplier: {r: 1, g: 1, b: 0, a: 0}
-    - _NominalDiffuseLevel: {r: 0, g: 0, b: 0, a: 0}
     - _OverNoteInterfaceColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Position: {r: 0, g: 0, b: 0, a: 0}
-    - _PrivatePointLightColor: {r: 0, g: 0.5, b: 1, a: 1}
-    - _PrivatePointLightPosition: {r: 0, g: 0, b: 0, a: 1}
-    - _SecondaryEmissionMaskSpeed: {r: 0, g: 1, b: 0, a: 0}
-    - _UVScale: {r: 1, g: 1, b: 1, a: 1}
+    - _SimpleColor: {r: 1, g: 0, b: 0, a: 1}
+    - _StrobeColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -266,7 +266,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
             {
                 AllBpmEvents.Remove(e);
             }
-            else if (BeatmapContext.TracksDefinition.GetBasicOrDefault(e.Type).Kind == BasicEventKind.Lights
+            else if (BeatmapContext.TrackDefinitions.GetBasicOrDefault(e.Type).Kind == BasicEventKind.Lights
                 && !inCollection)
             {
                 RemoveLinkedLightEvents(e);
@@ -314,7 +314,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
             {
                 AllBpmEvents.Add(e);
             }
-            else if (BeatmapContext.TracksDefinition.GetBasicOrDefault(e.Type).Kind == BasicEventKind.Lights
+            else if (BeatmapContext.TrackDefinitions.GetBasicOrDefault(e.Type).Kind == BasicEventKind.Lights
                 && !inCollection)
             {
                 RemoveLinkedLightEvents(e);
@@ -669,7 +669,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
 
         // Ribbon retention must use the same All Lights-aware endpoint as appearance and interaction.
         var nextEvent = GetEffectiveNextLightEvent(@event);
-        if (BeatmapContext.TracksDefinition.GetBasicOrDefault(@event.Type).Kind != BasicEventKind.Lights
+        if (BeatmapContext.TrackDefinitions.GetBasicOrDefault(@event.Type).Kind != BasicEventKind.Lights
             || @event.IsFade
             || @event.IsFlash
             || nextEvent == null
@@ -705,7 +705,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
         EventContainer.SpawnEvent(
             this,
             null,
-            BeatmapContext.TracksDefinition,
+            BeatmapContext.TrackDefinitions,
             ref eventPrefab,
             ref labels);
 
@@ -748,7 +748,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
     {
         var eventContainer = con as EventContainer;
         // Rebind pooled and cloned event containers to the active environment metadata whenever they receive event data.
-        eventContainer.TracksDefinition = BeatmapContext.TracksDefinition;
+        eventContainer.TrackDefinitions = BeatmapContext.TrackDefinitions;
         // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt resolves endpoints for pooled finalized visuals.
         eventAppearance.SetAppearance(
             eventContainer,
@@ -831,7 +831,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
 
     public void LinkAllLightEvents() =>
         AllLightEvents = MapObjects
-            .Where(x => BeatmapContext.TracksDefinition.GetBasicOrDefault(x.Type).Kind == BasicEventKind.Lights)
+            .Where(x => BeatmapContext.TrackDefinitions.GetBasicOrDefault(x.Type).Kind == BasicEventKind.Lights)
             .GroupBy(x => x.Type)
             .ToDictionary(g => g.Key, g => g.ToList());
 
@@ -842,7 +842,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
 
         foreach (var e in MapObjects)
         {
-            var components = BeatmapContext.TracksDefinition.GetBasicOrDefault(e.Type).Components;
+            var components = BeatmapContext.TrackDefinitions.GetBasicOrDefault(e.Type).Components;
             if (components.HasFlag(BasicEventComponent.RingRotation))
             {
                 if (prevRotation != null)

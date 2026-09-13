@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375d41bff0e98c74abb5947b0ab58ffb, type: 3}
+  m_Name: ProdigyEnvironmentColorScheme
+  m_EditorClassIdentifier: Main::ColorSchemeSO
+  LeftNoteColor: {r: 0.9607844, g: 0.41176474, b: 0.2784314, a: 1}
+  RightNoteColor: {r: 0.30588236, g: 0.3529412, b: 0.43137258, a: 1}
+  ObstacleColor: {r: 0.81568635, g: 0.7137255, b: 0.1254902, a: 1}
+  environmentLeftColor: {r: 0.93725497, g: 0.3372549, b: 0.027450982, a: 1}
+  environmentRightColor: {r: 0.81568635, g: 0.7137255, b: 0.1254902, a: 1}
+  environmentWhiteColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 1}
+  environmentLeftBoostColor: {r: 0.08235294, g: 0.6745098, b: 0, a: 1}
+  environmentRightBoostColor: {r: 0.29411766, g: 0.08235294, b: 0.7607844, a: 1}
+  environmentWhiteBoostColor: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 1}

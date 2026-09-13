@@ -9,9 +9,9 @@ using SimpleJSON;
 /// </summary>
 public abstract class StrobeGeneratorPass
 {
-    protected readonly TracksDefinitionSO TracksDefinition;
+    protected readonly TrackDefinitionsSO TrackDefinitions;
 
-    protected StrobeGeneratorPass(TracksDefinitionSO tracksDefinition) => TracksDefinition = tracksDefinition;
+    protected StrobeGeneratorPass(TrackDefinitionsSO trackDefinitions) => TrackDefinitions = trackDefinitions;
 
     /// <summary>
     ///     Used to group together various events that are put through the particular generator pass.

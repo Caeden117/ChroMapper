@@ -14,6 +14,8 @@ public class MirrorSelection : MonoBehaviour
     [SerializeField] private CreateEventTypeLabels labels;
     [SerializeField] private PlacementLaneController placementLaneController;
 
+    private TrackDefinitionsSO trackDefinitions;
+
     private readonly Dictionary<int, int> cutDirectionToMirrored = new()
     {
         { (int)NoteCutDirection.DownLeft, (int)NoteCutDirection.DownRight },
@@ -112,7 +114,7 @@ public class MirrorSelection : MonoBehaviour
     {
         var selectedTypes = SelectionController.SelectedObjects.AsValueEnumerable()
             .OfType<BaseEvent>()
-            .Where(evt => beatmapRuntimeContext.TracksDefinition.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights)
+            .Where(evt => beatmapRuntimeContext.TrackDefinitions.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights)
             .Select(evt => evt.Type)
             .Distinct()
             .OrderBy(labels.EventTypeToLaneId)
@@ -135,7 +137,11 @@ public class MirrorSelection : MonoBehaviour
 
         return BuildMirrorMap(selectedLanes);
     }
+    
+    public void Start() => beatmapRuntimeContext.OnTrackDefinitionsChanged += HandleTrackDefinitionsChanged;
+    public void OnDestroy() => beatmapRuntimeContext.OnTrackDefinitionsChanged -= HandleTrackDefinitionsChanged;
 
+    private void HandleTrackDefinitionsChanged(TrackDefinitionsSO td) => trackDefinitions = td;
     // Build an in-place mirror map from the selected propagation groups for one event type.
     private Dictionary<int, int> BuildSelectedPropagationMirrorMap(int eventType)
     {
@@ -554,7 +560,7 @@ public class MirrorSelection : MonoBehaviour
             {
                 // Ring rotation and zoom use value inversion only when no physical lane mirror is requested.
                 // Read current environment metadata directly so mirroring cannot retain stale track capabilities.
-                var components = beatmapRuntimeContext.TracksDefinition.GetBasicOrDefault(e.Type).Components;
+                var components = beatmapRuntimeContext.TrackDefinitions.GetBasicOrDefault(e.Type).Components;
                 var isRingRotation = components.HasFlag(BasicEventComponent.RingRotation);
                 // SmoothStepRingZoom only applies to The Second's legacy ring right now.
                 var isRingZoom = components.HasFlag(BasicEventComponent.RingZoom)
@@ -584,7 +590,7 @@ public class MirrorSelection : MonoBehaviour
                     }
                 }
 
-                if (beatmapRuntimeContext.TracksDefinition.GetBasicOrDefault(e.Type).Kind != BasicEventKind.Lights)
+                if (beatmapRuntimeContext.TrackDefinitions.GetBasicOrDefault(e.Type).Kind != BasicEventKind.Lights)
                 {
                     continue;
                 }

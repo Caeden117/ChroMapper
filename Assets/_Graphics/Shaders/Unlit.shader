@@ -6,16 +6,16 @@
         [Space(10)]
         _Color ("Color", Color) = (1, 1, 1, 1)
         _MainTex ("Texture", 2D) = "white" {}
-        [KeywordEnum(None, PP, Frag)] _BloomType ("Bloom Type", float) = 0
+        [KeywordEnum(None, MainEffect, Always)] _WhiteBoostType ("White Boost", Float) = 0
 
         [Header(Fog Settings)] [Space]
         [Toggle(FOG)] _EnableFog ("Enable Fog", float) = 1
-        _FogStartOffset ("Fog Start Offset", float) = 1
-        _FogScale ("Fog Scale", float) = 1
+        [ShowIfAny(FOG)] _FogStartOffset ("Fog Start Offset", float) = 1
+        [ShowIfAny(FOG)] _FogScale ("Fog Scale", float) = 1
         [Space]
-        [Toggle(HEIGHT_FOG)] _EnableHeightFog ("Enable Height Fog", float) = 0
-        _FogHeightOffset ("Fog Height Offset", float) = 0
-        _FogHeightScale ("Fog Height Scale", float) = 1
+        [ToggleShowIfAny(HEIGHT_FOG, FOG)] _EnableHeightFog ("Enable Height Fog", float) = 0
+        [ShowIfAny(2, FOG, HEIGHT_FOG)] _FogHeightOffset ("Fog Height Offset", float) = 0
+        [ShowIfAny(2, FOG, HEIGHT_FOG)] _FogHeightScale ("Fog Height Scale", float) = 1
 
         [Header(Settings)] [Space]
         [Toggle(ALPHA_CUTOUT)] _AlphaCutout ("Alpha Cutout", float) = 0
@@ -42,15 +42,18 @@
             #pragma multi_compile_instancing
 
             #pragma shader_feature_local_fragment ALPHA_CUTOUT
-            #pragma shader_feature_local_fragment _ _BLOOMTYPE_PP _BLOOMTYPE_FRAG
+            #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
+            // Global: the post-process bloom runs (mirrors the game's MAIN_EFFECT_ENABLED gate).
+            #pragma multi_compile _ POST_BLOOM
             #pragma shader_feature_local_fragment HEIGHT_FOG
 
             #pragma multi_compile_fragment _ BLOOM_FOG
 
             #include "UnityCG.cginc"
-            #include "ShaderLibrary/BloomFog.hlsl"
-            #include "ShaderLibrary/CustomBloom.hlsl"
-            #include "ShaderLibrary/CustomTonemapping.hlsl"
+            #include "ShaderLibrary/Core/Camera.hlsl"
+            #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "ShaderLibrary/Common/Bloom.hlsl"
+            #include "ShaderLibrary/Core/Tonemapping.hlsl"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
@@ -105,22 +108,30 @@
                 if (albedo.a == 0) discard;
                 #endif
 
-                #if _BLOOMTYPE_PP
-                CUSTOM_BLOOM_PP_APPLY(albedo, 1);
-                #elif _BLOOMTYPE_FRAG
-                CUSTOM_BLOOM_FRAG_APPLY(albedo, 1);
+                // The game's Unlit family has no white boost. The dispatcher keeps
+                // its no-bloom alpha contract and the Deferred/Mixed adapters.
+                #if defined(_WHITEBOOSTTYPE_ALWAYS) || (defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
+                albedo.rgb = CalculateBloomComposition(
+                    albedo.rgb, albedo.a, albedo.a, 1,
+                    _BaseColorBoost, _BaseColorBoostThreshold);
+                #elif defined(_WHITEBOOSTTYPE_MAINEFFECT)
+                albedo = CalculateBloomPostComposition(albedo.rgb, albedo.a, 1.0);
                 #else
-                CUSTOM_BLOOM_NONE_APPLY(albedo);
+                if (1 > 0.5)
+                {
+                    albedo.rgb *= albedo.a;
+                    albedo.a = 0;
+                }
                 #endif
 
-                ACES_TONE_MAPPING_APPLY(albedo);
+                albedo = ApplyAcesTonemapping(albedo);
 
                 #if defined(BLOOM_FOG)
                 #if defined(HEIGHT_FOG)
-                BLOOM_FOG_HEIGHT_APPLY(albedo, i.screenPos, i.worldPos, _FogStartOffset, _FogScale, _FogHeightOffset,
-                                       _FogHeightScale);
+                albedo = ApplyBloomHeightFog(albedo, i.screenPos, i.worldPos, _FogStartOffset, _FogScale,
+                                             _FogHeightOffset, _FogHeightScale);
                 #else
-                BLOOM_FOG_APPLY(albedo, i.screenPos, i.worldPos, _FogStartOffset, _FogScale);
+                albedo = ApplyBloomFog(albedo, i.screenPos, i.worldPos, _FogStartOffset, _FogScale);
                 #endif
                 #endif
 

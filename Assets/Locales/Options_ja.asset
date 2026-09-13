@@ -189,7 +189,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 44
-    m_Localized: "\u9AD8\u54C1\u8CEA\u306E\u30D6\u30EB\u30FC\u30E0"
+    m_Localized: Bloom
     m_Metadata:
       m_Items: []
   - m_Id: 45
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 111
-    m_Localized: "\u30D6\u30EB\u30FC\u30E0\u52B9\u679C\u3092\u30D5\u30EB\u89E3\u50CF\u5EA6\u307E\u305F\u30CF\u30FC\u30D5\u30B5\u30A4\u30BA\u3067\u30EC\u30F3\u30C0\u30EA\u30F3\u30B0\u3057\u307E\u3059\u3002\u30D5\u30EB\u89E3\u50CF\u5EA6\u306E\u307E\u307E\u306B\u3057\u3066\u304A\u304F\u3053\u3068\u3092\u304A\u52E7\u3081\u3057\u307E\u3059\u3002"
+    m_Localized: Enables or disables camera bloom.
     m_Metadata:
       m_Items: []
   - m_Id: 112
@@ -1424,6 +1424,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 539782955901091840
     m_Localized: "\u539A\u3044\u30C1\u30A7\u30A4\u30F3\u30EA\u30F3\u30AF"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683422597120
+    m_Localized: Bloom Fog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568640
+    m_Localized: Enables or disables environment bloom fog.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568641
+    m_Localized: Screen Displacement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568642
+    m_Localized: Enables or disables obstacle screen displacement.
     m_Metadata:
       m_Items: []
   references:

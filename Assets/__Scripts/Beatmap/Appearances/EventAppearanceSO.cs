@@ -54,7 +54,7 @@ namespace Beatmap.Appearances
             BaseEvent transitionTarget = null)
         {
             var color = Color.white;
-            var trackDef = e.TracksDefinition.GetBasicOrDefault(e.EventData.Type);
+            var trackDef = e.TrackDefinitions.GetBasicOrDefault(e.EventData.Type);
             e.UpdateAlpha(final ? 1.0f : 0.6f, false);
             e.UpdateScale(final ? FinalNodeScale : PreviewNodeScale);
             e.UpdateOffset(e.AlternateShader ? -0.5f : 0f);

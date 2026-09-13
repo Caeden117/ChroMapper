@@ -1,0 +1,318 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: ProdigyEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: Main::TrackDefinitionsSO
+  basicEntries:
+  - Name: Boost Colors
+    Type: 5
+    Kind: 3
+    Components: 0
+  - Name: Ambient
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: PlayerPlace
+    Type: 4
+    Kind: 2
+    Components: 0
+  glsEntries:
+  - Group: Chevron
+    Name: Chevron
+    ID: 0
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Chevron
+    Name: Chevron
+    ID: 1
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Cubes
+    Name: Left Global
+    ID: 2
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: Left Local
+    ID: 3
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: Right Global
+    ID: 4
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: Right Local
+    ID: 5
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: 'Lasers Left '
+    ID: 6
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: Lasers Right
+    ID: 7
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers
+    Name: Left Global
+    ID: 15
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers
+    Name: Left Local
+    ID: 16
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers
+    Name: Right Global
+    ID: 17
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers
+    Name: Right Local
+    ID: 18
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars
+    Name: Left
+    ID: 8
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars
+    Name: Right
+    ID: 9
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars
+    Name: Left Lasers
+    ID: 24
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars
+    Name: Right Lasers
+    ID: 25
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: FloatPillars
+    Name: Left
+    ID: 19
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: FloatPillars
+    Name: Right
+    ID: 20
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Debris
+    Name: Left
+    ID: 13
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Debris
+    Name: Right
+    ID: 14
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Centerpiece
+    Name: Local
+    ID: 10
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Centerpiece
+    Name: Global
+    ID: 11
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Centerpiece
+    Name: Lasers
+    ID: 12
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Crowds
+    Name: Left
+    ID: 21
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Crowds
+    Name: Right
+    ID: 22
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Figures
+    Name: Left Figures
+    ID: 26
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Figures
+    Name: Right Figures
+    ID: 27
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Scaffolding
+    Name: Local
+    ID: 23
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Runway
+    Name: Local
+    ID: 28
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0

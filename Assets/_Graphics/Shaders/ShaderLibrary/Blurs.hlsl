@@ -1,9 +1,4 @@
-/*
-TODO:
-
-Yeah ok I didnt realize a lot of these were implemented elsewhere and this file as a whole is essentially redundant.
-At some point I need to uh.... clean this up and remove duplicates.
-*/
+// Legacy sampler2D blur variants; no static consumers found and external ownership is unknown.
 
 #ifndef BLURS_INCLUDED
 #define BLURS_INCLUDED
@@ -45,7 +40,7 @@ float4 upsampleTent(sampler2D blurTex, float2 uv, float radius, float2 texelSize
     return s * (1.0 / 16.0);
 }
 
-// Legacy kawase blur - kept for compatibility
+// Legacy Kawase blur.
 float4 kawase(sampler2D blurTex, float2 uv, float radius, float2 texelSize)
 {
     float4 blurColor = float4(0, 0, 0, 0);
@@ -70,7 +65,7 @@ float4 kawase(sampler2D blurTex, float2 uv, float radius, float2 texelSize)
     return blurColor;
 }
 
-// Legacy box blur - kept for compatibility
+// Legacy box blur.
 float4 box(sampler2D blurTex, float2 uv, float radius, float2 texelSize, int boxRadius)
 {
     float4 blurColor = float4(0, 0, 0, 0);

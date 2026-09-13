@@ -2307,7 +2307,7 @@ namespace Tests.Placement
         {
             foreach (var (eventType, effects) in context.Descriptor.BasicEventEffectManager.EventTypeToEffects)
             {
-                var components = context.TracksDefinition.GetBasicOrDefault(eventType).Components;
+                var components = context.TrackDefinitions.GetBasicOrDefault(eventType).Components;
                 var matchesLaserSide = kind switch
                 {
                     BasicMovementPreviewKind.LaserSpeedLeft =>
@@ -3464,7 +3464,7 @@ namespace Tests.Placement
         private static int GetRingRotationType()
         {
             var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            return context.TracksDefinition.Basic.Values
+            return context.TrackDefinitions.Basic.Values
                 .First(definition => definition.Components.HasFlag(BasicEventComponent.RingRotation)).Type;
         }
 

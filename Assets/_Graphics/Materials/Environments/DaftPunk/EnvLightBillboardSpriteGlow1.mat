@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EnvLightBillboardSpriteGlow1
+  m_Shader: {fileID: 4800000, guid: 7f020873d09bfb30e92edf9fcc23b42c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - ALPHA_WIDTH_SCALE
+  - FOG
+  - USE_FOG_FOR_LIGHTS
+  - Y_AXIS_BILLBOARD
+  - _BLOOMTYPE_PP
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BlendModeDst: 1
+    - _BlendModeDstA: 1
+    - _BlendModeSrc: 1
+    - _BlendModeSrcA: 5
+    - _BlendOp: 0
+    - _BloomMultiplier: 1
+    - _BloomType: 1
+    - _BloomWhiteMultiplier: 1
+    - _CapUVSize: 0.36
+    - _CullMode: 2
+    - _EnableAlphaWidthScale: 1
+    - _EnableAngleDisappear: 0
+    - _EnableFog: 1
+    - _EnableHeightFog: 0
+    - _EnableYAxisBillboard: 1
+    - _FogHeightOffset: 0
+    - _FogHeightScale: 1
+    - _FogScale: 0.2
+    - _FogStartOffset: 0
+    - _OffsetFactor: 0
+    - _OffsetUnits: 0
+    - _SquareAlpha: 0
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _UseFogForLights: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    m_Colors:
+    - _AlphaWidth: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.5, b: 1, a: 1}
+    - _SizeParams: {r: 0.25, g: 10, b: 0, a: 0.5}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

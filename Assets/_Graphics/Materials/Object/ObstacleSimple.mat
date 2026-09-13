@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: 4800000, guid: af1f2ffca5164e798ee8f2f6047e70d1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - CUTOUT
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
@@ -73,11 +74,11 @@ Material:
     - _CullMode: 0
     - _Cutoff: 0.5
     - _Cutout: 0
-    - _CutoutEdgeGlow: 0.25
-    - _CutoutEdgeWidth: 0.05
+    - _CutoutTexScale: 0.2
     - _DetailNormalMapScale: 1
     - _DistortionStrength: 0.1
     - _DstBlend: 0
+    - _EnableCutout: 1
     - _FadeSize: 5
     - _FogEnd: 500
     - _FogStart: 0

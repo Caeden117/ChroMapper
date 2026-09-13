@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SimpleNote
+  m_Shader: {fileID: 4800000, guid: 1c1dcf599a39e9a48bd2f0d56ca8ed0e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - CUTOUT
+  - HEIGHT_FOG
+  - RIM_DIM
+  - ZWRITE
+  - _FOGTYPE_LERP
+  m_InvalidKeywords:
+  - ENABLE_COLOR_INSTANCING
+  - ENABLE_CUTOUT
+  - ENABLE_RIM_DIM
+  - _ZWRITE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2004
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties:
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _EnvironmentReflectionCube:
+        m_Texture: {fileID: 8900000, guid: a045335ad145d3f6abed423ec1fe0c56, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlwaysTranslucent: 0
+    - _AnimationSpawned: 0
+    - _BlendDstFactor: 0
+    - _BlendDstFactorA: 0
+    - _BlendSrcFactor: 1
+    - _BlendSrcFactorA: 1
+    - _CloseToCameraCutoutOffset: 0.5
+    - _CloseToCameraCutoutScale: 0.5
+    - _ColorMultiplier: 1
+    - _CullMode: 2
+    - _CutPlaneEdgeGlowWidth: 0.01
+    - _Cutout: 0
+    - _CutoutTexScale: 0.5
+    - _EnableCloseToCameraCutout: 0
+    - _EnableColorInstancing: 1
+    - _EnableCutout: 1
+    - _EnableHeightFog: 1
+    - _EnablePlaneCut: 0
+    - _EnableReflectionMap: 0
+    - _EnableReflectionProbe: 0
+    - _EnableRimDim: 1
+    - _EnableVertexDistortion: 0
+    - _FakeMirrorTransparencyEnabled: 0
+    - _FakeMirrorTransparencyMultiplier: 1
+    - _FinalColorMul: 1
+    - _FlipWorldNormalY: 0
+    - _FogHeightOffset: 0
+    - _FogHeightScale: 2.5
+    - _FogScale: 0.5
+    - _FogStartOffset: 100
+    - _FogType: 3
+    - _NoteSize: 0.25
+    - _ObjectTime: 0
+    - _OutlineWidth: 0.05
+    - _PreciseFog: 0
+    - _ReflectionProbeIntensity: 1
+    - _RimCameraDistanceOffset: 5
+    - _RimCameraDistanceScale: 0.03
+    - _RimDarkening: 0.5
+    - _RimOffset: -0.025
+    - _RimScale: 4
+    - _Rotation: 0
+    - _Smoothness: 0.95
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _StrobeColorEnabled: 0
+    - _TranslucentAlpha: 0.45
+    - _WhiteBoostType: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
+    - _CutPlane: {r: 0, g: 0, b: 0, a: 0}
+    - _CutoutTexOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _OverNoteInterfaceColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SimpleColor: {r: 1, g: 0, b: 0, a: 1}
+    - _StrobeColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

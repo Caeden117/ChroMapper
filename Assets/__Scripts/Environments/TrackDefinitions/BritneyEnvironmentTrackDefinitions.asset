@@ -1,0 +1,256 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: BritneyEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: 
+  basicEntries:
+  - Name: Boost Colors
+    Type: 5
+    Kind: 3
+    Components: 0
+  - Name: Ambient
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: Icons
+    Type: 12
+    Kind: 5
+    Components: 0
+  - Name: PlayerPlace
+    Type: 8
+    Kind: 2
+    Components: 0
+  - Name: Dust Particles
+    Type: 9
+    Kind: 2
+    Components: 0
+  glsEntries:
+  - Group: Cubes
+    Name: Speaker Lights L
+    ID: 18
+    ColorTrack: 1
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cubes
+    Name: Speaker Lights R
+    ID: 19
+    ColorTrack: 1
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cubes
+    Name: LocalLeft
+    ID: 0
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cubes
+    Name: GlobalLeft
+    ID: 1
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cubes
+    Name: LocalRight
+    ID: 2
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cubes
+    Name: GlobalRight
+    ID: 3
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Display
+    Name: Local
+    ID: 5
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Display
+    Name: MaskStrength
+    ID: 20
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Top Lasers
+    Name: TopLasersSet01 Local
+    ID: 7
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Top Lasers
+    Name: TopLasersSet01 Global
+    ID: 6
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Top Lasers
+    Name: TopLasersSet02 Local
+    ID: 9
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Top Lasers
+    Name: TopLasersSet02 Global
+    ID: 8
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Spirals
+    Name: Local
+    ID: 15
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Outer Cylinders
+    Name: Local
+    ID: 14
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Outer Cylinders
+    Name: Bottom Lasers
+    ID: 11
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Stage
+    Name: Stage Top
+    ID: 16
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Stage
+    Name: Stage Sides
+    ID: 17
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Stage
+    Name: Mask Offset
+    ID: 13
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Runway
+    Name: Runway
+    ID: 12
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Chevron
+    Name: Chevron
+    ID: 10
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Chevron
+    Name: Mask Strength
+    ID: 22
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Stars
+    Name: Color
+    ID: 21
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0

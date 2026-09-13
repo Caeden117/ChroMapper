@@ -7,6 +7,8 @@
 
         [Header(Beat Saber)]
         [Space(10)]
+        [Toggle(CUTOUT)] _EnableCutout("Enable Cutout", Float) = 0
+        _CutoutTexScale("Cutout Texture Scale", Float) = 1
         _Cutout("Cutout", Range(0, 1)) = 0.0
         _CutoutTexOffset("Cutout Tex Offset", Vector) = (0, 0, 0, 0)
 
@@ -43,12 +45,14 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_instancing
+            #pragma shader_feature_local_fragment CUTOUT
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             uniform float _MainAlpha = 0.5;
             uniform sampler3D _CutoutTex;
+            uniform float _CutoutTexScale;
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
@@ -91,17 +95,20 @@
             {
                 UNITY_SETUP_INSTANCE_ID(i);
 
+                #if defined(CUTOUT)
                 float cutout = UNITY_ACCESS_INSTANCED_PROP(Props, _Cutout);
                 float4 cutoutTexOffset = UNITY_ACCESS_INSTANCED_PROP(Props, _CutoutTexOffset);
-                float noise = tex3D(_CutoutTex, (i.cutoutPos + cutoutTexOffset.xyz) * 0.3);
-                float cl = noise - cutout;
-                clip(cl);
+                float noise = tex3D(
+                    _CutoutTex,
+                    (i.cutoutPos + cutoutTexOffset.xyz) * _CutoutTexScale).a;
+                clip(noise - cutout);
+                #endif
 
-                half4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 color.rgb *= 0.25;
                 color.a = 0;
 
-                ACES_TONE_MAPPING_APPLY(color);
+                color = ApplyAcesTonemapping(color);
 
                 return color;
             }

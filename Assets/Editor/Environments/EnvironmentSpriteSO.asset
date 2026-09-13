@@ -13,83 +13,31 @@ MonoBehaviour:
   m_Name: EnvironmentSpriteSO
   m_EditorClassIdentifier: 
   list:
-  - Name: Arrow
-    Sprite: {fileID: 0}
-    Environments:
-    - TheWeekndEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: ArrowWhite
-    Sprite: {fileID: 0}
-    Environments:
-    - LinkinPark2Environment
-    Unused: 0
-    Ignored: 0
-  - Name: Circle
-    Sprite: {fileID: 0}
-    Environments:
-    - Dragons2Environment
-    - LizzoEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: CircleWithGradient
-    Sprite: {fileID: 0}
-    Environments:
-    - BTSEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: DanceFloorTile
-    Sprite: {fileID: 0}
-    Environments:
-    - LizzoEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: FortMinorStar
-    Sprite: {fileID: 0}
-    Environments:
-    - LinkinPark2Environment
-    Unused: 0
-    Ignored: 0
-  - Name: GreenDayLogo
-    Sprite: {fileID: 21300000, guid: adb8610132f85e24d8404d7a400a0c33, type: 3}
-    Environments:
-    - GreenDayEnvironment
-    - GreenDayGrenadeEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: GuitarDot
-    Sprite: {fileID: 0}
+  - Name: 061ef23769911fe33252fb0cc5e1f691
+    Sprite: {fileID: 21300000, guid: 4ed05fcb0e254124fb311dee1f7d099e, type: 2}
     Environments:
     - RockMixtapeEnvironment
     Unused: 0
     Ignored: 0
-  - Name: LinkinParkLogo
-    Sprite: {fileID: 21300000, guid: 0bbaafe17d0fc4b44b791b16da84d645, type: 3}
+  - Name: 076606835d7e7bd8ac08090e2d2cc025
+    Sprite: {fileID: 21300000, guid: d140028a6c7436b42b85a5ad5a027e31, type: 2}
     Environments:
-    - LinkinPark2Environment
     - LinkinParkEnvironment
     Unused: 0
     Ignored: 0
-  - Name: MKLogo
-    Sprite: {fileID: 0}
+  - Name: 08ab2b6e88e0ee64dcefcc2d5417c0df
+    Sprite: {fileID: 21300000, guid: 8199969270796514b8fcf6ba0da43b9b, type: 2}
     Environments:
     - LinkinPark2Environment
     Unused: 0
     Ignored: 0
-  - Name: MagicDoor
-    Sprite: {fileID: 21300000, guid: 4d74b6d100ca3e5448ed79cc41db0716, type: 3}
+  - Name: 1037203ce697e0ba87d8607162b4dd8f
+    Sprite: {fileID: 21300000, guid: f4248c4f09990884683bf14830c153b3, type: 2}
     Environments:
-    - BTSEnvironment
+    - LinkinParkEnvironment
     Unused: 0
     Ignored: 0
-  - Name: MonstercatStrokeLogo
-    Sprite: {fileID: 21300000, guid: f0b4f53228994b88b1afa07ff8113a09, type: 3}
-    Environments:
-    - CrabRaveEnvironment
-    - MonstercatEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: Moon
+  - Name: 18c190505819552aa5cd25c979733129
     Sprite: {fileID: 21300000, guid: 705c4bd64627e2c46a9c3ffa2443f333, type: 3}
     Environments:
     - HalloweenEnvironment
@@ -97,51 +45,235 @@ MonoBehaviour:
     - Halloween2Environment
     Unused: 0
     Ignored: 0
-  - Name: PanicWindow
+  - Name: 23efb606b134f31538fe128bbc31152c
     Sprite: {fileID: 21300000, guid: 1d6da6887572461c9f03029a525f1f40, type: 3}
     Environments:
     - PanicEnvironment
     Unused: 0
     Ignored: 0
-  - Name: RainbowCircle
-    Sprite: {fileID: 0}
+  - Name: 2706838b8f50add317b13e5d19b5dde5
+    Sprite: {fileID: 21300000, guid: 5e8acd2d0751210e99b3a04075f2a82e, type: 2}
     Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: 29c7f7b06eb520f526dbbb9c5a916cfe
+    Sprite: {fileID: 21300000, guid: 050e2d3cb3cacc54c9d8f60fcb463a2a, type: 2}
+    Environments:
+    - Dragons2Environment
     - LizzoEnvironment
     Unused: 0
     Ignored: 0
-  - Name: Roof
-    Sprite: {fileID: 0}
+  - Name: 2a15557adbb6692e562757ec306a3753
+    Sprite: {fileID: 21300000, guid: 4b130ba1df295d44cb2d8c1dc5c5f3e9, type: 2}
     Environments:
-    - TheWeekndEnvironment
+    - LinkinPark2Environment
     Unused: 0
     Ignored: 0
-  - Name: SkrillexLogo
-    Sprite: {fileID: 21300000, guid: 503e5a08e0b5f3d4da64f242f81758a5, type: 3}
+  - Name: 2e2b73178ad99405712a5ca2e2aa8bb5
+    Sprite: {fileID: 21300000, guid: de1fce940c39b534590fa3224a549dcf, type: 2}
     Environments:
-    - SkrillexEnvironment
+    - LinkinPark2Environment
     Unused: 0
     Ignored: 0
-  - Name: Sun
-    Sprite: {fileID: 21300000, guid: 09ddbcbc770f7ca4fb84243dfb8602ad, type: 3}
-    Environments:
-    - BillieEnvironment
-    Unused: 0
-    Ignored: 0
-  - Name: TimbalandLogo
+  - Name: 2e6f5be56e7c5ef31d298d65a3a332bb
     Sprite: {fileID: 21300000, guid: 5097f592d9cd3a463962864023ea8776, type: 3}
     Environments:
     - TimbalandEnvironment
     Unused: 0
     Ignored: 0
-  - Name: Window
-    Sprite: {fileID: 0}
+  - Name: 304191fad5d7412c4ba7529fd79797a4
+    Sprite: {fileID: 21300000, guid: 3a3e9da7eb257f94a9b78122ceee25cc, type: 2}
     Environments:
     - TheWeekndEnvironment
     Unused: 0
     Ignored: 0
-  - Name: sactx-0-2048x2048-BC7-Core-fb6911ec
-    Sprite: {fileID: 0}
+  - Name: 346d09122d41a6b68fbaa11662e53513
+    Sprite: {fileID: 21300000, guid: f473f3dd15c7f6b49954d3bd1e94773d, type: 2}
+    Environments:
+    - TheWeekndEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 3ea5d41c77d7850e8652c1d21b9d348b
+    Sprite: {fileID: 21300000, guid: ff29e12598638a1458a1188b6fcedec5, type: 2}
+    Environments:
+    - RocketEnvironment
+    - GlassDesertEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 444e6f06f3de421db2460aa3d18199a3
+    Sprite: {fileID: 21300000, guid: 2a1d0a91ae74e304d962879884133358, type: 2}
+    Environments:
+    - LizzoEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 494735281c58e4d6e2d8660565ca5c4a
+    Sprite: {fileID: 21300000, guid: 35d4e5af68ff6ef499d1dafd2f0ea97a, type: 2}
+    Environments:
+    - BTSEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 51f295046ab39e629e4504085ad0596f
+    Sprite: {fileID: 21300000, guid: e8f0aa7a75b096a7ca4bbebcbb18c42d, type: 2}
+    Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: 56e2291f48097dd43d41f9c2276078c4
+    Sprite: {fileID: 21300000, guid: bca25c00b189e82478b6e7690bdbbe3b, type: 3}
+    Environments:
+    - BTSEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 631c5013631a6e19aec573b8af76ddb0
+    Sprite: {fileID: 21300000, guid: ae96c6ba0ca880b42967b3e3c9d56d6a, type: 3}
+    Environments:
+    - GlassDesertEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 78b8f12e26024706fc1860a589a71687
+    Sprite: {fileID: 21300000, guid: 36e2d0e86ff12ae49900b3075c7c1ee0, type: 2}
+    Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: 9143752c9019205817bb95d3f49333d1
+    Sprite: {fileID: 21300000, guid: adb8610132f85e24d8404d7a400a0c33, type: 3}
+    Environments:
+    - GreenDayEnvironment
+    - GreenDayGrenadeEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: 9a87232b840a7be585faaf267f89ebd5
+    Sprite: {fileID: 21300000, guid: 47a14b943f6ad1e409ad80f9e2aa5ec7, type: 2}
+    Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: a2e44700a629f8aab884f195f64c1357
+    Sprite: {fileID: 21300000, guid: 503e5a08e0b5f3d4da64f242f81758a5, type: 3}
+    Environments:
+    - SkrillexEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: a54f0041a9e15b050f25c463f1db7449
+    Sprite: {fileID: 21300000, guid: 100e60ad862f26640a828d69c0d13944, type: 2}
+    Environments:
+    - PanicEnvironment
+    - TheWeekndEnvironment
+    - NiceEnvironment
+    - Dragons2Environment
+    - GridEnvironment
+    - ColdplayEnvironment
+    - TimbalandEnvironment
+    - BillieEnvironment
+    - LizzoEnvironment
+    - HipHopEnvironment
+    - TheSecondEnvironment
+    - MetallicaEnvironment
+    - DefaultEnvironment
+    - TheRollingStonesEnvironment
+    - SkrillexEnvironment
+    - TriangleEnvironment
+    - PyroEnvironment
+    - Panic2Environment
+    - GagaEnvironment
+    - DaftPunkEnvironment
+    - Monstercat2Environment
+    - CrabRaveEnvironment
+    - KDAEnvironment
+    - BritneyEnvironment
+    - RockMixtapeEnvironment
+    - DragonsEnvironment
+    - MonstercatEnvironment
+    - BigMirrorEnvironment
+    - ProdigyEnvironment
+    - ColliderEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: a9d939639cce078615db22429197faa4
+    Sprite: {fileID: 21300000, guid: c02de98af74159749a74163a015a9cce, type: 2}
+    Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: ababc3e601ecf62a8d1eefad14450645
+    Sprite: {fileID: 21300000, guid: 3c5636f85f640704b871c839e56cb441, type: 2}
+    Environments:
+    - TheWeekndEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: b9aa815635678312c63d85a6e90c4906
+    Sprite: {fileID: 21300000, guid: 09ddbcbc770f7ca4fb84243dfb8602ad, type: 3}
+    Environments:
+    - BillieEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: bcc0e409494ba29b5593f7b8b77eb1a1
+    Sprite: {fileID: 21300000, guid: 2da3006ec3642c740bd36e21dd76f841, type: 2}
+    Environments:
+    - PyroEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: ca90e8feedaab49c27e48d223da601e0
+    Sprite: {fileID: 21300000, guid: ebda495ca08b3744eb3e912cef8af78d, type: 3}
+    Environments:
+    - LinkinPark2Environment
+    Unused: 0
+    Ignored: 0
+  - Name: cc82cb4490c90bf44cba33f41cc734ed
+    Sprite: {fileID: 21300000, guid: f0b4f53228994b88b1afa07ff8113a09, type: 3}
+    Environments:
+    - CrabRaveEnvironment
+    - MonstercatEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: d24de5f4d014ff4353c7e64eb90ab7ad
+    Sprite: {fileID: 21300000, guid: 0596656eca68be3409202062252537cf, type: 3}
+    Environments:
+    - TheWeekndEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: dc9f367d3c2cdd42d1760469565a3ce4
+    Sprite: {fileID: 21300000, guid: e46f5200708eeee459b2a9c04b677b98, type: 2}
+    Environments:
+    - TheWeekndEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: dcb877437e136e4d83685597c53f5cf1
+    Sprite: {fileID: 21300000, guid: f517dc307342445b9986224b7edb79e1, type: 2}
     Environments:
     - KDAEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: dd4c4f146ed48342aea36bb5cf775d8b
+    Sprite: {fileID: 21300000, guid: 2f4b9012672ac4d4e90280a8223c68ef, type: 2}
+    Environments:
+    - InterscopeEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: f2eec37f5a1b75a2dd53ace3a990bd80
+    Sprite: {fileID: 21300000, guid: 7d49949a5f53f6041803a069659a5ba3, type: 3}
+    Environments:
+    - RockMixtapeEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: f53e6fdac28ec8ba0c5ec912608e1dcf
+    Sprite: {fileID: 21300000, guid: c82187d21f02a424d91f6d37bae60446, type: 2}
+    Environments:
+    - LinkinPark2Environment
+    - LinkinParkEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: fe202c278265f1ee0148cec538e4aa69
+    Sprite: {fileID: 21300000, guid: 965efb0fdafe1384991df0d468149b96, type: 3}
+    Environments:
+    - LizzoEnvironment
+    Unused: 0
+    Ignored: 0
+  - Name: null
+    Sprite: {fileID: 0}
+    Environments:
+    - TheWeekndEnvironment
     Unused: 0
     Ignored: 0

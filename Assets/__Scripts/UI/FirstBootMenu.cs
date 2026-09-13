@@ -97,17 +97,22 @@ public class FirstBootMenu : MonoBehaviour
         switch (graphicsDropdown.value)
         {
             case (int)GraphicsPreset.Performance:
+                Settings.Instance.Bloom = false;
+                Settings.Instance.BloomFog = true;
                 Settings.Instance.ChromaticAberration = false;
+                Settings.Instance.ScreenDisplacement = false;
                 Settings.Instance.NoteModels = "Simple Solid";
                 Settings.Instance.Reflections = false;
-                Settings.Instance.HighQualityBloom = false;
                 Settings.Instance.DisplayFloatValueText = false;
                 Settings.Instance.SpectrogramEditorQuality = 1;
                 Settings.Instance.SpectrogramSlices = 0;
                 Settings.Instance.MirrorQuality = (int)MirrorRendererSO.MirrorQuality.None;
                 break;
             case (int)GraphicsPreset.Balanced:
+                Settings.Instance.Bloom = true;
+                Settings.Instance.BloomFog = true;
                 Settings.Instance.ChromaticAberration = false;
+                Settings.Instance.ScreenDisplacement = false;
                 Settings.Instance.NoteModels = "Simple";
                 Settings.Instance.Reflections = false;
                 Settings.Instance.SpectrogramSlices = 0;
@@ -115,6 +120,10 @@ public class FirstBootMenu : MonoBehaviour
                 Settings.Instance.MirrorQuality = (int)MirrorRendererSO.MirrorQuality.Low;
                 break;
             case (int)GraphicsPreset.Quality:
+                Settings.Instance.Bloom = true;
+                Settings.Instance.BloomFog = true;
+                Settings.Instance.ChromaticAberration = true;
+                Settings.Instance.ScreenDisplacement = true;
                 Settings.Instance.Offset_Spawning = 8;
                 Settings.Instance.Offset_Despawning = 2;
                 Settings.Instance.ChunkDistance = 10;

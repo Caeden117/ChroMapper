@@ -9,7 +9,7 @@ using UnityEngine;
 public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
 {
     [SerializeField] public ColorBoostEffect ColorBoostEffect;
-    [NonSerialized] public ColorSchemeSO ColorScheme;
+    [SerializeField] public ColorSchemeProvider ColorSchemeProvider;
 
     [SerializeField] public float OffIntensity;
     [SerializeField] public bool LightOnStart;
@@ -75,6 +75,13 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
 
     public void Unregister(LightController controller) => lightEntries.Remove(controller);
 
+    public bool SetColorForId(int lightId, Color color)
+    {
+        if (!lightIDToController.TryGetValue(lightId, out var controller)) return false;
+        controller.SetColor(color);
+        return true;
+    }
+
     private void CalculateMapping()
     {
         LaneToLightID.Clear();
@@ -116,7 +123,7 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         foreach (var controller in lightEntries.Select(x => x))
         {
             controllerToContainer[controller] =
-                (new(), InitializeStates(new BasicEventStateChunksContainer<BasicLightStateData>()));
+                (new LightColorTween(), InitializeStates(new BasicEventStateChunksContainer<BasicLightStateData>()));
             foreach (var state in controllerToContainer[controller].container.Collection.Select(chunk => chunk))
             {
                 if (!LightOnStart) continue;
@@ -155,13 +162,14 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         tween.StartTimeColor = stateData.StartTimeColor;
         tween.StartAlpha = stateData.StartAlpha;
         tween.StartColor = stateData.StartChromaColor
-            ?? ColorScheme.GetColorFrom(stateData.StartColor, InvertColorScheme);
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom(stateData.StartColor, InvertColorScheme);
 
         tween.EndTimeAlpha = stateData.EndTimeAlpha;
         tween.EndTimeColor = stateData.EndTimeColor;
         tween.EndAlpha = stateData.EndAlpha;
         tween.EndColor =
-            stateData.EndChromaColor ?? ColorScheme.GetColorFrom(stateData.EndColor, InvertColorScheme);
+            stateData.EndChromaColor
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom(stateData.EndColor, InvertColorScheme);
 
         // The state caches serialized lerpType classification so the per-frame tween never compares strings.
         tween.ColorLerpType = stateData.ColorLerpType;
@@ -178,9 +186,10 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
     public void UpdateStartAndEndColor(LightColorTween tween, BasicLightStateData stateData)
     {
         tween.StartColor = stateData.StartChromaColor
-            ?? ColorScheme.GetColorFrom(stateData.StartColor, InvertColorScheme);
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom(stateData.StartColor, InvertColorScheme);
         tween.EndColor =
-            stateData.EndChromaColor ?? ColorScheme.GetColorFrom(stateData.EndColor, InvertColorScheme);
+            stateData.EndChromaColor
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom(stateData.EndColor, InvertColorScheme);
     }
 
     private void HandleBoostChanged(bool boost)
@@ -400,14 +409,14 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
             case >= ColourManager.RgbintOffset when Settings.Instance.EmulateChromaLite:
                 {
                     chromaLiteData.Add(
-                        new() { Base = data, Color = ColourManager.ColourFromInt(data.Value) });
+                        new ChromaLiteData { Base = data, Color = ColourManager.ColourFromInt(data.Value) });
                     chromaLiteData = chromaLiteData.OrderBy(cl => cl.Base.SongBpmTime).ToList();
                     UpdateExistingWithChromaLite(data.SongBpmTime);
                     return;
                 }
             case ColourManager.RGBReset when Settings.Instance.EmulateChromaLite:
                 {
-                    chromaLiteData.Add(new() { Base = data, Color = null });
+                    chromaLiteData.Add(new ChromaLiteData { Base = data, Color = null });
                     chromaLiteData = chromaLiteData.OrderBy(cl => cl.Base.SongBpmTime).ToList();
                     UpdateExistingWithChromaLite(data.SongBpmTime);
                     return; // this was a break, not sure why

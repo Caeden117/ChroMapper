@@ -125600,7 +125600,7 @@ Texture2D:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_IsAlphaChannelOptional: 0
-  serializedVersion: 3
+  serializedVersion: 4
   m_Width: 2048
   m_Height: 1024
   m_CompleteImageSize: 2097152

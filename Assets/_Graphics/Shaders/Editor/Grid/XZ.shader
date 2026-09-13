@@ -29,7 +29,7 @@
             uniform float _BPMChange_Json_Times[170];
             uniform float _BPMChange_BPMs[170];
             uniform int _BPMChange_Count;
-            uniform float _SongTime;
+            uniform float4 _SongBpmTime;
             uniform float _Rotation = 0;
             uniform float _EditorScale = 4;
             uniform float _CurrentHJD = 2;
@@ -112,7 +112,7 @@
 
                 float scale = _EditorScale * gridScale;
                 //WHERE'S THE LAMB SAUCE (unedited beat time)
-                float timeButRAWWW = (i.rotatedPos.z + gridOffset.z + _SongTime * scale) / scale;
+                float timeButRAWWW = (i.rotatedPos.z + gridOffset.z + _SongBpmTime.y * scale) / scale;
 
                 //To plugerino into shader after dealing with BPM Changes
                 float time = songBpmTimeToJsonTime(timeButRAWWW);
@@ -121,7 +121,7 @@
                 time -= _SongTimeOrigin;
 
                 // HJD line
-                float timeOffsetToCursor = timeButRAWWW - _SongTime;
+                float timeOffsetToCursor = timeButRAWWW - _SongBpmTime.y;
                 float hjdRange = gridThickness / 10;
                 if (_DisplayHJDLine && _CurrentHJD - hjdRange < timeOffsetToCursor && timeOffsetToCursor < _CurrentHJD +
                     hjdRange)

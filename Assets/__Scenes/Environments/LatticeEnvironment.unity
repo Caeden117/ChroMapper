@@ -3466,6 +3466,7 @@ GameObject:
   - component: {fileID: 50646213}
   - component: {fileID: 50646215}
   - component: {fileID: 50646216}
+  - component: {fileID: 50646217}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -3570,6 +3571,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 50646213}
+--- !u!114 &50646217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50646210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 50646216}
+  _renderer: {fileID: 50646213}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &54016367
 GameObject:
   m_ObjectHideFlags: 0
@@ -7590,6 +7626,7 @@ GameObject:
   - component: {fileID: 124875005}
   - component: {fileID: 124875008}
   - component: {fileID: 124875009}
+  - component: {fileID: 124875010}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -7694,6 +7731,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 124875005}
+--- !u!114 &124875010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124875003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 124875009}
+  _renderer: {fileID: 124875005}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &131246040
 GameObject:
   m_ObjectHideFlags: 0
@@ -7799,6 +7871,7 @@ MonoBehaviour:
   Count: 8
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &132520059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7816,6 +7889,7 @@ MonoBehaviour:
   Count: 8
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &132520060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7833,6 +7907,7 @@ MonoBehaviour:
   Count: 8
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!114 &132520061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7850,6 +7925,7 @@ MonoBehaviour:
   Count: 8
   Trigger: 0
   fxEntries: []
+  autoRegisterRoot: {fileID: 0}
 --- !u!4 &132520062
 Transform:
   m_ObjectHideFlags: 0
@@ -9505,7 +9581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &157000354
@@ -10887,6 +10963,7 @@ GameObject:
   - component: {fileID: 171545331}
   - component: {fileID: 171545333}
   - component: {fileID: 171545334}
+  - component: {fileID: 171545335}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -10991,6 +11068,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 171545331}
+--- !u!114 &171545335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171545328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 171545334}
+  _renderer: {fileID: 171545331}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &172814116
 GameObject:
   m_ObjectHideFlags: 0
@@ -11975,6 +12087,7 @@ GameObject:
   - component: {fileID: 189736013}
   - component: {fileID: 189736015}
   - component: {fileID: 189736016}
+  - component: {fileID: 189736017}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -12079,6 +12192,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 189736013}
+--- !u!114 &189736017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189736010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 189736016}
+  _renderer: {fileID: 189736013}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &193947174
 GameObject:
   m_ObjectHideFlags: 0
@@ -17079,7 +17227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &253641354
@@ -18874,8 +19022,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 4.4
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -18883,11 +19031,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.1
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &269233529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19203,6 +19351,7 @@ GameObject:
   - component: {fileID: 275438709}
   - component: {fileID: 275438711}
   - component: {fileID: 275438712}
+  - component: {fileID: 275438713}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -19307,6 +19456,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 275438709}
+--- !u!114 &275438713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275438706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 275438712}
+  _renderer: {fileID: 275438709}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &276439702
 GameObject:
   m_ObjectHideFlags: 0
@@ -20154,8 +20338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -20163,11 +20347,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &287029262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20439,8 +20623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -20448,11 +20632,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &294879460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24050,7 +24234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &344083234
@@ -31693,6 +31877,7 @@ GameObject:
   - component: {fileID: 425444869}
   - component: {fileID: 425444871}
   - component: {fileID: 425444872}
+  - component: {fileID: 425444873}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -31797,6 +31982,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 425444869}
+--- !u!114 &425444873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425444866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 425444872}
+  _renderer: {fileID: 425444869}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &426524203
 GameObject:
   m_ObjectHideFlags: 0
@@ -36514,20 +36734,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.1
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &506732375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43727,6 +43947,7 @@ GameObject:
   - component: {fileID: 583727180}
   - component: {fileID: 583727182}
   - component: {fileID: 583727183}
+  - component: {fileID: 583727184}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -43831,6 +44052,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 583727180}
+--- !u!114 &583727184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583727177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 583727183}
+  _renderer: {fileID: 583727180}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &584511792
 GameObject:
   m_ObjectHideFlags: 0
@@ -45261,6 +45517,7 @@ GameObject:
   - component: {fileID: 612979940}
   - component: {fileID: 612979942}
   - component: {fileID: 612979943}
+  - component: {fileID: 612979944}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -45365,6 +45622,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 612979940}
+--- !u!114 &612979944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612979937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 612979943}
+  _renderer: {fileID: 612979940}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &615752642
 GameObject:
   m_ObjectHideFlags: 0
@@ -51628,6 +51920,7 @@ GameObject:
   - component: {fileID: 693503181}
   - component: {fileID: 693503183}
   - component: {fileID: 693503184}
+  - component: {fileID: 693503185}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -51732,6 +52025,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 693503181}
+--- !u!114 &693503185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693503178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 693503184}
+  _renderer: {fileID: 693503181}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &693536142
 GameObject:
   m_ObjectHideFlags: 0
@@ -53349,8 +53677,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -53358,11 +53686,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &718715734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54879,7 +55207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &735023045
@@ -56547,8 +56875,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -56556,11 +56884,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &767114917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61887,6 +62215,7 @@ GameObject:
   - component: {fileID: 843446157}
   - component: {fileID: 843446159}
   - component: {fileID: 843446160}
+  - component: {fileID: 843446161}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -61991,6 +62320,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 843446157}
+--- !u!114 &843446161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843446154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 843446160}
+  _renderer: {fileID: 843446157}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &846667985
 GameObject:
   m_ObjectHideFlags: 0
@@ -63904,6 +64268,7 @@ GameObject:
   - component: {fileID: 872405146}
   - component: {fileID: 872405148}
   - component: {fileID: 872405149}
+  - component: {fileID: 872405150}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -64008,6 +64373,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 872405146}
+--- !u!114 &872405150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872405143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 872405149}
+  _renderer: {fileID: 872405146}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1001 &872681231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65249,8 +65649,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -65258,11 +65658,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &883975675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69241,6 +69641,7 @@ GameObject:
   - component: {fileID: 956758810}
   - component: {fileID: 956758812}
   - component: {fileID: 956758813}
+  - component: {fileID: 956758814}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -69345,6 +69746,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 956758810}
+--- !u!114 &956758814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956758807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 956758813}
+  _renderer: {fileID: 956758810}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &957578405
 GameObject:
   m_ObjectHideFlags: 0
@@ -69608,6 +70044,7 @@ GameObject:
   - component: {fileID: 969332131}
   - component: {fileID: 969332133}
   - component: {fileID: 969332134}
+  - component: {fileID: 969332135}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -69712,6 +70149,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 969332131}
+--- !u!114 &969332135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969332128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 969332134}
+  _renderer: {fileID: 969332131}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &975367730
 GameObject:
   m_ObjectHideFlags: 0
@@ -71047,6 +71519,7 @@ GameObject:
   - component: {fileID: 989673580}
   - component: {fileID: 989673582}
   - component: {fileID: 989673583}
+  - component: {fileID: 989673584}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -71151,6 +71624,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 989673580}
+--- !u!114 &989673584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989673577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 989673583}
+  _renderer: {fileID: 989673580}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &991039936
 GameObject:
   m_ObjectHideFlags: 0
@@ -71350,8 +71858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -71359,11 +71867,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &996056543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71548,6 +72056,7 @@ GameObject:
   - component: {fileID: 999222894}
   - component: {fileID: 999222896}
   - component: {fileID: 999222897}
+  - component: {fileID: 999222898}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -71652,6 +72161,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 999222894}
+--- !u!114 &999222898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999222891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 999222897}
+  _renderer: {fileID: 999222894}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &999739396
 GameObject:
   m_ObjectHideFlags: 0
@@ -75289,6 +75833,7 @@ GameObject:
   - component: {fileID: 1056468172}
   - component: {fileID: 1056468174}
   - component: {fileID: 1056468175}
+  - component: {fileID: 1056468176}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -75393,6 +75938,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1056468172}
+--- !u!114 &1056468176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056468169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1056468175}
+  _renderer: {fileID: 1056468172}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1058070288
 GameObject:
   m_ObjectHideFlags: 0
@@ -80439,6 +81019,7 @@ GameObject:
   - component: {fileID: 1149857896}
   - component: {fileID: 1149857898}
   - component: {fileID: 1149857899}
+  - component: {fileID: 1149857900}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -80543,6 +81124,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1149857896}
+--- !u!114 &1149857900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149857893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1149857899}
+  _renderer: {fileID: 1149857896}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1150382002
 GameObject:
   m_ObjectHideFlags: 0
@@ -80714,6 +81330,7 @@ GameObject:
   - component: {fileID: 1152254763}
   - component: {fileID: 1152254765}
   - component: {fileID: 1152254766}
+  - component: {fileID: 1152254767}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -80818,6 +81435,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1152254763}
+--- !u!114 &1152254767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152254760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1152254766}
+  _renderer: {fileID: 1152254763}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1152716535
 GameObject:
   m_ObjectHideFlags: 0
@@ -82645,6 +83297,7 @@ GameObject:
   - component: {fileID: 1182475020}
   - component: {fileID: 1182475022}
   - component: {fileID: 1182475023}
+  - component: {fileID: 1182475024}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -82749,6 +83402,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1182475020}
+--- !u!114 &1182475024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182475017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1182475023}
+  _renderer: {fileID: 1182475020}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1182801339
 GameObject:
   m_ObjectHideFlags: 0
@@ -84274,6 +84962,7 @@ GameObject:
   - component: {fileID: 1200568204}
   - component: {fileID: 1200568206}
   - component: {fileID: 1200568207}
+  - component: {fileID: 1200568208}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -84378,6 +85067,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1200568204}
+--- !u!114 &1200568208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200568201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1200568207}
+  _renderer: {fileID: 1200568204}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1200836751
 GameObject:
   m_ObjectHideFlags: 0
@@ -84787,6 +85511,7 @@ GameObject:
   - component: {fileID: 1214095481}
   - component: {fileID: 1214095483}
   - component: {fileID: 1214095484}
+  - component: {fileID: 1214095485}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -84891,6 +85616,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1214095481}
+--- !u!114 &1214095485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214095478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1214095484}
+  _renderer: {fileID: 1214095481}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1219906513
 GameObject:
   m_ObjectHideFlags: 0
@@ -89483,6 +90243,7 @@ GameObject:
   - component: {fileID: 1287302090}
   - component: {fileID: 1287302092}
   - component: {fileID: 1287302093}
+  - component: {fileID: 1287302094}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -89587,6 +90348,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1287302090}
+--- !u!114 &1287302094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287302087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1287302093}
+  _renderer: {fileID: 1287302090}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1287311138
 GameObject:
   m_ObjectHideFlags: 0
@@ -92849,8 +93645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -92858,11 +93654,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &1333314911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100171,6 +100967,7 @@ GameObject:
   - component: {fileID: 1419393835}
   - component: {fileID: 1419393837}
   - component: {fileID: 1419393838}
+  - component: {fileID: 1419393839}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -100275,6 +101072,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1419393835}
+--- !u!114 &1419393839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419393832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1419393838}
+  _renderer: {fileID: 1419393835}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1420508545
 GameObject:
   m_ObjectHideFlags: 0
@@ -103485,7 +104317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2.5
   Center: 1
   StartWidth: 1
   EndWidth: 1
@@ -103494,7 +104326,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -103885,8 +104717,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0.5
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
@@ -103894,11 +104726,11 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &1433934090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108232,20 +109064,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
-  Center: 1
+  Length: 500
+  Center: 0
   StartWidth: 1
   EndWidth: 1
   StartAlpha: 1
-  EndAlpha: 1
+  EndAlpha: 0
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 0.1
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
-  MaxAlpha: 1
+  MaxAlpha: 0.2
 --- !u!114 &1494479999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108578,6 +109410,7 @@ GameObject:
   - component: {fileID: 1495859076}
   - component: {fileID: 1495859078}
   - component: {fileID: 1495859079}
+  - component: {fileID: 1495859080}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -108682,6 +109515,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1495859076}
+--- !u!114 &1495859080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495859073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1495859079}
+  _renderer: {fileID: 1495859076}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1496488934
 GameObject:
   m_ObjectHideFlags: 0
@@ -113921,7 +114789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a4afcc1191454392fe0d3ed20fd38c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Length: 1
+  Length: 2.5
   Center: 1
   StartWidth: 1
   EndWidth: 1
@@ -113930,7 +114798,7 @@ MonoBehaviour:
   MultiplyLengthByAlphaBloomFogMultiplier: 1
   MultiplyLengthByAlphaMultiplier: 1
   LightWidthMultiplier: 1
-  IntensityMultiplier: 1
+  IntensityMultiplier: 4.5
   BoostToWhite: 0
   LimitAlpha: 0
   MinAlpha: 0
@@ -120234,6 +121102,7 @@ GameObject:
   - component: {fileID: 1708597476}
   - component: {fileID: 1708597478}
   - component: {fileID: 1708597479}
+  - component: {fileID: 1708597480}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -120338,6 +121207,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1708597476}
+--- !u!114 &1708597480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708597473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1708597479}
+  _renderer: {fileID: 1708597476}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1708773705
 GameObject:
   m_ObjectHideFlags: 0
@@ -125188,6 +126092,7 @@ GameObject:
   - component: {fileID: 1799170559}
   - component: {fileID: 1799170561}
   - component: {fileID: 1799170562}
+  - component: {fileID: 1799170563}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -125292,6 +126197,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1799170559}
+--- !u!114 &1799170563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799170556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1799170562}
+  _renderer: {fileID: 1799170559}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1800613042
 GameObject:
   m_ObjectHideFlags: 0
@@ -126610,6 +127550,7 @@ GameObject:
   - component: {fileID: 1823660378}
   - component: {fileID: 1823660380}
   - component: {fileID: 1823660381}
+  - component: {fileID: 1823660382}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -126714,6 +127655,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1823660378}
+--- !u!114 &1823660382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823660375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1823660381}
+  _renderer: {fileID: 1823660378}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1825904640
 GameObject:
   m_ObjectHideFlags: 0
@@ -136322,6 +137298,7 @@ GameObject:
   - component: {fileID: 1974430098}
   - component: {fileID: 1974430100}
   - component: {fileID: 1974430101}
+  - component: {fileID: 1974430102}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -136426,6 +137403,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1974430098}
+--- !u!114 &1974430102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974430095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1974430101}
+  _renderer: {fileID: 1974430098}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1975095562
 GameObject:
   m_ObjectHideFlags: 0
@@ -137106,6 +138118,7 @@ GameObject:
   - component: {fileID: 1988529386}
   - component: {fileID: 1988529388}
   - component: {fileID: 1988529389}
+  - component: {fileID: 1988529390}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -137210,6 +138223,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 1988529386}
+--- !u!114 &1988529390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988529383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 1988529389}
+  _renderer: {fileID: 1988529386}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &1988943151
 GameObject:
   m_ObjectHideFlags: 0
@@ -138035,6 +139083,7 @@ GameObject:
   - component: {fileID: 2000339543}
   - component: {fileID: 2000339545}
   - component: {fileID: 2000339546}
+  - component: {fileID: 2000339547}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -138139,6 +139188,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 2000339543}
+--- !u!114 &2000339547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000339540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 2000339546}
+  _renderer: {fileID: 2000339543}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &2000864340
 GameObject:
   m_ObjectHideFlags: 0
@@ -139768,7 +140852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8f81ac7cca40cbb438062a06880c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 0, g: 0, b: 0, a: 0}
+  Color: {r: 0, g: 0.5, b: 1, a: 1}
   Intensity: 1
   Radius: 150
 --- !u!1 &2022759133
@@ -142291,6 +143375,7 @@ GameObject:
   - component: {fileID: 2054087304}
   - component: {fileID: 2054087306}
   - component: {fileID: 2054087307}
+  - component: {fileID: 2054087308}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -142395,6 +143480,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 2054087304}
+--- !u!114 &2054087308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054087301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 2054087307}
+  _renderer: {fileID: 2054087304}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &2055533959
 GameObject:
   m_ObjectHideFlags: 0
@@ -148562,6 +149682,7 @@ GameObject:
   - component: {fileID: 2139228079}
   - component: {fileID: 2139228081}
   - component: {fileID: 2139228082}
+  - component: {fileID: 2139228083}
   m_Layer: 0
   m_Name: OctaCube
   m_TagString: Untagged
@@ -148666,6 +149787,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 2139228079}
+--- !u!114 &2139228083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139228076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd99540bdb5794527ac758996dd53ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displacementRanges: {x: 0.2, y: 0.2, z: 0.2}
+  _xAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _yAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _displacementController: {fileID: 2139228082}
+  _renderer: {fileID: 2139228079}
+  _useTestValue: 0
+  _testFloatValue: 0
 --- !u!1 &2139782400
 GameObject:
   m_ObjectHideFlags: 0

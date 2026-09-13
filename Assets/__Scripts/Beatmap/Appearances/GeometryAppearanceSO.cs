@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base.Customs;
 using Beatmap.Containers;
@@ -20,8 +21,19 @@ namespace Beatmap.Appearances
 
         private static BaseMaterial standard;
         private static readonly int colorId = Shader.PropertyToID("_Color");
+        private readonly Dictionary<string, Material> keywordMaterials = new();
 
         public void OnEnable() => standard = new BaseMaterial { Shader = "Standard" };
+
+        private void OnDisable()
+        {
+            foreach (var material in keywordMaterials.Values)
+            {
+                if (Application.isPlaying) Destroy(material);
+                else DestroyImmediate(material);
+            }
+            keywordMaterials.Clear();
+        }
 
         public void SetGeometryAppearance(GeometryContainer container)
         {
@@ -77,11 +89,12 @@ namespace Beatmap.Appearances
                     material = glowingMaterial;
                 else
                 {
-                    material.shaderKeywords =
-                        eh.Geometry[eh.GeometryKeyMaterial][eh.GeometryKeyMaterialKeywords]
-                            .AsArray.Children.Where(x => x.IsString)
-                            .Cast<string>()
-                            .ToArray();
+                    var keywords = eh.Geometry[eh.GeometryKeyMaterial][eh.GeometryKeyMaterialKeywords]
+                        .AsArray.Children.Where(x => x.IsString)
+                        .Cast<string>();
+                    if (shader == ShaderType.Glowing)
+                        keywords = keywords.Select(CanonicalizeGlowingKeyword).Where(x => x != null);
+                    material = GetKeywordMaterial(material, keywords);
                 }
             }
 
@@ -93,6 +106,41 @@ namespace Beatmap.Appearances
             foreach (var r in container.MpbController.Renderers) r.sharedMaterial = material;
             container.MpbController.ApplyChanges();
         }
+
+        private Material GetKeywordMaterial(Material source, IEnumerable<string> keywords)
+        {
+            var canonicalKeywords = keywords.Distinct(StringComparer.Ordinal)
+                .OrderBy(x => x, StringComparer.Ordinal).ToArray();
+            var key = source.GetInstanceID() + ":" + string.Join("|", canonicalKeywords);
+            if (keywordMaterials.TryGetValue(key, out var cached)) return cached;
+
+            var material = new Material(source)
+            {
+                name = source.name + " (Geometry Keywords)",
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            material.shaderKeywords = canonicalKeywords;
+            keywordMaterials.Add(key, material);
+            return material;
+        }
+
+        private static string CanonicalizeGlowingKeyword(string keyword) => keyword switch
+        {
+            "_WHITEBOOSTTYPE_MAINEFFECT" => "_WHITEBOOSTTYPE_MAINEFFECT",
+            "_WHITEBOOSTTYPE_ALWAYS" => "_WHITEBOOSTTYPE_ALWAYS",
+            "_CUTOUT_NORMAL" => "CUTOUT",
+            "_NOISE_DITHERING" => "NOISE_DITHERING",
+            "_ENABLE_COLOR_INSTANCING" => null,
+            "ENABLE_BLOOM_FOG" => null,
+            "MAIN_EFFECT_ENABLED" => null,
+            "_CUTOUT_NONE" => null,
+            "INSTANCING_ON" => null,
+            "STEREO_INSTANCING_ON" => null,
+            "UNITY_SINGLE_PASS_STEREO" => null,
+            "STEREO_MULTIVIEW_ON" => null,
+            "STEREO_CUBEMAP_RENDER_ON" => null,
+            _ => keyword
+        };
 
         // Straight outta heck
         enum ShaderType

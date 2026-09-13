@@ -85,6 +85,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3473881088958483713, guid: a3d54474572c72572be0e1421688f94a,
         type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3473881088958483713, guid: a3d54474572c72572be0e1421688f94a,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 65a0f27365bc7df4886e1f6222b65f48, type: 2}
@@ -106,6 +111,11 @@ PrefabInstance:
     - target: {fileID: 398602866037744659, guid: a3d54474572c72572be0e1421688f94a,
         type: 3}
       propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 398602866037744659, guid: a3d54474572c72572be0e1421688f94a,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 398602866037744659, guid: a3d54474572c72572be0e1421688f94a,
@@ -133,6 +143,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: a3d54474572c72572be0e1421688f94a,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4742473837712756890, guid: a3d54474572c72572be0e1421688f94a,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 5746578055069821130, guid: a3d54474572c72572be0e1421688f94a,
         type: 3}
       propertyPath: m_CastShadows
@@ -146,6 +166,11 @@ PrefabInstance:
     - target: {fileID: 5746578055069821130, guid: a3d54474572c72572be0e1421688f94a,
         type: 3}
       propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746578055069821130, guid: a3d54474572c72572be0e1421688f94a,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5746578055069821130, guid: a3d54474572c72572be0e1421688f94a,

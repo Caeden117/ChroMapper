@@ -15,8 +15,8 @@ namespace Tests.Editor
     public class SkrillexRingLaneTest : TestBase
     {
         private const string EnvironmentSceneName = "SkrillexEnvironment";
-        private const string TracksDefinitionPath =
-            "Assets/__Scripts/Environments/TracksDefinitions/SkrillexEnvironmentTracksDefinition.asset";
+        private const string TrackDefinitionsPath =
+            "Assets/__Scripts/Environments/TrackDefinitions/SkrillexEnvironmentTrackDefinitions.asset";
         private const string EnvironmentDataPath =
             "Assets/__Scenes/Environments/Data/SkrillexEnvironment.json";
 
@@ -52,7 +52,7 @@ namespace Tests.Editor
         [TestCase(9, "Ring 1 Rotation / Zoom")]
         public void SkrillexMixedRingLaneUsesDescriptiveTrackName(int eventType, string expectedName)
         {
-            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TracksDefinitionSO>(TracksDefinitionPath);
+            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(TrackDefinitionsPath);
             Assert.That(tracksDefinition, Is.Not.Null, "The Skrillex track definition asset did not load.");
             tracksDefinition.Initialize();
 
@@ -64,7 +64,7 @@ namespace Tests.Editor
         [TestCase(13, "Right Panel Speed")]
         public void SkrillexPanelSpeedLanesUseDescriptiveTrackName(int eventType, string expectedName)
         {
-            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TracksDefinitionSO>(TracksDefinitionPath);
+            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(TrackDefinitionsPath);
             Assert.That(tracksDefinition, Is.Not.Null, "The Skrillex track definition asset did not load.");
             tracksDefinition.Initialize();
 
@@ -80,26 +80,26 @@ namespace Tests.Editor
             var environmentData = JSON.Parse(dataAsset.text)["environmentData"];
             var exportedTracks = environmentData["lightTracks"]["eventTracks"].AsArray;
             Assert.That(exportedTracks, Is.Not.Null, "The raw Skrillex export had no light-track metadata.");
-            var lightTracks = new LightTracksDefinition
+            var lightTracks = new LightTrackDefinitions
             {
                 BasicLightTracks = exportedTracks.Linq
                     .Select(track =>
-                        new LightTracksDefinition.BasicTrackDefinition
+                        new LightTrackDefinitions.BasicTrackDefinition
                         {
                             TrackName = track.Value["trackName"],
-                            EventType = track.Value["eventType"],
-                            ToolbarType = track.Value["toolbarType"],
+                            EventType = int.Parse(track.Value["eventType"].Value.Substring("Event".Length)),
+                            ToolbarType = ParseToolbarType(track.Value["toolbarType"]),
                             Page = track.Value["page"]
                         })
                     .ToList(),
-                GroupPages = new Dictionary<string, List<LightTracksDefinition.PageDefinition>>()
+                GroupPages = new Dictionary<string, List<LightTrackDefinitions.PageDefinition>>()
             };
-            var tracksDefinition = ScriptableObject.CreateInstance<TracksDefinitionSO>();
+            var tracksDefinition = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
             try
             {
                 lightTracks.CopyTo(
                     tracksDefinition,
-                    System.Array.Empty<EnvDataObject>(),
+                    System.Array.Empty<EnvironmentDataObject>(),
                     environmentData["environmentId"]);
 
                 Assert.That(tracksDefinition.Basic[8].Name, Is.EqualTo("Ring 2 Rotation / Zoom"));
@@ -118,11 +118,23 @@ namespace Tests.Editor
             }
         }
 
+        private static BasicEventKind ParseToolbarType(string value) => value switch
+        {
+            "None" => BasicEventKind.None,
+            "Lights" => BasicEventKind.Lights,
+            "Toggle" => BasicEventKind.Toggle,
+            "FloatValue" => BasicEventKind.FloatValue,
+            "IntValue" => BasicEventKind.IntValue,
+            "BtsCharacterSelection" => BasicEventKind.BtsCharacter,
+            "CarSelection" => BasicEventKind.Car,
+            _ => BasicEventKind.Generic
+        };
+
         // SkrillexBasicEventLanesUseEnvironmentPresentationOrder protects the visual order without changing event identities.
         [Test]
         public void SkrillexBasicEventLanesUseEnvironmentPresentationOrder()
         {
-            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TracksDefinitionSO>(TracksDefinitionPath);
+            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(TrackDefinitionsPath);
             Assert.That(tracksDefinition, Is.Not.Null, "The Skrillex track definition asset did not load.");
             tracksDefinition.Initialize();
 
@@ -133,11 +145,11 @@ namespace Tests.Editor
                 .SelectMany(root => root.GetComponentsInChildren<EnvironmentDescriptor>(true))
                 .Single();
             var previousDescriptor = context.Descriptor;
-            var previousTracksDefinition = context.TracksDefinition;
+            var previousTrackDefinitions = context.TrackDefinitions;
             try
             {
                 context.Descriptor = descriptor;
-                context.TracksDefinition = tracksDefinition;
+                context.TrackDefinitions = tracksDefinition;
                 labels.UpdateLabels(EventGridContainer.PropMode.Off, 0, 0);
 
                 var expectedEventTypes = new[] { 0, 2, 3, 6, 7, 1, 4, 5, 9, 8, 12, 13 };
@@ -150,7 +162,7 @@ namespace Tests.Editor
             finally
             {
                 context.Descriptor = previousDescriptor;
-                context.TracksDefinition = previousTracksDefinition;
+                context.TrackDefinitions = previousTrackDefinitions;
             }
         }
 

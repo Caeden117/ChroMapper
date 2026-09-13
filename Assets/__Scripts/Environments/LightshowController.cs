@@ -68,9 +68,8 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
     public void LateUpdate()
     {
         for (var i = 0; i < componentSize; i++)
-        {
-            if (componentUpdates[i].ShouldRefresh) componentUpdates[i].Refresh();
-        }
+            if (componentUpdates[i].ShouldRefresh)
+                componentUpdates[i].Refresh();
     }
 
     public void Refresh()
@@ -103,7 +102,7 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
 
         var events = Mode == LightshowMode.Static
             ? context
-                .TracksDefinition.Basic.Where(track => track.Value.Kind == BasicEventKind.Lights)
+                .TrackDefinitions.Basic.Where(track => track.Value.Kind == BasicEventKind.Lights)
                 .Select(track =>
                 {
                     var evt = new BaseEvent { Type = track.Key, songBpmTime = 0f, Value = 1 };
@@ -112,7 +111,7 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
                 .ToList()
             : Settings.Instance.Load_Events
                 ? BeatSaberSongContainer.Instance.Map.Events
-                : new();
+                : new List<BaseEvent>();
 
         context.Descriptor.BasicEventEffectManager.InsertData(events);
         context.Descriptor.LightColorGroupEffectManager.InsertData(
@@ -183,5 +182,5 @@ public enum LightshowMode : byte
 {
     Full,
     Static,
-    None,
+    None
 }

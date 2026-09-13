@@ -173,14 +173,14 @@ namespace TestsEditMode
         public void SmoothStepRingZoomCustomStepSuggestsChromaGLS()
         {
             // Requirement detection uses the same component metadata as Basic Event editing.
-            var tracksDefinition = ScriptableObject.CreateInstance<TracksDefinitionSO>();
-            tracksDefinition.Register(
+            var trackDefinitions = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
+            trackDefinitions.Register(
                 new TrackDefinitionBasic
                 {
                     Type = (int)EventTypeValue.Event9,
                     Components = BasicEventComponent.SmoothStepRingZoom
                 });
-            _difficulty.RuntimeTracksDefinition = tracksDefinition;
+            _difficulty.RuntimeTrackDefinitions = trackDefinitions;
             _difficulty.Events = new List<BaseEvent>
             {
                 new()
@@ -200,9 +200,9 @@ namespace TestsEditMode
         public void OtherRingZoomDataDoesNotSuggestChromaGLS(BasicEventComponent component, bool hasCustomStep)
         {
             // Only a custom step on the distinct smooth-step component belongs to ChromaGLS.
-            var tracksDefinition = ScriptableObject.CreateInstance<TracksDefinitionSO>();
-            tracksDefinition.Register(new TrackDefinitionBasic { Type = 9, Components = component });
-            _difficulty.RuntimeTracksDefinition = tracksDefinition;
+            var trackDefinitions = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
+            trackDefinitions.Register(new TrackDefinitionBasic { Type = 9, Components = component });
+            _difficulty.RuntimeTrackDefinitions = trackDefinitions;
             _difficulty.Events = new List<BaseEvent>
             {
                 new()

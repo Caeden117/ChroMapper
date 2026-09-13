@@ -10,8 +10,8 @@ namespace Tests.Editor
     // BillieLaneOrder* protects the mapper-friendly lane sequence without modifying the authoritative UGEcko export.
     public class BillieLaneOrderTest
     {
-        private const string TracksDefinitionPath =
-            "Assets/__Scripts/Environments/TracksDefinitions/BillieEnvironmentTracksDefinition.asset";
+        private const string TrackDefinitionsPath =
+            "Assets/__Scripts/Environments/TrackDefinitions/BillieEnvironmentTrackDefinitions.asset";
         private const string EnvironmentDataPath =
             "Assets/__Scenes/Environments/Data/BillieEnvironment.json";
 
@@ -22,7 +22,7 @@ namespace Tests.Editor
         [Test]
         public void BillieTrackDefinitionAssetUsesCorrectedLaneOrder()
         {
-            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TracksDefinitionSO>(TracksDefinitionPath);
+            var tracksDefinition = AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(TrackDefinitionsPath);
             Assert.That(tracksDefinition, Is.Not.Null, "The Billie track definition asset did not load.");
             tracksDefinition.Initialize();
 
@@ -38,26 +38,26 @@ namespace Tests.Editor
             var environmentData = JSON.Parse(dataAsset.text)["environmentData"];
             var exportedTracks = environmentData["lightTracks"]["eventTracks"].AsArray;
             Assert.That(exportedTracks, Is.Not.Null, "The raw Billie export had no light-track metadata.");
-            var lightTracks = new LightTracksDefinition
+            var lightTracks = new LightTrackDefinitions
             {
                 BasicLightTracks = exportedTracks.Linq
                     .Select(track =>
-                        new LightTracksDefinition.BasicTrackDefinition
+                        new LightTrackDefinitions.BasicTrackDefinition
                         {
                             TrackName = track.Value["trackName"],
-                            EventType = track.Value["eventType"],
-                            ToolbarType = track.Value["toolbarType"],
+                            EventType = int.Parse(track.Value["eventType"].Value.Substring("Event".Length)),
+                            ToolbarType = ParseToolbarType(track.Value["toolbarType"]),
                             Page = track.Value["page"]
                         })
                     .ToList(),
-                GroupPages = new Dictionary<string, List<LightTracksDefinition.PageDefinition>>()
+                GroupPages = new Dictionary<string, List<LightTrackDefinitions.PageDefinition>>()
             };
-            var tracksDefinition = ScriptableObject.CreateInstance<TracksDefinitionSO>();
+            var tracksDefinition = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
             try
             {
                 lightTracks.CopyTo(
                     tracksDefinition,
-                    System.Array.Empty<EnvDataObject>(),
+                    System.Array.Empty<EnvironmentDataObject>(),
                     environmentData["environmentId"]);
 
                 CollectionAssert.AreEqual(ExpectedEventTypes, tracksDefinition.Basic.Keys);
@@ -67,5 +67,17 @@ namespace Tests.Editor
                 Object.DestroyImmediate(tracksDefinition);
             }
         }
+
+        private static BasicEventKind ParseToolbarType(string value) => value switch
+        {
+            "None" => BasicEventKind.None,
+            "Lights" => BasicEventKind.Lights,
+            "Toggle" => BasicEventKind.Toggle,
+            "FloatValue" => BasicEventKind.FloatValue,
+            "IntValue" => BasicEventKind.IntValue,
+            "BtsCharacterSelection" => BasicEventKind.BtsCharacter,
+            "CarSelection" => BasicEventKind.Car,
+            _ => BasicEventKind.Generic
+        };
     }
 }

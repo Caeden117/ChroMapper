@@ -1,0 +1,482 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: MetallicaEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: 
+  basicEntries:
+  - Name: Boost Colors
+    Type: 5
+    Kind: 3
+    Components: 0
+  - Name: Ambient
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: Pillar Switch
+    Type: 13
+    Kind: 5
+    Components: 0
+  - Name: PlayerPlace
+    Type: 8
+    Kind: 2
+    Components: 0
+  glsEntries:
+  - Group: Pillars L
+    Name: Pillars Local
+    ID: 22
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Pillars Global
+    ID: 1
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Pillars Column Global
+    ID: 40
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Lasers
+    ID: 9
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Lighting Bolts
+    ID: 12
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000100
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Pillars Construction Light
+    ID: 14
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars L
+    Name: Pillars Point Lights
+    ID: 34
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars L
+    Name: PillarScratches
+    ID: 42
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Pillars Local
+    ID: 23
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Pillars Global
+    ID: 2
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Pillars Column Global
+    ID: 41
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Lasers
+    ID: 10
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Lighting Bolts
+    ID: 13
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000100
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Pillars Construction Light
+    ID: 15
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars R
+    Name: Pillars Point Lights
+    ID: 35
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Pillars R
+    Name: PillarScratches
+    ID: 43
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Center Stage
+    Name: Left
+    ID: 3
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Center Stage
+    Name: Mid
+    ID: 5
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Center Stage
+    Name: Right
+    ID: 4
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Center Stage
+    Name: Front Lasers
+    ID: 11
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Center Stage
+    Name: Point Lights
+    ID: 33
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Stage BG Lasers
+    Name: Left
+    ID: 7
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Stage BG Lasers
+    Name: Right
+    ID: 8
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Runway
+    ID: 6
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Runway / Chevron
+    Name: Runway Lasers Left
+    ID: 24
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Runway Lasers Right
+    ID: 25
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Chevron
+    ID: 0
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Runway / Chevron
+    Name: Mask Strength
+    ID: 44
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Runway / Chevron
+    Name: Fire Burst L
+    ID: 27
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Fire Continuous L
+    ID: 38
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Fire Burst R
+    ID: 28
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Runway / Chevron
+    Name: Fire Continuous R
+    ID: 39
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: BG Lighting / Construction
+    Name: Lighting Bolts Left
+    ID: 16
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: BG Lighting / Construction
+    Name: Construction Point Light Left
+    ID: 17
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: BG Lighting / Construction
+    Name: Lighting Bolts Right
+    ID: 18
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: BG Lighting / Construction
+    Name: Construction Point Light Right
+    ID: 19
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Effects
+    Name: Lighting A
+    ID: 20
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Effects
+    Name: Lighting B
+    ID: 21
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Effects
+    Name: Stars
+    ID: 32
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Scaffoldings
+    Name: Top
+    ID: 26
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Scaffoldings
+    Name: Far Left
+    ID: 36
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Scaffoldings
+    Name: Far Right
+    ID: 37
+    ColorTrack: 0
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Scaffoldings
+    Name: Back
+    ID: 31
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Infinite Lasers
+    Name: Left
+    ID: 29
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Infinite Lasers
+    Name: Right
+    ID: 30
+    ColorTrack: 1
+    RotationTracks: 010101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1

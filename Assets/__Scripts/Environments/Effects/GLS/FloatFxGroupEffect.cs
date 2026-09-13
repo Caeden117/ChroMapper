@@ -16,6 +16,13 @@ public class
     [SerializeField] public bool Trigger;
 
     [SerializeField] private List<FxEntry> fxEntries = new();
+
+    /// <summary>
+    /// Root GameObject to search for FxTarget components when auto-populating fxEntries.
+    /// Assign in the Inspector, then click "Populate Fx Entries from Auto Register Root".
+    /// </summary>
+    [SerializeField] public GameObject autoRegisterRoot;
+
     private FloatFxGroupContainer[] idToContainer = Array.Empty<FloatFxGroupContainer>();
     private FloatFxGroupContainer[] activeContainers = Array.Empty<FloatFxGroupContainer>();
 
@@ -25,10 +32,33 @@ public class
         if (fxEntries.Exists(x => x.ID == id))
             fxEntries.First(x => x.ID == id).Targets.Add(target);
         else
-            fxEntries.Add(new() { ID = id, Targets = new() { target } });
+            fxEntries.Add(new FxEntry { ID = id, Targets = new List<FxTarget> { target } });
     }
 
     public void Unregister(int id) => fxEntries.Remove(fxEntries.Find(e => e.ID == id));
+
+    /// <summary>
+    /// Clears fxEntries and rebuilds them from all FxTarget components found under
+    /// autoRegisterRoot, assigning IDs 0, 1, 2... in depth-first (hierarchy) order.
+    /// </summary>
+    public void PopulateFxEntriesFromRoot()
+    {
+        if (autoRegisterRoot == null)
+        {
+            Debug.LogWarning($"[FloatFxGroupEffect] autoRegisterRoot is not set on {gameObject.name}.");
+            return;
+        }
+
+        var targets = autoRegisterRoot.GetComponentsInChildren<FxTarget>(true);
+
+        fxEntries.Clear();
+        for (var i = 0; i < targets.Length; i++)
+        {
+            fxEntries.Add(new FxEntry { ID = i, Targets = new List<FxTarget> { targets[i] } });
+        }
+
+        Debug.Log($"[FloatFxGroupEffect] Populated {targets.Length} FxTargets on {gameObject.name}.");
+    }
 
     public override void Initialize()
     {
@@ -44,7 +74,7 @@ public class
 
             if (idToContainer[entry.ID] is null)
             {
-                idToContainer[entry.ID] = new(entry.ID, entry.Targets.ToArray());
+                idToContainer[entry.ID] = new FloatFxGroupContainer(entry.ID, entry.Targets.ToArray());
                 var container = idToContainer[entry.ID];
 
                 var startEvent = new FloatFxEventStateData(new BaseFxEventFloat(), short.MinValue);
@@ -60,18 +90,20 @@ public class
                 container.EventContainer.AddState(startEvent);
                 container.EventContainer.AddState(endEvent);
 
-                var start = CreateState(new() { songBpmTime = short.MinValue, JsonTime = short.MinValue });
+                var start = CreateState(
+                    new BaseVfxEventEventBoxGroup { songBpmTime = short.MinValue, JsonTime = short.MinValue });
                 start.Box = new BaseVfxEventEventBox
                 {
-                    IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                    IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                     Events = Array.Empty<BaseFxEventFloat>()
                 };
                 start.LocalJsonTime = start.StartTime;
 
-                var end = CreateState(new() { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
+                var end = CreateState(
+                    new BaseVfxEventEventBoxGroup { songBpmTime = float.MaxValue, JsonTime = float.MaxValue });
                 end.Box = new BaseVfxEventEventBox
                 {
-                    IndexFilter = new() { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                    IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
                     Events = Array.Empty<BaseFxEventFloat>()
                 };
                 end.LocalJsonTime = end.StartTime = end.EndTime;
@@ -120,9 +152,11 @@ public class
                 if (Trigger)
                 {
                     for (var i = 0; i < container.Targets.Length; i++)
+                    {
                         container
                             .Targets[i]
                             .TriggerValue(ID, container.Id, container.EventContainer.CurrentState.Value);
+                    }
                 }
             }
 
@@ -262,3 +296,39 @@ public class FxEntry
     public int ID;
     public List<FxTarget> Targets;
 }
+
+#if UNITY_EDITOR
+namespace FloatFxGroupEffectEditor_NS
+{
+    using UnityEditor;
+
+    [CustomEditor(typeof(FloatFxGroupEffect))]
+    public class FloatFxGroupEffectEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Auto-Register", EditorStyles.boldLabel);
+
+            var effect = (FloatFxGroupEffect)target;
+
+            EditorGUI.BeginDisabledGroup(effect.autoRegisterRoot == null);
+            if (GUILayout.Button("Populate Fx Entries from Auto Register Root"))
+            {
+                Undo.RecordObject(effect, "Populate Fx Entries");
+                effect.PopulateFxEntriesFromRoot();
+                EditorUtility.SetDirty(effect);
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            if (effect.autoRegisterRoot == null)
+                EditorGUILayout.HelpBox(
+                    "Assign a GameObject to 'Auto Register Root' to enable population.",
+                    MessageType.Info);
+        }
+    }
+}
+#endif

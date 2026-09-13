@@ -5,7 +5,11 @@ public class CameraManager : MonoBehaviour, IEditorStateProvider
 {
     [SerializeField] private CameraController editingCameraController;
     [SerializeField] private CameraController playingCameraController;
+    [SerializeField] private PerCameraShaderSetupController perCameraShaderSetupController;
+    [SerializeField] private CameraDepthRenderingController cameraDepthRenderingController;
+    [SerializeField] private ScreenDisplacementRenderingController screenDisplacementRenderingController;
     [SerializeField] private BloomfogRenderingController bloomfogRenderingController;
+    [SerializeField] private PostProcessRenderingController postProcessRenderingController;
 
     public CameraController SelectedCameraController;
 
@@ -17,7 +21,11 @@ public class CameraManager : MonoBehaviour, IEditorStateProvider
     private void Start()
     {
         SelectedCameraController = editingCameraController;
+        perCameraShaderSetupController.AssignToCamera(SelectedCameraController);
+        cameraDepthRenderingController.AssignToCamera(SelectedCameraController);
+        screenDisplacementRenderingController.AssignToCamera(SelectedCameraController);
         bloomfogRenderingController.AssignToCamera(SelectedCameraController);
+        postProcessRenderingController.AssignToCamera(SelectedCameraController);
         CameraControllers[0] = editingCameraController;
         CameraControllers[1] = playingCameraController;
         EditorStateService.Register(this);
@@ -65,7 +73,11 @@ public class CameraManager : MonoBehaviour, IEditorStateProvider
         SelectedCameraController.Camera.enabled = false;
         SelectedCameraController = cameraType == CameraType.Editing ? editingCameraController : playingCameraController;
         SelectedCameraController.Camera.enabled = true;
+        perCameraShaderSetupController.AssignToCamera(SelectedCameraController);
+        cameraDepthRenderingController.AssignToCamera(SelectedCameraController);
+        screenDisplacementRenderingController.AssignToCamera(SelectedCameraController);
         bloomfogRenderingController.AssignToCamera(SelectedCameraController);
+        postProcessRenderingController.AssignToCamera(SelectedCameraController);
     }
 }
 

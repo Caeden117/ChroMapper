@@ -1,27 +1,26 @@
 using System;
-using System.Linq;
 using Beatmap.Animations;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BeatmapRuntimeContext : MonoBehaviour
 {
     public AudioTimeSyncController Atsc;
+    public AudioLink.AudioLink AudioLink;
     public EnvironmentListSO EnvironmentList;
 
     [Header("Runtime")] public EnvironmentDescriptor Descriptor;
     public ColorSchemeSO ColorScheme;
-    public TracksDefinitionSO TracksDefinition;
+    public TrackDefinitionsSO TrackDefinitions;
 
     public event Action OnEnvironmentUnloaded;
     public event Action<EnvironmentDescriptor> OnEnvironmentLoaded;
     public event Action<ColorSchemeSO> OnColorSchemeChanged;
-    public event Action<TracksDefinitionSO> OnTracksDefinitionChanged;
+    public event Action<TrackDefinitionsSO> OnTrackDefinitionsChanged;
 
     public void Start()
     {
         ColorScheme = ScriptableObject.CreateInstance<ColorSchemeSO>();
-        TracksDefinition = ScriptableObject.CreateInstance<TracksDefinitionSO>();
+        TrackDefinitions = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
     }
 
     public void SetEnvironment(EnvironmentDescriptor descriptor)
@@ -31,7 +30,7 @@ public class BeatmapRuntimeContext : MonoBehaviour
         {
             var listing = EnvironmentList.GetEnvironmentOrDefault(descriptor.ID);
             SetColorScheme(listing.ColorScheme);
-            SetTracksDefinition(listing.TracksDefinition);
+            SetTrackDefinitions(listing.TrackDefinitions);
             Descriptor.Initialize(this);
             // TODO: also move this elsewhere
             if (BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData["_environmentRemoval"] != null)
@@ -71,14 +70,14 @@ public class BeatmapRuntimeContext : MonoBehaviour
 
     public void NotifyColorScheme() => OnColorSchemeChanged?.Invoke(ColorScheme);
 
-    public void SetTracksDefinition(TracksDefinitionSO tracksDefinition)
+    public void SetTrackDefinitions(TrackDefinitionsSO trackDefinitions)
     {
-        TracksDefinition.Copy(tracksDefinition);
+        TrackDefinitions.Copy(trackDefinitions);
         // Share the active definition by reference so requirement checks can identify component-specific Basic Events.
-        BeatSaberSongContainer.Instance.Map.RuntimeTracksDefinition = TracksDefinition;
-        PaintSelectedObjects.TracksDefinition = tracksDefinition;
-        NotifyTracksDefinition();
+        BeatSaberSongContainer.Instance.Map.RuntimeTrackDefinitions = TrackDefinitions;
+        PaintSelectedObjects.TrackDefinitions = trackDefinitions;
+        NotifyTrackDefinitions();
     }
 
-    public void NotifyTracksDefinition() => OnTracksDefinitionChanged?.Invoke(TracksDefinition);
+    public void NotifyTrackDefinitions() => OnTrackDefinitionsChanged?.Invoke(TrackDefinitions);
 }

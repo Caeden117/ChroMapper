@@ -24,13 +24,13 @@ public class ChromaGLSReq : RequirementCheck
 
     private static bool HasSmoothStepRingZoomOverride(BaseDifficulty map)
     {
-        if (map.RuntimeTracksDefinition == null)
+        if (map.RuntimeTrackDefinitions == null)
             return false;
 
         // SmoothStepRingZoom only applies to The Second's legacy ring right now.
         return map.Events.AsValueEnumerable().Any(
             basicEvent => basicEvent.CustomStep.HasValue
-                && map.RuntimeTracksDefinition.GetBasicOrDefault(basicEvent.Type).Components
+                && map.RuntimeTrackDefinitions.GetBasicOrDefault(basicEvent.Type).Components
                     .HasFlag(BasicEventComponent.SmoothStepRingZoom));
     }
 }

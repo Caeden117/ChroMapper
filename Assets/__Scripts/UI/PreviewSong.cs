@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class PreviewSong : MonoBehaviour
 {
-    private static readonly int songTimeSeconds = Shader.PropertyToID("_SongTimeSeconds");
-    
+    private static readonly int songTimeId = Shader.PropertyToID("_SongTime");
+
     [SerializeField] private Image progressBar;
     [SerializeField] private AudioSource audioSource;
 
@@ -28,7 +28,7 @@ public class PreviewSong : MonoBehaviour
     {
         if (!playing)
         {
-            Shader.SetGlobalFloat(songTimeSeconds, -100f);
+            Shader.SetGlobalVector(songTimeId, Vector4Extensions.ToTimeVector(-100f));
             return;
         }
 
@@ -44,8 +44,8 @@ public class PreviewSong : MonoBehaviour
         else
             audioSource.volume = Settings.Instance.SongVolume;
 
-        Shader.SetGlobalFloat(songTimeSeconds, audioSource.time);
-        
+        Shader.SetGlobalVector(songTimeId, Vector4Extensions.ToTimeVector(audioSource.time));
+
         var position = time > length ? 0 : time / length;
         progressBar.fillAmount = position;
     }
@@ -58,7 +58,7 @@ public class PreviewSong : MonoBehaviour
             image.sprite = startSprite;
             audioSource.Stop();
             playing = false;
-            Shader.SetGlobalFloat(songTimeSeconds, -100f);
+            Shader.SetGlobalVector(songTimeId, Vector4Extensions.ToTimeVector(-100f));
             return;
         }
 
@@ -71,7 +71,10 @@ public class PreviewSong : MonoBehaviour
             {
                 if (audioSource.clip == null)
                 {
-                    PersistentUI.Instance.ShowDialogBox("SongEditMenu", "preview.valid", null,
+                    PersistentUI.Instance.ShowDialogBox(
+                        "SongEditMenu",
+                        "preview.valid",
+                        null,
                         PersistentUI.DialogBoxPresetType.Ok);
                     return;
                 }

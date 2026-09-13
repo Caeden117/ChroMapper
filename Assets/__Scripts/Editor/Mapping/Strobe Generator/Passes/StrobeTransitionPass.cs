@@ -13,16 +13,16 @@ public class StrobeTransitionPass : StrobeGeneratorPass
     private readonly string lerpType;
 
     public StrobeTransitionPass(
-        TracksDefinitionSO tracksDefinition,
+        TrackDefinitionsSO trackDefinitions,
         string easing,
-        string lerpType) : base(tracksDefinition)
+        string lerpType) : base(trackDefinitions)
     {
         this.easing = (easing != DefaultEasing) ? easing : null;
         this.lerpType = (lerpType != DefaultLerpType) ? lerpType : null;
     }
 
     public override bool IsEventValidForPass(BaseEvent evt) =>
-        TracksDefinition.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights;
+        TrackDefinitions.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(
         IEnumerable<BaseEvent> original,

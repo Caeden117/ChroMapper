@@ -26,8 +26,8 @@ Shader "ChroMapper/Object/Basic Gradient"
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/Easings.hlsl"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Core/Easings.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
 
             // Define instanced properties
             UNITY_INSTANCING_BUFFER_START(Props)
@@ -66,7 +66,7 @@ Shader "ChroMapper/Object/Basic Gradient"
             float3 HSVToRGB(float3 color)
             {
                 float3 rgb = abs((frac(color.xxx + float3(0.0f, 2.0f / 3.0f, 1.0f / 3.0f)) * 6.0f) - 3.0f);
-                return color.z * lerp(1.0f.xxx, saturate(rgb - 1.0f), color.y);
+                return color.z * lerp(1.0f, saturate(rgb - 1.0f), color.y);
             }
 
             v2f vert(appdata v)
@@ -234,7 +234,7 @@ Shader "ChroMapper/Object/Basic Gradient"
                 color.rgb *= clamp(color.a, 0, 1);
                 color.a = 0;
 
-                ACES_TONE_MAPPING_APPLY(color);
+                color = ApplyAcesTonemapping(color);
                 return color;
             }
             ENDHLSL

@@ -33,9 +33,6 @@ public class NotePlacement : BasePlacement<BaseNote, NoteContainer, NoteGridCont
         { IndicatorType.Head, new List<BaseSlider>() }, { IndicatorType.Tail, new List<BaseSlider>() }
     };
 
-    private bool hasPreviousSnappedState;
-    private Vector2 previousSnappedState;
-
     private bool updateAttachedSliderDirection;
 
     public override void Start()
@@ -211,13 +208,6 @@ public class NotePlacement : BasePlacement<BaseNote, NoteContainer, NoteGridCont
         UpdateAppearance();
     }
 
-    protected override void ResetHysteresis()
-    {
-        base.ResetHysteresis();
-        hasPreviousSnappedState = false;
-        previousSnappedState = Vector2.zero;
-    }
-
     protected override void HandleHitToPlacement(Intersections.IntersectionHit hit, Vector3 localPoint)
     {
         var zPlacement = BeatmapPositionHelper.SongTimeToLanePositionZ(SongBpmTime);
@@ -239,18 +229,11 @@ public class NotePlacement : BasePlacement<BaseNote, NoteContainer, NoteGridCont
             var rawX = (localPoint.x / BeatmapConstant.LaneSize) - (gridViewController.IsOdd ? 0.5f : 0f);
             var rawY = (localPoint.y - BeatmapConstant.YOffset - (BeatmapConstant.PlayerYOffset / 2f))
                 / BeatmapConstant.LaneSize;
-            var raw = new Vector2(rawX, rawY);
-            if (!hasPreviousSnappedState)
-            {
-                previousSnappedState = new Vector2(Mathf.Floor(raw.x), Mathf.Floor(raw.y));
-                hasPreviousSnappedState = true;
-            }
-            else
-                previousSnappedState = BeatmapPositionHelper.SnapWithHysteresis(raw, previousSnappedState);
+            var snappedPosition = SnapWithHysteresis(rawX, rawY);
 
             LanePosition = new Vector3(
-                previousSnappedState.x + (gridViewController.IsOdd ? 0.5f : 0f),
-                previousSnappedState.y,
+                snappedPosition.x + (gridViewController.IsOdd ? 0.5f : 0f),
+                snappedPosition.y,
                 zPlacement);
             PlacementVisualContainer.transform.localPosition =
                 BeatmapPositionHelper.LanePositionToLocalPosition(

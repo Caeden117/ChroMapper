@@ -14,7 +14,7 @@ namespace Beatmap.Containers
         [SerializeField] private TracksManager tracksManager;
         [SerializeField] private TextMeshPro[] valueDisplays;
         [SerializeField] private LightGradientController lightGradientController;
-        [SerializeField] public TracksDefinitionSO TracksDefinition;
+        [SerializeField] public TrackDefinitionsSO TrackDefinitions;
 
         public BaseGLSEvent EventData;
         public int DisplayLaneIndex { private get; set; } = -1;
@@ -40,12 +40,12 @@ namespace Beatmap.Containers
 
         public static GLSEventContainer SpawnGLSEvent(
             BaseGLSEvent data,
-            TracksDefinitionSO tracksDefinition,
+            TrackDefinitionsSO trackDefinitions,
             ref GameObject prefab)
         {
             var container = Instantiate(prefab).GetComponent<GLSEventContainer>();
             container.EventData = data;
-            container.TracksDefinition = tracksDefinition;
+            container.TrackDefinitions = trackDefinitions;
             return container;
         }
 

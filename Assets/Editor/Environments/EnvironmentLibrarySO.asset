@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Meshes: {fileID: 11400000, guid: e07afa9dddf2714c3a5da9236d935d92, type: 2}
   Materials: {fileID: 11400000, guid: 2e04ee815276c77229446fe0a3c138bf, type: 2}
+  Textures: {fileID: 11400000, guid: 2c6325ffbbbb7c977ab0baf3b0754079, type: 2}
   Sprites: {fileID: 11400000, guid: 7d4a03bd213b89d0f8a85e0e68069714, type: 2}
   Shaders:
   - name: Custom/CloudsLitTransparent
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: 35fc8b5515c3403e978af60bab786cd3, type: 3}
     keywords:
     - ALIGN_NORMALS_TO_WORLD_ORIGIN
     - BACK_LIGHTING
@@ -34,7 +35,7 @@ MonoBehaviour:
     - _VERTEXMODE_ROTATELAYERS
     - VERTEX_WAVE
   - name: Custom/CloudsOpaque
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: 288964c523aa4242aa7e3a4a8a6637af, type: 3}
     keywords:
     - DIFFUSE
     - ENABLE_FOG
@@ -63,8 +64,10 @@ MonoBehaviour:
     - DISTORTION_TARGET_MASK
     - FLIPBOOK_BLENDING_OFF
     - _FOGTYPE_ALPHA
+    - _FOGTYPE_COLOR
     - _FOGTYPE_LERP
     - HEIGHT_FOG
+    - MAIN_PER_PARTICLE_RANDOM
     - MAIN_TEXTURE
     - MASK
     - MASK2
@@ -84,6 +87,7 @@ MonoBehaviour:
     - _SECONDARY_UVS_IMPORT
     - SECONDARY_UVS_MASK
     - SECONDARY_UVS_MASK2
+    - SOFT_PARTICLES
     - SPATIAL_DISPLACEMENT
     - SPECTROGRAM_COLOR
     - _SPECTROGRAM_FULL
@@ -132,7 +136,7 @@ MonoBehaviour:
     - ENABLE_MAIN_EFFECT_WHITE_BOOST
     - _WHITEBOOSTTYPE_ALWAYS
   - name: Custom/Rain
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: 7493d3be90324e2a893c189a3cdf3bc6, type: 3}
     keywords:
     - _ALPHACHANNEL_RED
     - _FOGTYPE_COLOR
@@ -142,7 +146,7 @@ MonoBehaviour:
     - VERTEX_COLOR
     - VERTEX_SQUARE_ALPHA
   - name: Custom/SetDepthOnly
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: b38a66b0a9424f658f000bd5fe557132, type: 3}
     keywords: []
   - name: Custom/SimpleLightning
     shader: {fileID: 4800000, guid: d38a0cb249974565a59a0d783a380e72, type: 3}
@@ -218,11 +222,14 @@ MonoBehaviour:
     - _RIMLIGHT_LERP
     - _RIM_WHITEBOOSTTYPE_MAINEFFECT
     - SECONDARY_EMISSION_MASK
+    - _SECONDARY_MASK_BLEND_MASKED_ADD
     - _SECONDARY_UVS_ADDITIVE_OFFSET
     - SECONDARY_UVS_EMISSION
     - SECONDARY_UVS_EMISSION_MASK
     - SECONDARY_UVS_EMISSION_MASK2
     - _SECONDARY_UVS_IMPORT
+    - SECONDARY_UVS_MPM
+    - SECONDARY_UVS_OCCLUSION
     - SECONDARY_UVS_OCCLUSION_DETAIL
     - _SMOOTHNESS_TEXTURE_MPM_A
     - _SMOOTHNESS_TEXTURE_MPM_G_ROUGHNESS
@@ -243,7 +250,7 @@ MonoBehaviour:
     - _VERTEX_WHITEBOOSTTYPE_ALWAYS
     - _VERTEX_WHITEBOOSTTYPE_MAINEFFECT
   - name: Custom/SimpleStencil
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: b1851e467f9334cf4ae2001b472fdf9f, type: 3}
     keywords: []
   - name: Custom/Spectrogram
     shader: {fileID: 4800000, guid: 299fea2b05da409785fdc7e33f2c8c4e, type: 3}
@@ -266,21 +273,25 @@ MonoBehaviour:
     shader: {fileID: 4800000, guid: d03bcf5b16d2d7cafb65aa8ba3686a87, type: 3}
     keywords:
     - _DECALBLEND_ALPHABLEND
+    - DETAIL_NORMAL_MAP
     - _EMISSIONCOLORTYPE_FLAT
     - FOG
     - HEIGHT_FOG
+    - LIGHTMAP
     - NOISE_DITHERING
     - NORMAL_MAP
     - REFLECTION_PROBE
     - REFLECTION_PROBE_BOX_PROJECTION
     - REFLECTION_PROBE_BOX_PROJECTION_OFFSET
     - Z_FADE
-  <SkyboxMaterial>k__BackingField: {fileID: 2100000, guid: e08c9a8c6d50c52499b383fff6fa82dd,
-    type: 2}
-  <SliceSprite>k__BackingField: {fileID: 4300000, guid: a96174836f8b90962b9d37a6d8d29363,
-    type: 2}
-  <MirrorRenderer>k__BackingField: {fileID: 11400000, guid: b54751a1fc3ac3983afa3aa9d4141095,
-    type: 2}
+  - name: Hidden/InternalErrorShader
+    shader: {fileID: 0}
+    keywords: []
+  ComputeShaders:
+  - name: TextureProcessor3DGenerator
+    computeShader: {fileID: 7200000, guid: 182267945a2911f1082121569cf9cb98, type: 3}
+  - name: TextureProcessor3DWriteTextures
+    computeShader: {fileID: 7200000, guid: fed8d494aa685e209ad7ab2bae087825, type: 3}
   layerMaskRemap:
   - name: Default
     layerMask:
@@ -289,7 +300,7 @@ MonoBehaviour:
   - name: DontShowInExternalMRCamera
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 134217728
   - name: Environment
     layerMask:
       serializedVersion: 2
@@ -305,11 +316,11 @@ MonoBehaviour:
   - name: NonReflectedParticles
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 524288
   - name: PlayersPlace
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 268435456
   - name: UI
     layerMask:
       serializedVersion: 2
@@ -317,6 +328,13 @@ MonoBehaviour:
   - name: Water
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 16
+  <SkyboxMaterial>k__BackingField: {fileID: 2100000, guid: e08c9a8c6d50c52499b383fff6fa82dd,
+    type: 2}
+  <SliceSprite>k__BackingField: {fileID: 4300000, guid: 1532c880b5dd12aae94eb8e286c6c1fa,
+    type: 2}
+  <MirrorRenderer>k__BackingField: {fileID: 11400000, guid: b54751a1fc3ac3983afa3aa9d4141095,
+    type: 2}
+  <ParticleSystemEventControllerPrefab>k__BackingField: {fileID: 0}
   fallbackPrefab: {fileID: 2927685545579233791, guid: 9d262d62360e69247bc42d35220aebd6,
     type: 3}

@@ -1,0 +1,488 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f234af0086459ba1c925785f97faf9, type: 3}
+  m_Name: TheRollingStonesEnvironmentTrackDefinitions
+  m_EditorClassIdentifier: 
+  basicEntries:
+  - Name: Boost Colors
+    Type: 5
+    Kind: 3
+    Components: 0
+  - Name: Ambient
+    Type: 6
+    Kind: 2
+    Components: 0
+  - Name: Logo
+    Type: 40
+    Kind: 5
+    Components: 0
+  glsEntries:
+  - Group: Cube
+    Name: Local Left
+    ID: 0
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cube
+    Name: Local Right
+    ID: 1
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Cube
+    Name: Global
+    ID: 26
+    ColorTrack: 0
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Cube
+    Name: Rot Z Left
+    ID: 31
+    ColorTrack: 0
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cube
+    Name: Rot Z Right
+    ID: 32
+    ColorTrack: 0
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Cube
+    Name: Lasers
+    ID: 37
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Heart
+    Name: Local Left
+    ID: 12
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Heart
+    Name: Local Right
+    ID: 13
+    ColorTrack: 1
+    RotationTracks: 010100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000001
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Heart
+    Name: Global
+    ID: 27
+    ColorTrack: 0
+    RotationTracks: 000101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Heart
+    Name: Rot Z Left
+    ID: 33
+    ColorTrack: 0
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Heart
+    Name: Rot Z Right
+    ID: 34
+    ColorTrack: 0
+    RotationTracks: 000001
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Logo
+    Name: Color
+    ID: 43
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Logo
+    Name: Local
+    ID: 28
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Logo
+    Name: Global
+    ID: 29
+    ColorTrack: 0
+    RotationTracks: 000101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Logo
+    Name: Iridescence
+    ID: 42
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Columns Left
+    Name: 01
+    ID: 2
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Left
+    Name: 02
+    ID: 3
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Left
+    Name: 03
+    ID: 4
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Left
+    Name: 04
+    ID: 5
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Right
+    Name: 01
+    ID: 6
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Right
+    Name: 02
+    ID: 7
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Right
+    Name: 03
+    ID: 8
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Right
+    Name: 04
+    ID: 9
+    ColorTrack: 1
+    RotationTracks: 000100
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Lasers
+    Name: 01
+    ID: 22
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Columns Lasers
+    Name: 02
+    ID: 23
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Left
+    Name: 01
+    ID: 14
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Left
+    Name: 02
+    ID: 15
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Left
+    Name: 03
+    ID: 16
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Left
+    Name: 04
+    ID: 17
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Left
+    Name: Spheres
+    ID: 24
+    ColorTrack: 1
+    RotationTracks: 010000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Lasers Right
+    Name: 01
+    ID: 18
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Right
+    Name: 02
+    ID: 19
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Right
+    Name: 03
+    ID: 20
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Right
+    Name: 04
+    ID: 21
+    ColorTrack: 1
+    RotationTracks: 010001
+    OverrideDefaultRotationAxis: Z
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Lasers Right
+    Name: Spheres
+    ID: 25
+    ColorTrack: 1
+    RotationTracks: 010000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 1
+  - Group: Floor
+    Name: Blocks Left
+    ID: 10
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010100
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Blocks Right
+    ID: 11
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010100
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Side Laser Left
+    ID: 35
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Side Laser Right
+    ID: 36
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Side Laser Bottom Left
+    ID: 44
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Side Laser Bottom Right
+    ID: 45
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Inner Light Left
+    ID: 40
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Inner Light Right
+    ID: 41
+    ColorTrack: 1
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000000
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 1
+  - Group: Floor
+    Name: Below Block
+    ID: 39
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000100
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0
+  - Group: Splinters
+    Name: Splinters
+    ID: 30
+    ColorTrack: 1
+    RotationTracks: 000101
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 000101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 1
+    Duplicate: 0
+  - Group: Splinters
+    Name: Global Translation
+    ID: 38
+    ColorTrack: 0
+    RotationTracks: 000000
+    OverrideDefaultRotationAxis: NoOverride
+    TranslationTracks: 010101
+    OverrideDefaultTranslationAxis: NoOverride
+    FloatFXTrack: 0
+    Duplicate: 0

@@ -13,11 +13,9 @@ public class ObstaclePlacement : BasePlacement<BaseObstacle, ObstacleContainer, 
     [SerializeField] private ColorPicker colorPicker;
     private bool hasExpanded;
     private bool hasOffset;
-    private bool hasPreviousSnappedState;
 
     private int originIndex;
     private Vector3 originPos;
-    private Vector2 previousSnappedState;
     private Vector3 scale;
 
     private float startJsonTime;
@@ -35,13 +33,6 @@ public class ObstaclePlacement : BasePlacement<BaseObstacle, ObstacleContainer, 
     {
         base.OnDestroy();
         LoadInitialMap.OnLevelLoaded -= HandleLevelLoaded;
-    }
-
-    protected override void ResetHysteresis()
-    {
-        base.ResetHysteresis();
-        hasPreviousSnappedState = false;
-        previousSnappedState = Vector2.zero;
     }
 
     protected override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicts) =>
@@ -82,16 +73,8 @@ public class ObstaclePlacement : BasePlacement<BaseObstacle, ObstacleContainer, 
             var rawX = (localPoint.x / BeatmapConstant.LaneSize) - (gridViewController.IsOdd ? 0.5f : 0f);
             var rawY = (localPoint.y - BeatmapConstant.YOffset - BeatmapConstant.ObstacleYOffset)
                 / BeatmapConstant.LaneSize;
-            var raw = new Vector2(rawX, rawY);
-            if (!hasPreviousSnappedState)
-            {
-                previousSnappedState = new Vector2(Mathf.Floor(raw.x), Mathf.Floor(raw.y));
-                hasPreviousSnappedState = true;
-            }
-            else
-                previousSnappedState = BeatmapPositionHelper.SnapWithHysteresis(raw, previousSnappedState);
-
-            LanePosition = new Vector3(previousSnappedState.x, previousSnappedState.y, 0f);
+            var snappedPosition = SnapWithHysteresis(rawX, rawY);
+            LanePosition = new Vector3(snappedPosition.x, snappedPosition.y, 0f);
         }
 
         LanePosition.x += (size / 2f) + (gridViewController.IsOdd ? 0.5f : 0f);

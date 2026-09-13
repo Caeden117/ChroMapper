@@ -1,31 +1,53 @@
-﻿Shader "ChroMapper/Object/Obstacle Outline"
+Shader "ChroMapper/Object/Obstacle Outline"
 {
+    // This ParametricBoxFrameHD adapter builds face strips from cube UVs instead of deforming a parametric beam mesh.
+    // The editor supplies Unity's built-in cube with 24 face-local vertices/normals and 0..1 UVs.
+    // Face dimensions depend on the normal: +/-X -> ZY, +/-Y -> XZ, and +/-Z -> XY.
+    // Editor MPBs write the instanced _Color, _WorldScale, _SizeParams, _Cutout, and _CutoutTexOffset inputs.
+    // CM_PREVIEW_MODE applies native height fog. BLOOM_FOG selects the bloom pre-pass target instead of fixed gray.
     Properties
     {
-        _Color("Base Color", Color) = (0.5, 0, 0, 0)
-        _WorldScale("World Scale", Vector) = (1, 1, 1, 1)
+        _FogStartOffset ("Fog Start Offset", Float) = 1
+        _FogScale ("Fog Scale", Float) = 1
+        _FogHeightScale ("Fog Height Scale", Float) = 1
+        _FogHeightOffset ("Fog Height Offset", Float) = 0
 
-        [Header(Beat Saber)]
-        [Space(10)]
-        _Cutout("Cutout", Range(0, 1)) = 0.0
-        _CutoutTexOffset("Cutout Tex Offset", Vector) = (0, 0, 0, 0)
-
-        [Header(Fog Settings)] [Space]
-        [Toggle(FOG)] _EnableFog ("Enable Fog", float) = 1
-        _FogStartOffset ("Fog Start Offset", float) = 1
-        _FogScale ("Fog Scale", float) = 1
         [Space]
-        [Toggle(HEIGHT_FOG)] _EnableHeightFog ("Enable Height Fog", float) = 0
-        _FogHeightOffset ("Fog Height Offset", float) = 0
-        _FogHeightScale ("Fog Height Scale", float) = 1
+        [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", Float) = 0
 
-        [Header(Settings)] [Space]
-        [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", float) = 2
-        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", float) = 4
-        [Toggle] _ZWrite ("Z Write", float) = 1
+        [Space]
+        [KeywordEnum(None, MainEffect, Always)] _WhiteBoostType ("Bloom Type", Float) = 1
+
+        [Space]
+        [Toggle(CUTOUT)] _EnableCutout ("Enable Cutout", Float) = 0
+        _CutoutTexScale ("Cutout Texture Scale", Float) = 1
+
+        [Header(Rendering)]
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactor ("Foreground Factor", Float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactor ("Background Factor", Float) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendSrcFactorA ("Foreground Alpha Factor", Float) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)] _BlendDstFactorA ("Background Alpha Factor", Float) = 0
+        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", Float) = 4
+        [Toggle] _ZWrite ("Z Write", Float) = 1
+
+        [Space]
+        // ChroMapper compatibility. ObstacleContainer and ObjectAnimator write these through an MPB.
+        _Color ("Color", Color) = (0.5, 0, 0, 1)
+        _WorldScale ("World Scale", Vector) = (1, 1, 1, 1)
+        _Cutout ("Cutout", Range(0, 1)) = 0
+        _CutoutTexOffset ("Cutout Texture Offset", Vector) = (0, 0, 0, 0)
+        _SizeParams ("Size Params", Vector) = (0.5, 0.5, 0.5, 0.025)
     }
+
     SubShader
     {
+        Tags
+        {
+            "Queue" = "Geometry+3"
+            "RenderType" = "Opaque"
+        }
+
+        Blend [_BlendSrcFactor] [_BlendDstFactor], [_BlendSrcFactorA] [_BlendDstFactorA]
         Cull [_CullMode]
         ZTest [_ZTest]
         ZWrite [_ZWrite]
@@ -33,32 +55,35 @@
         Pass
         {
             HLSLPROGRAM
+            #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_instancing
 
-            #pragma shader_feature_local_fragment FOG
-            #pragma shader_feature_local_fragment HEIGHT_FOG
+            #pragma shader_feature_local_fragment CUTOUT
+            #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
+            #pragma multi_compile _ POST_BLOOM
 
-            #pragma multi_compile_fragment _ CM_PREVIEW_MODE
             #pragma multi_compile_fragment _ BLOOM_FOG
+            #pragma multi_compile_fragment _ CM_PREVIEW_MODE
 
             #include "UnityCG.cginc"
-            #include "../ShaderLibrary/BloomFog.hlsl"
-            #include "../ShaderLibrary/CustomBloom.hlsl"
-            #include "../ShaderLibrary/CustomTonemapping.hlsl"
+            #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
+            #include "../ShaderLibrary/Common/Bloom.hlsl"
+            #include "../ShaderLibrary/Cutout.hlsl"
+
+            sampler3D _CutoutTex;
+            float _CutoutTexScale;
 
             float _FogStartOffset;
             float _FogScale;
             float _FogHeightOffset;
             float _FogHeightScale;
 
-            uniform sampler3D _CutoutTex;
-            uniform float _MainAlpha = 0.5;
-
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _WorldScale)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _SizeParams)
                 UNITY_DEFINE_INSTANCED_PROP(float, _Cutout)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _CutoutTexOffset)
             UNITY_INSTANCING_BUFFER_END(Props)
@@ -74,83 +99,92 @@
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float3 normal : NORMAL;
-                float2 uv : TEXCOORD0;
-                float4 localPos : TEXCOORD1;
+                float3 normal : TEXCOORD0;
+                float2 uv : TEXCOORD1;
                 float3 worldPos : TEXCOORD2;
                 float4 screenPos : TEXCOORD3;
-                float3 cutoutPos : TEXCOORD4;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
             v2f vert(appdata v)
             {
                 v2f o;
-
                 UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 UNITY_TRANSFER_INSTANCE_ID(v, o);
 
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.localPos = v.vertex;
-                o.worldPos.xyz = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.uv.xy = v.uv.xy;
                 o.normal = v.normal;
+                o.uv = v.uv;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.screenPos = ComputeScreenPosCustom(o.pos);
-                o.cutoutPos = mul(unity_ObjectToWorld, v.vertex.xyz);
-
                 return o;
             }
 
             float4 frag(v2f i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
                 float4 worldScale = abs(UNITY_ACCESS_INSTANCED_PROP(Props, _WorldScale));
-                float2 uvScalar = 0;
-                if (i.normal.x != 0)
-                {
-                    uvScalar.xy = worldScale.zy;
-                }
-                else if (i.normal.y != 0)
-                {
-                    uvScalar.xy = worldScale.xz;
-                }
+                float2 faceScale;
+                if (abs(i.normal.x) > 0.5)
+                    faceScale = worldScale.zy;
+                else if (abs(i.normal.y) > 0.5)
+                    faceScale = worldScale.xz;
                 else
-                {
-                    uvScalar.xy = worldScale.xy;
-                }
+                    faceScale = worldScale.xy;
 
-                float2 halfUv = 0.5 - abs(0.5 - i.uv.xy);
-                if (halfUv.x * uvScalar.x >= 0.04 && halfUv.y * uvScalar.y >= 0.04)
-                {
-                    discard;
-                }
+                // Preserve the existing cube-mesh frame construction while exposing the HD contract.
+                float4 sizeParams = UNITY_ACCESS_INSTANCED_PROP(Props, _SizeParams);
+                // The source half edge width equals the outer-face strip width on this cube.
+                float frameWidth = max(sizeParams.w, 0.0001);
+                float2 distanceFromEdge = 0.5 - abs(0.5 - i.uv);
+                clip(frameWidth - min(distanceFromEdge.x * faceScale.x,
+                                      distanceFromEdge.y * faceScale.y));
 
                 float cutout = UNITY_ACCESS_INSTANCED_PROP(Props, _Cutout);
                 float4 cutoutTexOffset = UNITY_ACCESS_INSTANCED_PROP(Props, _CutoutTexOffset);
-                // TexOffset is apparently different
-                float noise = tex3D(_CutoutTex, (i.cutoutPos + cutoutTexOffset.xyz) * 0.25);
-                float cl = noise - cutout;
-                clip(cl);
+                #if defined(CUTOUT)
+                float3 objectOrigin = unity_ObjectToWorld._m03_m13_m23;
+                float3 cutoutPosition = CalculateObjectSpaceCutoutPosition(
+                    i.worldPos, objectOrigin, cutoutTexOffset.xyz, _CutoutTexScale);
+                float cutoutNoise = tex3D(_CutoutTex, cutoutPosition).a;
+                ApplyCutoutNoise(cutoutNoise, cutout);
+                #endif
 
-                half4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 
                 #if !defined(CM_PREVIEW_MODE)
                 color.a = 0;
                 #else
-                color.a = saturate(max(0, color.a));
+                // ParametricBoxFrameHD stores bloom intensity in twice the color alpha.
+                color.a *= 2;
                 #endif
 
-                #if defined(CM_PREVIEW_MODE) && defined(BLOOM_FOG) && defined(FOG)
-                #if defined(HEIGHT_FOG)
-                BLOOM_FOG_HEIGHT_APPLY(color, i.screenPos, i.worldPos, _FogStartOffset, _FogScale, _FogHeightOffset,
-                                       _FogHeightScale);
+                #if defined(CM_PREVIEW_MODE)
+                #if defined(BLOOM_FOG)
+                color = ApplyBloomHeightFog(color, i.screenPos, i.worldPos, _FogStartOffset, _FogScale,
+                                            _FogHeightOffset, _FogHeightScale);
                 #else
-                BLOOM_FOG_APPLY(color, i.screenPos, i.worldPos, _FogStartOffset, _FogScale);
+                // The native no-bloom-fog route still fades toward gray by height.
+                float heightFog = 1 - CalculateCustomHeightFogFactor(i.worldPos, _FogHeightOffset,
+                                                                     _FogHeightScale);
+                color = heightFog * (float4(0.1, 0.1, 0.1, 0) - color) + color;
                 #endif
                 #endif
 
-                ACES_TONE_MAPPING_APPLY(color);
+                #if defined(_WHITEBOOSTTYPE_ALWAYS) || (defined(_WHITEBOOSTTYPE_MAINEFFECT) && !defined(POST_BLOOM))
+                // ParametricBoxFrameHD keeps base RGB unpremultiplied and uses
+                // twice the color alpha as its white-boost input.
+                color.rgb = CalculateBloomComposition(color.rgb, 1, color.a, 1,
+                                                      _BaseColorBoost,
+                                                      _BaseColorBoostThreshold);
+                #elif defined(_WHITEBOOSTTYPE_MAINEFFECT)
+                // POST_BLOOM on mirrors MAIN_EFFECT_ENABLED: the white boost is
+                // omitted and the unpremultiplied frame color is preserved.
+                #endif
 
                 return color;
             }

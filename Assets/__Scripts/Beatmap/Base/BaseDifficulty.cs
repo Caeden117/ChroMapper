@@ -57,8 +57,8 @@ namespace Beatmap.Base
         public BaseFxEventsCollection FxEventsCollection { get; set; } = new();
 
         // Requirement checks need the already-loaded environment metadata without serializing or copying its asset.
-        [NonSerialized] public TracksDefinitionSO RuntimeTracksDefinition;
-        // BeatToTheFuture accepts the Info.dat root declaration, so retain that loaded metadata for deterministic requirement checks without singleton lookups.
+        [NonSerialized] public TrackDefinitionsSO RuntimeTrackDefinitions;
+        // BeatToTheFuture accepts the Info.dat root declaration. Retain the loaded metadata for deterministic requirement checks.
         [NonSerialized] public JSONNode RuntimeLevelCustomData;
 
         public BaseEventTypesWithKeywords EventTypesWithKeywords { get; set; }

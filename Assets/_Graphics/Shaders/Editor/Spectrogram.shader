@@ -53,7 +53,7 @@ Shader "ChroMapper/Editor/Spectrogram"
             uniform float _Spectrogram_Shift = 1;
             uniform float _Spectrogram_BilinearFiltering = 0;
 
-            uniform float _SongTimeSeconds = 0;
+            uniform float4 _SongTime;
             uniform float _ViewStart = 0;
             uniform float _ViewEnd = 1;
 
@@ -92,12 +92,12 @@ Shader "ChroMapper/Editor/Spectrogram"
 
                 if (idx >= FFTCount)
                     return 0.0;
-                
+
                 // Unpack: each uint contains 4 values as RGBA bytes
                 uint packedIdx = idx / 4;
                 uint byteOffset = idx % 4;
                 uint packed = FFTResults[packedIdx];
-                
+
                 // Extract the specific byte and normalize back to [0, 1]
                 uint byteValue = (packed >> (byteOffset * 8)) & 0xFF;
                 return float(byteValue) / 255.0;
@@ -149,15 +149,15 @@ Shader "ChroMapper/Editor/Spectrogram"
                     // Perform bilinear sampling using weighted mean
                     // (Matrix math is likely more efficient but looks worse IMO)
                     float4 samples = float4(sampleSpectrogram((uint)x1 * FFTSize + (uint)y1),
-                                            sampleSpectrogram((uint)x1 * FFTSize + (uint)y2),
-                                            sampleSpectrogram((uint)x2 * FFTSize + (uint)y1),
-                                            sampleSpectrogram((uint)x2 * FFTSize + (uint)y2));
+            sampleSpectrogram((uint)x1 * FFTSize + (uint)y2),
+            sampleSpectrogram((uint)x2 * FFTSize + (uint)y1),
+            sampleSpectrogram((uint)x2 * FFTSize + (uint)y2));
 
                     // Calculate strengths of our sampling points
                     float4 strength = float4((x2 - x) * (y2 - y),
-                                             (x2 - x) * (y - y1),
-                                             (x - x1) * (y2 - y),
-                                             (x - x1) * (y - y1));
+                                                                               (x2 - x) * (y - y1),
+                                                                               (x - x1) * (y2 - y),
+                                                                               (x - x1) * (y - y1));
 
                     float4 weightedMean = strength * samples;
                     weightedMean /= (x2 - x1) * (y2 - y1);
@@ -170,8 +170,8 @@ Shader "ChroMapper/Editor/Spectrogram"
             float inverseLerp(float a, float b, float value)
             {
                 return a != b
-                     ? saturate((value - a) / (b - a))
-                     : 0.0f;
+               ? saturate((value - a) / (b - a))
+               : 0.0f;
             }
 
             float4 frag(v2f i) : SV_Target
@@ -191,8 +191,8 @@ Shader "ChroMapper/Editor/Spectrogram"
                 // fix shimmering pixels by saturating our spectrogram value between [0,1]
                 //   I guess when interpolating between pixels, the above math can produce values slightly out of intended range.
                 float value = currentSeconds > 0
-                                            ? saturate(calculateSpectrogramValue(currentSeconds, uv))
-                                            : 0.0;
+                        ? saturate(calculateSpectrogramValue(currentSeconds, uv))
+                        : 0.0;
 
                 // Value clipping
                 clip(value - _ValueCutoff);
@@ -223,12 +223,12 @@ Shader "ChroMapper/Editor/Spectrogram"
 
                 // Gradient interpolation
                 float4 color = lerp(GradientColors[lowerGradientIdx],
-                              GradientColors[upperGradientIdx],
-                              Remap(value, GradientKeys[lowerGradientIdx],
-                                             GradientKeys[upperGradientIdx], 0, 1));
+GradientColors[upperGradientIdx],
+Remap(value, GradientKeys[lowerGradientIdx],
+                                GradientKeys[upperGradientIdx], 0, 1));
 
                 // Add 0.2 to each component if we are within outline
-                if (abs(currentSeconds - _SongTimeSeconds) < _OutlineWidth / _EditorScale / (_SongBPM / 120))
+                if (abs(currentSeconds - _SongTime.y) < _OutlineWidth / _EditorScale / (_SongBPM / 120))
                 {
                     color += float4(0.5, 0.5, 0.5, 0.5);
                 }

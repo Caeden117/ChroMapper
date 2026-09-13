@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 public partial class EnvironmentSceneCreator
 {
-    private static Dictionary<string, GameObject> StripObjects(Scene scene, EnvData data)
+    private static Dictionary<string, GameObject> StripObjects(Scene scene, EnvironmentData data)
     {
         var existingObjects = new Dictionary<string, GameObject>();
         var validObjects = data.Objects.Select(x => x.ChromaID).ToHashSet();
@@ -25,10 +26,10 @@ public partial class EnvironmentSceneCreator
                     continue;
                 }
 
-                foreach (var component in go.GetComponents<Component>())
+                GameObjectUtility.RemoveMonoBehavioursWithMissingScript(go);
+                foreach (var component in go.GetComponents<Component>().Reverse())
                 {
-                    if (component is not (Transform or MeshFilter or MeshRenderer or ChromaIDMarker))
-                        Object.DestroyImmediate(component);
+                    if (component is not (Transform or ChromaIDMarker)) Object.DestroyImmediate(component);
                 }
 
                 existingObjects.Add(marker.ChromaID, go);

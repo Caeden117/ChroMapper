@@ -40,7 +40,7 @@ public class BasicStrobePassUI : StrobeGeneratorPassUIController
         foreach (var selector in eventTypes) values.Add(GetTypeFromEventIds(selector.SelectedNum, this.values.SelectedNum));
         var precision = float.Parse(strobeInterval.text);
         var internalName = Easing.DisplayNameToInternalName[regularEventEasings.captionText.text];
-        return new StrobeLightingPass(beatmapRuntimeContext.TracksDefinition, values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName, easingTime.isOn, easingFloatValue.isOn);
+        return new StrobeLightingPass(beatmapRuntimeContext.TrackDefinitions, values, swapColors.isOn, dynamicallyChangeTypeA.isOn, precision, internalName, easingTime.isOn, easingFloatValue.isOn);
     }
 
     private static int GetTypeFromEventIds(int eventValue, int eventColor)

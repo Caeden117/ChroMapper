@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZLinq;
@@ -811,23 +811,23 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         var groups = newObjects.AsValueEnumerable()
             .Cast<BaseEventBoxGroup>()
-            .Select(x => beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(x.ID).Group)
+            .Select(x => beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(x.ID).Group)
             .Distinct()
             .ToList();
         if (groups.Count != 1) return new HashSet<BaseObject>();
 
         var oldIdToOrder = beatmapRuntimeContext
-            .TracksDefinition.Gls.Values.AsValueEnumerable()
+            .TrackDefinitions.Gls.Values.AsValueEnumerable()
             .Where(x => groups[0] == x.Group)
             .Select((x, i) => (x, i))
             .ToDictionary(x => x.x.ID, x => x.i);
         var newIdToOrder = beatmapRuntimeContext
-            .TracksDefinition.Gls.Values.AsValueEnumerable()
+            .TrackDefinitions.Gls.Values.AsValueEnumerable()
             .Where(x => glsGroupGridProvider.CurrentGroup == x.Group)
             .Select((x, i) => (x, i))
             .ToDictionary(x => x.x.ID, x => x.i);
         var newOrderToId = beatmapRuntimeContext
-            .TracksDefinition.Gls.Values.AsValueEnumerable()
+            .TrackDefinitions.Gls.Values.AsValueEnumerable()
             .Where(x => glsGroupGridProvider.CurrentGroup == x.Group)
             .Select((x, i) => (x, i))
             .ToDictionary(x => x.i, x => x.x.ID);
@@ -861,7 +861,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (var obj in newObjects.Cast<BaseEventBoxGroup>())
         {
             if (!newOrderToId.TryGetValue(oldIdToOrder[obj.ID] + offsetOrder, out var newId)) continue;
-            var trackDefinition = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(newId);
+            var trackDefinition = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(newId);
             switch (obj)
             {
                 case BaseLightColorEventBoxGroup:
@@ -925,7 +925,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             offsetTime = pastePlacement.RelativeJsonTime;
             destinationBoxIndex = pastePlacement.BoxIndex;
         }
-        
+
         // materialize a hovered ghost before applying lane offsets.
         if (destinationBoxIndex < 0
             && !GLSCommonCommand.TryMaterializeAutomaticAxisLane(

@@ -32,7 +32,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
     public bool IsBoostAt(float jsonTime) => eventGridContainer.IsBoostAt(jsonTime);
 
     public override ObjectContainer CreateContainer() =>
-        GLSEventContainer.SpawnGLSEvent(null, BeatmapContext.TracksDefinition, ref eventPrefab);
+        GLSEventContainer.SpawnGLSEvent(null, BeatmapContext.TrackDefinitions, ref eventPrefab);
 
     internal override void SubscribeToCallbacks()
     {

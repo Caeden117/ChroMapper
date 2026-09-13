@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +15,9 @@ public class EnvironmentDescriptor : MonoBehaviour
     [SerializeField] public LightRotationGroupEffectManager LightRotationGroupEffectManager;
     [SerializeField] public LightTranslationGroupEffectManager LightTranslationGroupEffectManager;
     [SerializeField] public FloatFxGroupEffectManager FloatFxGroupEffectManager;
+
+    [SerializeField] public ColorSchemeProvider ColorSchemeProvider;
+    [SerializeField] public SpectrogramDataProvider SpectrogramDataProvider;
 
     [SerializeField] public EnvironmentSizeData SizeData = new();
     [SerializeField] public BloomFogParams BloomFogParams = new();
@@ -39,11 +43,14 @@ public class EnvironmentDescriptor : MonoBehaviour
         hasInitialized = true;
         Shader.SetGlobalFloat("_TrackLaneYPosition", SizeData.TrackLaneType == TrackLaneType.None ? -100f : 0f);
 
-        BasicEventEffectManager.Initialize(context.Atsc, context.ColorScheme);
-        LightColorGroupEffectManager.Initialize(context.Atsc, context.ColorScheme);
+        BasicEventEffectManager.Initialize(context.Atsc);
+        LightColorGroupEffectManager.Initialize(context.Atsc);
         LightRotationGroupEffectManager.Initialize(context.Atsc);
         LightTranslationGroupEffectManager.Initialize(context.Atsc);
         FloatFxGroupEffectManager.Initialize(context.Atsc);
+
+        ColorSchemeProvider.Initialize(context);
+        SpectrogramDataProvider.AudioLink = context.AudioLink;
 
         BasicLightEffect.FlashTimeBeat = context.Atsc.GetBeatFromSeconds(BasicLightEffect.FlashTimeSecond);
         BasicLightEffect.FadeTimeBeat = context.Atsc.GetBeatFromSeconds(BasicLightEffect.FadeTimeSecond);

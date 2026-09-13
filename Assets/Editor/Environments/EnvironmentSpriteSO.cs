@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Environment/Environment Texture", fileName = "EnvironmentTextureSO")]
+[CreateAssetMenu(menuName = "Environment/Environment Sprite", fileName = "EnvironmentSpriteSO")]
 public class EnvironmentSpriteSO : ScriptableObject
 {
-    [SerializeField] public List<TextureInfo> list = new();
+    [SerializeField] public List<SpriteInfo> list = new();
 
     public readonly Dictionary<string, Sprite> Lookup = new();
 
@@ -16,7 +16,7 @@ public class EnvironmentSpriteSO : ScriptableObject
     // Refresh callers need the runtime lookup immediately, without waiting for Unity to re-enable the asset.
     public void RebuildLookup() => Initialize();
 
-    private void Initialize()
+    public void Initialize()
     {
         Lookup.Clear();
         foreach (var entry in list) Lookup[entry.Name] = entry.Sprite;
@@ -47,7 +47,7 @@ public class EnvironmentSpriteSO : ScriptableObject
         if (list.All(x => x.Name != textureName))
         {
             list.Add(
-                new TextureInfo { Name = textureName, Environments = new List<string> { environment } });
+                new SpriteInfo { Name = textureName, Environments = new List<string> { environment } });
         }
         else
         {
@@ -57,10 +57,12 @@ public class EnvironmentSpriteSO : ScriptableObject
     }
 
     public void Sort() => list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+
+    public Sprite GetSafe(string name) => name == "null" ? null : Lookup.GetValueOrDefault(name);
 }
 
 [Serializable]
-public class TextureInfo
+public class SpriteInfo
 {
     public string Name;
     public Sprite Sprite;

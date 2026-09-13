@@ -30,14 +30,14 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
 
     private void Start()
     {
-        beatmapContext.OnTracksDefinitionChanged += HandleTracksDefinitionChanged;
+        beatmapContext.OnTrackDefinitionsChanged += HandleTrackDefinitionsChanged;
         EditorStateService.Register(this);
     }
 
     private void OnDestroy()
     {
         EditorStateService.Unregister(this);
-        beatmapContext.OnTracksDefinitionChanged -= HandleTracksDefinitionChanged;
+        beatmapContext.OnTrackDefinitionsChanged -= HandleTrackDefinitionsChanged;
     }
 
     // Save the group currently shown in the GLS lane grid.
@@ -52,7 +52,7 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
         }
     }
 
-    private void HandleTracksDefinitionChanged(TracksDefinitionSO tracksDefinition)
+    private void HandleTrackDefinitionsChanged(TrackDefinitionsSO trackDefinitions)
     {
         foreach (var t in IdToTracks.Values)
         {
@@ -67,7 +67,7 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
         CurrentGroupIdx = 0;
         CurrentGroup = "";
 
-        foreach (var (id, gls) in tracksDefinition.Gls)
+        foreach (var (id, gls) in trackDefinitions.Gls)
         {
             if (!reuseTracks.TryPop(out var glsTrack)) glsTrack = Instantiate(trackPrefab, targetGrid);
             if (!atsc.otherTracks.Contains(glsTrack.Track)) atsc.otherTracks.Add(glsTrack.Track);

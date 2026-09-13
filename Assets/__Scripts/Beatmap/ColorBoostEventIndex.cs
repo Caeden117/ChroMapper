@@ -149,7 +149,7 @@ internal sealed class ColorBoostEventIndex
         {
             var evt = events[i];
             // The index receives its runtime dependencies from the owning grid rather than relying on component state.
-            if (gridContainer.BeatmapContext.TracksDefinition.GetBasicOrDefault(evt.Type).Kind != BasicEventKind.Lights
+            if (gridContainer.BeatmapContext.TrackDefinitions.GetBasicOrDefault(evt.Type).Kind != BasicEventKind.Lights
                 || !gridContainer.LoadedContainers.TryGetValue(evt, out var container))
             {
                 continue;

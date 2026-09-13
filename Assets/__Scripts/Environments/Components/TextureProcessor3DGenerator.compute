@@ -1,0 +1,226 @@
+#pragma kernel Constant
+#pragma kernel Texture
+#pragma kernel TextureMaskMult
+#pragma kernel TextureMaskAdd
+#pragma kernel PlanarWave
+#pragma kernel CylindricalWave
+#pragma kernel SphericalWave
+#pragma kernel PerlinNoise3D
+#pragma kernel Ramp3D
+#pragma kernel SplitPlane
+#pragma kernel WaveRipple
+#pragma kernel RectRipple
+
+int _rowSize;
+int _columnSize;
+int _depthSize;
+float _speed;
+float _spatialScale;
+float _phase;
+float _param1;
+float _param2;
+float _outputOffset;
+float4 _SongTime;
+
+Texture2D<float4> _inputTexture;
+RWTexture3D<float4> _outputTexture;
+
+SamplerState sampler_inputTexture
+{
+    Filter = MIN_MAG_LINEAR_MIP_POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
+float3 GetNormalizedPos(uint3 id)
+{
+    return (id + 0.5f) / float3(_columnSize, _rowSize, _depthSize);
+}
+
+float3 GetWaveDirection()
+{
+    float longitude = _param1 * 3.14159f;
+    float latitude = _param2 * 1.570795f;
+    return float3(
+        cos(latitude) * sin(longitude),
+        sin(latitude),
+        cos(longitude) * cos(latitude));
+}
+
+[numthreads(1, 1, 1)]
+void Constant(uint3 id : SV_DispatchThreadID)
+{
+    float value = clamp(_outputOffset * 0.5f + 0.5f, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void Texture(uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = GetNormalizedPos(id).xy + float2(_param1, _param2) - 0.5f;
+    uv = uv * exp2(_spatialScale * -0.3321928f) + 0.5f;
+    float value = all(uv >= 0.0f) && all(uv <= 1.0f)
+        ? _inputTexture.SampleLevel(sampler_inputTexture, uv, 0).x
+        : 0.0f;
+    float fade = abs(_speed * 0.1f);
+    value += fade * (1.0f - 2.0f * value);
+    value = clamp(value + _outputOffset, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void TextureMaskMult(uint3 id : SV_DispatchThreadID)
+{
+    float3 uv = GetNormalizedPos(id);
+    float maskA = _inputTexture.SampleLevel(sampler_inputTexture, uv.xy, 0).x;
+    float maskB = _inputTexture.SampleLevel(sampler_inputTexture, uv.xz, 0).x;
+    float maskC = _inputTexture.SampleLevel(sampler_inputTexture, uv.yz, 0).x;
+    float value = 1.0f + abs(_speed * 0.1f) * (maskA - 1.0f);
+    value *= 1.0f + abs(_spatialScale * 0.1f) * (maskB - 1.0f);
+    value *= 1.0f + abs(_param1) * (maskC - 1.0f);
+    value = clamp(value + _outputOffset, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void TextureMaskAdd(uint3 id : SV_DispatchThreadID)
+{
+    float3 uv = GetNormalizedPos(id);
+    float value = _inputTexture.SampleLevel(sampler_inputTexture, uv.xz, 0).x
+        * abs(_spatialScale * 0.1f);
+    value += _inputTexture.SampleLevel(sampler_inputTexture, uv.xy, 0).x
+        * abs(_speed * 0.1f);
+    value += _inputTexture.SampleLevel(sampler_inputTexture, uv.yz, 0).x * abs(_param1);
+    value = clamp(value + _outputOffset, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void PlanarWave(uint3 id : SV_DispatchThreadID)
+{
+    float distance = (dot(GetNormalizedPos(id), GetWaveDirection()) + _phase) * _spatialScale;
+    float value = cos(12.56636f * distance + _speed * _SongTime.y);
+    value = clamp(value * 0.5f + _outputOffset + 0.5f, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void CylindricalWave(uint3 id : SV_DispatchThreadID)
+{
+    float3 position = GetNormalizedPos(id) - 0.5f;
+    float3 direction = GetWaveDirection();
+    float distance = (length(position - direction * dot(position, direction)) + _phase) * _spatialScale;
+    float value = cos(12.56636f * distance + _speed * _SongTime.y);
+    value = clamp(value * 0.5f + _outputOffset + 0.5f, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void SphericalWave(uint3 id : SV_DispatchThreadID)
+{
+    float3 center = -float3(_param1 * 0.5f + 0.5f, _param2 * 0.5f + 0.5f, 0.5f);
+    float distance = (length(GetNormalizedPos(id) + center) + _phase) * _spatialScale;
+    float value = cos(12.56f * distance + _speed * _SongTime.y);
+    value = clamp(value * 0.5f + _outputOffset + 0.5f, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+float Hash(float3 cell)
+{
+    float3 hash = frac((cell + 1.0f) * 0.1031f);
+    hash *= dot(hash, float3(17.13f, 17.31f, 17.97f));
+    return frac(hash.x * hash.y * hash.z);
+}
+
+float ValueNoise(float3 position)
+{
+    float3 cell = floor(position);
+    float3 weight = position - cell;
+    weight = weight * weight * (3.0f - 2.0f * weight);
+
+    float nx00 = lerp(Hash(cell), Hash(cell + float3(1.0f, 0.0f, 0.0f)), weight.x);
+    float nx10 = lerp(
+        Hash(cell + float3(0.0f, 1.0f, 0.0f)),
+        Hash(cell + float3(1.0f, 1.0f, 0.0f)),
+        weight.x);
+    float nx01 = lerp(
+        Hash(cell + float3(0.0f, 0.0f, 1.0f)),
+        Hash(cell + float3(1.0f, 0.0f, 1.0f)),
+        weight.x);
+    float nx11 = lerp(
+        Hash(cell + float3(0.0f, 1.0f, 1.0f)),
+        Hash(cell + float3(1.0f, 1.0f, 1.0f)),
+        weight.x);
+    return lerp(lerp(nx00, nx10, weight.y), lerp(nx01, nx11, weight.y), weight.z);
+}
+
+[numthreads(1, 1, 1)]
+void PerlinNoise3D(uint3 id : SV_DispatchThreadID)
+{
+    float3 uv = GetNormalizedPos(id);
+    float time = _SongTime.y;
+    float3 position = uv * 1.5f
+        + float3(sin(time * 0.7f), cos(time * 0.7f), sin(time * 0.35f));
+    float noise = ValueNoise(position) * ValueNoise(uv * _spatialScale);
+    float value = clamp(noise * 0.5f + _outputOffset + 0.5f, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void Ramp3D(uint3 id : SV_DispatchThreadID)
+{
+    float3 position = GetNormalizedPos(id) * 2.0f - 1.0f;
+    float value = (dot(position, GetWaveDirection()) - _phase * 1.73205f)
+        / (_spatialScale + 0.00001f);
+    value = value * 0.5f + 0.5f;
+    float fade = abs(_speed * 0.1f);
+    value = value * (1.0f - fade * 0.5f) + fade * 0.5f;
+    value = clamp(value + _outputOffset, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void SplitPlane(uint3 id : SV_DispatchThreadID)
+{
+    float3 position = GetNormalizedPos(id) * 2.0f - 1.0f;
+    float distance = dot(position, GetWaveDirection()) - _phase * 1.73205f
+        + _spatialScale * 0.1f;
+    float value = clamp(distance / (_spatialScale * 0.2f), 0.0f, 1.0f);
+    value = value * value * (3.0f - 2.0f * value);
+    float fade = abs(_speed * 0.1f);
+    value = value * (1.0f - fade * 0.5f) + fade * 0.5f;
+    value = clamp(value + _outputOffset, 0.0f, 1.0f);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+float RippleValue(float distance)
+{
+    float innerEdge = _phase * 0.7f - _param2 * 0.7f;
+    float inner = clamp((distance - innerEdge) / innerEdge, 0.0f, 1.0f);
+    inner = inner * inner * (3.0f - 2.0f * inner);
+    float outer = clamp((distance - _phase * 0.7f) / (_param1 * 0.7f), 0.0f, 1.0f);
+    outer = 1.0f - outer * outer * (3.0f - 2.0f * outer);
+    float value = cos(12.56f * distance * _spatialScale + _speed * _SongTime.y);
+    return clamp(value * (outer * inner) * 0.5f + _outputOffset + 0.5f, 0.0f, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void WaveRipple(uint3 id : SV_DispatchThreadID)
+{
+    float3 uv = (id + 0.5f) / float3(_columnSize, _rowSize, _depthSize);
+    float value = RippleValue(length(uv - 0.49f));
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}
+
+[numthreads(1, 1, 1)]
+void RectRipple(uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = (id.xy + 0.5f) / float2(_columnSize, _rowSize);
+    float2 position = uv - 0.49f;
+    bool compareX = (1.0f - uv.x) >= uv.y;
+    bool compareY = uv.x >= uv.y;
+    float xWeight = compareX != compareY ? 1e-40f : 0.0f;
+    float distance = xWeight * abs(position.x) + (1.0f - xWeight) * abs(position.y);
+    float value = RippleValue(distance);
+    _outputTexture[id] = float4(value.xxx, 1.0f);
+}

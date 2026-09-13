@@ -1475,6 +1475,22 @@ MonoBehaviour:
     m_Key: map.rotationfollowwall
     m_Metadata:
       m_Items: []
+  - m_Id: 664292683422597120
+    m_Key: graphics.bloomfog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568640
+    m_Key: graphics.bloomfog.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568641
+    m_Key: graphics.screendisplacement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568642
+    m_Key: graphics.screendisplacement.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

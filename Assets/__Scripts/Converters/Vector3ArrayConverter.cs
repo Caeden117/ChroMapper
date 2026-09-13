@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Vector3ArrayConverter : JsonConverter<Vector3>
 {
-    public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override Vector3 ReadJson(
+        JsonReader reader,
+        Type objectType,
+        Vector3 existingValue,
+        bool hasExistingValue,
+        JsonSerializer serializer)
     {
-        if (reader.TokenType != JsonToken.StartArray)
-            throw new JsonSerializationException("Expected StartArray token");
+        if (reader.TokenType != JsonToken.StartArray) throw new JsonSerializationException("Expected StartArray token");
 
         reader.Read();
         var x = Convert.ToSingle(reader.Value);

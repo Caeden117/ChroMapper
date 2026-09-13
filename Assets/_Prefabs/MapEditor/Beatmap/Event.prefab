@@ -60,7 +60,7 @@ MonoBehaviour:
   valueDisplay: {fileID: 8463894110379116219}
   lightGradientController: {fileID: 3430681651377604802}
   labels: {fileID: 0}
-  TracksDefinition: {fileID: 0}
+  TrackDefinitions: {fileID: 0}
   AlternateShader: 0
 --- !u!1 &2090204300881967071
 GameObject:

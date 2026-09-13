@@ -11,15 +11,6 @@ public class BombPlacement : BasePlacement<BaseNote, NoteContainer, NoteGridCont
     [SerializeField] private ColorPicker colorPicker;
 
     [SerializeField] private ToggleColourDropdown dropdown;
-    private bool hasPreviousSnappedState;
-    private Vector2 previousSnappedState;
-
-    protected override void ResetHysteresis()
-    {
-        base.ResetHysteresis();
-        hasPreviousSnappedState = false;
-        previousSnappedState = Vector2.zero;
-    }
 
     protected override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicts) =>
         new BeatmapObjectPlacementAction(spawned, conflicts, "Placed a Bomb.");
@@ -64,18 +55,11 @@ public class BombPlacement : BasePlacement<BaseNote, NoteContainer, NoteGridCont
             var rawX = (localPoint.x / BeatmapConstant.LaneSize) - (gridViewController.IsOdd ? 0.5f : 0f);
             var rawY = (localPoint.y - BeatmapConstant.YOffset - (BeatmapConstant.PlayerYOffset / 2f))
                 / BeatmapConstant.LaneSize;
-            var raw = new Vector2(rawX, rawY);
-            if (!hasPreviousSnappedState)
-            {
-                previousSnappedState = new Vector2(Mathf.Floor(raw.x), Mathf.Floor(raw.y));
-                hasPreviousSnappedState = true;
-            }
-            else
-                previousSnappedState = BeatmapPositionHelper.SnapWithHysteresis(raw, previousSnappedState);
+            var snappedPosition = SnapWithHysteresis(rawX, rawY);
 
             LanePosition = new Vector3(
-                previousSnappedState.x + (gridViewController.IsOdd ? 0.5f : 0f),
-                previousSnappedState.y,
+                snappedPosition.x + (gridViewController.IsOdd ? 0.5f : 0f),
+                snappedPosition.y,
                 zPlacement);
             PlacementVisualContainer.transform.localPosition =
                 BeatmapPositionHelper.LanePositionToLocalPosition(

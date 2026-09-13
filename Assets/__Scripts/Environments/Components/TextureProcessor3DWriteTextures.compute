@@ -1,0 +1,31 @@
+#pragma kernel WriteTextures
+
+int _rowSize;
+int _columnSize;
+int _depthSize;
+
+Texture3D<float4> _inputTextureA;
+Texture3D<float4> _inputTextureB;
+Texture3D<float4> _inputTextureC;
+Texture3D<float4> _inputTextureD;
+RWTexture3D<float4> _outputMask;
+
+SamplerState sampler_inputTextureA
+{
+    Filter = MIN_MAG_MIP_POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+    AddressW = Clamp;
+};
+
+[numthreads(1, 1, 1)]
+void WriteTextures(uint3 id : SV_DispatchThreadID)
+{
+    float3 uv = (id + 0.5f) / float3(_columnSize, _rowSize, _depthSize);
+    float4 value;
+    value.x = _inputTextureA.SampleLevel(sampler_inputTextureA, uv, 0).x;
+    value.y = _inputTextureB.SampleLevel(sampler_inputTextureA, uv, 0).x;
+    value.z = _inputTextureC.SampleLevel(sampler_inputTextureA, uv, 0).x;
+    value.w = _inputTextureD.SampleLevel(sampler_inputTextureA, uv, 0).x;
+    _outputMask[id] = value;
+}

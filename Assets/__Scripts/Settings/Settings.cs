@@ -145,8 +145,10 @@ public class Settings
 
     public bool Reflections = true;
     public int MirrorQuality = (int)MirrorRendererSO.MirrorQuality.High;
-    public bool HighQualityBloom = true;
+    public bool Bloom = true;
+    public bool BloomFog = true;
     public bool ChromaticAberration = true;
+    public bool ScreenDisplacement = true;
     public float CameraFOV = 60f;
     public float PlayerCameraFOV = 60f;
     public float PlayerCameraOffsetZ = 3.6f; // 3.6m => 6 Z

@@ -170,7 +170,7 @@ namespace Tests.Placement
             var eventA = PlaceEvent(5.25f, EventTypeValue.Event9, 2);
             var controller = Object.FindAnyObjectByType<BeatmapEventInputController>();
             var precision = Object.FindAnyObjectByType<ScrollPrecisionController>();
-            var tracksDefinition = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TracksDefinition;
+            var tracksDefinition = Object.FindAnyObjectByType<BeatmapRuntimeContext>().TrackDefinitions;
             var eventDefinition = tracksDefinition.GetBasicOrDefault((int)EventTypeValue.Event9);
             var originalComponents = eventDefinition.Components;
 
@@ -250,7 +250,7 @@ namespace Tests.Placement
         {
             var eventA = PlaceEvent(5.5f, EventTypeValue.Event9, 1);
             var container = GetContainer(eventA);
-            var eventDefinition = container.TracksDefinition.GetBasicOrDefault((int)EventTypeValue.Event9);
+            var eventDefinition = container.TrackDefinitions.GetBasicOrDefault((int)EventTypeValue.Event9);
             var originalComponents = eventDefinition.Components;
 
             try
@@ -379,7 +379,7 @@ namespace Tests.Placement
             eventA.WriteCustom();
             var controller = Object.FindAnyObjectByType<BeatmapEventInputController>();
             var precision = Object.FindAnyObjectByType<ScrollPrecisionController>();
-            var eventDefinition = GetContainer(eventA).TracksDefinition.GetBasicOrDefault((int)EventTypeValue.Event9);
+            var eventDefinition = GetContainer(eventA).TrackDefinitions.GetBasicOrDefault((int)EventTypeValue.Event9);
             var originalComponents = eventDefinition.Components;
 
             try

@@ -5,6 +5,7 @@ public class GenericCallbackEventEffect : BasicEventEffect<BasicEventStateData>,
                                           IEffectStateSignal<(int index, BasicEventStateData state)>
 {
     public event Action<(int index, BasicEventStateData state)> OnStateChanged;
+
     private readonly BasicEventStateChunksContainer<BasicEventStateData> container = new();
 
     public override void Initialize() => InitializeStates(container);
@@ -21,6 +22,11 @@ public class GenericCallbackEventEffect : BasicEventEffect<BasicEventStateData>,
         var index = container.Collection.IndexOf(state);
         OnStateChanged?.Invoke((index, state));
     }
+
+    public (int index, BasicEventStateData state) GetCurrentState() =>
+        container?.CurrentState == null
+            ? (-1, CreateState(new()))
+            : (container.Collection.IndexOf(container.CurrentState), container.CurrentState);
 
     protected override BasicEventStateData CreateState(BaseEvent data) => new(data);
 

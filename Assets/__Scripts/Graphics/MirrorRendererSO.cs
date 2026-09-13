@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MirrorRendererSO", menuName = "Environment/Mirror Renderer")]
 public class MirrorRendererSO : ScriptableObject
 {
+    private const int mirrorBloomResolution = 512;
+    private const string depthTextureKeyword = "DEPTH_TEXTURE";
+    private const string nativeDepthTextureKeyword = "DEPTH_TEXTURE_ENABLED";
+
     public enum MirrorQuality
     {
         None,
@@ -19,6 +23,8 @@ public class MirrorRendererSO : ScriptableObject
     private bool disableDepthTexture = true;
 
     private Camera mirrorCamera;
+    private RenderTexture mirrorBloomRaw;
+    private RenderTexture mirrorBloomTexture;
     private int antialiasing = 1;
     private MirrorQuality quality = MirrorQuality.High;
 
@@ -52,6 +58,7 @@ public class MirrorRendererSO : ScriptableObject
         foreach (var value in renderTextures.Values) RenderTexture.ReleaseTemporary(value);
 
         renderTextures.Clear();
+        ReleaseMirrorBloomTextures();
     }
 
     public void PrepareForNextFrame()
@@ -81,25 +88,72 @@ public class MirrorRendererSO : ScriptableObject
         };
         if (renderTextures.TryGetValue(ctd, out var texture)) return texture;
 
+        var mirrorAntiAliasing = Mathf.Min(
+            Mathf.Max(QualitySettings.antiAliasing, 1),
+            antialiasing);
         texture = RenderTexture.GetTemporary(
             textureWidth,
             textureHeight,
             24,
             RenderTextureFormat.ARGB32,
             RenderTextureReadWrite.Default,
-            antialiasing);
+            mirrorAntiAliasing);
         renderTextures[ctd] = texture;
         CreateOrUpdateMirrorCamera(cam, texture);
 
-        GL.invertCulling = !GL.invertCulling;
-        RenderMirror(
-            position,
-            rotation,
-            cam.projectionMatrix,
-            fullRect,
-            planePos,
-            planeNormal);
-        GL.invertCulling = !GL.invertCulling;
+        var reflectionMatrix = CalculateReflectionMatrix(Plane(planePos, planeNormal));
+        var previousInvertCulling = GL.invertCulling;
+        var bloomfogRenderingController = BloomfogRenderingController.Instance;
+        var sourceBloomFogState = bloomfogRenderingController == null
+            ? default
+            : bloomfogRenderingController.CaptureGlobalState();
+        var depthTextureWasEnabled = Shader.IsKeywordEnabled(depthTextureKeyword);
+        var nativeDepthTextureWasEnabled = Shader.IsKeywordEnabled(nativeDepthTextureKeyword);
+
+        try
+        {
+            // Depth keywords are global, but the mirror may not produce a depth texture.
+            // Suppress both supported aliases through the reflection prepass and scene draw.
+            if ((mirrorCamera.depthTextureMode & DepthTextureMode.Depth) == 0)
+            {
+                Shader.DisableKeyword(depthTextureKeyword);
+                Shader.DisableKeyword(nativeDepthTextureKeyword);
+            }
+
+            if (bloomfogRenderingController != null
+                && bloomfogRenderingController.CanRenderReflections)
+            {
+                EnsureMirrorBloomTextures();
+                bloomfogRenderingController.RenderReflection(
+                    cam.worldToCameraMatrix * reflectionMatrix,
+                    cam.projectionMatrix,
+                    mirrorBloomRaw,
+                    mirrorBloomTexture);
+            }
+
+            GL.invertCulling = !previousInvertCulling;
+            RenderMirror(
+                position,
+                rotation,
+                cam.projectionMatrix,
+                fullRect,
+                planePos,
+                planeNormal,
+                reflectionMatrix);
+        }
+        finally
+        {
+            if (depthTextureWasEnabled) Shader.EnableKeyword(depthTextureKeyword);
+            else Shader.DisableKeyword(depthTextureKeyword);
+            if (nativeDepthTextureWasEnabled) Shader.EnableKeyword(nativeDepthTextureKeyword);
+            else Shader.DisableKeyword(nativeDepthTextureKeyword);
+
+            GL.invertCulling = previousInvertCulling;
+            if (bloomfogRenderingController != null)
+                bloomfogRenderingController.RestoreGlobalState(sourceBloomFogState);
+            if (PerCameraShaderSetupController.Instance != null)
+                PerCameraShaderSetupController.Instance.ApplyCameraState(cam);
+        }
         GL.Flush();
         return texture;
     }
@@ -110,17 +164,17 @@ public class MirrorRendererSO : ScriptableObject
         Matrix4x4 camProjectionMatrix,
         Rect screenRect,
         Vector3 planePos,
-        Vector3 planeNormal)
+        Vector3 planeNormal,
+        Matrix4x4 reflectionMatrix)
     {
         mirrorCamera.rect = screenRect;
         mirrorCamera.projectionMatrix = camProjectionMatrix;
 
-        var matrix4X4 = CalculateReflectionMatrix(Plane(planePos, planeNormal));
         mirrorCamera.ResetWorldToCameraMatrix();
         mirrorCamera.transform.SetPositionAndRotation(camPosition, camRotation);
 
         var worldToCameraMatrix = mirrorCamera.worldToCameraMatrix;
-        worldToCameraMatrix *= matrix4X4;
+        worldToCameraMatrix *= reflectionMatrix;
         mirrorCamera.worldToCameraMatrix = worldToCameraMatrix;
 
         var clipPlane = CameraSpacePlane(worldToCameraMatrix, planePos, planeNormal);
@@ -129,11 +183,67 @@ public class MirrorRendererSO : ScriptableObject
         mirrorCamera.Render();
     }
 
+    private void EnsureMirrorBloomTextures()
+    {
+        var format = BloomRenderUtility.GetBloomTextureFormat();
+        if (mirrorBloomRaw != null
+            && mirrorBloomTexture != null
+            && mirrorBloomRaw.width == mirrorBloomResolution
+            && mirrorBloomRaw.height == mirrorBloomResolution
+            && mirrorBloomRaw.format == format
+            && mirrorBloomTexture.format == format
+            && mirrorBloomRaw.IsCreated()
+            && mirrorBloomTexture.IsCreated())
+            return;
+
+        ReleaseMirrorBloomTextures();
+        mirrorBloomRaw = CreateMirrorBloomTexture("Mirror Bloomfog Raw", format);
+        mirrorBloomTexture = CreateMirrorBloomTexture("Mirror Bloomfog Final", format);
+    }
+
+    private static RenderTexture CreateMirrorBloomTexture(string textureName, RenderTextureFormat format)
+    {
+        var texture = new RenderTexture(
+            mirrorBloomResolution,
+            mirrorBloomResolution,
+            0,
+            format,
+            RenderTextureReadWrite.Linear)
+        {
+            name = textureName,
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp,
+            useMipMap = false,
+            autoGenerateMips = false,
+            hideFlags = HideFlags.HideAndDontSave
+        };
+        texture.Create();
+        return texture;
+    }
+
+    private void ReleaseMirrorBloomTextures()
+    {
+        ReleaseOwnedTexture(ref mirrorBloomRaw);
+        ReleaseOwnedTexture(ref mirrorBloomTexture);
+    }
+
+    private static void ReleaseOwnedTexture(ref RenderTexture texture)
+    {
+        if (texture == null) return;
+        texture.Release();
+        GameObjectExtensions.DestroySafe(texture);
+        texture = null;
+    }
+
     private void CreateOrUpdateMirrorCamera(Camera cam, RenderTexture renderTexture)
     {
         if (!mirrorCamera)
         {
-            var go = new GameObject("MirrorCam" + GetInstanceID(), typeof(Camera), typeof(CameraDisableUIRendering))
+            var go = new GameObject(
+                "MirrorCam" + GetInstanceID(),
+                typeof(Camera),
+                typeof(CameraDisableUIRendering),
+                typeof(MirrorCamera))
             {
                 hideFlags = HideFlags.HideAndDontSave
             };

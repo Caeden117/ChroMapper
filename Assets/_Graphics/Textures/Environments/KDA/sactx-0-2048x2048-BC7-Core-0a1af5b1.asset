@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!213 &21300000
+Sprite:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: sactx-0-2048x2048-BC7-Core-0a1af5b1
+  m_Rect: {serializedVersion: 2, x: 0, y: 0, width: 2048, height: 2048}
+  m_Offset: {x: 0, y: 0}
+  m_Border: {x: 0, y: 0, z: 0, w: 0}
+  m_PixelsToUnits: 100
+  m_Pivot: {x: 0.5, y: 0.5}
+  m_Extrude: 1
+  m_IsPolygon: 0
+  m_AtlasName:
+  m_PackingTag:
+  m_RenderDataKey: {00000000000000000000000000000000: 21300000}
+  m_AtlasTags: []
+  m_SpriteAtlas: {fileID: 0}
+  m_RD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: a5a9ea52642543b7837aabccb6166055, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes: []
+    m_IndexBuffer: 
+    m_VertexData: {serializedVersion: 3, m_VertexCount: 0, m_Channels: [], m_DataSize: 0, _typelessdata: }
+    m_Bindpose: []
+    textureRect: {serializedVersion: 2, x: 0, y: 0, width: 2048, height: 2048}
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: 0, y: 0}
+    settingsRaw: 0
+    uvTransform: {x: 0, y: 0, z: 0, w: 0}
+    downscaleMultiplier: 1
+  m_AtlasRD: {serializedVersion: 3, texture: {fileID: 0}}
+  m_PhysicsShape: []

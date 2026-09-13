@@ -256,7 +256,7 @@ public class EventBoxViewController : MonoBehaviour
     {
         // Axis generation is meaningful only for groups implementing the shared transform contract.
         if (groupContext is not ILightTransformEventBoxGroup) return;
-        var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
+        var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesEventBox(groupContext, td);
     }
 
@@ -264,7 +264,7 @@ public class EventBoxViewController : MonoBehaviour
     {
         // Axis generation is meaningful only for groups implementing the shared transform contract.
         if (groupContext is not ILightTransformEventBoxGroup) return;
-        var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
+        var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesAndIdsEventBox(groupContext, td, GetGroupSize(groupContext));
     }
 
@@ -596,7 +596,7 @@ public class EventBoxViewController : MonoBehaviour
 
         easeTypeDropdown.SetValueWithoutNotify(box.Easing);
 
-        var td = beatmapRuntimeContext.TracksDefinition.GetGlsOrDefault(groupContext.ID);
+        var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
         // Axis visibility, values, and track availability are identical for every transform box.
         if (box is BaseLightTransformEventBox transformBox
             && groupContext is ILightTransformEventBoxGroup transformGroup)
@@ -625,7 +625,7 @@ public class EventBoxViewController : MonoBehaviour
                         lceb.BrightnessDistribution * 100f);
                 affectFirstToggle.SetValueWithoutNotify(lceb.BrightnessAffectFirst == 1);
                 break;
-            case BaseLightTransformEventBox currentTransformBox: 
+            case BaseLightTransformEventBox currentTransformBox:
                 // Rotation and Translation
                 valueDistributionStepToggle.SetValueWithoutNotify(
                     currentTransformBox.ValueDistributionType == (int)DistributionType.Step);

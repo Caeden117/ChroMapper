@@ -191,6 +191,10 @@ namespace Beatmap.Containers
                 if (bloomFog["offset"] != null) descriptor.BloomFogParams.Offset = bloomFog["offset"];
                 if (bloomFog["startY"] != null) descriptor.BloomFogParams.StartY = bloomFog["startY"];
                 if (bloomFog["height"] != null) descriptor.BloomFogParams.Height = bloomFog["height"];
+                if (bloomFog["autoExposureLimit"] != null)
+                    descriptor.BloomFogParams.AutoExposureLimit = bloomFog["autoExposureLimit"];
+                if (bloomFog["legacyAutoExposure"] != null)
+                    descriptor.BloomFogParams.LegacyAutoExposure = bloomFog["legacyAutoExposure"];
             }
 
             // Cache the map-version decision once because every matched marker uses the same V2 unit conversion.

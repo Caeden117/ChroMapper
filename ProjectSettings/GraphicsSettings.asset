@@ -27,6 +27,7 @@ GraphicsSettings:
     m_Shader: {fileID: 102, guid: 0000000000000000f000000000000000, type: 0}
   m_VideoShadersIncludeMode: 2
   m_AlwaysIncludedShaders:
+  - {fileID: 4800000, guid: 89307aef1d768e9ebaabcba10ae02f95, type: 3}
   - {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 15104, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 15105, guid: 0000000000000000f000000000000000, type: 0}
@@ -38,6 +39,7 @@ GraphicsSettings:
   - {fileID: 16001, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: -6465566751694194690, guid: 81ebd0649fbf4884ebd6fc59dc5c387f, type: 3}
   - {fileID: 4800000, guid: 0cbf844ebbd3415b8b4c11e904b8c120, type: 3}
+  - {fileID: 4800000, guid: 4a3aac22307e0a89ea7d85bd6135c4ac, type: 3}
   - {fileID: 4800000, guid: 346f9fe3f2d7436eb1134578adcc4f38, type: 3}
   m_PreloadedShaders: []
   m_PreloadShadersBatchTimeLimit: -1
@@ -63,9 +65,6 @@ GraphicsSettings:
   m_FogKeepExp: 1
   m_FogKeepExp2: 1
   m_AlbedoSwatchInfos: []
-  m_RenderPipelineGlobalSettingsMap:
-    UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 45f597b6c5fed5f438d5175d4bf011ca,
-      type: 2}
   m_LightsUseLinearIntensity: 1
   m_LightsUseColorTemperature: 1
   m_LogWhenShaderIsCompiled: 0

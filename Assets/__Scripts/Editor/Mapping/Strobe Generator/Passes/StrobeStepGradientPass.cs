@@ -16,11 +16,11 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     private int value;
 
     public StrobeStepGradientPass(
-        TracksDefinitionSO tracksDefinition,
+        TrackDefinitionsSO trackDefinitions,
         int value,
         bool switchColors,
         float precision,
-        Func<float, float> easing) : base(tracksDefinition)
+        Func<float, float> easing) : base(trackDefinitions)
     {
         this.value = value;
         alternateColors = switchColors;
@@ -29,7 +29,7 @@ public class StrobeStepGradientPass : StrobeGeneratorPass
     }
 
     public override bool IsEventValidForPass(BaseEvent evt) =>
-        TracksDefinition.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights;
+        TrackDefinitions.GetBasicOrDefault(evt.Type).Kind == BasicEventKind.Lights;
 
     public override IEnumerable<BaseEvent> StrobePassForLane(
         IEnumerable<BaseEvent> original,
