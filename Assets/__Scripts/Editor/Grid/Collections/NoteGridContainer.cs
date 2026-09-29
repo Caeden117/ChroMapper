@@ -103,6 +103,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         note.Setup();
         note.SetIndicators(!isPlaying);
         note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
+        note.DirectionTarget.localEulerAngles = note.DirectionTargetEuler;
 
         if (!note.Animator.AnimatedTrack)
         {

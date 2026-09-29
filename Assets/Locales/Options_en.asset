@@ -1615,6 +1615,21 @@ MonoBehaviour:
     m_Localized: Enables or disables obstacle screen displacement.
     m_Metadata:
       m_Items: []
+  - m_Id: 439117794545255041
+    m_Localized: Shrink GLS Event Preview %
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137151
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - rid: 43
+      - rid: 44
+      - rid: 45
+  - m_Id: 627154617426568411
+    m_Localized: Change how much smaller transparent preview nodes appear in the main GLS track lanes for events nested inside a GLS group.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -1833,6 +1848,21 @@ MonoBehaviour:
         m_Entries: 
         m_SharedEntries: []
     - rid: 42
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries: []
+    - rid: 43
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries: []
+    - rid: 44
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries: []
+    - rid: 45
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 

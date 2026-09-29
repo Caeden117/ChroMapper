@@ -21,22 +21,26 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
     {
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var obs);
-        if (obs != null && !obs.Dragged && context.performed)
-        {
-            var original = BeatmapFactory.Clone(obs.ObjectData);
-            var snapping = 1f / atsc.GridMeasureSnapping;
-            snapping *= context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration);
+        if (obs == null || obs.Dragged || !context.performed) return;
 
-            obs.ObstacleData.Duration += snapping;
-            obs.UpdateGridPosition();
-            obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
-            BeatmapActionContainer.AddAction(
-                new BeatmapObjectModifiedAction(
-                    obs.ObjectData,
-                    obs.ObjectData,
-                    original,
-                    mergeType: ActionMergeType.WallDurationTweak));
-        }
+        var snapping = 1f / atsc.GridMeasureSnapping;
+        snapping *= context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration);
+        TweakDuration(obs, snapping);
+    }
+
+    public void TweakDuration(ObstacleContainer obs, float durationDelta)
+    {
+        var original = BeatmapFactory.Clone(obs.ObjectData);
+        obs.ObstacleData.Duration += durationDelta;
+        obs.UpdateGridPosition();
+        obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
+        BeatmapActionContainer.AddAction(
+            new BeatmapObjectModifiedAction(
+                obs.ObjectData,
+                obs.ObjectData,
+                original,
+                mergeType: ActionMergeType.WallDurationTweak,
+                preserveSelection: true));
     }
 
     public void OnChangeWallLowerBound(InputAction.CallbackContext context)
@@ -45,23 +49,27 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
             return;
         RaycastFirstObject(out var obs);
-        if (obs != null && !obs.Dragged && context.performed)
-        {
-            var original = BeatmapFactory.Clone(obs.ObjectData);
-            var tweakValue = context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration);
-            var data = obs.ObjectData as BaseObstacle;
-            data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
-            data.Height = Mathf.Min(data.Height, 5 - data.PosY);
-            if (data.CompareTo(original) == 0) return;
-            obs.UpdateGridPosition();
-            obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
-            BeatmapActionContainer.AddAction(
-                new BeatmapObjectModifiedAction(
-                    obs.ObjectData,
-                    obs.ObjectData,
-                    original,
-                    mergeType: ActionMergeType.WallLowerBoundTweak));
-        }
+        if (obs == null || obs.Dragged || !context.performed) return;
+
+        TweakLowerBound(obs, context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration));
+    }
+
+    public void TweakLowerBound(ObstacleContainer obs, int tweakValue)
+    {
+        var original = BeatmapFactory.Clone(obs.ObjectData);
+        var data = obs.ObjectData as BaseObstacle;
+        data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
+        data.Height = Mathf.Min(data.Height, 5 - data.PosY);
+        if (data.CompareTo(original) == 0) return;
+        obs.UpdateGridPosition();
+        obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
+        BeatmapActionContainer.AddAction(
+            new BeatmapObjectModifiedAction(
+                obs.ObjectData,
+                obs.ObjectData,
+                original,
+                mergeType: ActionMergeType.WallLowerBoundTweak,
+                preserveSelection: true));
     }
 
     public void OnChangeWallUpperBound(InputAction.CallbackContext context)
@@ -70,22 +78,26 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
             || CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true))
             return;
         RaycastFirstObject(out var obs);
-        if (obs != null && !obs.Dragged && context.performed)
-        {
-            var original = BeatmapFactory.Clone(obs.ObjectData);
-            var tweakValue = context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration);
-            var data = obs.ObjectData as BaseObstacle;
-            data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
-            if (data.CompareTo(original) == 0) return;
-            obs.UpdateGridPosition();
-            obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
-            BeatmapActionContainer.AddAction(
-                new BeatmapObjectModifiedAction(
-                    obs.ObjectData,
-                    obs.ObjectData,
-                    original,
-                    mergeType: ActionMergeType.WallUpperBoundTweak));
-        }
+        if (obs == null || obs.Dragged || !context.performed) return;
+
+        TweakUpperBound(obs, context.GetScrollDirection(Settings.Instance.InvertScrollWallDuration));
+    }
+
+    public void TweakUpperBound(ObstacleContainer obs, int tweakValue)
+    {
+        var original = BeatmapFactory.Clone(obs.ObjectData);
+        var data = obs.ObjectData as BaseObstacle;
+        data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
+        if (data.CompareTo(original) == 0) return;
+        obs.UpdateGridPosition();
+        obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
+        BeatmapActionContainer.AddAction(
+            new BeatmapObjectModifiedAction(
+                obs.ObjectData,
+                obs.ObjectData,
+                original,
+                mergeType: ActionMergeType.WallUpperBoundTweak,
+                preserveSelection: true));
     }
 
     public void OnToggleHyperWall(InputAction.CallbackContext context)
@@ -102,7 +114,7 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         wall.Duration *= -1f;
 
         BeatmapActionContainer.AddAction(
-            new BeatmapObjectModifiedAction(wall, obs.ObjectData, obs.ObjectData),
+            new BeatmapObjectModifiedAction(wall, obs.ObjectData, obs.ObjectData, preserveSelection: true),
             true);
     }
 }

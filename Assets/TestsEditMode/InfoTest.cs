@@ -403,6 +403,63 @@ namespace TestsEditMode
 }
 ";
 
+        // The V4 color-scheme white channels are a ChroMapper extension beyond the official 4.0.1 schema;
+        // maps converted from V2 or hand-edited for the GLS white channel carry these lowercase keys.
+        private const string v4FileInfoWithEnvironmentWColors = @"
+{
+    ""version"": ""4.0.1"",
+    ""song"": {
+        ""title""   : ""Magic"",
+        ""subTitle"": """",
+        ""author""  : ""Jaroslav Beck""
+    },
+    ""audio"": {
+        ""songFilename"": ""song.ogg"",
+        ""songDuration"": 202,
+        ""audioDataFilename"": ""AudioData.dat"",
+        ""bpm"": 208,
+        ""lufs"": 0,
+        ""previewStartTime"": 0,
+        ""previewDuration"": 0
+    },
+    ""songPreviewFilename"": ""song.ogg"",
+    ""coverImageFilename"": ""cover.png"",
+    ""environmentNames"": [""WeaveEnvironment""],
+    ""colorSchemes"": [
+        {
+            ""colorSchemeName"": ""Weave"",
+            ""overrideNotes"": true,
+            ""saberAColor"": ""C81414FF"",
+            ""saberBColor"": ""288ED2FF"",
+            ""obstaclesColor"": ""FF3030FF"",
+            ""overrideLights"": true,
+            ""environmentColor0"": ""D91616FF"",
+            ""environmentColor1"": ""30ACFFFF"",
+            ""environmentColorW"": ""102030FF"",
+            ""environmentColor0Boost"": ""D216D9FF"",
+            ""environmentColor1Boost"": ""888888FF"",
+            ""environmentColorWBoost"": ""A0B0C0FF""
+        }
+    ],
+    ""difficultyBeatmaps"": [
+        {
+            ""characteristic"": ""Standard"",
+            ""difficulty"": ""Easy"",
+            ""beatmapAuthors"": {
+                ""mappers"" : [""Freeek""],
+                ""lighters"": [""Freeek""]
+            },
+            ""environmentNameIdx"": 0,
+            ""beatmapColorSchemeIdx"": 0,
+            ""noteJumpMovementSpeed"": 10,
+            ""noteJumpStartBeatOffset"": 0,
+            ""beatmapDataFilename"": ""Easy.dat"",
+            ""lightshowDataFilename"": ""Lightshow.dat""
+        }
+    ]
+}
+";
+
         [Test]
         public void V2_GetFromJson()
         {
@@ -438,6 +495,30 @@ namespace TestsEditMode
             var reparsed = V4Info.GetFromJson(output);
 
             AssertV4Info(reparsed); // This should have the same stuff
+        }
+
+        [Test]
+        public void V4_EnvironmentColorWColorsSurviveLoadSaveReload()
+        {
+            // Reproduces boost color changes silently dropping in the v4 format: the lowercase
+            // environmentColorW/environmentColorWBoost keys must load and re-save like every other scheme color.
+            var info = V4Info.GetFromJson(JSONNode.Parse(v4FileInfoWithEnvironmentWColors));
+            var colorScheme = info.ColorSchemes[0];
+
+            Assert.IsTrue(colorScheme.EnvironmentColorW.HasValue, "environmentColorW was dropped on load");
+            AssertColorsAreEqual(new Color(0x10 / 255f, 0x20 / 255f, 0x30 / 255f, 1f), colorScheme.EnvironmentColorW.Value);
+            Assert.IsTrue(colorScheme.EnvironmentColorWBoost.HasValue, "environmentColorWBoost was dropped on load");
+            AssertColorsAreEqual(new Color(0xA0 / 255f, 0xB0 / 255f, 0xC0 / 255f, 1f), colorScheme.EnvironmentColorWBoost.Value);
+
+            var output = V4Info.GetOutputJson(info);
+            var outputScheme = output["colorSchemes"][0];
+            Assert.IsTrue(outputScheme.HasKey("environmentColorW"), "environmentColorW was not written on save");
+            Assert.IsTrue(outputScheme.HasKey("environmentColorWBoost"), "environmentColorWBoost was not written on save");
+
+            var reparsed = V4Info.GetFromJson(output);
+            var reparsedScheme = reparsed.ColorSchemes[0];
+            Assert.IsTrue(reparsedScheme.EnvironmentColorW.HasValue, "environmentColorW was dropped after a save/reload cycle");
+            Assert.IsTrue(reparsedScheme.EnvironmentColorWBoost.HasValue, "environmentColorWBoost was dropped after a save/reload cycle");
         }
 
         private void AssertV2Info(BaseInfo info)

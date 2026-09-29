@@ -25,7 +25,7 @@ public static class GLSCommonCommand
         CycleTransformEventAxis(evt, direction);
     }
 
-    private static void CycleTransformEventAxis(BaseGLSEvent evt, int direction)
+    internal static void CycleTransformEventAxis(BaseGLSEvent evt, int direction)
     {
         if (evt.EventBoxGroupData is not ILightTransformEventBoxGroup originalGroup
             || evt.EventBoxData is not BaseLightTransformEventBox sourceBox

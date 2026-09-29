@@ -32,7 +32,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         liveEvent.Apply(original);
         // BaseEvent.Apply copies custom JSON but does not rebuild parsed ring/light custom fields.
         liveEvent.RefreshCustom();
-        return new BeatmapObjectUpdatedAction(editedSnapshot, liveEvent, mergeType: mergeType);
+        return new BeatmapObjectUpdatedAction(editedSnapshot, liveEvent, mergeType: mergeType, preserveSelection: true);
     }
 
     public static bool IsHoveringRingOrZoom { get; private set; }

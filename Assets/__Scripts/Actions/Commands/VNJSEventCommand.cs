@@ -17,7 +17,8 @@ public static class VNJSEventCommand
                 container.ObjectData,
                 original,
                 "Modified VNJS Event Easing",
-                mergeType: ActionMergeType.ModifyNJSEventEase));
+                mergeType: ActionMergeType.ModifyNJSEventEase,
+                preserveSelection: true));
         return container.NJSData;
     }
 
@@ -34,7 +35,8 @@ public static class VNJSEventCommand
                 container.ObjectData,
                 original,
                 "Modified VNJS Event Extension",
-                mergeType: ActionMergeType.ModifyNJSEventExtension));
+                mergeType: ActionMergeType.ModifyNJSEventExtension,
+                preserveSelection: true));
         return container.NJSData;
     }
 }

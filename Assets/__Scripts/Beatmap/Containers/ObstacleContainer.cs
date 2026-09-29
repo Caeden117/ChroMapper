@@ -16,6 +16,7 @@ namespace Beatmap.Containers
         private static readonly int addColorId = Shader.PropertyToID("_AddColor");
         private static readonly int tintColorId = Shader.PropertyToID("_TintColor");
         private static readonly int sizeParamsId = Shader.PropertyToID("_SizeParams");
+        private static readonly int handleScaleId = Shader.PropertyToID("_HandleScale");
 
         [SerializeField] public MeshRenderer CoreRenderer;
         [SerializeField] private Material simpleObstacle;
@@ -37,6 +38,13 @@ namespace Beatmap.Containers
         }
 
         public bool IsRotatedByNoodleExtensions => ObstacleData.CustomWorldRotation != null;
+
+        // Prevent the wall selection box from scaling proportionally larger than the wall, unlike other outlined objects.
+        public override void Setup()
+        {
+            SelectionMpbController.Mpb.SetFloat(handleScaleId, 1f);
+            SelectionMpbController.ApplyChanges();
+        }
 
         public static ObstacleContainer SpawnObstacle(
             BaseObstacle data,

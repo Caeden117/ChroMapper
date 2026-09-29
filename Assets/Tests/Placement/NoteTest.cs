@@ -7,11 +7,19 @@ using NUnit.Framework;
 using SimpleJSON;
 using Tests.Infrastructure;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Tests.Placement
 {
     public class NoteTest : TestBase
     {
+        // The Alt-wheel regressions own an isolated input runtime and restore the shared Note Objects map afterward.
+        private InputTestFixture inputFixture;
+        private CMInput isolatedInput;
+        private Mouse virtualMouse;
+        private Keyboard virtualKeyboard;
+        private bool? sharedNoteInputWasEnabled;
+
         [Test]
         public void InvertNote()
         {
@@ -179,11 +187,13 @@ namespace Tests.Placement
             if (notesContainer.LoadedContainers[noteA] is NoteContainer containerA)
                 inputController.ScrollUpdateDirection(containerA, 1);
 
-            noteA = SelectionController.SelectedObjects.OfType<BaseNote>().Single();
+            // Hover tweaks are selection-neutral now, so resolve the live replacement from the collection.
+            noteA = notesContainer.LoadedObjects.OfType<BaseNote>().Single(n => n.JsonTime == 2);
 
             BeatmapAssertion.IsEqualWithChanges(
                 baselineNoteA,
                 noteA,
+                // Coarse hover rotation cycles the raw direction while retaining the existing offset.
                 n => { n.CutDirection = (int)NoteCutDirection.DownLeft; },
                 "Update note direction");
 
@@ -215,11 +225,13 @@ namespace Tests.Placement
 
             inputController.ScrollUpdateDirection(containerA, 1);
 
-            noteA = SelectionController.SelectedObjects.OfType<BaseNote>().Single();
+            // Hover tweaks are selection-neutral now, so resolve the live replacement from the collection.
+            noteA = notesContainer.LoadedObjects.OfType<BaseNote>().Single(n => n.JsonTime == 2);
 
             BeatmapAssertion.IsEqualWithChanges(
                 baselineNoteA,
                 noteA,
+                // Coarse hover rotation cycles the raw direction while retaining the existing offset.
                 n => { n.CutDirection = (int)NoteCutDirection.DownLeft; },
                 "Update note direction");
 
@@ -227,11 +239,12 @@ namespace Tests.Placement
 
             inputController.ScrollUpdateDirection(containerA, 1);
 
-            noteA = SelectionController.SelectedObjects.OfType<BaseNote>().Single();
+            noteA = notesContainer.LoadedObjects.OfType<BaseNote>().Single(n => n.JsonTime == 2);
 
             BeatmapAssertion.IsEqualWithChanges(
                 baselineNoteA,
                 noteA,
+                // The merged coarse action retains both raw-direction steps through perform and redo.
                 n => { n.CutDirection = (int)NoteCutDirection.Down; },
                 "Update note direction");
 
@@ -246,6 +259,7 @@ namespace Tests.Placement
             BeatmapAssertion.IsEqualWithChanges(
                 baselineNoteA,
                 redoDirectionObjects[0],
+                // The merged coarse action retains both raw-direction steps through perform and redo.
                 n => { n.CutDirection = (int)NoteCutDirection.Down; },
                 "Undo note direction");
         }
@@ -255,8 +269,6 @@ namespace Tests.Placement
         {
             var notesContainer =
                 BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
-            var inputController = Object.FindAnyObjectByType<BeatmapNoteInputController>();
-
             var note1 = new BaseNote
             {
                 JsonTime = 1,
@@ -300,8 +312,8 @@ namespace Tests.Placement
             var baselineChain = BeatmapFactory.Clone(chain23);
             chain23 = PlaceUtils.Place(chain23);
 
-            if (notesContainer.LoadedContainers[note1] is NoteContainer container1)
-                inputController.ScrollUpdateDirection(container1, 0);
+            // Direction keys own grid stepping and slider propagation now that Alt+scroll edits AngleOffset.
+            NoteCommand.SetCutDirection(note1, (int)NoteCutDirection.UpLeft);
 
             var undoImmediateObjects = PlaceUtils.Undo();
             var redoImmediateObjects = PlaceUtils.Redo();
@@ -322,8 +334,7 @@ namespace Tests.Placement
                 "Undo arc head direction");
             BeatmapAssertion.IsUnchanged(baselineChain, chain23, "Chain direction still not changed");
 
-            if (notesContainer.LoadedContainers[note2] is NoteContainer container2)
-                inputController.ScrollUpdateDirection(container2, 0);
+            NoteCommand.SetCutDirection(note2, (int)NoteCutDirection.UpRight);
 
             undoImmediateObjects = PlaceUtils.Undo();
             redoImmediateObjects = PlaceUtils.Redo();
@@ -346,8 +357,7 @@ namespace Tests.Placement
             BeatmapAssertion.IsUnchanged(baselineArc, arc12, "Undo arc tail direction");
             BeatmapAssertion.IsUnchanged(baselineChain, chain23, "Undo chain direction");
 
-            if (notesContainer.LoadedContainers[note3] is NoteContainer container3)
-                inputController.ScrollUpdateDirection(container3, 0);
+            NoteCommand.SetCutDirection(note3, (int)NoteCutDirection.DownRight);
 
             BeatmapAssertion.IsUnchanged(baselineArc, arc12, "Arc direction not changed");
             BeatmapAssertion.IsUnchanged(baselineChain, chain23, "Chain direction not changed");
@@ -355,6 +365,89 @@ namespace Tests.Placement
             PlaceUtils.Undo();
             BeatmapAssertion.IsUnchanged(baselineArc, arc12, "Arc direction still not changed");
             BeatmapAssertion.IsUnchanged(baselineChain, chain23, "Chain direction still not changed");
+        }
+
+        // AltScrollHoveredNotePreservesExistingAngleOffset proves coarse rotation cycles raw directions without discarding the authored offset.
+        [Test]
+        public void AltScrollHoveredNotePreservesExistingAngleOffset()
+        {
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var note = PlaceUtils.Place(new BaseNote
+            {
+                JsonTime = 2,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left,
+                AngleOffset = 20
+            });
+            var hoveredContainer = notesContainer.LoadedContainers[note] as NoteContainer;
+            Assert.That(hoveredContainer, Is.Not.Null, "The hovered note fixture was not rendered.");
+
+            var controller = InitializeIsolatedNoteInput(hoveredContainer);
+            ScrollWithAlt(1f);
+
+            var firstEditedNote = notesContainer.LoadedContainers.Keys
+                .OfType<BaseNote>()
+                .Single(candidate => candidate.JsonTime == note.JsonTime);
+            Assert.That(firstEditedNote.CutDirection, Is.EqualTo((int)NoteCutDirection.DownLeft));
+            Assert.That(firstEditedNote.AngleOffset, Is.EqualTo(20), "The first Alt+scroll discarded the existing 20-degree offset.");
+
+            controller.HoveredObject = notesContainer.LoadedContainers[firstEditedNote] as NoteContainer;
+            Assert.That(controller.HoveredObject, Is.Not.Null, "The first coarse rotation did not render its replacement note.");
+            ScrollWithAlt(1f);
+
+            var secondEditedNote = notesContainer.LoadedContainers.Keys
+                .OfType<BaseNote>()
+                .Single(candidate => candidate.JsonTime == note.JsonTime);
+            Assert.That(secondEditedNote.CutDirection, Is.EqualTo((int)NoteCutDirection.Down));
+            Assert.That(secondEditedNote.AngleOffset, Is.EqualTo(20), "The second Alt+scroll discarded the existing offset.");
+        }
+
+        // AltShiftScrollHoveredNoteAppliesAngleOffsetWithoutSelectingIt reproduces the hover edit through the authored chord and proves it preserves an unrelated selection.
+        [Test]
+        public void AltShiftScrollHoveredNoteAppliesAngleOffsetWithoutSelectingIt()
+        {
+            var notesContainer =
+                BeatmapObjectContainerCollection.GetCollectionForType<NoteGridContainer>(ObjectType.Note);
+            var previouslySelectedNote = PlaceUtils.Place(new BaseNote
+            {
+                JsonTime = 1,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                Type = (int)NoteType.Blue,
+                CutDirection = (int)NoteCutDirection.Right
+            });
+            var hoveredNote = PlaceUtils.Place(new BaseNote
+            {
+                JsonTime = 2,
+                PosX = (int)GridX.Left,
+                PosY = (int)GridY.Base,
+                Type = (int)NoteType.Red,
+                CutDirection = (int)NoteCutDirection.Left
+            });
+            var hoveredContainer = notesContainer.LoadedContainers[hoveredNote] as NoteContainer;
+            Assert.That(hoveredContainer, Is.Not.Null, "The hovered note fixture was not rendered.");
+            SelectionController.DeselectAll();
+            SelectionController.Select(previouslySelectedNote);
+
+            InitializeIsolatedNoteInput(hoveredContainer);
+            ScrollWithAltShift(1f);
+
+            var editedHoveredNote = notesContainer.LoadedContainers.Keys
+                .OfType<BaseNote>()
+                .Single(note => note.JsonTime == hoveredNote.JsonTime);
+            Assert.That(editedHoveredNote.AngleOffset, Is.Not.EqualTo(0), "Alt+Shift+scroll did not apply an angle offset.");
+            Assert.That(
+                SelectionController.IsObjectSelected(previouslySelectedNote),
+                Is.True,
+                "Alt+Shift+scroll cleared the node that was selected before the hover tweak.");
+            Assert.That(
+                SelectionController.IsObjectSelected(editedHoveredNote),
+                Is.False,
+                "Alt+Shift+scroll selected the hovered note even though angle-offset editing is a hover operation.");
+            Assert.That(SelectionController.SelectedObjects.Count, Is.EqualTo(1), "The hover tweak changed the selection count.");
         }
 
         [Test]
@@ -409,6 +502,87 @@ namespace Tests.Placement
             {
                 Settings.Instance.MapVersion = savedMapVersion;
             }
+        }
+
+        // Disable the shared map before InputTestFixture replaces the runtime, then bind only the production note callback under test.
+        private BeatmapNoteInputController InitializeIsolatedNoteInput(NoteContainer hoveredNote)
+        {
+            var sharedInput = CMInputCallbackInstaller.InputInstance;
+            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
+            sharedNoteInputWasEnabled = sharedInput.NoteObjects.enabled;
+            sharedInput.NoteObjects.Disable();
+
+            inputFixture = new InputTestFixture();
+            inputFixture.Setup();
+            virtualMouse = InputSystem.AddDevice<Mouse>();
+            virtualKeyboard = InputSystem.AddDevice<Keyboard>();
+
+            var controller = Object.FindAnyObjectByType<BeatmapNoteInputController>();
+            Assert.That(controller, Is.Not.Null, "The production note input controller was not available.");
+            controller.IsHovering = true;
+            controller.HoveredObject = hoveredNote;
+
+            isolatedInput = new CMInput();
+            isolatedInput.NoteObjects.SetCallbacks(controller);
+            isolatedInput.NoteObjects.Enable();
+            return controller;
+        }
+
+        // Alt-only input exercises coarse 45-degree rotation while retaining any pre-existing precise offset.
+        private void ScrollWithAlt(float direction) => ScrollWithAltModifiers(direction, false);
+
+        // Alt+Shift input exercises precise hover rotation without changing selection ownership.
+        private void ScrollWithAltShift(float direction) => ScrollWithAltModifiers(direction, true);
+
+        // Process each synthetic device edge independently so the requested modifiers remain held when the wheel chord dispatches.
+        private void ScrollWithAltModifiers(float direction, bool includeShift)
+        {
+            inputFixture.Press(virtualKeyboard.leftAltKey, queueEventOnly: true);
+            InputSystem.Update();
+            if (includeShift)
+            {
+                inputFixture.Press(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+                InputSystem.Update();
+            }
+
+            inputFixture.Set(virtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
+            InputSystem.Update();
+            inputFixture.Set(virtualMouse.scroll, Vector2.zero, queueEventOnly: true);
+            InputSystem.Update();
+
+            if (includeShift)
+            {
+                inputFixture.Release(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+                InputSystem.Update();
+            }
+            inputFixture.Release(virtualKeyboard.leftAltKey, queueEventOnly: true);
+            InputSystem.Update();
+        }
+
+        // Dispose the isolated asset before restoring the application Input System and its original Note Objects map state.
+        protected override void AfterCleanup()
+        {
+            if (isolatedInput != null)
+            {
+                isolatedInput.NoteObjects.Disable();
+                isolatedInput.Dispose();
+                isolatedInput = null;
+            }
+
+            virtualMouse = null;
+            virtualKeyboard = null;
+            if (inputFixture != null)
+            {
+                inputFixture.TearDown();
+                inputFixture = null;
+            }
+
+            var sharedInput = CMInputCallbackInstaller.InputInstance;
+            if (sharedInput != null && sharedNoteInputWasEnabled == true)
+            {
+                sharedInput.NoteObjects.Enable();
+            }
+            sharedNoteInputWasEnabled = null;
         }
     }
 }

@@ -1489,6 +1489,16 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 664292683443568642
     m_Key: graphics.screendisplacement.tooltip
+  - m_Id: 439117794545255041
+    m_Key: map.glsinnerpreviewshrink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137151
+    m_Key: map.glsinnerpreviewshrink.info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 627154617426568411
+    m_Key: map.glsinnerpreviewshrink.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:

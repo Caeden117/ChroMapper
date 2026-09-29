@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 
@@ -116,42 +115,37 @@ internal sealed class GLSEventLookupIndex
 }
 
 /// <summary>
-///     Queues replacement GLS nodes by stable identity while a parent group is replaced.
+///     Resolves replacement GLS nodes by stable identity while a parent group is replaced.
 /// </summary>
-/// <remarks>
-///     Used when an active GLS parent group is replaced after node edits, placement/deletion, paint, mirror, or shifts.
-///     It has the largest impact for a large active group with many selected or stacked same-time nodes. Duplicate
-///     nodes consume one replacement each, preserving selection cardinality. Rebinding was <c>O(S * R)</c>, scanning
-///     <c>R</c> replacements for each of <c>S</c> selected old nodes; it is now <c>O(S + R)</c>.
-/// </remarks>
 internal sealed class GLSEventReplacementLookup
 {
-    private readonly Dictionary<NodeIdentity, Queue<BaseGLSEvent>> replacements = new();
+    private readonly Dictionary<(int boxIndex, float time), BaseGLSEvent> replacements = new();
+    private readonly Dictionary<float, (Queue<BaseGLSEvent> entries, int remainingCount)>
+        replacementsIgnoringLane = new();
 
-    // Index every replacement once so rebinding is O(old selections + replacement nodes).
     public GLSEventReplacementLookup(IReadOnlyList<BaseGLSEvent> events)
     {
         for (var index = 0; index < events.Count; index++)
         {
             var replacement = events[index];
-            var identity = new NodeIdentity(replacement);
-            if (!replacements.TryGetValue(identity, out var queue))
-            {
-                queue = new Queue<BaseGLSEvent>();
-                replacements.Add(identity, queue);
-            }
+            // SetEvents resolves same-lane/same-beat conflicts, so an exact identity has one replacement.
+            replacements.Add(ExactIdentity(replacement), replacement);
 
-            queue.Enqueue(replacement);
+            var time = replacement.RelativeJsonTime;
+            if (!replacementsIgnoringLane.TryGetValue(time, out var bucket))
+                bucket = (new Queue<BaseGLSEvent>(), 0);
+
+            bucket.entries.Enqueue(replacement);
+            bucket.remainingCount++;
+            replacementsIgnoringLane[time] = bucket;
         }
     }
 
-    // Consume, rather than merely find, a replacement so same-identity duplicates remain independently selected.
     public bool TryTake(BaseGLSEvent selectedEvent, out BaseGLSEvent replacement)
     {
-        if (replacements.TryGetValue(new NodeIdentity(selectedEvent), out var queue)
-            && queue.Count > 0)
+        if (replacements.TryGetValue(ExactIdentity(selectedEvent), out replacement)
+            && TryConsume(replacement))
         {
-            replacement = queue.Dequeue();
             return true;
         }
 
@@ -159,38 +153,34 @@ internal sealed class GLSEventReplacementLookup
         return false;
     }
 
-    private readonly struct NodeIdentity : IEquatable<NodeIdentity>
+    public bool TryTakeUniqueIgnoringLane(BaseGLSEvent selectedEvent, out BaseGLSEvent replacement)
     {
-        public NodeIdentity(BaseGLSEvent evt)
+        if (replacementsIgnoringLane.TryGetValue(selectedEvent.RelativeJsonTime, out var bucket)
+            && bucket.remainingCount == 1)
         {
-            Type = evt.GetType();
-            BoxIndex = evt.BoxIndex;
-            RelativeJsonTime = evt.RelativeJsonTime;
-        }
-
-        private Type Type { get; }
-
-        private int BoxIndex { get; }
-
-        private float RelativeJsonTime { get; }
-
-        public bool Equals(NodeIdentity other) =>
-            Type == other.Type
-            && BoxIndex == other.BoxIndex
-            && RelativeJsonTime.Equals(other.RelativeJsonTime);
-
-        public override bool Equals(object obj) => obj is NodeIdentity other && Equals(other);
-
-        public override int GetHashCode()
-        {
-            // Keep the identity hash compatible with Unity profiles that do not expose HashCode.Combine.
-            unchecked
+            while (bucket.entries.Count > 0)
             {
-                var hashCode = Type != null ? Type.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ BoxIndex;
-                hashCode = (hashCode * 397) ^ RelativeJsonTime.GetHashCode();
-                return hashCode;
+                replacement = bucket.entries.Dequeue();
+                if (TryConsume(replacement)) return true;
             }
         }
+
+        replacement = null;
+        return false;
     }
+
+    private bool TryConsume(BaseGLSEvent replacement)
+    {
+        if (!replacements.Remove(ExactIdentity(replacement)))
+            return false;
+
+        var time = replacement.RelativeJsonTime;
+        var bucket = replacementsIgnoringLane[time];
+        bucket.remainingCount--;
+        replacementsIgnoringLane[time] = bucket;
+        return true;
+    }
+
+    private static (int boxIndex, float time) ExactIdentity(BaseGLSEvent evt)
+        => (evt.BoxIndex, evt.RelativeJsonTime);
 }

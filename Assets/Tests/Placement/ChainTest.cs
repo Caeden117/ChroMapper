@@ -180,7 +180,8 @@ namespace Tests.Placement
             Assert.IsNotNull(containerA);
             inputController.TweakChainSquish(containerA, 0.5f);
 
-            chain = SelectionController.SelectedObjects.OfType<BaseChain>().Single();
+            // Hover tweaks are selection-neutral now, so resolve the live replacement from the collection.
+            chain = chainsCollection.LoadedObjects.OfType<BaseChain>().Single();
 
             BeatmapAssertion.IsEqualWithChanges(
                 baselineChain,

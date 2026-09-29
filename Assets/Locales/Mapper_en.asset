@@ -946,7 +946,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 618558933254766592
-    m_Localized: Global Light System
+    m_Localized: Group Lighting System
     m_Metadata:
       m_Items: []
   - m_Id: 618559025672060928
@@ -1167,6 +1167,46 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 618845221228871680
     m_Localized: Section
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000003509318144
+    m_Localized: Use boost color from Red Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000036931754752
+    m_Localized: Use color from Red Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000017554115200
+    m_Localized: Use color from Left Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000025869451264
+    m_Localized: Use color from Obstacles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000059958945408
+    m_Localized: Use boost color from Blue Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000046363115264
+    m_Localized: Use color from Blue Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000060425838720
+    m_Localized: Use color from Right Note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000012748521472
+    m_Localized: Use boost color from White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000023314903680
+    m_Localized: Use color from White Lighting Events
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281920
+    m_Localized: "Too close together,\nyour rings / lasers\nwill desync randomly\nin game."
     m_Metadata:
       m_Items: []
   references:

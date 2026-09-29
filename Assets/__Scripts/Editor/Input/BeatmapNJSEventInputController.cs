@@ -59,7 +59,8 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
                 containerToEdit.ObjectData,
                 original,
                 "Modified NJS Event Value",
-                mergeType: ActionMergeType.ModifyNJSEventValue));
+                mergeType: ActionMergeType.ModifyNJSEventValue,
+                preserveSelection: true));
     }
 
     public void OnTweakVNJSEasing(InputAction.CallbackContext context)

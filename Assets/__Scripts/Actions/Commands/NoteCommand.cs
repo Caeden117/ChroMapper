@@ -6,10 +6,11 @@ using UnityEngine;
 
 public static class NoteCommand
 {
-    public static BaseNote SetCutDirection(BaseNote baseNote, int cutDirection)
+    public static BaseNote SetCutDirection(BaseNote baseNote, int cutDirection, bool preserveAngleOffset = false)
     {
         var newNote = BeatmapFactory.Clone(baseNote);
-        ToggleDiagonalAngleOffset(newNote, cutDirection);
+        if (!preserveAngleOffset)
+            ToggleDiagonalAngleOffset(newNote, cutDirection);
         newNote.CutDirection = cutDirection;
 
         var actions = new List<BeatmapAction>
@@ -18,8 +19,8 @@ public static class NoteCommand
                 newNote,
                 baseNote,
                 "Update Note Direction",
-                true,
-                ActionMergeType.NoteDirectionChange)
+                mergeType: ActionMergeType.NoteDirectionChange,
+                preserveSelection: true)
         };
         UpdateAttachedSlidersDirection(newNote, actions);
 
@@ -72,8 +73,8 @@ public static class NoteCommand
                     new BeatmapObjectUpdatedAction(
                         newArc,
                         originalArc,
-                        keepSelection: true,
-                        mergeType: ActionMergeType.NoteDirectionChange));
+                        mergeType: ActionMergeType.NoteDirectionChange,
+                        preserveSelection: true));
             }
             else if (isConnectedToTail)
             {
@@ -84,8 +85,8 @@ public static class NoteCommand
                     new BeatmapObjectUpdatedAction(
                         newArc,
                         originalArc,
-                        keepSelection: true,
-                        mergeType: ActionMergeType.NoteDirectionChange));
+                        mergeType: ActionMergeType.NoteDirectionChange,
+                        preserveSelection: true));
             }
         }
 
@@ -105,8 +106,8 @@ public static class NoteCommand
                     new BeatmapObjectUpdatedAction(
                         newChain,
                         originalChain,
-                        keepSelection: true,
-                        mergeType: ActionMergeType.NoteDirectionChange));
+                        mergeType: ActionMergeType.NoteDirectionChange,
+                        preserveSelection: true));
             }
         }
     }
@@ -121,7 +122,8 @@ public static class NoteCommand
                 newNote,
                 baseNote,
                 "Update Note Precise Direction",
-                mergeType: ActionMergeType.NotePreciseDirectionTweak),
+                mergeType: ActionMergeType.NotePreciseDirectionTweak,
+                preserveSelection: true),
             true);
         SelectionController.OnSelectionChanged?.Invoke();
 
@@ -138,7 +140,10 @@ public static class NoteCommand
             : (int)NoteType.Red;
         newNote.Type = newType;
 
-        var actions = new List<BeatmapAction> { new BeatmapObjectUpdatedAction(newNote, baseNote) };
+        var actions = new List<BeatmapAction>
+        {
+            new BeatmapObjectUpdatedAction(newNote, baseNote, preserveSelection: true)
+        };
 
         InvertAttachedSliders(newNote, actions);
 
@@ -176,7 +181,7 @@ public static class NoteCommand
                 var newArc = BeatmapFactory.Clone(originalArc);
                 newArc.Color = noteData.Color;
 
-                actions.Add(new BeatmapObjectUpdatedAction(newArc, originalArc));
+                actions.Add(new BeatmapObjectUpdatedAction(newArc, originalArc, preserveSelection: true));
             }
         }
 
@@ -192,7 +197,7 @@ public static class NoteCommand
                 var newChain = BeatmapFactory.Clone(originalChain);
                 newChain.Color = noteData.Color;
 
-                actions.Add(new BeatmapObjectUpdatedAction(newChain, originalChain));
+                actions.Add(new BeatmapObjectUpdatedAction(newChain, originalChain, preserveSelection: true));
             }
         }
     }

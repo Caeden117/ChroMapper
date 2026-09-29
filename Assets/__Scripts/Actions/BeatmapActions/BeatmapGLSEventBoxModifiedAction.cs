@@ -59,18 +59,29 @@ public class BeatmapGLSEventBoxModifiedAction : BeatmapAction, IMergeableAction
 
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
+        var restoreGroupSelection = !Networked && SelectionController.IsObjectSelected(EditedObject);
         DeleteObject(EditedObject, false);
         SpawnObject(OriginalObject);
-        SelectionController.DeselectAll();
+        if (restoreGroupSelection)
+        {
+            SelectionController.Select(OriginalObject, true, false, false);
+            SelectionController.OnSelectionChanged?.Invoke();
+        }
         // Refresh only the replaced GLS group; force-refreshing every group races rapid outer-preview wheel input.
         RefreshModifiedGroupPool();
     }
 
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
-        DeleteObject(wasMerged ? PreMergeOriginalData : OriginalObject, false);
+        var removedGroup = wasMerged ? PreMergeOriginalData : OriginalObject;
+        var restoreGroupSelection = !Networked && SelectionController.IsObjectSelected(removedGroup);
+        DeleteObject(removedGroup, false);
         SpawnObject(EditedObject);
-        SelectionController.DeselectAll();
+        if (restoreGroupSelection)
+        {
+            SelectionController.Select(EditedObject, true, false, false);
+            SelectionController.OnSelectionChanged?.Invoke();
+        }
         // Refresh only the replaced GLS group; force-refreshing every group races rapid outer-preview wheel input.
         RefreshModifiedGroupPool();
         wasMerged = false;

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -27,6 +28,7 @@ namespace Tests.Editor
         private InputTestFixture inputTestFixture;
         private Mouse virtualMouse;
         private Keyboard virtualKeyboard;
+        private readonly List<InputActionMap> sharedEnabledActionMaps = new();
 
         protected override EditingMode InitialEditingMode => EditingMode.BasicEvent;
 
@@ -60,6 +62,18 @@ namespace Tests.Editor
         protected void InitializeVirtualInput(bool includeKeyboard)
         {
             Assert.That(inputTestFixture, Is.Null, "Virtual input was initialized twice in one test.");
+            // InputTestFixture replaces the global runtime, so disable every shared map before its controls
+            // bind to temporary devices; restore exactly these maps after the original runtime returns.
+            var sharedInput = CMInputCallbackInstaller.InputInstance;
+            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
+            sharedEnabledActionMaps.Clear();
+            foreach (var actionMap in sharedInput.asset.actionMaps)
+            {
+                if (!actionMap.enabled) continue;
+                sharedEnabledActionMaps.Add(actionMap);
+                actionMap.Disable();
+            }
+
             inputTestFixture = new InputTestFixture();
             inputTestFixture.Setup();
             virtualMouse = InputSystem.AddDevice<Mouse>();
@@ -111,6 +125,10 @@ namespace Tests.Editor
 
             inputTestFixture.TearDown();
             inputTestFixture = null;
+
+            // Re-enabling after TearDown forces control resolution against the restored application runtime.
+            foreach (var actionMap in sharedEnabledActionMaps) actionMap.Enable();
+            sharedEnabledActionMaps.Clear();
         }
 
         // Chunk regressions must use real EventPlacement-backed placement so insertion callbacks and ribbon indexes run.

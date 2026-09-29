@@ -21,7 +21,7 @@ namespace Beatmap.Base
             customData) =>
             ID = id;
 
-        public int ID;
+        public int ID { get; set; }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

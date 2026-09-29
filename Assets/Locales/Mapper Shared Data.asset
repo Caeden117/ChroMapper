@@ -1067,6 +1067,46 @@ MonoBehaviour:
     m_Key: eventbox.filter.sections.section
     m_Metadata:
       m_Items: []
+  - m_Id: 619000003509318144
+    m_Key: chroma.leftboost.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000036931754752
+    m_Key: chroma.leftlight.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000017554115200
+    m_Key: chroma.leftnote.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000025869451264
+    m_Key: chroma.obstacle.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000059958945408
+    m_Key: chroma.rightboost.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000046363115264
+    m_Key: chroma.rightlight.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000060425838720
+    m_Key: chroma.rightnote.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000012748521472
+    m_Key: chroma.whiteboost.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000023314903680
+    m_Key: chroma.whitelight.sourcecolor.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281920
+    m_Key: event.desyncwarning
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

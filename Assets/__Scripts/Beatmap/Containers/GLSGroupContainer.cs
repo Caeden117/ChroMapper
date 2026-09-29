@@ -21,7 +21,7 @@ namespace Beatmap.Containers
         [SerializeField] private TracksManager tracksManager;
         [SerializeField] private TextMeshPro[] valueDisplays;
         [SerializeField] public LightGradientController lightGradientController;
-        // Keep the serialized field compatible with the active track-definition asset type.
+        // Keep the serialized field compatible with dev's TrackDefinitionsSO asset type.
         [SerializeField] public TrackDefinitionsSO TrackDefinitions;
 
         public BaseEventBoxGroup EventBoxGroupData;
@@ -37,6 +37,11 @@ namespace Beatmap.Containers
 
         // Distinguish the collection-owned node from its translucent, dynamically-created previews.
         private bool isPreviewGhost;
+
+        // Every ghost shrinks by the same global factor off the same FinalNodeScale base, so the resulting
+        // scale is a constant; cache it instead of recomputing and multiplying the transform per node.
+        private static float cachedInnerPreviewShrink = float.NaN;
+        private static Vector3 cachedInnerPreviewScale;
 
         // Let a hovered pooled preview update the visual outline of its owning logical group.
         private GLSGroupContainer previewOwner;
@@ -142,6 +147,8 @@ namespace Beatmap.Containers
 
         private void HandleModelChanged() => VModelController.Set(VisualSettings.GetBlockModel());
 
+        public override void Setup() => DisablePassedObjectDither();
+
         public static GLSGroupContainer SpawnGLSGroup(
             BaseEventBoxGroup data,
             TrackDefinitionsSO trackDefinitions,
@@ -157,7 +164,8 @@ namespace Beatmap.Containers
         {
             var pos = transform.localPosition;
             // Keep every inner GLS node grounded after its shared 75%-scale appearance is applied. Fixes GLS nodes hovering too high above grid and being hard to tell where they are visually.
-            pos.y = BeatmapConstant.EventNodeGroundedCenterY;
+            pos.y = BeatmapConstant.EventNodeGroundedCenterY
+                - ((EventAppearanceSO.FinalNodeScale - transform.localScale.y) / 2f);
             // Unity preview events need explicit null checks before choosing the rendered beat position.
             var previewSongBpmTime = PreviewEventData != null
                 ? PreviewEventData.SongBpmTime
@@ -259,12 +267,29 @@ namespace Beatmap.Containers
         private void ConfigureAsPreviewGhost(bool boost, Func<float, bool> isBoostAt)
         {
             glsGroupAppearance.SetAppearance(this, true, boost);
+            ApplyInnerPreviewShrink();
             // Rebuild this preview's cross-group color ribbon whenever its represented inner node changes.
             glsGroupAppearance.UpdateTransitionRibbon(this, isBoostAt);
             ApplyPreviewOpacity();
             // Give unmanaged previews the same selection outline color as their collection-owned group.
             SetOutlineColor(SelectionController.SelectedColor);
             UpdateGridPosition();
+        }
+
+        private void ApplyInnerPreviewShrink()
+        {
+            if (!isPreviewGhost)
+                return;
+
+            var shrinkSetting = Settings.Instance.GLSInnerEventPreviewShrink;
+            if (shrinkSetting != cachedInnerPreviewShrink)
+            {
+                cachedInnerPreviewShrink = shrinkSetting;
+                cachedInnerPreviewScale =
+                    Vector3.one * EventAppearanceSO.FinalNodeScale * (1f - Mathf.Clamp01(shrinkSetting));
+            }
+
+            transform.localScale = cachedInnerPreviewScale;
         }
 
         private void ApplyPreviewOpacity()

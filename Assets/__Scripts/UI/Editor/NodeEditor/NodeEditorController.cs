@@ -66,7 +66,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
     }
 
-    private void OnDestroy() => SelectionController.OnSelectionChanged -= ObjectWasSelected;
+    private void OnDestroy()
+    {
+        IsActive = false;
+        SelectionController.OnSelectionChanged -= ObjectWasSelected;
+    }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
     {

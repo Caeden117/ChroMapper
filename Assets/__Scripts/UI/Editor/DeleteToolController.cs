@@ -12,5 +12,7 @@ public class DeleteToolController : MonoBehaviour
         OnDeleteToolActivated?.Invoke();
     }
 
+    private void OnDestroy() => IsActive = false;
+
     public void ToggleDeletion() => UpdateDeletion(!IsActive);
 }

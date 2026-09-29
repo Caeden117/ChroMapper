@@ -208,7 +208,8 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
                 continue;
             }
 
-            // Global-color tiles select their displayed source color instead of editing the global scheme.
+            // Global-color tiles select their displayed source color instead of editing the global scheme;
+            // their source-color tooltip references are authored directly on the strobe picker prefab.
             button.onClick = new Button.ButtonClickedEvent();
             button.onClick.AddListener(() => picker.CurrentColor = globalColorButton.image.color);
         }

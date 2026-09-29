@@ -26,6 +26,7 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
         eventGridContainer.OnBoostAppearanceRangeInvalidated += RefreshBoostDependentAppearances;
         // Rebuild loaded groups immediately when the ghost-preview setting changes.
         Settings.NotifyBySettingName(nameof(Settings.GLSOuterTrackGhostNodeOpacity), _ => RefreshPool(true));
+        Settings.NotifyBySettingName(nameof(Settings.GLSInnerEventPreviewShrink), _ => RefreshPool(true));
     }
     internal override void UnsubscribeToCallbacks()
     {

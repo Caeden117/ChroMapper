@@ -31,6 +31,15 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
 
     public void OnSelectModifier(InputAction.CallbackContext context) => IsSelectKeyHeld = context.performed;
 
+    private void OnDestroy()
+    {
+        MousePosition = Vector2.zero;
+        IsMouseInWindow = true;
+        IsControlKeyHeld = false;
+        IsHoverKeyHeld = false;
+        IsSelectKeyHeld = false;
+    }
+
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
         MousePosition = context.ReadValue<Vector2>();

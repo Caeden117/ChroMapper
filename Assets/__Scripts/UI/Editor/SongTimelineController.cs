@@ -33,7 +33,11 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
         atsc.OnTimeChanged += UpdateTime;
     }
 
-    private void OnDestroy() => atsc.OnTimeChanged -= UpdateTime;
+    private void OnDestroy()
+    {
+        IsHovering = false;
+        atsc.OnTimeChanged -= UpdateTime;
+    }
 
     private void UpdateTime()
     {

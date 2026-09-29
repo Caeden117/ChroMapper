@@ -47,6 +47,9 @@ namespace Beatmap.Appearances
         [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
         public Color OtherColor;
 
+        // Darker than pure red so flagged ring/laser nodes still read as a warning without eye-searing saturation.
+        public Color DesyncRiskColor = new(160f / 255f, 0f, 0f);
+
         public void SetAppearance(
             EventContainer e,
             bool final = true,
@@ -95,6 +98,9 @@ namespace Beatmap.Appearances
                 {
                     ringColor = RingEventsColor;
                 }
+
+                // same-type/filter neighbors inside one fixed tick warn in red.
+                if (e.IsDesyncRisk) ringColor = DesyncRiskColor;
 
                 e.ChangeColorA(ringColor, false);
                 e.ChangeColorB(ringColor, false);

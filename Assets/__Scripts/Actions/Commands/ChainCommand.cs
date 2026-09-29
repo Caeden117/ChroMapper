@@ -13,7 +13,8 @@ public static class ChainCommand
                 newChain,
                 baseChain,
                 "Update slice count",
-                mergeType: ActionMergeType.ChainSliceCountTweak),
+                mergeType: ActionMergeType.ChainSliceCountTweak,
+                preserveSelection: true),
             true);
         return newChain;
     }
@@ -28,7 +29,8 @@ public static class ChainCommand
                 newChain,
                 baseChain,
                 "Update squish",
-                mergeType: ActionMergeType.ChainSquishTweak),
+                mergeType: ActionMergeType.ChainSquishTweak,
+                preserveSelection: true),
             true);
         return newChain;
     }

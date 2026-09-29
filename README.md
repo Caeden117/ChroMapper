@@ -29,7 +29,7 @@ Builds are automatically created with [Jenkins](https://jenkins.kirkstall.top-ca
 GitHub Releases will be made with every stable update. While builds will be distributed, it is recommended to use the ChroMapper Launcher to automatically stay up to date.
 
 # Discord
-The ChroMapper Disccord is the central point of communication between users and the developers. It is recommended to visit the Discord to recieve support, talk about development, and share your work.
+The ChroMapper Discord is the central point of communication between users and the developers. It is recommended to visit the Discord to recieve support, talk about development, and share your work.
 
 Join the Discord [here](https://discord.gg/YmEt9EZ8pw).
 

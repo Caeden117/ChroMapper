@@ -38,7 +38,8 @@ namespace Tests.Infrastructure
             if (container == null) return;
 
             // GLS children were already cleared first; avoid running their cleanup a second time through the enum order.
-            if (type == ObjectType.GLSEvent)
+            // Per-kind node flags share that same collection, so skip every flag carrying the GLSEvent bit.
+            if ((type & ObjectType.GLSEvent) == ObjectType.GLSEvent)
                 return;
 
             // RotationCallbackProperties and NJSEventsStats require the original deletion actions to invalidate

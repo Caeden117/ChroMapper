@@ -26,6 +26,9 @@ public class BloomfogRendererSO : ScriptableObject
     private CommandBuffer bloomfogCommandBuffer;
     private Mesh bloomfogMesh;
     private readonly List<LightBatch> lightBatches = new();
+    private SubMeshDescriptor[] subMeshDescriptors;
+    private int configuredBatchCount;
+    private bool subMeshDescriptorsDirty = true;
     private int activeBatchCount;
     private Matrix4x4 renderedViewMatrix;
     private Matrix4x4 renderedProjectionMatrix;
@@ -213,21 +216,39 @@ public class BloomfogRendererSO : ScriptableObject
             activeLights * 4,
             0,
             MeshUpdateFlags.DontRecalculateBounds);
-        // Shrinking subMeshCount truncates Unity's index buffer. Keep allocated submeshes;
-        // RenderToTextureInternal draws only the active batches, so stale descriptors are unused.
-        if (bloomfogMesh.subMeshCount < activeBatchCount)
-            bloomfogMesh.subMeshCount = activeBatchCount;
+        var descriptorsChanged = subMeshDescriptorsDirty;
+        if (subMeshDescriptors == null || subMeshDescriptors.Length < activeBatchCount)
+        {
+            System.Array.Resize(ref subMeshDescriptors, activeBatchCount);
+            descriptorsChanged = true;
+        }
         for (var i = 0; i < activeBatchCount; i++)
         {
             var batch = lightBatches[i];
-            bloomfogMesh.SetSubMesh(
-                i,
-                new SubMeshDescriptor(batch.FirstLight * 6, batch.LightCount * 6)
-                {
-                    firstVertex = batch.FirstLight * 4,
-                    vertexCount = batch.LightCount * 4,
-                },
-                MeshUpdateFlags.DontRecalculateBounds);
+            var descriptor = new SubMeshDescriptor(batch.FirstLight * 6, batch.LightCount * 6)
+            {
+                firstVertex = batch.FirstLight * 4,
+                vertexCount = batch.LightCount * 4,
+            };
+            var previous = subMeshDescriptors[i];
+            if (previous.indexStart == descriptor.indexStart
+                && previous.indexCount == descriptor.indexCount
+                && previous.firstVertex == descriptor.firstVertex
+                && previous.vertexCount == descriptor.vertexCount)
+                continue;
+            subMeshDescriptors[i] = descriptor;
+            descriptorsChanged = true;
+        }
+        for (var i = activeBatchCount; i < configuredBatchCount; i++)
+        {
+            subMeshDescriptors[i] = new SubMeshDescriptor(0, 0);
+            descriptorsChanged = true;
+        }
+        configuredBatchCount = activeBatchCount;
+        if (descriptorsChanged)
+        {
+            bloomfogMesh.SetSubMeshes(subMeshDescriptors, MeshUpdateFlags.DontRecalculateBounds);
+            subMeshDescriptorsDirty = false;
         }
     }
 
@@ -358,6 +379,7 @@ public class BloomfogRendererSO : ScriptableObject
         // RenderQuads creates one active submesh for each material-and-priority batch.
         bloomfogMesh.subMeshCount = 1;
         bloomfogMesh.SetSubMesh(0, new SubMeshDescriptor(0, indexCount), MeshUpdateFlags.DontRecalculateBounds);
+        subMeshDescriptorsDirty = true;
         bloomfogMesh.bounds = new Bounds(Vector3.zero, Vector3.one * 10000f);
         bloomfogMesh.UploadMeshData(false);
     }

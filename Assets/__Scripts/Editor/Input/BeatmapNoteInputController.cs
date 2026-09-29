@@ -50,7 +50,11 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public void OnUpdateNoteDirection(InputAction.CallbackContext context)
     {
-        if (!context.performed || !IsHovering || HoveredObject.Dragged) return;
+        if (!context.performed
+            || !IsHovering
+            || HoveredObject.Dragged
+            || (Keyboard.current != null && Keyboard.current.shiftKey.isPressed))
+            return;
 
         var shiftForward = context.GetScrollDirection(Settings.Instance.InvertScrollNoteAngle);
         ScrollUpdateDirection(HoveredObject, shiftForward);
@@ -68,8 +72,10 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
     {
         var cutDirection =
             (direction > 0 ? cutDirectionMovedBackward : cutDirectionMovedForward)[note.NoteData.CutDirection];
-
-        NoteCommand.SetCutDirection(note.NoteData, cutDirection);
+        NoteCommand.SetCutDirection(
+            note.NoteData,
+            cutDirection,
+            preserveAngleOffset: Settings.Instance.MapVersion >= 3);
     }
 
     public void ScrollPreciseUpdateDirection(NoteContainer note, int direction)

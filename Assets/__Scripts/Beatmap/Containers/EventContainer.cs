@@ -22,6 +22,7 @@ namespace Beatmap.Containers
         [SerializeField] private EventAppearanceSO eventAppearance;
         [SerializeField] private TracksManager tracksManager;
         [SerializeField] private TextMeshPro valueDisplay;
+        [SerializeField] private TextMeshPro desyncWarningDisplay;
         [SerializeField] private LightGradientController lightGradientController;
         [SerializeField] private CreateEventTypeLabels labels;
         [SerializeField] public TrackDefinitionsSO TrackDefinitions;
@@ -38,7 +39,35 @@ namespace Beatmap.Containers
         public override BaseObject ObjectData
         {
             get => EventData;
-            set => EventData = (BaseEvent)value;
+            set
+            {
+                EventData = (BaseEvent)value;
+                Highlighted = false;
+                UpdateDesyncWarningVisibility();
+            }
+        }
+
+        public bool IsDesyncRisk =>
+            EventData != null && eventGridContainer != null && eventGridContainer.IsDesyncRisk(EventData);
+
+        public override bool Highlighted
+        {
+            get => base.Highlighted;
+            set
+            {
+                // The input controller re-assigns Highlighted every frame while hovering, so only
+                // re-evaluate the warning on an actual transition (same guard as the base setter).
+                if (base.Highlighted == value) return;
+                base.Highlighted = value;
+                UpdateDesyncWarningVisibility();
+            }
+        }
+
+        private void UpdateDesyncWarningVisibility()
+        {
+            var visible = Highlighted && IsDesyncRisk;
+            if (visible != desyncWarningDisplay.gameObject.activeSelf)
+                desyncWarningDisplay.gameObject.SetActive(visible);
         }
 
         public bool UseBlockModel
@@ -282,7 +311,6 @@ namespace Beatmap.Containers
                     return;
                 }
 
-                // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt uses the effective endpoint for ribbon length.
                 var renderedTransitionTarget = transitionTarget ?? EventData.Next;
                 var transition = new ChromaLightGradient(
                     BasicEventColorLerp.ApplyBrightness(startColor.Value, startBrightness),
@@ -335,12 +363,12 @@ namespace Beatmap.Containers
 
         public void RefreshAppearance()
         {
-            // LightIdTransitionRibbonEndsAtAllLightsTransitionInterrupt resolves the finalized container's grid endpoint.
             eventAppearance.SetAppearance(
                 this,
                 true,
                 eventGridContainer.IsBoostAt(EventData.JsonTime),
                 eventGridContainer.GetEffectiveNextLightEvent(EventData));
+            UpdateDesyncWarningVisibility();
         }
 
         // Both LightIdTransitionRibbon interruption regressions require one endpoint for appearance and hover editing.

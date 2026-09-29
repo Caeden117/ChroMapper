@@ -13,7 +13,8 @@ public static class ArcCommand
                 newArc,
                 baseArc,
                 "Update head multiplier",
-                mergeType: ActionMergeType.ArcHeadMultTweak),
+                mergeType: ActionMergeType.ArcHeadMultTweak,
+                preserveSelection: true),
             true);
         return newArc;
     }
@@ -28,7 +29,8 @@ public static class ArcCommand
                 newArc,
                 baseArc,
                 "Update tail multiplier",
-                mergeType: ActionMergeType.ArcTailMultTweak),
+                mergeType: ActionMergeType.ArcTailMultTweak,
+                preserveSelection: true),
             true);
         return newArc;
     }

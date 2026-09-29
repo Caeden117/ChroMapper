@@ -71,7 +71,8 @@ public static class RotationCommand
             new BeatmapObjectUpdatedAction(
                 newObject,
                 originalObject,
-                mergeType: ActionMergeType.ModifyRotationValue),
+                mergeType: ActionMergeType.ModifyRotationValue,
+                preserveSelection: true),
             true);
         return newObject;
     }
@@ -102,7 +103,8 @@ public static class RotationCommand
             new BeatmapObjectUpdatedAction(
                 newObject,
                 originalObject,
-                mergeType: ActionMergeType.ModifyRotationValue),
+                mergeType: ActionMergeType.ModifyRotationValue,
+                preserveSelection: true),
             true);
         return newObject;
     }
@@ -131,7 +133,8 @@ public static class RotationCommand
             new BeatmapObjectUpdatedAction(
                 newObject,
                 originalObject,
-                mergeType: ActionMergeType.ModifyRotationValue),
+                mergeType: ActionMergeType.ModifyRotationValue,
+                preserveSelection: true),
             true);
         return newObject;
     }
@@ -146,7 +149,8 @@ public static class RotationCommand
             new BeatmapObjectUpdatedAction(
                 newObject,
                 originalObject,
-                mergeType: ActionMergeType.ModifyRotationValue),
+                mergeType: ActionMergeType.ModifyRotationValue,
+                preserveSelection: true),
             true);
         return newObject;
     }
@@ -163,7 +167,8 @@ public static class RotationCommand
             new BeatmapObjectUpdatedAction(
                 newObject,
                 originalObject,
-                mergeType: ActionMergeType.ModifyRotationValue),
+                mergeType: ActionMergeType.ModifyRotationValue,
+                preserveSelection: true),
             true);
         return newObject;
     }

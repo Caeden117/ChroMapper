@@ -62,6 +62,17 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         Shader.DisableKeyword("CM_PREVIEW_MODE");
     }
 
+    private void OnDestroy()
+    {
+        SelectedMode = UIModeType.Normal;
+        PreviewMode = false;
+        AnimationMode = false;
+        OnUIModeSwitched = null;
+        OnPreviewModeSwitched = null;
+        Shader.DisableKeyword("CM_PREVIEW_MODE");
+        atsc.OnPlayToggled -= OnPlayToggle;
+    }
+
     public void OnToggleUIMode(InputAction.CallbackContext context)
     {
         if (context.performed) ToggleUIMode(true);

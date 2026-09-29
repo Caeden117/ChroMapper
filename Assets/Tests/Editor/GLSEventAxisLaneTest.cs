@@ -1,7 +1,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+// Outer GLS ghost geometry tests need the shared node scale and the rendered group container.
+using Beatmap.Appearances;
 using Beatmap.Base;
+using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.V3;
@@ -96,6 +99,139 @@ namespace Tests.Editor
             Assert.AreSame(firstTranslationX, secondTranslationX);
             Assert.AreSame(firstTranslationY, secondTranslationY);
             Assert.AreSame(firstTranslationZ, secondTranslationZ);
+        }
+
+        // ConfigurableOuterGhostPreviewShrinkScalesBoxesAndTextAndRemainsGrounded protects the shared Color, Rotation, Translation, and FloatFX ghost geometry without changing primary or inner GLS nodes.
+        [TestCase(ObjectType.GLSColor)]
+        [TestCase(ObjectType.GLSRotation)]
+        [TestCase(ObjectType.GLSTranslation)]
+        [TestCase(ObjectType.GLSFloatFx)]
+        public void ConfigurableOuterGhostPreviewShrinkScalesBoxesAndTextAndRemainsGrounded(ObjectType objectType)
+        {
+            var shrinkField = typeof(Settings).GetField("GLSInnerEventPreviewShrink");
+            Assert.NotNull(shrinkField);
+            Assert.That(shrinkField.GetValue(new Settings()), Is.EqualTo(0.1f));
+            var previousOpacity = Settings.Instance.GLSOuterTrackGhostNodeOpacity;
+            var previousShrink = (float)shrinkField.GetValue(Settings.Instance);
+            GLSGroupContainer container = null;
+            GLSGroupContainer ghost = null;
+            try
+            {
+                Settings.Instance.GLSOuterTrackGhostNodeOpacity = 0.8f;
+                shrinkField.SetValue(Settings.Instance, 0.25f);
+                var group = CreateTwoNodePreviewGroup(objectType);
+                group.ResortOrderedEvents();
+                var collection = BeatmapObjectContainerCollection.GetCollectionForType(objectType);
+                container = collection.CreateContainer() as GLSGroupContainer;
+                Assert.NotNull(container);
+                container.ObjectData = group;
+                container.Setup();
+
+                container.ConfigurePreviewNodes(_ => false);
+
+                var previewsField = typeof(GLSGroupContainer).GetField(
+                    "previewGhosts",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(previewsField);
+                var previews = previewsField.GetValue(container) as List<GLSGroupContainer>;
+                Assert.NotNull(previews);
+                Assert.AreEqual(1, previews.Count);
+                ghost = previews[0];
+                // Authored nodes stay opaque while only dynamically created additional-offset previews force dither.
+                var alwaysTranslucentId = Shader.PropertyToID("_AlwaysTranslucent");
+                Assert.That(container.MpbController.Mpb.GetFloat(alwaysTranslucentId), Is.LessThan(1f));
+                Assert.That(ghost.MpbController.Mpb.GetFloat(alwaysTranslucentId), Is.EqualTo(1f));
+                const float expectedSizeMultiplier = 0.75f;
+                var expectedGhostScale = EventAppearanceSO.FinalNodeScale * expectedSizeMultiplier;
+                Assert.That(container.transform.localScale.x, Is.EqualTo(EventAppearanceSO.FinalNodeScale).Within(0.0001f));
+                Assert.That(container.transform.localScale.y, Is.EqualTo(EventAppearanceSO.FinalNodeScale).Within(0.0001f));
+                Assert.That(ghost.transform.localScale.x, Is.EqualTo(expectedGhostScale).Within(0.0001f));
+                Assert.That(ghost.transform.localScale.y, Is.EqualTo(expectedGhostScale).Within(0.0001f));
+                Assert.That(ghost.transform.localScale.z, Is.EqualTo(expectedGhostScale).Within(0.0001f));
+                var primaryBottom = container.transform.localPosition.y - (container.transform.localScale.y / 2f);
+                var ghostBottom = ghost.transform.localPosition.y - (ghost.transform.localScale.y / 2f);
+                Assert.That(ghostBottom, Is.EqualTo(primaryBottom).Within(0.0001f));
+
+                var valueDisplaysField = typeof(GLSGroupContainer).GetField(
+                    "valueDisplays",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.NotNull(valueDisplaysField);
+                var primaryDisplays = valueDisplaysField.GetValue(container) as TextMeshPro[];
+                var ghostDisplays = valueDisplaysField.GetValue(ghost) as TextMeshPro[];
+                Assert.NotNull(primaryDisplays);
+                Assert.NotNull(ghostDisplays);
+                Assert.AreEqual(primaryDisplays.Length, ghostDisplays.Length);
+                for (var i = 0; i < primaryDisplays.Length; i++)
+                {
+                    // Keeping each distinct text face at its authored local scale beneath the resized ghost root makes it inherit exactly the same shrink multiplier as the box without applying the percentage twice.
+                    Assert.AreNotSame(primaryDisplays[i], ghostDisplays[i]);
+                    Assert.AreSame(ghost.transform, ghostDisplays[i].transform.parent);
+                    Assert.That(
+                        ghostDisplays[i].transform.localScale,
+                        Is.EqualTo(primaryDisplays[i].transform.localScale));
+                }
+            }
+            finally
+            {
+                Settings.Instance.GLSOuterTrackGhostNodeOpacity = previousOpacity;
+                shrinkField.SetValue(Settings.Instance, previousShrink);
+                if (container != null)
+                {
+                    container.ObjectData = null;
+                }
+                if (ghost != null)
+                {
+                    Object.DestroyImmediate(ghost.gameObject);
+                }
+                if (container != null)
+                {
+                    Object.DestroyImmediate(container.gameObject);
+                }
+            }
+        }
+
+        // AuthoredOuterAndInnerGlsNodesStayOpaqueAfterBeatZero protects both GLS lanes from inheriting
+        // the Note shader's passed-object dither while explicit preview ghosts use _AlwaysTranslucent.
+        [Test]
+        public void AuthoredOuterAndInnerGlsNodesStayOpaqueAfterBeatZero()
+        {
+            const float currentBeat = 1f;
+            var objectTimeId = Shader.PropertyToID("_ObjectTime");
+            var alwaysTranslucentId = Shader.PropertyToID("_AlwaysTranslucent");
+            var containers = new List<ObjectContainer>();
+
+            try
+            {
+                foreach (var objectType in new[]
+                {
+                    ObjectType.GLSColor,
+                    ObjectType.GLSRotation,
+                    ObjectType.GLSTranslation,
+                    ObjectType.GLSFloatFx,
+                    ObjectType.GLSEvent
+                })
+                {
+                    var collection = BeatmapObjectContainerCollection.GetCollectionForType(objectType);
+                    Assert.NotNull(collection);
+                    var container = collection.CreateContainer();
+                    Assert.NotNull(container);
+                    containers.Add(container);
+                    container.Setup();
+
+                    // Setup must override only timeline classification; explicit previews separately force
+                    // _AlwaysTranslucent when GLSGroupContainer creates additional-offset ghosts.
+                    Assert.That(container.MpbController.Mpb.GetFloat(alwaysTranslucentId), Is.LessThan(1f));
+                    Assert.That(
+                        container.MpbController.Mpb.GetFloat(objectTimeId) + 0.001f - currentBeat,
+                        Is.GreaterThan(0f),
+                        $"{objectType} entered the passed-object dither branch at beat {currentBeat}.");
+                }
+            }
+            finally
+            {
+                foreach (var container in containers)
+                    Object.DestroyImmediate(container.gameObject);
+            }
         }
 
         // DivisionFilterLabelDisplaysSectionAndOneBasedId pins the Division-only label conversion instead of relying on default filter values.
@@ -1809,6 +1945,92 @@ namespace Tests.Editor
             }
 
             public override IReadOnlyList<BaseGLSEvent> ReadOnlyEvents => events;
+        }
+
+        // OuterGhostPreviewNodesAreTenPercentSmallerAndRemainGrounded creates the same two-offset shape for every supported outer GLS lane family so the shared ghost path is exercised uniformly.
+        private static BaseEventBoxGroup CreateTwoNodePreviewGroup(ObjectType objectType)
+        {
+            BaseEventBoxGroup group;
+            switch (objectType)
+            {
+                case ObjectType.GLSColor:
+                    var colorGroup = new BaseLightColorEventBoxGroup
+                    {
+                        Boxes =
+                        {
+                            new BaseLightColorEventBox
+                            {
+                                Events = new[]
+                                {
+                                    new BaseLightColorBase { RelativeJsonTime = 0f },
+                                    new BaseLightColorBase { RelativeJsonTime = 1f }
+                                }
+                            }
+                        }
+                    };
+                    colorGroup.NormalizeLoadedEventConflicts();
+                    group = colorGroup;
+                    break;
+                case ObjectType.GLSRotation:
+                    var rotationGroup = new BaseLightRotationEventBoxGroup
+                    {
+                        Boxes =
+                        {
+                            new BaseLightRotationEventBox
+                            {
+                                Events = new[]
+                                {
+                                    new BaseLightRotationBase { RelativeJsonTime = 0f },
+                                    new BaseLightRotationBase { RelativeJsonTime = 1f }
+                                }
+                            }
+                        }
+                    };
+                    rotationGroup.NormalizeLoadedEventConflicts();
+                    group = rotationGroup;
+                    break;
+                case ObjectType.GLSTranslation:
+                    var translationGroup = new BaseLightTranslationEventBoxGroup
+                    {
+                        Boxes =
+                        {
+                            new BaseLightTranslationEventBox
+                            {
+                                Events = new[]
+                                {
+                                    new BaseLightTranslationBase { RelativeJsonTime = 0f },
+                                    new BaseLightTranslationBase { RelativeJsonTime = 1f }
+                                }
+                            }
+                        }
+                    };
+                    translationGroup.NormalizeLoadedEventConflicts();
+                    group = translationGroup;
+                    break;
+                case ObjectType.GLSFloatFx:
+                    var floatFxGroup = new BaseVfxEventEventBoxGroup
+                    {
+                        Boxes =
+                        {
+                            new BaseVfxEventEventBox
+                            {
+                                Events = new[]
+                                {
+                                    new BaseFxEventFloat { RelativeJsonTime = 0f },
+                                    new BaseFxEventFloat { RelativeJsonTime = 1f }
+                                }
+                            }
+                        }
+                    };
+                    floatFxGroup.NormalizeLoadedEventConflicts();
+                    group = floatFxGroup;
+                    break;
+                default:
+                    Assert.Fail($"Unsupported outer GLS preview type {objectType}.");
+                    return null;
+            }
+
+            return group;
         }
 
         // Build one explicit X StepAndOffset lane matching the +Ids command output.

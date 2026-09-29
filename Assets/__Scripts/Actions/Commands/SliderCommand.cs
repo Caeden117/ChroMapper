@@ -12,7 +12,7 @@ public static class SliderCommand
             : (int)NoteColor.Red;
 
         BeatmapActionContainer.AddAction(
-            new BeatmapObjectUpdatedAction(newSlider, baseSlider, "invert arc color"),
+            new BeatmapObjectUpdatedAction(newSlider, baseSlider, "invert arc color", preserveSelection: true),
             true);
         return newSlider;
     }

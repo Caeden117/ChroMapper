@@ -61,11 +61,14 @@ namespace Beatmap.Info
 
                 colorScheme.EnvironmentColor0 = colorSchemeNode["environmentColor0"].ReadHtmlStringColor();
                 colorScheme.EnvironmentColor1 = colorSchemeNode["environmentColor1"].ReadHtmlStringColor();
-                if (colorSchemeNode.HasKey("EnvironmentColorW"))
+                // HasKey is case-sensitive: v4 writes lowercase environmentColorW/WBoost, so the old
+                // capital-E checks dropped the white channels on load and stripped them on save
+                // (regression test: InfoTest.V4_EnvironmentColorWColorsSurviveLoadSaveReload).
+                if (colorSchemeNode.HasKey("environmentColorW"))
                     colorScheme.EnvironmentColorW = colorSchemeNode["environmentColorW"].ReadHtmlStringColor();
                 colorScheme.EnvironmentColor0Boost = colorSchemeNode["environmentColor0Boost"].ReadHtmlStringColor();
                 colorScheme.EnvironmentColor1Boost = colorSchemeNode["environmentColor1Boost"].ReadHtmlStringColor();
-                if (colorSchemeNode.HasKey("EnvironmentColorWBoost"))
+                if (colorSchemeNode.HasKey("environmentColorWBoost"))
                 {
                     colorScheme.EnvironmentColorWBoost =
                         colorSchemeNode["environmentColorWBoost"].ReadHtmlStringColor();

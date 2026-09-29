@@ -87,6 +87,7 @@ public class MapLoader : MonoBehaviour
             events.AllBpmEvents = eventsList.FindAll(it => it.IsBpmEvent());
 
             events.LinkAllLightEvents();
+            events.LinkRingEvents();
         }
 
         if (objects is List<BaseCustomEvent> customEventsList)

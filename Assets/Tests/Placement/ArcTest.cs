@@ -182,7 +182,8 @@ namespace Tests.Placement
             if (arcsContainer.LoadedContainers[arc] is ArcContainer containerA)
                 inputController.ChangeMu(containerA, 0.5f);
 
-            arc = SelectionController.SelectedObjects.OfType<BaseArc>().Single();
+            // Hover tweaks are selection-neutral now, so resolve the live replacement from the collection.
+            arc = arcsContainer.LoadedObjects.OfType<BaseArc>().Single();
 
             BeatmapAssertion.IsEqualWithChanges(
                 baselineArc,
@@ -193,7 +194,7 @@ namespace Tests.Placement
             if (arcsContainer.LoadedContainers[arc] is ArcContainer containerA2)
                 inputController.ChangeTmu(containerA2, 0.5f);
 
-            arc = SelectionController.SelectedObjects.OfType<BaseArc>().Single();
+            arc = arcsContainer.LoadedObjects.OfType<BaseArc>().Single();
             BeatmapAssertion.IsEqualWithChanges(
                 baselineArc,
                 arc,

@@ -165,7 +165,8 @@ namespace Tests.Placement
             if (obstaclesCollection.LoadedContainers[wallA] is ObstacleContainer container)
                 inputController.ToggleHyperWall(container);
 
-            var toDelete = SelectionController.SelectedObjects.OfType<BaseObstacle>().Single();
+            // Hover tweaks are selection-neutral now, so resolve the live hyper wall from the collection.
+            var toDelete = obstaclesCollection.LoadedObjects.OfType<BaseObstacle>().Single();
             PlaceUtils.Delete(toDelete);
 
             BeatmapAssertion.CollectionCount<BaseObstacle>(0);

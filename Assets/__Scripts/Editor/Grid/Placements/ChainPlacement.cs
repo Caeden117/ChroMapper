@@ -17,8 +17,14 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
     [FormerlySerializedAs("notesContainer")] [SerializeField]
     private NoteGridContainer noteGridContainer;
 
-    [NonSerialized] public float Squish = Settings.Instance.DefaultChainSquish;
-    [NonSerialized] public int SliceCount = Settings.Instance.DefaultChainSliceCount;
+    [NonSerialized] public float Squish;
+    [NonSerialized] public int SliceCount;
+
+    private void Awake()
+    {
+        Squish = Settings.Instance.DefaultChainSquish;
+        SliceCount = Settings.Instance.DefaultChainSliceCount;
+    }
 
     /// <summary>
     ///     Perform all check for spawning a chain. Maybe should swap `n1` and `n2` when `n2` is actually pointing to `n1`

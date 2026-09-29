@@ -52,7 +52,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                         containerToEdit.ObjectData,
                         original,
                         "Tweaked bpm",
-                        mergeType: ActionMergeType.BPMValueTweak));
+                        mergeType: ActionMergeType.BPMValueTweak,
+                        preserveSelection: true));
 
                 BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
                 bpmChanges.RefreshModifiedBeat();
@@ -83,7 +84,8 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                     containerToEdit.ObjectData,
                     containerToEdit.ObjectData,
                     original,
-                    "Modified bpm"));
+                    "Modified bpm",
+                    preserveSelection: true));
 
             BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
             bpmChanges.RefreshModifiedBeat();
