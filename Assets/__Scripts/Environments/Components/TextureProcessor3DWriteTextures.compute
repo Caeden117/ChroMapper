@@ -10,22 +10,19 @@ Texture3D<float4> _inputTextureC;
 Texture3D<float4> _inputTextureD;
 RWTexture3D<float4> _outputMask;
 
-SamplerState sampler_inputTextureA
-{
-    Filter = MIN_MAG_MIP_POINT;
-    AddressU = Clamp;
-    AddressV = Clamp;
-    AddressW = Clamp;
-};
+// glcore cannot bind the shared texture-named sampler across these four inputs.
+// Unity recognizes this inline name and preserves point filtering and clamp addressing.
+SamplerState sampler_PointClamp;
 
 [numthreads(1, 1, 1)]
 void WriteTextures(uint3 id : SV_DispatchThreadID)
 {
     float3 uv = (id + 0.5f) / float3(_columnSize, _rowSize, _depthSize);
     float4 value;
-    value.x = _inputTextureA.SampleLevel(sampler_inputTextureA, uv, 0).x;
-    value.y = _inputTextureB.SampleLevel(sampler_inputTextureA, uv, 0).x;
-    value.z = _inputTextureC.SampleLevel(sampler_inputTextureA, uv, 0).x;
-    value.w = _inputTextureD.SampleLevel(sampler_inputTextureA, uv, 0).x;
+    // Every channel uses the same explicit sampler so its filtering does not depend on input A.
+    value.x = _inputTextureA.SampleLevel(sampler_PointClamp, uv, 0).x;
+    value.y = _inputTextureB.SampleLevel(sampler_PointClamp, uv, 0).x;
+    value.z = _inputTextureC.SampleLevel(sampler_PointClamp, uv, 0).x;
+    value.w = _inputTextureD.SampleLevel(sampler_PointClamp, uv, 0).x;
     _outputMask[id] = value;
 }
