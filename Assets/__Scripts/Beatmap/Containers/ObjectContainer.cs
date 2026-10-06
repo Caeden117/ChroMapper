@@ -63,11 +63,14 @@ namespace Beatmap.Containers
 
         public Track AssignedTrack { get; private set; }
 
+        public bool IsPlacementVisual { get; internal set; }
+
         public abstract BaseObject ObjectData { get; set; }
 
         public int ChunkID => (int)(ObjectData.JsonTime / Intersections.ChunkSize);
 
         public void Start() => RegisterCallback();
+
         public void OnDestroy() => UnregisterCallback();
 
         protected virtual void RegisterCallback() { }

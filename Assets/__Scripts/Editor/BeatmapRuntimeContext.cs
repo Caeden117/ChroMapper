@@ -14,6 +14,9 @@ public class BeatmapRuntimeContext : MonoBehaviour
 
     public event Action OnEnvironmentUnloaded;
     public event Action<EnvironmentDescriptor> OnEnvironmentLoaded;
+    // Environment overrides arrive after OnEnvironmentLoaded. Publish their final values separately so
+    // renderers update without repeating the full environment-load lifecycle.
+    public event Action<BloomFogParams> OnBloomFogParamsChanged;
     public event Action<ColorSchemeSO> OnColorSchemeChanged;
     public event Action<TrackDefinitionsSO> OnTrackDefinitionsChanged;
 
@@ -60,11 +63,13 @@ public class BeatmapRuntimeContext : MonoBehaviour
             OnEnvironmentUnloaded?.Invoke();
     }
 
+    public void NotifyBloomFogParamsChanged() => OnBloomFogParamsChanged?.Invoke(Descriptor.BloomFogParams);
+
     public void SetColorScheme(ColorSchemeSO colorScheme)
     {
         ColorScheme.Copy(colorScheme);
         // TODO: make a class that handles no event class that require direct assignment
-        PointDataParsers.ColorScheme = colorScheme;
+        PointDataParsers.ColorScheme = ColorScheme;
         NotifyColorScheme();
     }
 

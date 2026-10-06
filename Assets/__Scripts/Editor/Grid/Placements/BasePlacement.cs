@@ -317,12 +317,17 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
 
     public virtual void CreateVisual()
     {
-        if (PlacementVisualContainer != null) return;
+        if (PlacementVisualContainer != null)
+        {
+            PlacementVisualContainer.IsPlacementVisual = true;
+            return;
+        }
 
         PlacementVisualContainer = Instantiate(
                 ObjectContainerPrefab,
                 PlacementTrack)
             .GetComponent(typeof(TContainer)) as TContainer;
+        PlacementVisualContainer.IsPlacementVisual = true;
         PlacementVisualContainer.Setup();
         PlacementVisualContainer.Selected = false;
 

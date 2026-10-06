@@ -968,7 +968,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     lcebg.Boxes[boxIndex].Events =
                         lcebg
                             .Boxes[boxIndex]
-                            .Events.Where(x => x.CompareTo(obj) != 0)
+                            .Events.Where(x => !x.HasSameContent(obj))
                             .Append(obj as BaseLightColorBase)
                             .OrderBy(x => x.RelativeJsonTime)
                             .ToArray();
@@ -978,7 +978,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     lrebg.Boxes[boxIndex].Events =
                         lrebg
                             .Boxes[boxIndex]
-                            .Events.Where(x => x.CompareTo(obj) != 0)
+                            .Events.Where(x => !x.HasSameContent(obj))
                             .Append(obj as BaseLightRotationBase)
                             .OrderBy(x => x.RelativeJsonTime)
                             .ToArray();
@@ -988,7 +988,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     ltebg.Boxes[boxIndex].Events =
                         ltebg
                             .Boxes[boxIndex]
-                            .Events.Where(x => x.CompareTo(obj) != 0)
+                            .Events.Where(x => !x.HasSameContent(obj))
                             .Append(obj as BaseLightTranslationBase)
                             .OrderBy(x => x.RelativeJsonTime)
                             .ToArray();
@@ -999,7 +999,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                     ffebg.Boxes[boxIndex].Events =
                         ffebg
                             .Boxes[boxIndex]
-                            .Events.Where(x => x.CompareTo(obj) != 0)
+                            .Events.Where(x => !x.HasSameContent(obj))
                             .Append(obj as BaseFxEventFloat)
                             .OrderBy(x => x.RelativeJsonTime)
                             .ToArray();

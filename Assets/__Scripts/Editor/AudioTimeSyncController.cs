@@ -64,12 +64,17 @@ public class AudioTimeSyncController : MonoBehaviour,
     public event Action<float> OnVisualBeatOriginChanged;
     public event Action OnTimeChangedEarly;
     public event Action OnTimeChanged;
+    public event Action OnTimeFlushPending;
 
     // Keep the map cursor with the controller that owns song-time conversion and track positioning.
     public string StateKey => "currentJsonTime";
 
     private float playStartTime;
     private bool preciselyControlSnap;
+
+    internal static AudioTimeSyncController Instance { get; private set; }
+
+    private void Awake() => Instance = this;
 
     private float songSpeed = 10f;
 
@@ -255,6 +260,7 @@ public class AudioTimeSyncController : MonoBehaviour,
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
         EditorStateService.Unregister(this);
         clip = null;
         LoadInitialMap.OnLevelLoaded -= OnLevelLoaded;
@@ -506,6 +512,8 @@ public class AudioTimeSyncController : MonoBehaviour,
         tracksManager.UpdatePosition(-position);
         foreach (var track in otherTracks) track.UpdatePosition(-position);
 
+        if (!IsPlaying)
+            OnTimeFlushPending?.Invoke();
         // TODO(Caeden): what is the difference between these events
         OnTimeChangedEarly?.Invoke();
         OnTimeChanged?.Invoke();

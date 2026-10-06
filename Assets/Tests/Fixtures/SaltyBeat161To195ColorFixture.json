@@ -1,0 +1,1686 @@
+{
+  "version": "3.3.0",
+  "bpmEvents": [
+    {
+      "b": 0,
+      "m": 215
+    },
+    {
+      "b": 1.75,
+      "m": 100000
+    },
+    {
+      "b": 2.047515,
+      "m": 215
+    }
+  ],
+  "rotationEvents": [],
+  "basicBeatmapEvents": [],
+  "colorBoostBeatmapEvents": [],
+  "colorNotes": [
+    {
+      "b": 159.25,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": 1,
+        "noteJumpMovementSpeed": 13,
+        "track": "seeman"
+      }
+    },
+    {
+      "b": 159.25,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": 1,
+        "noteJumpMovementSpeed": 13,
+        "track": "seeman"
+      }
+    },
+    {
+      "b": 161,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -1,
+        "noteJumpMovementSpeed": 13,
+        "track": "bass"
+      }
+    },
+    {
+      "b": 161,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -1,
+        "noteJumpMovementSpeed": 13,
+        "track": "bass"
+      }
+    },
+    {
+      "b": 161.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 162,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 162,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 162.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 163,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 163,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 163.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 164,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 164,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 164.5,
+      "x": 0,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 165,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 165,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 165.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 166,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 166,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 166.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 167,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 167,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 167.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 168,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 168.25,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 168.5,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 5,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 169,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 169,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 169.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 170,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 170,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 170.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 171,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 171,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 171.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 172,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 172,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 172.5,
+      "x": 0,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 173,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 173,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 173.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 174,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 174,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 174.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 175,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 175,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 175.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 176,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 177,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 177,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 177.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 178,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 178,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 178.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 179,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 179,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 179.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 180,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 180,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 180.5,
+      "x": 0,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 181,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 181,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 181.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 182,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 182,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 182.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 183,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 183,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 183.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 184,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 184,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 184.5,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 185,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 185.5,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 186,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 186,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 186.5,
+      "x": 0,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 187,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 187,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 187.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 188,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 188,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 188.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 189,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 189,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 189.5,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 190,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 190.5,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 191,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 191.5,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 192,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 192.25,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 192.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 192.75,
+      "x": 0,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 193,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 6,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 193,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 6,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 193.5,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 194,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 2,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 194,
+      "x": 3,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 194.5,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 195,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 7,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 195,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 7,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    },
+    {
+      "b": 195.5,
+      "x": 2,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 196,
+      "x": 0,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 1,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropL"
+      }
+    },
+    {
+      "b": 196,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18,
+        "track": "dropR"
+      }
+    }
+  ],
+  "bombNotes": [],
+  "obstacles": [],
+  "sliders": [],
+  "burstSliders": [
+    {
+      "b": 176,
+      "c": 1,
+      "x": 3,
+      "y": 0,
+      "d": 0,
+      "tb": 176.25,
+      "tx": 2,
+      "ty": 2,
+      "sc": 8,
+      "s": 1,
+      "customData": {
+        "track": "dropR",
+        "noteJumpStartBeatOffset": -0.25,
+        "noteJumpMovementSpeed": 18
+      }
+    }
+  ],
+  "waypoints": [],
+  "lightColorEventBoxGroups": [],
+  "lightRotationEventBoxGroups": [],
+  "lightTranslationEventBoxGroups": [],
+  "vfxEventBoxGroups": [],
+  "_fxEventsCollection": {
+    "_fl": [],
+    "_il": [],
+    "_vl": []
+  },
+  "basicEventTypesWithKeywords": {
+    "_k": []
+  },
+  "useNormalEventsAsCompatibleEvents": false,
+  "customData": {
+    "materials": {},
+    "pointDefinitions": {},
+    "environment": [],
+    "fakeColorNotes": [],
+    "fakeObstacles": [],
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignPathAnimation",
+        "d": {
+          "track": [
+            "dropL",
+            "dropR"
+          ],
+          "duration": 0,
+          "easing": "easeOutQuad",
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "offsetWorldRotation": [
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 153,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "sea man",
+          "duration": 4,
+          "dissolve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 159.25,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "bass",
+          "duration": 1.5,
+          "offsetPosition": [
+            [
+              0,
+              0,
+              -4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "easeOutCubic"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 168,
+        "t": "AnimateTrack",
+        "d": {
+          "track": [
+            "dropL",
+            "dropR"
+          ],
+          "duration": 1,
+          "dissolve": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              1,
+              0.25
+            ],
+            [
+              0.25,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 176,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropR",
+          "duration": 0.125,
+          "color": [
+            [
+              0.42,
+              0.42,
+              0.42,
+              0.42,
+              0.5
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0.5
+            ]
+          ],
+          "repeat": 6969
+        }
+      },
+      {
+        "b": 176,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropL",
+          "duration": 0.125,
+          "color": [
+            [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.5
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0.5
+            ]
+          ],
+          "repeat": 6969
+        }
+      },
+      {
+        "b": 177,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropR",
+          "duration": 0.25,
+          "color": [
+            "baseNote1Color",
+            [
+              0,
+              0,
+              0,
+              0,
+              "opAdd"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 177,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropL",
+          "duration": 4,
+          "color": [
+            "baseNote0Color",
+            [
+              0,
+              0,
+              0,
+              0,
+              "opAdd"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 189,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropR",
+          "duration": 4,
+          "color": [
+            [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0
+            ],
+            [
+              "baseNote1Color",
+              [
+                0,
+                0,
+                0,
+                0,
+                "opAdd"
+              ],
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 189,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "dropL",
+          "duration": 4,
+          "color": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              "baseNote0Color",
+              [
+                0,
+                0,
+                0,
+                0,
+                "opAdd"
+              ],
+              1
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

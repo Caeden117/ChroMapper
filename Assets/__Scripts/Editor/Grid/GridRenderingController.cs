@@ -25,6 +25,7 @@ public class GridRenderingController : MonoBehaviour
     {
         atsc.OnGridMeasureSnappingChanged += HandleGridMeasureSnappingChanged;
         vNjsProvider.OnChanged += UpdateHJDLine;
+        LoadInitialMap.OnLevelLoaded += HandleLevelLoaded;
         Settings.NotifyBySettingName(nameof(Settings.HighContrastGrids), UpdateInterfaceXZ);
         Settings.NotifyBySettingName(nameof(Settings.GridTransparency), UpdateInterfaceXZ);
         Settings.NotifyBySettingName(nameof(Settings.InterfaceOpacity), UpdateInterfaceXY);
@@ -40,6 +41,7 @@ public class GridRenderingController : MonoBehaviour
     {
         atsc.OnGridMeasureSnappingChanged -= HandleGridMeasureSnappingChanged;
         vNjsProvider.OnChanged -= UpdateHJDLine;
+        LoadInitialMap.OnLevelLoaded -= HandleLevelLoaded;
         Settings.ClearSettingNotifications(nameof(Settings.HighContrastGrids));
         Settings.ClearSettingNotifications(nameof(Settings.GridTransparency));
         Settings.ClearSettingNotifications(nameof(Settings.InterfaceOpacity));
@@ -90,6 +92,8 @@ public class GridRenderingController : MonoBehaviour
         ZLineThickness[0] = (float)value;
         OnBeatThicknessChanged?.Invoke(ZLineThickness);
     }
+
+    private void HandleLevelLoaded() => Shader.SetGlobalFloat(currentHjdShaderID, vNjsProvider.BaseHalfJumpDurationInBeats);
 
     private void UpdateHJDLine() => Shader.SetGlobalFloat(currentHjdShaderID, vNjsProvider.HalfJumpDurationInBeats);
     private void UpdateDisplayHJDLine(object value) => Shader.SetGlobalInt(displayHjdLineID, (bool)value ? 1 : 0);

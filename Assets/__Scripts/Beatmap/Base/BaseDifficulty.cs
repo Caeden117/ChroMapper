@@ -87,6 +87,14 @@ namespace Beatmap.Base
 
         public JSONNode CustomData { get; set; } = new JSONObject();
 
+        private int nextFileOrder;
+
+        internal T WithFileOrder<T>(T obj) where T : BaseObject
+        {
+            obj.FileOrder = nextFileOrder++;
+            return obj;
+        }
+
         private List<List<BaseObject>> AllBaseObjectProperties() =>
             new()
             {
@@ -109,6 +117,8 @@ namespace Beatmap.Base
         #region BPM Time Conversion Logic
 
         private float? songBpm;
+
+        public float? SongBpm => songBpm;
 
         public void ValidateBpmEventsAndObjectTimes(float songBpm)
         {

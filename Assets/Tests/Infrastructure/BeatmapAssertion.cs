@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Beatmap.Base;
+using Beatmap.Comparers;
 using Beatmap.Helper;
 using Beatmap.V2;
 using Beatmap.V3;
@@ -265,10 +266,11 @@ namespace Tests.Infrastructure
                         $"{message}: Notes {noteMapObjects[i - 1]} and {noteMapObjects[i]} are out of order | i = {i}");
         }
 
+        // Basic-event collections now preserve authored ties, so verify their chronological comparer rather than payload ordering.
         private static void AssertEventsAreSorted(IReadOnlyList<BaseEvent> eventMapObjects, string message)
         {
             for (var i = 1; i < eventMapObjects.Count; i++)
-                if (eventMapObjects[i - 1].CompareTo(eventMapObjects[i]) == 1)
+                if (EventOrderComparer.Instance.Compare(eventMapObjects[i - 1], eventMapObjects[i]) > 0)
                     Assert.Fail(
                         $"{message}: Events {eventMapObjects[i - 1]} and {eventMapObjects[i]} are out of order | i = {i}");
         }

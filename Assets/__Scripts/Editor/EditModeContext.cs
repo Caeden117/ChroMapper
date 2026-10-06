@@ -63,13 +63,17 @@ public class EditModeContext : MonoBehaviour, CMInput.IEditModeActions, IEditorS
         if (context.performed) EditingMode = EditingMode.Gameplay;
     }
 
+    // prevents F2 from disabling the gameplay tracks that own the playing camera while a preview UI mode is active.
     public void OnGLSEdit(InputAction.CallbackContext context)
     {
-        if (context.performed) EditingMode = EditingMode.GLS;
+        if (context.performed && !UIMode.PreviewMode)
+            EditingMode = EditingMode.GLS;
     }
 
+    // Ditto but F3
     public void OnBasicEventEdit(InputAction.CallbackContext context)
     {
-        if (context.performed) EditingMode = EditingMode.BasicEvent;
+        if (context.performed && !UIMode.PreviewMode)
+            EditingMode = EditingMode.BasicEvent;
     }
 }

@@ -13,20 +13,37 @@ public class MapLoader : MonoBehaviour
 
     private BaseDifficulty map;
 
+    public void ResetAnimationTracks() => manager.ResetAnimationTracks();
+
+    public void DestroyTrackBoundEnvironmentObjects()
+    {
+        var geometry = BeatmapObjectContainerCollection
+            .GetCollectionForType<GeometryGridContainer, BaseEnvironmentEnhancement>();
+        if (geometry != null)
+        {
+            geometry.ClearSpawnedGeometry();
+        }
+
+        manager.DestroyTrackBoundEnvironmentObjects();
+    }
+
     public void UpdateMapData(BaseDifficulty m)
     {
         map = m;
         map.ConvertCustomBpmToOfficial();
+        manager.IsV2Map = map.MajorVersion == 2;
     }
 
     public void HardRefresh()
     {
+        manager.ResetAnimationTracks();
+
         LoadObjects(map.BpmEvents);
 
         if (Settings.Instance.Load_Others)
         {
             LoadObjects(map.CustomEvents);
-            LoadObjects(map.EnvironmentEnhancements);
+            LoadEnvironmentEnhancements(map.EnvironmentEnhancements);
         }
 
         if (Settings.Instance.Load_Notes)
@@ -74,8 +91,10 @@ public class MapLoader : MonoBehaviour
 
         if (collection == null) return;
 
-        // We need to force sort our objects when loading externally for Binary Search operations and ordered algorithms to work.
-        objects.Sort();
+        // Use a stable sort so newly authored events with equal keys keep their insertion order.
+        var sorted = objects.OrderBy(it => it, collection.SortComparer).ToList();
+        objects.Clear();
+        objects.AddRange(sorted);
 
         collection.MapObjects = objects;
 
@@ -96,12 +115,19 @@ public class MapLoader : MonoBehaviour
             events.LoadAll();
         }
 
-        if (objects is List<BaseEnvironmentEnhancement>)
-        {
-            if (beatmapRuntimeContext.Descriptor != null)
-                beatmapRuntimeContext.Descriptor.BloomFogParams.ResetToDefaults();
-            beatmapRuntimeContext.NotifyEnvironment();
-        }
+        collection.RefreshPool(true);
+    }
+
+    public void LoadEnvironmentEnhancements(List<BaseEnvironmentEnhancement> instructions)
+    {
+        var collection = BeatmapObjectContainerCollection
+            .GetCollectionForType<GeometryGridContainer, BaseEnvironmentEnhancement>();
+        if (collection == null) return;
+
+        collection.MapObjects = instructions;
+        if (beatmapRuntimeContext.Descriptor != null)
+            beatmapRuntimeContext.Descriptor.BloomFogParams.ResetToDefaults();
+        beatmapRuntimeContext.NotifyEnvironment();
 
         collection.RefreshPool(true);
     }

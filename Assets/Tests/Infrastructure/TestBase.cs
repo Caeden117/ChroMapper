@@ -68,7 +68,8 @@ namespace Tests.Infrastructure
             SelectionController.DeselectAll();
             BeforeCleanup();
             BeatmapActionContainer.RemoveAllActionsOfType<BeatmapAction>();
-            CleanupUtils.CleanupObjects();
+            // SongBoundaryTest performance coverage records the exact collections it authors so hundreds of cases do not sweep every map collection.
+            CleanupTestObjects();
             AfterCleanup();
 
             // Leave the shared editor in the default tab so tests that do not override their mode start consistently.
@@ -85,5 +86,8 @@ namespace Tests.Infrastructure
         protected virtual void AfterCleanup()
         {
         }
+
+        // Most fixtures retain the conservative whole-map cleanup; high-cardinality fixtures override this with their authored collection set.
+        protected virtual void CleanupTestObjects() => CleanupUtils.CleanupObjects();
     }
 }

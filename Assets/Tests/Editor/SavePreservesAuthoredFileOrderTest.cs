@@ -1,4 +1,9 @@
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using Beatmap.Base;
+using Beatmap.Base.Customs;
 using Beatmap.V2;
 using NUnit.Framework;
 using SimpleJSON;
@@ -15,6 +20,12 @@ namespace Tests.Editor
     // in-memory lists are deliberately scrambled to simulate the sorted order the editor keeps.
     public class SavePreservesAuthoredFileOrderTest
     {
+        private static string FixturePath => Path.Combine(
+            Application.dataPath,
+            "Tests",
+            "Fixtures",
+            "WorldCavesInEnvironmentEssence.json");
+
         private int originalMapVersion;
         private int originalDecimalPrecision;
 
@@ -32,6 +43,87 @@ namespace Tests.Editor
         {
             Settings.Instance.MapVersion = originalMapVersion;
             JSONNumber.DecimalPrecision = originalDecimalPrecision;
+        }
+
+        // The reported corruption: the fixture's beat-0 hide must stay before its beat-0 show on
+        // TrackConstructionParent1 even after the in-memory list is scrambled.
+        [Test]
+        public void CustomEventsSaveInAuthoredFileOrderAfterInMemoryScramble()
+        {
+            var map = V2Difficulty.GetFromJson(JSON.Parse(File.ReadAllText(FixturePath)), "test");
+            map.CustomEvents.Reverse();
+
+            var output = V2Difficulty.GetOutputJson(map);
+            var runwayXs = output["_customData"]["_customEvents"].AsArray.Children
+                .Where(n => n["_type"].Value == "AnimateTrack"
+                    && n["_data"]["_track"].Value == "TrackConstructionParent1"
+                    && n["_time"].AsFloat == 0f
+                    && n["_data"]["_position"] is JSONArray)
+                .Select(n => n["_data"]["_position"].AsArray[0].AsArray[0].AsFloat)
+                .ToList();
+
+            Assert.AreEqual(
+                new List<float> { 696969f, 0f },
+                runwayXs,
+                "Beat-0 hide (x=696969) must precede beat-0 show (x=0) exactly as authored; "
+                    + "Chroma applies equal-time events last-in-file");
+        }
+
+        // Same-time events whose CompareTo keys differ (here: _value) get scrambled by the
+        // in-memory sort at parse; the save must still emit the authored order.
+        [Test]
+        public void SameTimeEventsSaveInAuthoredFileOrder()
+        {
+            var map = V2Difficulty.GetFromJson(JSON.Parse(@"{
+                ""_version"": ""2.6.0"",
+                ""_events"": [
+                    { ""_time"": 5, ""_type"": 8, ""_value"": 2, ""_floatValue"": 1 },
+                    { ""_time"": 5, ""_type"": 8, ""_value"": 0, ""_floatValue"": 1 },
+                    { ""_time"": 5, ""_type"": 8, ""_value"": 7, ""_floatValue"": 1 }
+                ],
+                ""_notes"": [],
+                ""_obstacles"": []
+            }"), "test");
+
+            var output = V2Difficulty.GetOutputJson(map);
+            var values = output["_events"].AsArray.Children
+                .Where(n => n["_type"].AsInt == 8 && n["_time"].AsFloat == 5f)
+                .Select(n => n["_value"].AsInt)
+                .ToList();
+
+            Assert.AreEqual(new List<int> { 2, 0, 7 }, values);
+        }
+
+        // Objects spawned in the editor (no file position) must still serialize, landing at the
+        // tail of their same-time group rather than vanishing or corrupting order.
+        [Test]
+        public void SpawnedCustomEventsAppendAtEndOfTheirTimeGroup()
+        {
+            var map = V2Difficulty.GetFromJson(JSON.Parse(@"{
+                ""_version"": ""2.6.0"",
+                ""_events"": [],
+                ""_notes"": [],
+                ""_obstacles"": [],
+                ""_customData"": {
+                    ""_customEvents"": [
+                        { ""_time"": 0, ""_type"": ""AnimateTrack"", ""_data"": { ""_track"": ""T"", ""_position"": [[1, 0, 0, 0]], ""_duration"": 0 } }
+                    ]
+                }
+            }"), "test");
+
+            map.CustomEvents.Add(new BaseCustomEvent
+            {
+                JsonTime = 0f,
+                Type = "AnimateTrack",
+                Data = JSON.Parse(@"{ ""_track"": ""T"", ""_position"": [[2, 0, 0, 0]], ""_duration"": 0 }")
+            });
+
+            var output = V2Difficulty.GetOutputJson(map);
+            var positions = output["_customData"]["_customEvents"].AsArray.Children
+                .Select(n => n["_data"]["_position"].AsArray[0].AsArray[0].AsFloat)
+                .ToList();
+
+            Assert.AreEqual(new List<float> { 1f, 2f }, positions);
         }
 
         // Authored floats beyond 3 decimals must survive the save; the previous

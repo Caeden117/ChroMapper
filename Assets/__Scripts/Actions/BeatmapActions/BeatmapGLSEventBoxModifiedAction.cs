@@ -33,7 +33,7 @@ public class BeatmapGLSEventBoxModifiedAction : BeatmapAction, IMergeableAction
         if (previous is not BeatmapGLSEventBoxModifiedAction previousAction) return false;
         return MergeType != ActionMergeType.None
             && previous.MergeType == MergeType
-            && OriginalObject.CompareTo(previousAction.OriginalObject) == 0;
+            && OriginalObject.HasSameContent(previousAction.OriginalObject);
     }
 
     public IMergeableAction DoMerge(IMergeableAction previous)

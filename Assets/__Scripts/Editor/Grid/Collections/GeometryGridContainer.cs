@@ -32,10 +32,9 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
     protected override void HandleObjectDelete(BaseObject obj, bool inCollection = false)
     {
         var eh = obj as BaseEnvironmentEnhancement;
-        if (LoadedContainers.ContainsKey(eh))
+        if (LoadedContainers.TryGetValue(eh, out var container))
         {
-            // Must be immediate to prevent light id conflicts
-            GameObject.DestroyImmediate(LoadedContainers[eh].gameObject);
+            GameObject.DestroyImmediate(container.gameObject);
             LoadedContainers.Remove(eh);
             ObjectsWithContainers.Remove(eh);
         }
@@ -45,15 +44,7 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
     {
         if (force)
         {
-            // UpToNRandomMapsInDefaultSongLocationsLoadWithoutExceptions exposed the forced geometry reset's
-            // repeated List.Remove scan; destroy each visual once, then clear both ownership indexes in bulk.
-            foreach (var container in LoadedContainers.Values)
-            {
-                GameObject.DestroyImmediate(container.gameObject);
-            }
-
-            LoadedContainers.Clear();
-            ObjectsWithContainers.Clear();
+            ClearSpawnedGeometry();
 
             foreach (var to_spawn in MapObjects)
             {
@@ -63,6 +54,21 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
                 }
             }
         }
+    }
+
+    // Release these registrations before unloading their environment scene, which also destroys untracked geometry.
+    public void ClearSpawnedGeometry()
+    {
+        foreach (var container in LoadedContainers.Values)
+        {
+            if (container != null)
+            {
+                GameObject.DestroyImmediate(container.gameObject);
+            }
+        }
+
+        LoadedContainers.Clear();
+        ObjectsWithContainers.Clear();
     }
 
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false)

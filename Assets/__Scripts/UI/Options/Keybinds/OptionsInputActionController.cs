@@ -42,6 +42,10 @@ public class OptionsInputActionController : MonoBehaviour
         sectionName = sName;
         action = inputAction;
         this.compositeName = compositeName;
+        // Enter may shorten a chord, while axis composites below still require every direction.
+        minKeys = 1;
+        maxKeys = 3;
+        isAxisComposite = false;
         
         var keybindNameText = useCompositeName ? $"{inputAction.name} ({compositeName})" : inputAction.name;
         keybindName.text = keybindNameText.StartsWith(KeybindsController.PersistentKeybindIdentifier)
@@ -88,24 +92,23 @@ public class OptionsInputActionController : MonoBehaviour
             else if (compositeBinding.path.Contains("ThreeModifiers") ||
                      compositeBinding.path.Contains("ButtonWithThreeModifiers"))
             {
-                minKeys = maxKeys = 4;
-            }
-            else if (compositeBinding.path.Contains("TwoModifiers") ||
-                     compositeBinding.path.Contains("ButtonWithTwoModifiers"))
-            {
-                minKeys = maxKeys = 3;
+                maxKeys = 4;
             }
         }
     }
 
     public void OnKeybindSelected(string text)
     {
-        if (!keybindNameToInputField.ContainsKey(text)) return;
+        if (!keybindNameToInputField.TryGetValue(text, out var selectedField))
+            return;
+
         SelectKeybindUIs();
-        keybindNameToInputField[text].text = "";
+        selectedField.text = "";
         Debug.Log($"Performing rebind for {action.name} ({compositeName})");
         keybindNameToInputField.Clear();
-        for (var i = 1; i < keybindInputFields.Length; i++) keybindInputFields[i].gameObject.SetActive(false);
+        // TMP finishes activating the selected field in LateUpdate, so it must stay active until the rebind ends.
+        for (var i = 1; i < keybindInputFields.Length; i++)
+            keybindInputFields[i].gameObject.SetActive(keybindInputFields[i] == selectedField);
 
         GetComponentInParent<OptionsKeybindsLoader>()
             .BroadcastMessage("CancelKeybindRebind", "LULW", SendMessageOptions.DontRequireReceiver);

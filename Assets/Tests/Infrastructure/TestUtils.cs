@@ -18,6 +18,7 @@ namespace Tests.Infrastructure
         private static InfoDifficulty baselineDifficulty;
         private static BaseDifficulty baselineMap;
         private static AudioClip baselineSong;
+        private static AudioClip ownedTestSong;
         // Preserve project input routing while tests force deterministic delivery without requiring Game view focus.
         private static UnityEngine.InputSystem.InputSettings.BackgroundBehavior? baselineBackgroundBehavior;
         private static UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode? baselineEditorInputBehavior;
@@ -157,7 +158,11 @@ namespace Tests.Infrastructure
             int version,
             JSONNode difficultyJson,
             JSONObject editorState = null,
-            float? beatsPerMinute = null)
+            float? beatsPerMinute = null,
+            string environmentName = null,
+            int songLengthSeconds = 60,
+            bool forceSceneReload = false,
+            InfoDifficulty difficultyInfo = null)
         {
             if (version != 2 && version != 3) throw new ArgumentException("Only beatmap version 2 and 3 is available");
 
@@ -173,14 +178,17 @@ namespace Tests.Infrastructure
             Settings.TestRunnerSettings.MapVersion = version;
             // BasicEventDenseMapChunkingTest must load the high-beat fixture through the production scene path
             // without allocating a multi-minute audio clip, so permit that fixture to provide an equivalent scaled BPM.
-            yield return LoadMapper(difficultyJson, editorState, beatsPerMinute);
+            yield return LoadMapper(difficultyJson, editorState, beatsPerMinute, environmentName, songLengthSeconds, difficultyInfo);
         }
 
         // Carry the optional fixture BPM into BaseInfo before BeatmapFactory computes every object's SongBpmTime.
         private static IEnumerator LoadMapper(
             JSONNode difficultyJson = null,
             JSONObject editorState = null,
-            float? beatsPerMinute = null)
+            float? beatsPerMinute = null,
+            string environmentName = null,
+            int songLengthSeconds = 60,
+            InfoDifficulty difficultyInfo = null)
         {
             if (SceneManager.GetActiveScene().name.StartsWith("03")) yield break;
 
@@ -196,6 +204,18 @@ namespace Tests.Infrastructure
             {
                 info.BeatsPerMinute = beatsPerMinute.Value;
             }
+
+            // WorldCavesInEnvironmentTest loads environment enhancements authored against TimbalandEnvironment
+            // object IDs; without the matching production environment scene, every enhancement lookup matches
+            // nothing and the fixture cannot reproduce the reported map behavior.
+            if (environmentName != null)
+            {
+                info.EnvironmentName = environmentName;
+            }
+
+            // WorldCavesInEnvironmentTest scrubs to beats beyond the shared 60-second clip (beat 266+ at 124 BPM),
+            // and AudioTimeSyncController clamps seeks to LoadedSong.length, so its clip must actually cover them.
+            songLengthSeconds = Mathf.Max(60, songLengthSeconds);
             // Inject map-owned editor metadata before scene loading so providers restore it through the same LoadInitialMap path as production maps.
             if (editorState != null)
             {
@@ -203,11 +223,13 @@ namespace Tests.Infrastructure
             }
             BeatSaberSongContainer.Instance.Info = info;
             var parentSet = new InfoDifficultySet { Characteristic = "Lawless" };
-            var diff = new InfoDifficulty(parentSet) { LightshowFileName = "MissingTestLightshow.dat" };
+            var diff = difficultyInfo ?? new InfoDifficulty(parentSet) { LightshowFileName = "MissingTestLightshow.dat" };
 
             BeatSaberSongContainer.Instance.MapDifficultyInfo = diff;
             // Cursor and paste tests must reach anchors beyond beat 33 at the default 100 BPM without AudioTimeSyncController clamping them to the fake clip's end.
-            BeatSaberSongContainer.Instance.LoadedSong = AudioClip.Create("Fake", 44100 * 60, 1, 44100, false);
+            // Only clip.length matters to ATSC and the preview paths, so an 8 kHz clip covers the same song
+            // length at ~5x less PCM memory per reload than a 44.1 kHz clip.
+            ReplaceTestSong(songLengthSeconds);
             BeatSaberSongContainer.Instance.Map = BeatmapFactory.GetDifficultyFromJson(
                 difficultyJson ?? (loadVersion == 3
                     ? new JSONObject { ["version"] = "3.2.0" }
@@ -215,14 +237,39 @@ namespace Tests.Infrastructure
                 "testmap",
                 info,
                 diff);
-            // Capture only the standard empty map because ReloadMap callers intentionally provide temporary map data for their own test scope.
-            if (difficultyJson == null && editorState == null)
-            {
-                CaptureBaseline();
-            }
 
             SceneTransitionManager.Instance.LoadScene("03_Mapper");
             yield return new WaitUntil(() => !SceneTransitionManager.IsLoading);
+
+            // Every collection's MapObjects aliases the freshly loaded map's own lists, so the shared
+            // baseline must track every completed load. If a reload leaves baseline pointing at a superseded
+            // map, the next test's ResetSharedMapState installs that dead object: placements then write to the
+            // live map's lists while obj.Map lookups search the dead one (BPMTest.SongBpmTimes collapsed to
+            // JsonTime after fixture tests reloaded without recapturing).
+            CaptureCurrentMapAsSharedBaseline();
+        }
+
+        // Native AudioClips need explicit destruction. Rebind the source before releasing only the clip this helper owns.
+        private static void ReplaceTestSong(int songLengthSeconds)
+        {
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            if (atsc != null && atsc.IsPlaying)
+            {
+                atsc.CancelPlaying();
+            }
+
+            var previousSong = ownedTestSong;
+            ownedTestSong = AudioClip.Create("Fake", 8000 * songLengthSeconds, 1, 8000, false);
+            BeatSaberSongContainer.Instance.LoadedSong = ownedTestSong;
+            if (atsc != null)
+            {
+                atsc.SongAudioSource.clip = ownedTestSong;
+            }
+
+            if (previousSong != null)
+            {
+                Object.DestroyImmediate(previousSong);
+            }
         }
 
         public static void ReturnSettings()

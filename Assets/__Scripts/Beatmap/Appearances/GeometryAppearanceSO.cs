@@ -21,6 +21,7 @@ namespace Beatmap.Appearances
 
         private static BaseMaterial standard;
         private static readonly int colorId = Shader.PropertyToID("_Color");
+        private static readonly int cullModeId = Shader.PropertyToID("_CullMode");
         private readonly Dictionary<string, Material> keywordMaterials = new();
 
         public void OnEnable() => standard = new BaseMaterial { Shader = "Standard" };
@@ -81,30 +82,76 @@ namespace Beatmap.Appearances
                 _ => regularMaterial,
             };
 
-            if (eh.Geometry[eh.GeometryKeyMaterial].IsObject
-                && eh.Geometry[eh.GeometryKeyMaterial][eh.GeometryKeyMaterialKeywords].IsArray)
+            // Chroma changes SPECIFICALLY Standard and BTSPillar to unlit Glowing material ONLY when the authored
+            // shaderKeywords array is present AND empty.
+            var unlitStandard = (shader == ShaderType.Standard || shader == ShaderType.BTSPillar)
+                && basemat.ShaderKeywords is { Count: 0 };
+            if (unlitStandard)
+                material = GetUnlitStandardMaterial();
+            else if (basemat.ShaderKeywords != null)
             {
-                if ((shader == ShaderType.Standard || shader == ShaderType.BTSPillar)
-                    && eh.Geometry[eh.GeometryKeyMaterial][eh.GeometryKeyMaterialKeywords].Count == 0)
-                    material = glowingMaterial;
-                else
-                {
-                    var keywords = eh.Geometry[eh.GeometryKeyMaterial][eh.GeometryKeyMaterialKeywords]
-                        .AsArray.Children.Where(x => x.IsString)
-                        .Cast<string>();
-                    if (shader == ShaderType.Glowing)
-                        keywords = keywords.Select(CanonicalizeGlowingKeyword).Where(x => x != null);
-                    material = GetKeywordMaterial(material, keywords);
-                }
+                IEnumerable<string> keywords = basemat.ShaderKeywords;
+                if (shader == ShaderType.Glowing)
+                    keywords = keywords.Select(CanonicalizeGlowingKeyword).Where(x => x != null);
+                material = GetKeywordMaterial(material, keywords);
             }
 
-            if (basemat.Color is Color color) container.MpbController.Mpb.SetColor(colorId, color);
+            var geometryType = eh.Geometry[eh.GeometryKeyType].Value;
+            if (shader == ShaderType.TransparentLight
+                && (geometryType == "Quad" || geometryType == "Triangle"))
+            {
+                material = GetDoubleSidedTransparentPlanarMaterial(material);
+            }
+
+            // Native Chroma zeroes the authored color's alpha on the empty-keywords upgrade so the
+            // surface contributes zero bloom while remaining opaque.
+            if (basemat.Color.HasValue || unlitStandard)
+            {
+                var color = basemat.Color ?? Color.clear;
+                if (unlitStandard)
+                    color.a = 0f;
+                container.MpbController.Mpb.SetColor(colorId, color);
+            }
 
             // For animating material color
-            if (basemat.Track is string track) container.MaterialAnimator.AttachToMaterial(container, track);
+            if (basemat.Track is string track)
+                container.MaterialAnimator.AttachToMaterial(container, track, unlitStandard);
 
             foreach (var r in container.MpbController.Renderers) r.sharedMaterial = material;
             container.MpbController.ApplyChanges();
+        }
+
+        private Material GetDoubleSidedTransparentPlanarMaterial(Material source)
+        {
+            var key = "planar-transparent-cull-off:" + source.GetInstanceID();
+            if (keywordMaterials.TryGetValue(key, out var cached)) return cached;
+
+            var material = new Material(source)
+            {
+                name = source.name + " (Geometry Planar Double Sided)",
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            material.SetFloat(cullModeId, (float)UnityEngine.Rendering.CullMode.Off);
+            keywordMaterials.Add(key, material);
+            return material;
+        }
+
+        // Cached clone of the Glowing material for the Standard/BTSPillar + shaderKeywords:[]
+        // upgrade only - native sets _FogStartOffset to +inf on its Glowing base. Cloning keeps
+        // intended Glowing/TransparentLight materials on their own serialized settings.
+        private Material GetUnlitStandardMaterial()
+        {
+            const string key = "unlit-standard";
+            if (keywordMaterials.TryGetValue(key, out var cached)) return cached;
+            var material = new Material(glowingMaterial)
+            {
+                name = "Glowing (Unlit Standard)",
+                hideFlags = HideFlags.HideAndDontSave,
+                shaderKeywords = Array.Empty<string>()
+            };
+            material.SetFloat("_FogStartOffset", float.PositiveInfinity);
+            keywordMaterials.Add(key, material);
+            return material;
         }
 
         private Material GetKeywordMaterial(Material source, IEnumerable<string> keywords)
