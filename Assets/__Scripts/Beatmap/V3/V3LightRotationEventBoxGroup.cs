@@ -42,7 +42,7 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseLightRotationEventBoxGroup group)
         {
             JSONNode node = new JSONObject();
-            node["b"] = group.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(group.JsonTime);
             node["g"] = group.ID;
             var ary = new JSONArray();
             foreach (var k in group.Boxes) ary.Add(V3LightRotationEventBox.ToJson(k));

@@ -151,7 +151,7 @@ namespace Beatmap.V4
 
                 node["x"] = PosX;
                 node["y"] = PosY;
-                node["d"] = Duration;
+                node["d"] = JSONNumber.RoundBeat(Duration);
                 node["w"] = Width;
                 node["h"] = Height;
                 
@@ -595,7 +595,7 @@ namespace Beatmap.V4
             {
                 var node = new JSONObject();
 
-                node["w"] = BeatDistribution;
+                node["w"] = JSONNumber.RoundBeat(BeatDistribution);
                 node["d"] = BeatDistributionType;
                 node["s"] = BrightnessDistribution;
                 node["t"] = BrightnessDistributionType;
@@ -743,7 +743,7 @@ namespace Beatmap.V4
             {
                 var node = new JSONObject();
 
-                node["w"] = BeatDistribution;
+                node["w"] = JSONNumber.RoundBeat(BeatDistribution);
                 node["d"] = BeatDistributionType;
                 node["s"] = RotationDistribution;
                 node["t"] = RotationDistributionType;
@@ -883,7 +883,7 @@ namespace Beatmap.V4
             {
                 var node = new JSONObject();
 
-                node["w"] = BeatDistribution;
+                node["w"] = JSONNumber.RoundBeat(BeatDistribution);
                 node["d"] = BeatDistributionType;
                 node["s"] = TranslationDistribution;
                 node["t"] = TranslationDistributionType;
@@ -1005,7 +1005,7 @@ namespace Beatmap.V4
             {
                 var node = new JSONObject();
 
-                node["w"] = BeatDistribution;
+                node["w"] = JSONNumber.RoundBeat(BeatDistribution);
                 node["d"] = BeatDistributionType;
                 node["s"] = FxDistribution;
                 node["t"] = FxDistributionType;

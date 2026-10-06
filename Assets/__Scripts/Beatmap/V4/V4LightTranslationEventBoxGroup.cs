@@ -83,7 +83,7 @@ namespace Beatmap.V4
             IList<V4CommonData.LightTranslationEvent> lightTranslationEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = group.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(group.JsonTime);
             node["g"] = group.ID;
             node["t"] = 3;
 
@@ -103,7 +103,7 @@ namespace Beatmap.V4
                 foreach (var evt in boxEvent.Events)
                 {
                     var eventNode = new JSONObject();
-                    eventNode["b"] = evt.RelativeJsonTime;
+                    eventNode["b"] = JSONNumber.RoundBeat(evt.RelativeJsonTime);
                     eventNode["i"] =
                         lightTranslationEventsCommonData.IndexOf(
                             V4CommonData.LightTranslationEvent.FromBaseLightTranslationEvent(evt));

@@ -29,7 +29,7 @@ namespace Beatmap.V4
         public static JSONNode ToJson(BaseRotationEvent evt, IList<V4CommonData.RotationEvent> rotationsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = evt.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(evt.JsonTime);
 
             var data = V4CommonData.RotationEvent.FromBaseEvent(evt);
             node["i"] = rotationsCommonData.IndexOf(data);

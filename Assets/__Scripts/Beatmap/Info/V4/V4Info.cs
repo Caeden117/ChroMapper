@@ -271,7 +271,7 @@ namespace Beatmap.Info
                 node["environmentNameIdx"] = difficulty.EnvironmentNameIndex;
                 node["beatmapColorSchemeIdx"] = difficulty.ColorSchemeIndex;
                 node["noteJumpMovementSpeed"] = difficulty.NoteJumpSpeed;
-                node["noteJumpStartBeatOffset"] = difficulty.NoteStartBeatOffset;
+                node["noteJumpStartBeatOffset"] = JSONNumber.RoundBeat(difficulty.NoteStartBeatOffset);
                 node["beatmapDataFilename"] = difficulty.BeatmapFileName ?? "";
                 node["lightshowDataFilename"] = difficulty.LightshowFileName ?? "";
 

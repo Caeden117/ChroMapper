@@ -24,7 +24,7 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseEvent evt)
         {
             JSONNode node = new JSONObject();
-            node["b"] = evt.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(evt.JsonTime);
             node["o"] = evt.Value == 1;
             evt.CustomData = evt.SaveCustom();
             if (!evt.CustomData.Children.Any()) return node;

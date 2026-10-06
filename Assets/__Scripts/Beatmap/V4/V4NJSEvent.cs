@@ -27,7 +27,7 @@ namespace Beatmap.V4
         public static JSONNode ToJson(BaseNJSEvent njsEvent, IList<V4CommonData.NJSEvent> njsEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = njsEvent.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(njsEvent.JsonTime);
 
             var data = V4CommonData.NJSEvent.FromBaseNJSEvent(njsEvent);
             node["i"] = njsEventsCommonData.IndexOf(data);

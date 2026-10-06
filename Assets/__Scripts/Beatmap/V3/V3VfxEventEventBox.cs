@@ -39,7 +39,7 @@ namespace Beatmap.V3
         {
             JSONNode node = new JSONObject();
             node["f"] = vfxBox.IndexFilter.ToJson();
-            node["w"] = vfxBox.BeatDistribution;
+            node["w"] = JSONNumber.RoundBeat(vfxBox.BeatDistribution);
             node["d"] = vfxBox.BeatDistributionType;
             node["s"] = vfxBox.VfxDistribution;
             node["t"] = vfxBox.VfxDistributionType;

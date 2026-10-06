@@ -28,7 +28,8 @@ public class ColorPicker : MonoBehaviour
         get => new Color(red, green, blue, alpha);
         set
         {
-            if (CurrentColor == value)
+            // Approximate Color equality can discard small imported channel changes such as a tiny alpha.
+            if (CurrentColor.Equals(value))
                 return;
 
             red = value.r;
@@ -45,49 +46,19 @@ public class ColorPicker : MonoBehaviour
     public float H
     {
         get => hue;
-        set
-        {
-            if (hue == value)
-                return;
-
-            hue = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
+        set => AssignHsv(value, saturation, brightness, false);
     }
 
     public float S
     {
         get => saturation;
-        set
-        {
-            if (saturation == value)
-                return;
-
-            saturation = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
+        set => AssignHsv(hue, value, brightness, false);
     }
 
     public float V
     {
         get => brightness;
-        set
-        {
-            if (brightness == value)
-                return;
-
-            brightness = value;
-
-            HSVChanged();
-
-            SendChangedEvent();
-        }
+        set => AssignHsv(hue, saturation, value, false);
     }
 
     public float R
@@ -179,14 +150,30 @@ public class ColorPicker : MonoBehaviour
         brightness = color.NormalizedV;
     }
 
-    private void HSVChanged()
+    private void AssignHsv(float newHue, float newSaturation, float newBrightness, bool roundChannels)
     {
+        if (hue == newHue && saturation == newSaturation && brightness == newBrightness)
+            return;
+
+        hue = newHue;
+        saturation = newSaturation;
+        brightness = newBrightness;
         var color = HSVUtil.ConvertHsvToRgb(hue * 360, saturation, brightness, alpha);
 
-        red = color.r;
-        green = color.g;
-        blue = color.b;
+        // HSV sliders must round their generated RGB channels, while typed HSV values keep their precision.
+        red = roundChannels
+            ? RoundChannel(color.r)
+            : color.r;
+        green = roundChannels
+            ? RoundChannel(color.g)
+            : color.g;
+        blue = roundChannels
+            ? RoundChannel(color.b)
+            : color.b;
+        SendChangedEvent();
     }
+
+    private static float RoundChannel(float value) => (float)Math.Round(value, 3);
 
     private void SendChangedEvent(bool updateChroma = true)
     {
@@ -196,8 +183,14 @@ public class ColorPicker : MonoBehaviour
         //    placeChromaToggle.isOn = true;
     }
 
-    public void AssignColor(ColorValues type, float value)
+    public void AssignColor(ColorValues type, float value) => AssignColor(type, value, false);
+
+    public void AssignColor(ColorValues type, float value, bool roundChannels)
     {
+        // Text and loaded colors bypass quantization. Only slider callbacks opt into three-decimal channels.
+        if (roundChannels && type is ColorValues.R or ColorValues.G or ColorValues.B or ColorValues.A)
+            value = RoundChannel(value);
+
         switch (type)
         {
             case ColorValues.R:
@@ -213,13 +206,13 @@ public class ColorPicker : MonoBehaviour
                 A = value;
                 break;
             case ColorValues.Hue:
-                H = value;
+                AssignHsv(value, saturation, brightness, roundChannels);
                 break;
             case ColorValues.Saturation:
-                S = value;
+                AssignHsv(hue, value, brightness, roundChannels);
                 break;
             case ColorValues.Value:
-                V = value;
+                AssignHsv(hue, saturation, value, roundChannels);
                 break;
         }
     }

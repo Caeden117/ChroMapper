@@ -84,7 +84,7 @@ namespace Beatmap.V4
             IList<V4CommonData.FloatFxEvent> floatFxEventsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = group.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(group.JsonTime);
             node["g"] = group.ID;
             node["t"] = 4;
 
@@ -104,7 +104,7 @@ namespace Beatmap.V4
                 foreach (var floatEvent in boxEvent.Events)
                 {
                     var eventNode = new JSONObject();
-                    eventNode["b"] = floatEvent.RelativeJsonTime;
+                    eventNode["b"] = JSONNumber.RoundBeat(floatEvent.RelativeJsonTime);
                     eventNode["i"] =
                         floatFxEventsCommonData.IndexOf(V4CommonData.FloatFxEvent.FromFloatFxEventBase(floatEvent));
 

@@ -164,7 +164,7 @@ namespace Beatmap.Info
             json["_beatsPerMinute"] = info.BeatsPerMinute;
             json["_songTimeOffset"] = info.SongTimeOffset;
             json["_shuffle"] = info.Shuffle;
-            json["_shufflePeriod"] = info.ShufflePeriod;
+            json["_shufflePeriod"] = JSONNumber.RoundBeat(info.ShufflePeriod);
             json["_previewStartTime"] = info.PreviewStartTime;
             json["_previewDuration"] = info.PreviewDuration;
             json["_songFilename"] = info.SongFilename ?? "";
@@ -235,7 +235,7 @@ namespace Beatmap.Info
                     node["_difficultyRank"] = difficulty.DifficultyRank;
                     node["_beatmapFilename"] = difficulty.BeatmapFileName ?? "";
                     node["_noteJumpMovementSpeed"] = difficulty.NoteJumpSpeed;
-                    node["_noteJumpStartBeatOffset"] = difficulty.NoteStartBeatOffset;
+                    node["_noteJumpStartBeatOffset"] = JSONNumber.RoundBeat(difficulty.NoteStartBeatOffset);
                     node["_beatmapColorSchemeIdx"] = difficulty.ColorSchemeIndex;
                     node["_environmentNameIdx"] = difficulty.EnvironmentNameIndex;
 

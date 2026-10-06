@@ -47,7 +47,7 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseNote note)
         {
             JSONNode node = new JSONObject();
-            node["b"] = note.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(note.JsonTime);
             node["x"] = note.PosX;
             node["y"] = note.PosY;
             node["a"] = note.AngleOffset;

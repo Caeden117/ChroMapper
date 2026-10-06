@@ -119,7 +119,8 @@ namespace Beatmap.V2
             }
 
 
-            if (difficulty.Time > 0) customData["_time"] = Math.Round(difficulty.Time, 3);
+            if (difficulty.Time > 0)
+                customData["_time"] = difficulty.Time;
 
             SimpleJSONHelper.CleanObject(customData);
 

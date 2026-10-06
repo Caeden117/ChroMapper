@@ -44,7 +44,7 @@ namespace Beatmap.V2
         public static JSONNode ToJson(BaseNote note)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = note.JsonTime;
+            node["_time"] = JSONNumber.RoundBeat(note.JsonTime);
             node["_lineIndex"] = note.PosX;
             node["_lineLayer"] = note.PosY;
             node["_type"] = note.Type;
