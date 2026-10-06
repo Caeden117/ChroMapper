@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using Beatmap.Info;
@@ -30,6 +31,14 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI artist;
     [SerializeField] private TextMeshProUGUI folder;
+
+    [SerializeField] private Text cjkTitle;
+    [SerializeField] private Text cjkArtist;
+    [SerializeField] private Text cjkFolder;
+
+    [SerializeField] private LayoutElement titleLayout;
+    [SerializeField] private LayoutElement artistLayout;
+    [SerializeField] private LayoutElement folderLayout;
 
     [SerializeField] private TextMeshProUGUI duration;
     [SerializeField] private TextMeshProUGUI bpm;
@@ -115,21 +124,157 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             : stripped;
     }
 
+    private static uint ReadCodePoint(string value, int index, out int length)
+    {
+        if (char.IsHighSurrogate(value[index]) && index + 1 < value.Length
+            && char.IsLowSurrogate(value[index + 1]))
+        {
+            length = 2;
+            return (uint)char.ConvertToUtf32(value[index], value[index + 1]);
+        }
+
+        length = 1;
+        return value[index];
+    }
+
+    private static bool IsNonPrintingCharacter(string value, int index)
+    {
+        var category = char.GetUnicodeCategory(value, index);
+        return category == UnicodeCategory.Control || category == UnicodeCategory.Format;
+    }
+
+    private static TMP_Character ResolveCharacter(TextMeshProUGUI renderer, uint unicode) =>
+        TMP_FontAssetUtilities.GetCharacterFromFontAsset(
+            unicode, renderer.font, true, renderer.fontStyle, renderer.fontWeight, out _);
+
+    private static bool RequiresSourceFont(TextMeshProUGUI renderer, string value)
+    {
+        for (var i = 0; i < value.Length;)
+        {
+            var unicode = ReadCodePoint(value, i, out var length);
+            if (!IsNonPrintingCharacter(value, i))
+            {
+                var character = ResolveCharacter(renderer, unicode);
+                if (character == null || character.textAsset != renderer.font)
+                    return true;
+            }
+
+            i += length;
+        }
+
+        return false;
+    }
+
+    private static string ReplaceMissingGlyphs(string value, Text sourceRenderer, bool useSourceFont)
+    {
+        if (!useSourceFont)
+            return value;
+
+        StringBuilder replacement = null;
+        for (var i = 0; i < value.Length;)
+        {
+            var unicode = ReadCodePoint(value, i, out var length);
+            var canRender = IsNonPrintingCharacter(value, i)
+                || (unicode <= char.MaxValue && !char.IsSurrogate(value[i])
+                    && sourceRenderer.font.HasCharacter((char)unicode));
+            if (!canRender)
+            {
+                // uGUI accepts UTF-16 chars, so an unsupported supplementary scalar becomes one box.
+                if (replacement == null)
+                {
+                    replacement = new StringBuilder(value.Length);
+                    replacement.Append(value, 0, i);
+                }
+                replacement.Append('□');
+            }
+            else if (replacement != null)
+            {
+                replacement.Append(value, i, length);
+            }
+            i += length;
+        }
+
+        return replacement == null
+            ? value
+            : replacement.ToString();
+    }
+
+    private static void SetMetadataText(
+        TextMeshProUGUI tmpRenderer,
+        Text cjkRenderer,
+        LayoutElement layout,
+        bool useSourceFont,
+        string tmpText,
+        string cjkText)
+    {
+        tmpRenderer.text = tmpText;
+        // Disabled TMP components stop contributing to the vertical layout, so reserve their line height for fallback text.
+        if (useSourceFont)
+        {
+            layout.preferredHeight = tmpRenderer.preferredHeight;
+        }
+
+        layout.enabled = useSourceFont;
+        tmpRenderer.enabled = !useSourceFont;
+        cjkRenderer.text = cjkText;
+        cjkRenderer.gameObject.SetActive(useSourceFont);
+    }
+
+    private IEnumerator PinFallbackMaterialsAfterLayout()
+    {
+        yield return null;
+
+        PinGeneratedFallbackMaterials(title);
+        PinGeneratedFallbackMaterials(artist);
+        PinGeneratedFallbackMaterials(folder);
+    }
+
+    // Generated TMP materials must survive scene asset cleanup whenever a field uses that render path.
+    private static void PinGeneratedFallbackMaterials(TextMeshProUGUI field)
+    {
+        if (!field.enabled)
+            return;
+
+        field.ForceMeshUpdate();
+        foreach (var subMesh in field.GetComponentsInChildren<TMP_SubMeshUI>(true))
+        {
+            TMPFallbackMaterialHolder.Pin(subMesh.sharedMaterial);
+        }
+    }
+
     public void AssignSong(BaseInfo mapInfo, string searchFieldText)
     {
         if (this.mapInfo == mapInfo && previousSearch == searchFieldText) return;
 
         StopCoroutine(nameof(LoadImage));
         StopCoroutine(nameof(LoadDuration));
+        // A recycled row must pin the newly assigned song's materials, not a pending old assignment.
+        StopCoroutine(nameof(PinFallbackMaterialsAfterLayout));
 
         previousSearch = searchFieldText;
         this.mapInfo = mapInfo;
-        var songName = HighlightSubstring(mapInfo.SongName, searchFieldText);
-        var artistName = HighlightSubstring(mapInfo.SongAuthorName, searchFieldText);
+        // Resolve raw metadata only when assigning a row, before our rich-text tags reach either renderer.
+        var useSourceTitle = RequiresSourceFont(title, mapInfo.SongName)
+            || RequiresSourceFont(title, mapInfo.SongSubName);
+        var useSourceArtist = RequiresSourceFont(artist, mapInfo.SongAuthorName);
+        var useSourceFolder = RequiresSourceFont(folder, mapInfo.Directory);
+        var songName = HighlightSubstring(
+            ReplaceMissingGlyphs(mapInfo.SongName, cjkTitle, useSourceTitle), searchFieldText);
+        var artistName = HighlightSubstring(
+            ReplaceMissingGlyphs(mapInfo.SongAuthorName, cjkArtist, useSourceArtist), searchFieldText);
 
-        title.text = $"{songName} <size=50%><i>{mapInfo.SongSubName.StripTMPTags()}</i></size>";
-        artist.text = artistName;
-        folder.text = mapInfo.Directory;
+        var subName = ReplaceMissingGlyphs(mapInfo.SongSubName, cjkTitle, useSourceTitle).StripTMPTags();
+        var folderName = ReplaceMissingGlyphs(mapInfo.Directory, cjkFolder, useSourceFolder);
+        var tmpTitle = $"{songName} <size=50%><i>{subName}</i></size>";
+        var cjkTitleText = string.IsNullOrEmpty(subName)
+            ? songName
+            : $"{songName} <size={Mathf.Max(1, cjkTitle.fontSize / 2)}><i>{subName}</i></size>";
+        SetMetadataText(title, cjkTitle, titleLayout, useSourceTitle, tmpTitle, cjkTitleText);
+        SetMetadataText(artist, cjkArtist, artistLayout, useSourceArtist, artistName, artistName);
+        SetMetadataText(folder, cjkFolder, folderLayout, useSourceFolder, folderName, folderName);
+
+        // Source-font fields bypass TMP, so pin only the enabled TMP fields after layout.
+        StartCoroutine(nameof(PinFallbackMaterialsAfterLayout));
 
         duration.text = "-:--";
         bpm.text = $"{mapInfo.BeatsPerMinute:N0}";
