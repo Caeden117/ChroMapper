@@ -332,8 +332,13 @@ public class DifficultySelect : MonoBehaviour
 
         var diff = localDiff.InfoDifficulty;
 
-        if (!mapInfo.DifficultySets.Contains(currentDifficultySet)) mapInfo.DifficultySets.Add(currentDifficultySet);
-        if (!currentDifficultySet.Difficulties.Contains(diff)) currentDifficultySet.Difficulties.Add(diff);
+        // Save into the set the difficulty is actually parented to: a stale currentDifficultySet
+        // must not absorb a diff owned by another set, which is how the same characteristic got
+        var parentSet = diff.ParentSet;
+        if (!mapInfo.DifficultySets.Contains(parentSet))
+            mapInfo.DifficultySets.Add(parentSet);
+        if (!parentSet.Difficulties.Contains(diff))
+            parentSet.Difficulties.Add(diff);
 
         var map = TryGetExistingMapFromDiff(localDiff);
         if (map == null)
@@ -663,8 +668,7 @@ public class DifficultySelect : MonoBehaviour
 
         if (row == selected) DeselectDiff();
 
-        currentDifficultySet.Difficulties.Remove(diffs[row.Name].InfoDifficulty);
-        if (currentDifficultySet.Difficulties.Count == 0) MapInfo.DifficultySets.Remove(currentDifficultySet);
+        diff.ParentSet.Difficulties.Remove(diff);
 
         diffs.Remove(row.Name);
         MapInfo.Save();
@@ -719,9 +723,10 @@ public class DifficultySelect : MonoBehaviour
         currentDifficultySet = MapInfo?.DifficultySets?.Find(it =>
             it.Characteristic.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         if (currentDifficultySet == null)
-            // Create a new set locally if the song doesn't have one,
-            // will only be written back if a difficulty is created
+        {
             currentDifficultySet = new InfoDifficultySet { Characteristic = name };
+            MapInfo?.DifficultySets?.Add(currentDifficultySet);
+        }
 
         if (!Characteristics.ContainsKey(name)) Characteristics.Add(name, new Dictionary<string, DifficultySettings>());
         diffs = Characteristics[name];

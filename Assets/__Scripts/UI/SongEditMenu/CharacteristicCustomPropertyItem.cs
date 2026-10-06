@@ -49,6 +49,16 @@ public class CharacteristicCustomPropertyItem : MonoBehaviour
         var difficultySet = BeatSaberSongContainer.Instance.Info.DifficultySets.Find(x => x.Characteristic == characteristic);
         if (difficultySet == null)
         {
+            // A characteristic with no custom label/icon needs no set at all. Creating one anyway
+            // stuffed empty phantom sets into Info memory on every ordinary metadata save, and a
+            // phantom set could later absorb real difficulties as a duplicate
+            if (string.IsNullOrWhiteSpace(CustomNameField.text) && string.IsNullOrWhiteSpace(iconImageFileName))
+            {
+                initialCustomName = CustomNameField.text;
+                initialImageFileName = iconImageFileName;
+                return;
+            }
+
             difficultySet = new InfoDifficultySet { Characteristic = characteristic };
             BeatSaberSongContainer.Instance.Info.DifficultySets.Add(difficultySet);
         }
