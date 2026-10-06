@@ -24,7 +24,7 @@ namespace Beatmap.V2
         public static JSONNode ToJson(BaseWaypoint waypoint)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = waypoint.JsonTime;
+            node["_time"] = JSONNumber.RoundBeat(waypoint.JsonTime);
             node["_lineIndex"] = waypoint.PosX;
             node["_lineLayer"] = waypoint.PosY;
             node["_offsetDirection"] = waypoint.OffsetDirection;

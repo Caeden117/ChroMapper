@@ -29,7 +29,7 @@ namespace Beatmap.V3
         {
             JSONNode node = new JSONObject();
             node["f"] = box.IndexFilter.ToJson();
-            node["w"] = box.BeatDistribution;
+            node["w"] = JSONNumber.RoundBeat(box.BeatDistribution);
             node["d"] = box.BeatDistributionType;
             node["r"] = box.BrightnessDistribution;
             node["t"] = box.BrightnessDistributionType;

@@ -17,6 +17,8 @@ namespace Assets.HSVPicker.UI.TextMeshPro
 
         private TMP_InputField input;
 
+        private float DisplayScale => type == ColorValues.Hue ? 360f : 1f;
+
         private void Awake() => input = GetComponent<TMP_InputField>();
 
         private void OnEnable()
@@ -68,11 +70,15 @@ namespace Assets.HSVPicker.UI.TextMeshPro
             }
             else
             {
-                var value = (float)Math.Round(picker.GetValue(type), 3);
+                var scale = DisplayScale;
+                // RGB and alpha need their full display precision so a valid tiny alpha never appears as zero.
+                var value = picker.GetValue(type) * scale;
+                if (type == ColorValues.Hue)
+                    value = (float)Math.Round(value, 2);
 
-                if (clampToValues) value = Mathf.Clamp(value, minValue, maxValue);
+                if (clampToValues) value = Mathf.Clamp(value, minValue * scale, maxValue * scale);
 
-                input.SetTextWithoutNotify(value.ToString());
+                input.SetTextWithoutNotify(value.ToString("R"));
             }
         }
 
@@ -80,11 +86,10 @@ namespace Assets.HSVPicker.UI.TextMeshPro
         {
             if (float.TryParse(value, out var v))
             {
-                v = (float)Math.Round(v, 3);
+                var scale = DisplayScale;
+                if (clampToValues) v = Mathf.Clamp(v, minValue * scale, maxValue * scale);
 
-                if (clampToValues) v = Mathf.Clamp(v, minValue, maxValue);
-
-                picker.AssignColor(type, v);
+                picker.AssignColor(type, v / scale);
             }
         }
     }

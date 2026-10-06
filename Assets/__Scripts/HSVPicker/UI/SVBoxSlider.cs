@@ -95,8 +95,8 @@ public class SVBoxSlider : MonoBehaviour
     {
         if (listen)
         {
-            Picker.AssignColor(ColorValues.Saturation, saturation);
-            Picker.AssignColor(ColorValues.Value, value);
+            Picker.AssignColor(ColorValues.Saturation, saturation, roundChannels: true);
+            Picker.AssignColor(ColorValues.Value, value, roundChannels: true);
         }
 
         listen = true;

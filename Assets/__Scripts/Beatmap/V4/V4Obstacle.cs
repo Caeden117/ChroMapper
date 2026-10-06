@@ -30,7 +30,7 @@ namespace Beatmap.V4
         public static JSONNode ToJson(BaseObstacle obstacle, IList<V4CommonData.Obstacle> obstaclesCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = obstacle.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(obstacle.JsonTime);
             node["r"] = obstacle.Rotation;
 
             var data = V4CommonData.Obstacle.FromBaseObstacle(obstacle);

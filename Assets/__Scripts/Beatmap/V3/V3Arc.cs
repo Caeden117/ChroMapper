@@ -51,13 +51,13 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseArc arc)
         {
             JSONNode node = new JSONObject();
-            node["b"] = arc.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(arc.JsonTime);
             node["c"] = arc.Color;
             node["x"] = arc.PosX;
             node["y"] = arc.PosY;
             node["d"] = arc.CutDirection;
             node["mu"] = arc.HeadControlPointLengthMultiplier;
-            node["tb"] = arc.TailJsonTime;
+            node["tb"] = JSONNumber.RoundBeat(arc.TailJsonTime);
             node["tx"] = arc.TailPosX;
             node["ty"] = arc.TailPosY;
             node["tc"] = arc.TailCutDirection;

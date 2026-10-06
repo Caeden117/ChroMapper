@@ -215,6 +215,20 @@ namespace Beatmap.Base.Customs
                 : comparison;
         }
         
+        // Duration is measured in beats, but animation points contain values and normalized times.
+        // Replace only duration on a shallow export copy so saving cannot round the editable Data tree.
+        public JSONNode GetExportData()
+        {
+            if (!Data.HasKey(DataKeyDuration))
+                return Data;
+
+            var output = new JSONObject();
+            foreach (var entry in Data)
+                output[entry.Key] = entry.Value;
+            output[DataKeyDuration] = JSONNumber.RoundBeat(Data[DataKeyDuration].AsDouble);
+            return output;
+        }
+
         public override JSONNode ToJson() => Settings.Instance.MapVersion switch
         {
             2 => V2CustomEvent.ToJson(this),

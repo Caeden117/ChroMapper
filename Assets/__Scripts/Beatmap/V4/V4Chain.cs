@@ -42,8 +42,8 @@ namespace Beatmap.V4
             IList<V4CommonData.Chain> chainsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["hb"] = chain.JsonTime;
-            node["tb"] = chain.TailJsonTime;
+            node["hb"] = JSONNumber.RoundBeat(chain.JsonTime);
+            node["tb"] = JSONNumber.RoundBeat(chain.TailJsonTime);
             node["hr"] = chain.Rotation;
             node["tr"] = chain.TailRotation;
 

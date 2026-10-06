@@ -17,7 +17,30 @@ namespace SimpleJSON
             return Color.white;
         }
     }
-    
+
+    public partial class JSONNumber
+    {
+        public static JSONNumber RoundBeat(double value) => CapNumbersToDecimals
+            ? new JSONNumberWithOverridenRounding(value, DecimalPrecision)
+            : new JSONNumber(value);
+    }
+
+    // Formatting color channels as floats avoids extra double digits without discarding any float precision.
+    public class JSONFloatNumber : JSONNumber
+    {
+        public JSONFloatNumber(float value) : base(value)
+        {
+        }
+
+        public override string Value
+        {
+            get => ((float)m_Data).ToString("R", CultureInfo.InvariantCulture);
+            set => base.Value = value;
+        }
+
+        public override JSONNode Clone() => new JSONFloatNumber((float)m_Data);
+    }
+
     public class JSONNumberWithOverridenRounding : JSONNumber
     {
         private int precision;

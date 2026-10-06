@@ -21,7 +21,7 @@ namespace Beatmap.V3
         {
             return new JSONObject
             {
-                ["b"] = baseFxEventFloat.RelativeJsonTime,
+                ["b"] = JSONNumber.RoundBeat(baseFxEventFloat.RelativeJsonTime),
                 ["p"] = baseFxEventFloat.UsePrevious,
                 ["v"] = baseFxEventFloat.Value,
                 ["i"] = baseFxEventFloat.Easing

@@ -23,7 +23,7 @@ namespace Beatmap.V2
         public static JSONNode ToJson(BaseRotationEvent evt)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = evt.JsonTime;
+            node["_time"] = JSONNumber.RoundBeat(evt.JsonTime);
             node["_type"] = evt.Type;
             node["_value"] = evt.Value;
             evt.CustomData = evt.SaveCustom();

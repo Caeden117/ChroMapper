@@ -22,7 +22,9 @@ namespace Beatmap.V2.Customs
 
         public static JSONNode ToJson(BaseCustomEvent customEvent) => new JSONObject
         {
-            [KeyTime] = customEvent.JsonTime, [KeyType] = customEvent.Type, [KeyData] = customEvent.Data
+            [KeyTime] = JSONNumber.RoundBeat(customEvent.JsonTime),
+            [KeyType] = customEvent.Type,
+            [KeyData] = customEvent.GetExportData()
         };
     }
 }

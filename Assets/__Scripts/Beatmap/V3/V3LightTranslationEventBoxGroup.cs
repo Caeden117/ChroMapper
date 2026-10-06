@@ -42,7 +42,7 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseLightTranslationEventBoxGroup box)
         {
             JSONNode node = new JSONObject();
-            node["b"] = box.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(box.JsonTime);
             node["g"] = box.ID;
             var ary = new JSONArray();
             foreach (var k in box.Boxes) ary.Add(k.ToJson());

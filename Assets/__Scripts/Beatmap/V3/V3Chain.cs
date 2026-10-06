@@ -51,12 +51,12 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseChain chain)
         {
             JSONNode node = new JSONObject();
-            node["b"] = chain.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(chain.JsonTime);
             node["c"] = chain.Color;
             node["x"] = chain.PosX;
             node["y"] = chain.PosY;
             node["d"] = chain.CutDirection;
-            node["tb"] = chain.TailJsonTime;
+            node["tb"] = JSONNumber.RoundBeat(chain.TailJsonTime);
             node["tx"] = chain.TailPosX;
             node["ty"] = chain.TailPosY;
             node["sc"] = chain.SliceCount;

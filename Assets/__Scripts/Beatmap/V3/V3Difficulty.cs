@@ -153,7 +153,7 @@ namespace Beatmap.V3
                     {
                         njsEvents.Add(new JSONObject
                         {
-                            ["b"] = njsEvent.JsonTime,
+                            ["b"] = JSONNumber.RoundBeat(njsEvent.JsonTime),
                             ["d"] = njsEvent.RelativeNJS,
                             ["p"] = njsEvent.UsePrevious,
                             ["e"] = njsEvent.Easing
@@ -222,7 +222,8 @@ namespace Beatmap.V3
                     customData["materials"][m.Key] = m.Value.ToJson();
             }
             
-            if (difficulty.Time > 0) customData["time"] = Math.Round(difficulty.Time, 3);
+            if (difficulty.Time > 0)
+                customData["time"] = difficulty.Time;
 
             // All the fake stuff here :3
             var fakeColorNotes = new JSONArray();

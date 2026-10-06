@@ -68,5 +68,5 @@ public class ColorSlider : MonoBehaviour
         }
     }
 
-    private void SliderChanged(float newValue) => Hsvpicker.AssignColor(Type, newValue);
+    private void SliderChanged(float newValue) => Hsvpicker.AssignColor(Type, newValue, roundChannels: true);
 }

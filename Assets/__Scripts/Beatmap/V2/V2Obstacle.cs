@@ -45,7 +45,7 @@ namespace Beatmap.V2
         public static JSONNode ToJson(BaseObstacle obstacle)
         {
             JSONNode node = new JSONObject();
-            node["_time"] = obstacle.JsonTime;
+            node["_time"] = JSONNumber.RoundBeat(obstacle.JsonTime);
             node["_lineIndex"] = obstacle.PosX;
             node["_type"] = obstacle.Type;
             node["_duration"] = obstacle.Duration;

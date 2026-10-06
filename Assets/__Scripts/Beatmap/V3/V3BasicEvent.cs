@@ -62,7 +62,7 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseEvent evt)
         {
             JSONNode node = new JSONObject();
-            node["b"] = evt.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(evt.JsonTime);
             node["et"] = evt.Type;
             node["i"] = evt.Value;
             node["f"] = evt.FloatValue;

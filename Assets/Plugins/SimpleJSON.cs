@@ -1,4 +1,4 @@
-﻿/* * * * *
+/* * * * *
  * A simple JSON Parser / builder
  * ------------------------------
  * 
@@ -1223,14 +1223,12 @@ namespace SimpleJSON
         {
             get
             {
-                if (CapNumbersToDecimals)
-                {
-                    return Math.Round(m_Data, DecimalPrecision).ToString(CultureInfo.InvariantCulture);
-                }
-                else
-                {
-                    return m_Data.ToString(CultureInfo.InvariantCulture);
-                }
+                // Doubles holding exact float values came from float properties; the shortest float
+                // form drops the widening tail, so -9.3059749603271484 serializes as -9.305975.
+                var asFloat = (float)m_Data;
+                return asFloat == m_Data
+                    ? asFloat.ToString("R", CultureInfo.InvariantCulture)
+                    : m_Data.ToString("R", CultureInfo.InvariantCulture);
             }
             set
             {

@@ -48,8 +48,8 @@ namespace Beatmap.V4
             IList<V4CommonData.Arc> arcsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["hb"] = arc.JsonTime;
-            node["tb"] = arc.TailJsonTime;
+            node["hb"] = JSONNumber.RoundBeat(arc.JsonTime);
+            node["tb"] = JSONNumber.RoundBeat(arc.TailJsonTime);
             node["hr"] = arc.Rotation;
             node["tr"] = arc.TailRotation;
 

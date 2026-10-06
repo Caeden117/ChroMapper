@@ -440,28 +440,31 @@ namespace SimpleJSON
         {
             return ReadColor(Color.white);
         }
+
         public JSONNode WriteColor(Color aVec, bool aWriteAlpha = true)
         {
             if (IsObject)
             {
                 Inline = true;
-                this["r"] = Math.Round(aVec.r, 3);
-                this["g"] = Math.Round(aVec.g, 3);
-                this["b"] = Math.Round(aVec.b, 3);
+                // Direct float assignment already allocates a JSONNumber through implicit conversion, this is not new allocation
+                this["r"] = new JSONFloatNumber(aVec.r);
+                this["g"] = new JSONFloatNumber(aVec.g);
+                this["b"] = new JSONFloatNumber(aVec.b);
                 if (aWriteAlpha)
                 {
-                    this["a"] = Math.Round(aVec.a, 3);
+                    this["a"] = new JSONFloatNumber(aVec.a);
                 }
             }
             else if (IsArray)
             {
                 Inline = true;
-                this[0] = Math.Round(aVec.r, 3);
-                this[1] = Math.Round(aVec.g, 3);
-                this[2] = Math.Round(aVec.b, 3);
+                // Direct float assignment already allocates a JSONNumber through implicit conversion, this is not new allocation
+                this[0] = new JSONFloatNumber(aVec.r);
+                this[1] = new JSONFloatNumber(aVec.g);
+                this[2] = new JSONFloatNumber(aVec.b);
                 if (aWriteAlpha)
                 {
-                    this[3] = Math.Round(aVec.a, 3);
+                    this[3] = new JSONFloatNumber(aVec.a);
                 }
             }
             return this;

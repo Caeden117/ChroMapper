@@ -20,7 +20,7 @@ namespace Beatmap.V3
         {
             return new JSONObject
             {
-                ["b"] = baseFxEventInt.JsonTime,
+                ["b"] = JSONNumber.RoundBeat(baseFxEventInt.JsonTime),
                 ["p"] = baseFxEventInt.UsePrevious,
                 ["v"] = baseFxEventInt.Value
             };

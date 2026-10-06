@@ -52,12 +52,12 @@ namespace Beatmap.V2
         {
             JSONNode node = new JSONObject();
             node["_colorType"] = arc.Color;
-            node["_headTime"] = arc.JsonTime;
+            node["_headTime"] = JSONNumber.RoundBeat(arc.JsonTime);
             node["_headLineIndex"] = arc.PosX;
             node["_headLineLayer"] = arc.PosY;
             node["_headCutDirection"] = arc.CutDirection;
             node["_headControlPointLengthMultiplier"] = arc.HeadControlPointLengthMultiplier;
-            node["_tailTime"] = arc.TailJsonTime;
+            node["_tailTime"] = JSONNumber.RoundBeat(arc.TailJsonTime);
             node["_tailLineIndex"] = arc.TailPosX;
             node["_tailLineLayer"] = arc.TailPosY;
             node["_tailCutDirection"] = arc.TailCutDirection;

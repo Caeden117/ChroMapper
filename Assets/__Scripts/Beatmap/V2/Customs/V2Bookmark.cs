@@ -13,7 +13,7 @@ namespace Beatmap.V2.Customs
         public static BaseBookmark GetFromJson(JSONNode node) => new BaseBookmark(node);
         public static JSONNode ToJson(BaseBookmark bookmark) => new JSONObject
         {
-            [KeyTime] = bookmark.JsonTime, [KeyName] = bookmark.Name, [KeyColor] = bookmark.Color
+            [KeyTime] = JSONNumber.RoundBeat(bookmark.JsonTime), [KeyName] = bookmark.Name, [KeyColor] = bookmark.Color
         };
     }
 }

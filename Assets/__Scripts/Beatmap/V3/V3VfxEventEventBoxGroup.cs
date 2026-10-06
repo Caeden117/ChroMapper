@@ -49,7 +49,7 @@ namespace Beatmap.V3
             IList<BaseFxEventFloat> floatFxEvents)
         {
             JSONNode node = new JSONObject();
-            node["b"] = vfxGroup.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(vfxGroup.JsonTime);
             node["g"] = vfxGroup.ID;
             node["t"] = vfxGroup.Type;
             var ary = new JSONArray();

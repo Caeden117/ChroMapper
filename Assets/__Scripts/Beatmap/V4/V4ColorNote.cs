@@ -30,7 +30,7 @@ namespace Beatmap.V4
         public static JSONNode ToJson(BaseNote note, IList<V4CommonData.Note> notesCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = note.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(note.JsonTime);
             node["r"] = note.Rotation;
 
             var data = V4CommonData.Note.FromBaseNote(note);

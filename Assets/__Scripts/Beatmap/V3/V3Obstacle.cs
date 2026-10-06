@@ -48,10 +48,10 @@ namespace Beatmap.V3
         public static JSONNode ToJson(BaseObstacle obstacle)
         {
             JSONNode node = new JSONObject();
-            node["b"] = obstacle.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(obstacle.JsonTime);
             node["x"] = obstacle.PosX;
             node["y"] = obstacle.PosY;
-            node["d"] = obstacle.Duration; //Get rid of float precision errors
+            node["d"] = JSONNumber.RoundBeat(obstacle.Duration);
             node["w"] = obstacle.Width;
             node["h"] = obstacle.Height;
             obstacle.CustomData = obstacle.SaveCustom();

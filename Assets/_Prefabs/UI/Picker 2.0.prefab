@@ -4831,7 +4831,7 @@ MonoBehaviour:
   Type: 4
   Prefix: 
   MINValue: 0
-  MAXValue: 255
+  MAXValue: 360
   Precision: 0
 --- !u!114 &3267473904470408539
 MonoBehaviour:

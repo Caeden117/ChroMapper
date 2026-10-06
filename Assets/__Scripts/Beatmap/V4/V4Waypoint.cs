@@ -27,7 +27,7 @@ namespace Beatmap.V4
         public static JSONNode ToJson(BaseWaypoint waypoint, IList<V4CommonData.Waypoint> waypointsCommonData)
         {
             JSONNode node = new JSONObject();
-            node["b"] = waypoint.JsonTime;
+            node["b"] = JSONNumber.RoundBeat(waypoint.JsonTime);
 
             var data = V4CommonData.Waypoint.FromBaseWayPoint(waypoint);
             node["i"] = waypointsCommonData.IndexOf(data);

@@ -17,7 +17,7 @@ namespace Beatmap.V3.Customs
 
         public static JSONNode ToJson(BaseBpmChange bpmChange) => new JSONObject
         {
-            [KeyTime] = bpmChange.JsonTime,
+            [KeyTime] = JSONNumber.RoundBeat(bpmChange.JsonTime),
             [KeyBpm] = bpmChange.Bpm,
             [KeyBeatsPerBar] = bpmChange.BeatsPerBar,
             [KeyMetronomeOffset] = bpmChange.MetronomeOffset
