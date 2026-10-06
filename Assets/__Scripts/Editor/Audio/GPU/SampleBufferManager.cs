@@ -40,8 +40,13 @@ public static class SampleBufferManager
 
     public static void ClearSamplesBuffer()
     {
+        // MonoSamples is a static root holding a full-length PCM copy of the loaded song. Release it with the
+        // GPU buffer instead of keeping the last map's audio alive until the next generation.
+        MonoSamples = null;
+        MonoSampleCount = 0;
+
         if (sampleBuffer == null) return;
-        
+
         sampleBuffer.Dispose();
         sampleBuffer = null;
     }

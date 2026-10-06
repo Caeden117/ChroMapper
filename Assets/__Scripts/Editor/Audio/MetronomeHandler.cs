@@ -72,7 +72,13 @@ public class MetronomeHandler : MonoBehaviour
         }
     }
 
-    private void OnDestroy() => atsc.OnPlayToggled -= OnPlayToggle;
+    private void OnDestroy()
+    {
+        // Test perf
+        atsc.OnPlayToggled -= OnPlayToggle;
+        Settings.ClearSettingNotifications("SongSpeed");
+        Settings.ClearSettingNotifications("MetronomeVolume");
+    }
 
     private void UpdateSongSpeed(object value)
     {
