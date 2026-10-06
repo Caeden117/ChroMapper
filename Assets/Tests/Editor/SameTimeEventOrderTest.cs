@@ -11,6 +11,8 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
+    // Regression source: "As The World Caves In", mapped by Mawntee & Fatalution (BeatSaver ID: 210e3).
+    // The embedded ordering maps are synthetic reproductions, not verbatim excerpts.
     // SameTimeEventOrderTest pins Chroma's equal-time event semantics through the production load path:
     // events sharing a JsonTime apply in authored file order, so the last-in-file event wins. As The World
     // Caves In's intro runway depended on this (a beat-0 x=696969 hide followed by a beat-0 show on

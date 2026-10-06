@@ -75,6 +75,8 @@ namespace Tests.Editor
             }
         }
 
+        // Regression source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
+        // The repeat events below are synthetic reductions of its color-strobe regression.
         // Heck's CoroutineEventManager stops the running coroutine when the next event on the same
         // property starts, so an expanded repeat must not evaluate past the next event's start;
         // removing that later event must let the earlier event's repeats resume. The Salty b176

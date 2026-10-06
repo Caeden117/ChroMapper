@@ -8,9 +8,8 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
-    // FogAnimationTests reproduces the reported "Spells" light show (song "BillieEnvironment Spells" by
-    // acloudyskye, mapped by Joetastic & Swifter; fixture chunks reused verbatim from
-    // SpellsLaserWallFixture.json). The map drives BloomFogEnvironment attenuation through
+    // FogAnimationTests uses SpellsLaserWallFixture.json, extracted from "Spells" by acloudyskye,
+    // mapped by Joetastic & Swifter (BeatSaver ID: 35a0b). The map drives BloomFogEnvironment attenuation through
     // AnimateComponent events on the "fog" track: three instant single-point events (beats 207, 413,
     // 415), an 8-beat easeInOutCubic interpolation from 5e-07 to 5e-05 (beat 463), and a final instant
     // event (beat 527). In game, Heck's AnimateComponent mutates the live fog params from these

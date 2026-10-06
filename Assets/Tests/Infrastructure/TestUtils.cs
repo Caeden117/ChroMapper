@@ -3,6 +3,7 @@ using System.Collections;
 using Beatmap.Base;
 using Beatmap.Helper;
 using Beatmap.Info;
+using NUnit.Framework;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,6 +23,7 @@ namespace Tests.Infrastructure
         // Preserve project input routing while tests force deterministic delivery without requiring Game view focus.
         private static UnityEngine.InputSystem.InputSettings.BackgroundBehavior? baselineBackgroundBehavior;
         private static UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode? baselineEditorInputBehavior;
+        private static readonly System.Reflection.PropertyInfo deterministicPlaybackSecondsProperty = typeof(AudioTimeSyncController).GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
 
         private static IEnumerator InitMapper()
         {
@@ -290,6 +292,26 @@ namespace Tests.Infrastructure
             }
 
             Settings.TestMode = false;
+        }
+
+        public static void StartDeterministicPlaybackAtSongBpmTime(AudioTimeSyncController atsc, float songBpmTime)
+        {
+            Assert.That(atsc.IsPlaying, Is.False, "Deterministic playback did not start from a paused controller.");
+            Assert.That(deterministicPlaybackSecondsProperty, Is.Not.Null, "AudioTimeSyncController.CurrentSeconds was not found.");
+            atsc.TogglePlaying();
+            atsc.SongAudioSource.Stop();
+            atsc.StopScheduled = true;
+            deterministicPlaybackSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(songBpmTime));
+            Assert.That(atsc.IsPlaying, Is.True, "Deterministic playback did not enter the production playing state.");
+            Assert.That(atsc.SongAudioSource.isPlaying, Is.False, "Deterministic playback unexpectedly retained a native audio backend.");
+        }
+
+        public static void PauseDeterministicPlayback(AudioTimeSyncController atsc)
+        {
+            Assert.That(atsc.IsPlaying, Is.True, "Deterministic playback was already paused.");
+            atsc.TogglePlaying();
+            Assert.That(atsc.IsPlaying, Is.False, "Deterministic playback did not pause.");
+            Assert.That(atsc.StopScheduled, Is.False, "Deterministic playback left an automatic stop scheduled.");
         }
     }
 }

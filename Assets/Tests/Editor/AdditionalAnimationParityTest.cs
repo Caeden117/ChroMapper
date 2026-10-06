@@ -89,6 +89,7 @@ namespace Tests.Editor
             yield break;
         }
 
+        // Synthetic malformed-point regression related to "Spells", mapped by Joetastic & Swifter (BeatSaver ID: 35a0b).
         // MalformedPointValueCountIsLoggedAndSkipped: Heck errors on wrong component counts (the docs' color
         // example needs exactly 5 numbers); CM must log and skip the point without wedging the load
         // (the failure shape SpellsLaserWallTest proved for missing point definitions). The skipped point

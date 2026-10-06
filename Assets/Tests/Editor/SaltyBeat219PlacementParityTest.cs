@@ -11,6 +11,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
+    // Fixture source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
     // Portable Salty beat-219..229 positional parity: fake note pairs on [slayN, shitballsN]
     // tracks and the b221 fake walls. Heck Noodle semantics multiply track/path position offsets
     // by the 0.6 lane distance (AnimationHelper.GetObjectOffset); CM previously applied them raw

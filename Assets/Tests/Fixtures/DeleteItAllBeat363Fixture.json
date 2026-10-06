@@ -1,0 +1,164 @@
+{
+  "version": "3.3.0",
+  "basicBeatmapEvents": [
+    {
+      "b": 363,
+      "et": 1,
+      "i": 7,
+      "f": 1,
+      "customData": { "color": [1, 0.872, 0.872, 1] }
+    },
+    {
+      "b": 363.062012,
+      "et": 1,
+      "i": 7,
+      "f": 1,
+      "customData": { "color": [0.78, 0.879, 1, 1] }
+    }
+  ],
+  "customData": {
+    "pointDefinitions": {
+      "ohnoTime": [
+        [0.41, 0.1, "splineCatmullRom"],
+        [0.35, 0.25, "splineCatmullRom"],
+        [0.35, 0.35, "splineCatmullRom"],
+        [0.5, 0.5],
+        [1, 1]
+      ],
+      "dFlickOn": [
+        [1, 0],
+        [1, 0.124],
+        [0, 0.125],
+        [0, 0.24],
+        [1, 0.25],
+        [1, 0.374],
+        [0, 0.375],
+        [0, 0.49],
+        [1, 0.5],
+        [1, 0.624],
+        [0, 0.625],
+        [0, 0.74],
+        [1, 0.75],
+        [1, 0.874],
+        [0, 0.875],
+        [0, 0.95],
+        [1, 1]
+      ],
+      "dFlickOff": [
+        [0, 0],
+        [0, 0.124],
+        [1, 0.125],
+        [1, 0.24],
+        [0, 0.25],
+        [0, 0.374],
+        [1, 0.375],
+        [1, 0.49],
+        [0, 0.5],
+        [0, 0.624],
+        [1, 0.625],
+        [1, 0.74],
+        [0, 0.75],
+        [0, 0.874],
+        [1, 0.875],
+        [1, 0.95],
+        [0, 1]
+      ]
+    },
+    "environment": [
+      {
+        "id": "^.*Environment\\.\\[\\d*\\]NeonTop \\(1\\)$",
+        "lookupMethod": "Regex",
+        "track": "neon2",
+        "active": true
+      },
+      {
+        "id": "^.*Environment\\.\\[\\d*\\]NeonTop$",
+        "lookupMethod": "Regex",
+        "track": "neon1",
+        "active": true
+      },
+      {
+        "id": "^(.*Environment\\.\\[\\d*\\]RearPillar \\(2\\)$|^.*Environment\\.\\[\\d*\\]RearPillar_A_R$)",
+        "lookupMethod": "Regex",
+        "track": "backWall2",
+        "active": true
+      },
+      {
+        "id": "^(.*Environment\\.\\[\\d*\\]RearPillar$|^.*Environment\\.\\[\\d*\\]RearPillar_A_L$)",
+        "lookupMethod": "Regex",
+        "track": "backWall1",
+        "active": true
+      },
+      {
+        "id": "^InterscopeEnvironment\\.\\[\\d*\\]Environment$",
+        "lookupMethod": "Regex",
+        "track": "TheEntireFuckingEnvironment"
+      }
+    ],
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "neon2",
+          "duration": 0,
+          "scale": [[1, 1, 1, 0]],
+          "position": [[0, 8.5, 23, 0]],
+          "rotation": [[0, 0, 90, 0]]
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "neon1",
+          "duration": 0,
+          "scale": [[1, 1, 1, 0]],
+          "position": [[0, 8.5, 11.500024, 0]],
+          "rotation": [[0, 0, 90, 0]]
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "backWall2",
+          "duration": 0,
+          "scale": [[5.69, 2.75, 1, 0]],
+          "position": [[21, 0, -0.75, 0]],
+          "rotation": [[-16.66, 85, 0, 0]]
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "backWall1",
+          "duration": 0,
+          "scale": [[5.69, 2.75, 1, 0]],
+          "position": [[-21, 0, -0.75, 0]],
+          "rotation": [[16.66, 95, 0, 0]]
+        }
+      },
+      {
+        "b": 362.5,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": ["TheEntireFuckingEnvironment"],
+          "parentTrack": "ThisBadBoyCanFitSoManyObjectsInIt",
+          "worldPositionStays": true
+        }
+      },
+      {
+        "b": 363.011505,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "ThisBadBoyCanFitSoManyObjectsInIt",
+          "duration": 64,
+          "scale": [[5, -14.2069, -5, 0, "easeOutExpo"]],
+          "localPosition": [[0, 42.5, 0, 0, "easeOutExpo"]]
+        }
+      }
+    ]
+  }
+}

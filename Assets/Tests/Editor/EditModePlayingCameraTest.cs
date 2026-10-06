@@ -252,6 +252,8 @@ namespace Tests.Editor
             }
         }
 
+        // Regression source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
+        // This case reproduces its camera-disable sequence without loading the original map.
         // DisabledPlayingCameraDoesNotBreakEditingCameraCursorLock exercises the deployed Salty-load NRE
         // hazard: CameraController.OnDisable unconditionally clears the static `instance` even on the
         // playing camera, although only the editing camera's Start owns it, so disabling the playing

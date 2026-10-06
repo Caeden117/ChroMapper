@@ -11,6 +11,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
+    // Fixture source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
     // Salty's beat-221 fake walls keep the authored relative order of the source map's
     // customData.fakeObstacles[6..14]: eight red bars on beat0..beat7 tracks and the white
     // [1/4, pee2] wall that the game draws while CM emits zero pixels.

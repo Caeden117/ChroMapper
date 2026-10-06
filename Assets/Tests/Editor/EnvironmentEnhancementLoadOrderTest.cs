@@ -25,6 +25,8 @@ namespace Tests.Editor
             }
         }
 
+        // Regression source: "Vagueness & JOURNEY", mapped by Kival Evan (BeatSaver ID: 1d28c).
+        // The two instructions below are synthetic ordering probes, not copied map enhancements.
         // Vagueness & JOURNEY's left source scale moved behind 27 clones when the generic
         // loader compared beat-zero enhancements. Chroma runs them in source array order.
         [Test]

@@ -11,6 +11,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
+    // Fixture source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
     // Portable Salty b537 Head-camera parity. Fixture SaltyBeat537HeadCameraFixture.json carries the
     // authored customEvents (original indices 440-446, 463, 467) in source order: b537 assigns
     // LeftSaber/RightSaber/asdkm to LeftHand/RightHand/Head and starts the asdkm AnimateTrack

@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace Tests.Editor
 {
+    // Fixture source: "As The World Caves In", mapped by Mawntee & Fatalution (BeatSaver ID: 210e3).
     // Saving a loaded map must reproduce authored file order and authored numeric precision.
     // Loading then saving As The World Caves In reordered _customEvents: the unstable JsonTime-only
     // merge/sort moved TrackConstructionParent1's beat-0 hide (x=696969) after its beat-0 show

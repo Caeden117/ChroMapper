@@ -17,14 +17,14 @@ public class MapLoader : MonoBehaviour
 
     public void DestroyTrackBoundEnvironmentObjects()
     {
+        manager.DestroyTrackBoundEnvironmentObjects();
+
         var geometry = BeatmapObjectContainerCollection
             .GetCollectionForType<GeometryGridContainer, BaseEnvironmentEnhancement>();
         if (geometry != null)
         {
             geometry.ClearSpawnedGeometry();
         }
-
-        manager.DestroyTrackBoundEnvironmentObjects();
     }
 
     public void UpdateMapData(BaseDifficulty m)

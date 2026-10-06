@@ -10,6 +10,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
+    // Fixture source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
     // Salty beats 161-195 note/chain color parity reduced to fixture size: 105 real colorNotes
     // (original indices 116-220, tracks bass/seeman/dropL/dropR), the single authored
     // burstSlider (b176 c1 tb176.25 sc8 on dropR), the b0 AssignPathAnimation on

@@ -12,7 +12,7 @@ namespace Tests.Editor
 {
     // MaterialTrackAnimationTest covers Heck material color animation: a customData.materials entry can carry
     // a "track" so AnimateTrack "color" animates every geometry using that material (Give In To You by
-    // JRE_McNuggies & Nugget crashes map load with an NRE in GeometryAppearanceSO.SetGeometryAppearance
+    // JRE_McNuggies & Nugget (BeatSaver ID: 412c2) crashes map load with an NRE in GeometryAppearanceSO.SetGeometryAppearance
     // because Geometry.prefab lost its AnimationTarget child when the prefab was recreated, leaving
     // GeometryContainer.MaterialAnimator null for any tracked material).
     public class MaterialTrackAnimationTest : TestBase
@@ -315,6 +315,7 @@ namespace Tests.Editor
             Assert.That(failures, Is.Empty, string.Join("\n", failures));
         }
 
+        // This embedded fixture is a synthetic reduction, not a verbatim map excerpt.
         // The fixture mirrors Give In To You's shape: a materials entry whose "track" field binds a named
         // track, and a geometry cube referencing that material by name.
         private static JSONNode CreateDifficulty()

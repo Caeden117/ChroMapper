@@ -1,0 +1,1478 @@
+{
+  "version": "3.3.0",
+  "bpmEvents": [],
+  "rotationEvents": [],
+  "basicBeatmapEvents": [],
+  "colorBoostBeatmapEvents": [],
+  "colorNotes": [
+    {
+      "b": 418,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 0,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": 4,
+        "noteJumpMovementSpeed": 16
+      }
+    },
+    {
+      "b": 426,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 7,
+      "customData": {
+        "noteJumpStartBeatOffset": 15,
+        "noteJumpMovementSpeed": 16
+      }
+    },
+    {
+      "b": 470,
+      "x": 1,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 3,
+      "customData": {
+        "noteJumpStartBeatOffset": 15,
+        "noteJumpMovementSpeed": 16
+      }
+    },
+    {
+      "b": 470,
+      "x": 2,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 6,
+      "customData": {
+        "noteJumpStartBeatOffset": 15,
+        "noteJumpMovementSpeed": 16
+      }
+    }
+  ],
+  "bombNotes": [],
+  "obstacles": [],
+  "sliders": [],
+  "burstSliders": [],
+  "waypoints": [],
+  "lightColorEventBoxGroups": [],
+  "lightRotationEventBoxGroups": [],
+  "lightTranslationEventBoxGroups": [],
+  "vfxEventBoxGroups": [],
+  "_fxEventsCollection": {
+    "_fl": [],
+    "_il": [],
+    "_ch": [],
+    "_ge": []
+  },
+  "basicEventTypesWithKeywords": {
+    "d": []
+  },
+  "useNormalEventsAsCompatibleEvents": true,
+  "customData": {
+    "materials": [],
+    "pointDefinitions": [],
+    "environment": [],
+    "fakeColorNotes": [
+      {
+        "b": 419.5,
+        "x": 2,
+        "y": 1,
+        "a": 0,
+        "c": 0,
+        "d": 8,
+        "customData": {
+          "noteJumpStartBeatOffset": 8,
+          "noteJumpMovementSpeed": 16,
+          "uninteractable": true,
+          "disableBadCutDirection": true,
+          "disableBadCutSaberType": true,
+          "disableDebris": true,
+          "spawnEffect": false
+        }
+      },
+      {
+        "b": 469,
+        "x": 0,
+        "y": 0,
+        "a": 0,
+        "c": 1,
+        "d": 8,
+        "customData": {
+          "noteJumpStartBeatOffset": 1337,
+          "noteJumpMovementSpeed": 6.9,
+          "track": "benjamin",
+          "uninteractable": true,
+          "disableNoteGravity": false,
+          "_disableNoteGravity": false,
+          "disableBadCutDirection": true,
+          "disableBadCutSaberType": true,
+          "disableDebris": true,
+          "spawnEffect": false
+        }
+      },
+      {
+        "b": 469.001007,
+        "x": 0,
+        "y": 0,
+        "a": 0,
+        "c": 0,
+        "d": 8,
+        "customData": {
+          "noteJumpStartBeatOffset": 1337,
+          "noteJumpMovementSpeed": 6.9,
+          "track": "evilbenjamin",
+          "uninteractable": true,
+          "disableNoteGravity": false,
+          "_disableNoteGravity": false,
+          "disableBadCutDirection": true,
+          "disableBadCutSaberType": true,
+          "disableDebris": true,
+          "spawnEffect": false
+        }
+      },
+      {
+        "b": 469,
+        "x": 0,
+        "y": 0,
+        "a": 0,
+        "c": 1,
+        "d": 8,
+        "customData": {
+          "noteJumpStartBeatOffset": 1337,
+          "noteJumpMovementSpeed": 6.9,
+          "track": "benjaminblock",
+          "uninteractable": true,
+          "disableNoteGravity": false,
+          "_disableNoteGravity": false,
+          "disableBadCutDirection": true,
+          "disableBadCutSaberType": true,
+          "disableDebris": true,
+          "spawnEffect": false,
+          "disableNoteLook": true
+        }
+      },
+      {
+        "b": 520,
+        "x": 0,
+        "y": 0,
+        "a": 0,
+        "c": 1,
+        "d": 8,
+        "customData": {
+          "noteJumpStartBeatOffset": 1337,
+          "noteJumpMovementSpeed": 6.9,
+          "track": "benjamin",
+          "uninteractable": true,
+          "disableNoteGravity": false,
+          "_disableNoteGravity": false,
+          "disableBadCutDirection": true,
+          "disableBadCutSaberType": true,
+          "disableDebris": true,
+          "spawnEffect": false
+        }
+      }
+    ],
+    "fakeObstacles": [],
+    "customEvents": [
+      {
+        "b": 227,
+        "t": "AssignPathAnimation",
+        "d": {
+          "track": "benjamin",
+          "duration": 0,
+          "definitePosition": [
+            [
+              -69,
+              -0.9,
+              20,
+              0
+            ]
+          ],
+          "dissolve": [
+            [
+              1,
+              0
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 227,
+        "t": "AssignPathAnimation",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0,
+          "definitePosition": [
+            [
+              -69,
+              -0.9,
+              20,
+              0
+            ]
+          ],
+          "dissolve": [
+            [
+              0,
+              0
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 227,
+        "t": "AssignPathAnimation",
+        "d": {
+          "track": "benjaminblock",
+          "duration": 0,
+          "definitePosition": [
+            [
+              -69,
+              -0.9,
+              20,
+              0
+            ]
+          ],
+          "dissolve": [
+            [
+              1,
+              0
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 459,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 459,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 460,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 460,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 461,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 461,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 462,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 462,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 463,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 463,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 464,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 464,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 465,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 465,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 466,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 466,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 467,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 467,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 468,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 468,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 469,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "evilbenjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 469,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "benjamin",
+          "duration": 0.75,
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              1,
+              0.75,
+              1,
+              0.375,
+              "easeInBack"
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeOutBack"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              0,
+              0,
+              0,
+              0,
+              "splineCatmullRom"
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0.5,
+              "splineCatmullRom",
+              "easeInOutQuint"
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "splineCatmullRom",
+              "easeOutBounce"
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

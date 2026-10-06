@@ -59,6 +59,7 @@ namespace Tests.Editor
             yield break;
         }
 
+        // Synthetic aggregator reproduction of "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
         // Salty wall regressions (SaltyBeat219PlacementParityTest
         // .Beat221WallsStayAtAuthoredDepthOnImmediateReverseSeek /
         // SaltyFullMapPlacementParityTest.Beat221WallsSeekSynchronouslyToStableGameDepth): models how a

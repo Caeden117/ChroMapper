@@ -72,6 +72,7 @@ namespace Tests.Editor
             Assert.That(value.a, Is.EqualTo(0.5f).Within(0.0001f));
         }
 
+        // The first two point rows below come from "CENSORED!!", mapped by Saltyfish (BeatSaver ID: 4b3da).
         // Vector3NullComponentParsesAsNumericZero pins Heck's DeserializeValues behavior:
         // Convert.ToSingle(null) is 0, so a JSON null inside a numeric point row is a zero
         // component, not a dropped point. CENSORED!! authors its censson flash as

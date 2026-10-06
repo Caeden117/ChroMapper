@@ -196,9 +196,16 @@ namespace Beatmap.Containers
                         var originalParentId = duplicate.ChromaID;
                         duplicate.ChromaID = original.ChromaID[..(original.ChromaID.LastIndexOf(']') + 1)]
                             + duplicate.name;
+                        // GetComponentsInChildren includes the root marker, whose final ChromaID was assigned
+                        // above. Rewrite only child IDs to avoid appending a second "(Clone)" to the root.
                         foreach (var childMarker in duplicateObject.GetComponentsInChildren<ChromaIDMarker>())
                         {
-                            childMarker.ChromaID = childMarker.ChromaID.Replace(originalParentId, duplicate.ChromaID);
+                            if (childMarker != duplicate)
+                            {
+                                childMarker.ChromaID =
+                                    childMarker.ChromaID.Replace(originalParentId, duplicate.ChromaID);
+                            }
+
                             descriptor.ChromaIDMarkers.Add(childMarker);
                         }
 
