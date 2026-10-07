@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: Colorer les faux murs
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: Les lignes de mesure sont rendues au-dessus du reste
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -441,12 +437,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: "Active les reflets caus\xE9s par les lumi\xE8res et les objets."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "Fait appara\xEEtre les textes des lignes de mesure au-dessus de
-      <i>tout</i>. Peut causer des bugs visuels lorsque vous regardez \xE0 travers
-      une note."
     m_Metadata:
       m_Items: []
   - m_Id: 106

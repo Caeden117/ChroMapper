@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: "Farve falske v\xE6gge"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "M\xE5l linjer gengives over alt andet"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -438,11 +434,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: "Aktiverer / deaktiverer refleksioner for\xE5rsaget af lys og objekter."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
     m_Metadata:
       m_Items: []
   - m_Id: 106

@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: "\u5F69\u8272\u5047\u5899"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "\u6D4B\u91CF\u7EBF\u6E32\u67D3\u4E00\u5207"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -410,10 +406,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: "\u5207\u6362\u7531\u706F\u5149\u548C\u7269\u4F53\u5F15\u8D77\u7684\u53CD\u5C04\u3002"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "\u4F7F\u5F97\u6D4B\u91CF\u7EBF\u6587\u672C\u51FA\u73B0\u5728<i>\u4E00\u5207</i>\u7684\u9876\u90E8\u3002\u5728\u901A\u8FC7\u97F3\u7B26\u65F6\u53EF\u80FD\u4F1A\u5F15\u8D77\u4E00\u4E9B\u6DF7\u4E71\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 106

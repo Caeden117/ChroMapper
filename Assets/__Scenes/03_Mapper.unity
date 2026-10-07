@@ -22617,7 +22617,6 @@ GameObject:
   - component: {fileID: 443861354}
   - component: {fileID: 443861353}
   - component: {fileID: 443861356}
-  - component: {fileID: 443861357}
   m_Layer: 0
   m_Name: Measure Lines Canvas
   m_TagString: Untagged
@@ -22725,19 +22724,6 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
---- !u!114 &443861357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443861351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ecf905aef41c6b4c816cf596d4c22c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectingCanvas: {fileID: 443861355}
 --- !u!1 &444276308
 GameObject:
   m_ObjectHideFlags: 0

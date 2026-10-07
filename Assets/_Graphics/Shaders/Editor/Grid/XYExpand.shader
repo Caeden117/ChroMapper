@@ -29,9 +29,11 @@
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
+            #include "../../ShaderLibrary/GridCoverage.hlsl"
 
             uniform float _Rotation = 0;
             float _FadeRadius;
@@ -99,25 +101,25 @@
 
                 float xPos = i.rotatedPos.x + gridOffset.x;
                 float yPos = i.rotatedPos.y + gridOffset.y;
+                float xFilter = fwidth(xPos);
+                float yFilter = fwidth(yPos);
 
                 float dist = length(abs(mousePosition - i.worldPos.xyz) / _FadeRadius);
                 if (dist > 1) discard;
 
-                // Grid
+                // Use the main grid's AA coverage for the cursor reveal.
+                float coverage = 0;
                 for (int idx = 0; idx < 4; idx++)
                 {
-                    if (abs(xPos) % gridSpacing[idx] / gridSpacing[idx] <= gridThickness[idx] / 2 ||
-                        abs(xPos) % gridSpacing[idx] / gridSpacing[idx] >= 1 - gridThickness[idx] / 2 ||
-                        abs(yPos) % gridSpacing[idx] / gridSpacing[idx] <= gridThickness[idx] / 2 ||
-                        abs(yPos) % gridSpacing[idx] / gridSpacing[idx] >= 1 - gridThickness[idx] / 2)
-                    {
-                        return color * (1 - sqrt(dist));
-                    }
+                    float spacing = gridSpacing[idx];
+                    if (spacing <= 0) continue;
+                    float halfWidth = spacing * gridThickness[idx] * 0.5;
+                    coverage = max(coverage, GridLineCoverage(xPos, spacing, halfWidth, xFilter));
+                    coverage = max(coverage, GridLineCoverage(yPos, spacing, halfWidth, yFilter));
                 }
 
-                // why it needs to return anyway idk, compiler complained
-                if (!color.a) discard;
-                return color;
+                clip(coverage - 0.004);
+                return color * (coverage * (1 - sqrt(dist)));
             }
             ENDHLSL
         }

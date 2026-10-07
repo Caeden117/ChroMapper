@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: "V\xE4rj\xE4\xE4 Feikit Sein\xE4t"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: Mittaa Rivirenderointi Kaikesta
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -451,11 +447,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: Kytkee valojen ja objektien aiheuttamat heijastukset.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "Aiheuttaa Tahtiviivojen tekstin piirron <i>kaiken</i> p\xE4\xE4lle.
-      Voi aiheuttaa j\xE4nni\xE4 asioita katsoessa nuotin l\xE4pi."
     m_Metadata:
       m_Items: []
   - m_Id: 106

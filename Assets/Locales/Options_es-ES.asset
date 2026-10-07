@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: Colorear paredes falsas
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "Renderizar l\xEDneas de comp\xE1s sobre todo"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -440,12 +436,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: Activa/desactiva los reflejos causados por las luces y los objetos.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "Hace que los textos de la l\xEDnea de medida aparezcan encima de
-      <i>todo</i>. Puede causar algunos problemas cuando se mira a trav\xE9s de una
-      nota."
     m_Metadata:
       m_Items: []
   - m_Id: 106

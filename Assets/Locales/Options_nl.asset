@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: Kleur nepmuren
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: Meetlijnen over alles heen renderen
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -447,11 +443,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: Schakelt reflectie van lichten en objecten in of uit.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: Laat metingslijnen boven <i>alles</i> renderen. Dit kan er vreemd
-      uit zien.
     m_Metadata:
       m_Items: []
   - m_Id: 106

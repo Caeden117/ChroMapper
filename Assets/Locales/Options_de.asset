@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: "Falsche W\xE4nde einf\xE4rben"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "Messlinien rendern \xFCber alles"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -438,11 +434,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: Schaltet Reflexionen durch Lichter und Objekte um.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "Macht Measure Line Texte \xFCber <i>alles</i>. Kann beim ansehen
-      einer Notiz zu rucklern f\xFChren."
     m_Metadata:
       m_Items: []
   - m_Id: 106

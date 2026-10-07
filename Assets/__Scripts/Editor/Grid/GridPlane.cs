@@ -27,6 +27,9 @@ public class GridPlane : MonoBehaviour
     private static readonly int gridThicknessID = Shader.PropertyToID("_GridThickness");
     private static readonly int gridOffsetID = Shader.PropertyToID("_GridOffset");
     private static readonly int gridScaleID = Shader.PropertyToID("_GridScale");
+    private static readonly int laneEdgeInsetID = Shader.PropertyToID("_LaneEdgeInset");
+    private static readonly int zEdgeInsetID = Shader.PropertyToID("_ZEdgeInset");
+    private static readonly int yEdgeInsetID = Shader.PropertyToID("_YEdgeInset");
 
     public void OnValidate() => RefreshVisual();
 
@@ -52,6 +55,12 @@ public class GridPlane : MonoBehaviour
         gridMaterialPropertyBlock.SetVector(gridThicknessID, thickness * scale);
         gridMaterialPropertyBlock.SetVector(gridOffsetID, offset);
         gridMaterialPropertyBlock.SetFloat(gridScaleID, scale);
+        // Derive the shader insets from the rendered grid scale so anti-aliasing overdraw stays aligned with the logical grid edges.
+        var gridScale = Grid.transform.localScale;
+        var longitudinalInset = Mathf.Max(0f, 0.5f - (0.5f / gridScale.y));
+        gridMaterialPropertyBlock.SetFloat(laneEdgeInsetID, Mathf.Max(0f, 0.5f - (0.5f / gridScale.x)));
+        gridMaterialPropertyBlock.SetFloat(zEdgeInsetID, longitudinalInset);
+        gridMaterialPropertyBlock.SetFloat(yEdgeInsetID, longitudinalInset);
 
         Grid.SetPropertyBlock(gridMaterialPropertyBlock);
         Interface.SetPropertyBlock(interfaceMaterialPropertyBlock);
