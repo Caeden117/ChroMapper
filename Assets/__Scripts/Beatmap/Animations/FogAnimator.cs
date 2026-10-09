@@ -17,6 +17,7 @@ namespace Beatmap.Animations
         public BeatmapRuntimeContext Context;
 
         private readonly Dictionary<string, AnimateProperty<float>> animatedProperties = new();
+        private readonly Dictionary<string, float> baselines = new();
         private IAnimateProperty[] properties = Array.Empty<IAnimateProperty>();
         private bool baselineCaptured;
         // Fog events take effect only when this track owns the fog component or is selected by AssignFogTrack.
@@ -130,17 +131,26 @@ namespace Beatmap.Animations
         // Drop empty properties before RefreshProperties tries to sort them.
         public void RemoveEvent(BaseCustomEvent ev)
         {
+            var ownsFog = hasFogComponentTarget
+                || (legacyBinding != null && legacyBinding.IsAssignedTo(this, Atsc.CurrentJsonTime));
             foreach (var key in animatedProperties.Keys.ToList())
             {
                 var prop = animatedProperties[key];
                 prop.RemoveEvent(ev);
                 if (prop.IsEmpty())
                 {
+                    if (ownsFog && baselines.TryGetValue(key, out var baseline))
+                    {
+                        WriteParam(key, baseline);
+                    }
+
                     animatedProperties.Remove(key);
                 }
             }
 
             RefreshProperties();
+            Context.NotifyBloomFogParamsChanged();
+            PushOnStoppedTimeChanged();
         }
 
         private void RefreshProperties()
@@ -197,7 +207,13 @@ namespace Beatmap.Animations
                 baselineCaptured = true;
                 foreach (var pair in animatedProperties)
                 {
-                    pair.Value.Default = ReadParam(pair.Key);
+                    if (!baselines.TryGetValue(pair.Key, out var baseline))
+                    {
+                        baseline = ReadParam(pair.Key);
+                        baselines.Add(pair.Key, baseline);
+                    }
+
+                    pair.Value.Default = baseline;
                 }
             }
 
@@ -215,6 +231,7 @@ namespace Beatmap.Animations
         public void ResetForMapLoad()
         {
             animatedProperties.Clear();
+            baselines.Clear();
             properties = Array.Empty<IAnimateProperty>();
             baselineCaptured = false;
             hasComponentEvents = false;
@@ -224,6 +241,16 @@ namespace Beatmap.Animations
             enabled = false;
         }
 
+        public void RefreshBpmTiming()
+        {
+            foreach (var property in properties)
+            {
+                property.RefreshBpmTiming();
+            }
+
+            PushOnStoppedTimeChanged();
+        }
+
         private AnimateProperty<float> GetProperty(string key)
         {
             if (!animatedProperties.TryGetValue(key, out var prop))
@@ -231,8 +258,9 @@ namespace Beatmap.Animations
                 prop = new AnimateProperty<float>(
                     new List<PointDefinition<float>>(),
                     value => WriteParam(key, value),
-                    0f);
+                    baselines.TryGetValue(key, out var baseline) ? baseline : 0f);
                 animatedProperties[key] = prop;
+                baselineCaptured = false;
             }
 
             return prop;
@@ -287,6 +315,15 @@ namespace Beatmap.Animations
 
         public void Add(float time, FogAnimator animator) => assignments.Add((time, animator));
 
+        private int GetAssignmentIndex(float time) =>
+            assignments.AsSpan().UpperBoundBy(time, assignment => assignment.Time) - 1;
+
+        internal bool IsAssignedTo(FogAnimator animator, float time)
+        {
+            var index = GetAssignmentIndex(time);
+            return index >= 0 && assignments[index].Animator == animator;
+        }
+
         public void PushAt(float time)
         {
             if (!baselineCaptured)
@@ -299,18 +336,11 @@ namespace Beatmap.Animations
                 baselineCaptured = true;
             }
 
-            var low = 0;
-            var high = assignments.Count;
-            while (low < high)
-            {
-                var middle = low + ((high - low) / 2);
-                if (assignments[middle].Time <= time) low = middle + 1;
-                else high = middle;
-            }
+            var index = GetAssignmentIndex(time);
 
-            if (low > 0)
+            if (index >= 0)
             {
-                assignments[low - 1].Animator.PushLegacyValuesAt(time);
+                assignments[index].Animator.PushLegacyValuesAt(time);
                 return;
             }
 

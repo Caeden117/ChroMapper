@@ -203,11 +203,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
 
-        if (playerCamera)
-        {
-            SyncPlayerTrack();
-        }
-        else if (canMoveCamera)
+        if (!playerCamera && canMoveCamera)
         {
             if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
             {
@@ -239,7 +235,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
             eulerAngles.z = 0;
             transform.eulerAngles = eulerAngles;
         }
-        else
+        else if (!playerCamera)
         {
             z = x = 0;
             SetLockState(false);

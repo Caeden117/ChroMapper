@@ -123,6 +123,42 @@ namespace Tests.Editor
                 "The reloaded map carried the previous session's animated shader attenuation.");
         }
 
+        [UnityTest]
+        public IEnumerator DeletingAndReaddingFogEventsRestoresAuthoredBaseline()
+        {
+            yield return TestUtils.ReloadMap(3, JSON.Parse(File.ReadAllText(FixturePath)),
+                beatsPerMinute: 150, environmentName: "BillieEnvironment", songLengthSeconds: 240);
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            var animator = Object.FindAnyObjectByType<TracksManager>()
+                .GetAnimationTrack("fog").GetComponent<Beatmap.Animations.FogAnimator>();
+            var events = BeatSaberSongContainer.Instance.Map.CustomEvents
+                .FindAll(ev => ev.Type == "AnimateComponent" && ev.Data.HasKey("BloomFogEnvironment"));
+            Assert.That(events, Is.Not.Empty);
+            atsc.MoveToJsonTime(528f);
+            Assert.That(context.Descriptor.BloomFogParams.Attenuation, Is.EqualTo(1e-04f).Within(1e-09f));
+
+            foreach (var ev in events)
+            {
+                animator.RemoveEvent(ev);
+            }
+
+            Assert.That(context.Descriptor.BloomFogParams.Attenuation,
+                Is.EqualTo(AuthoredAttenuation).Within(1e-09f), "Deleting the last fog event retained its animated value.");
+            Assert.That(Shader.GetGlobalFloat("_CustomFogAttenuation"),
+                Is.EqualTo(AuthoredAttenuation).Within(1e-09f));
+            foreach (var ev in events)
+            {
+                animator.AddEvent(ev);
+            }
+
+            atsc.MoveToJsonTime(0f);
+            Assert.That(context.Descriptor.BloomFogParams.Attenuation,
+                Is.EqualTo(AuthoredAttenuation).Within(1e-09f));
+            atsc.MoveToJsonTime(528f);
+            Assert.That(context.Descriptor.BloomFogParams.Attenuation, Is.EqualTo(1e-04f).Within(1e-09f));
+        }
+
         // Restore the canonical empty shared map so later fixtures do not inherit the fog fixture.
         [UnityTearDown]
         public IEnumerator RestoreEmptySharedMap()

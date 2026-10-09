@@ -483,12 +483,11 @@ public class AudioTimeSyncController : MonoBehaviour,
 
     private void UpdateTrackLength(object _) => UpdateMovables();
 
-    // Always reset visual beat origin when we switch
-    // Ideally, each user who changes the beat origin should also reset it, but this is a safety measure
-    // There are too many places to change edit mode contexts for that to be reliable
+    // A temporary Playing workspace still belongs to the open GLS group and must retain its relative grid.
     private void OnEditModeChanged(EditingMode mode)
     {
-        if (VisualBeatOrigin != 0) VisualBeatOrigin = 0;
+        if (!editModeContext.IsTemporaryModeChange && VisualBeatOrigin != 0)
+            VisualBeatOrigin = 0;
     }
 
     private void OnLevelLoaded() => levelLoaded = true;

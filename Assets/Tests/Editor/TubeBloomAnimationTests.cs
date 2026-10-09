@@ -118,6 +118,40 @@ namespace Tests.Editor
             yield break;
         }
 
+        [UnityTest]
+        public IEnumerator DeletingAndReaddingTubeBloomEventsRestoresAuthoredBaselines()
+        {
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var controller = FindTrackLightController();
+            var animator = Object.FindAnyObjectByType<TracksManager>()
+                .GetAnimationTrack(TrackName).GetComponent<Beatmap.Animations.TubeBloomAnimator>();
+            var events = BeatSaberSongContainer.Instance.Map.CustomEvents;
+            atsc.MoveToJsonTime(17f);
+            Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(5f));
+            foreach (var ev in events)
+            {
+                animator.RemoveEvent(ev);
+            }
+
+            Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(AuthoredAlpha),
+                "Deleting the last tube-bloom event retained its animated alpha.");
+            Assert.That(controller.BloomFogIntensityMultiplier, Is.EqualTo(AuthoredBloomFog));
+            Assert.That(controller.BoxLight.AlphaMultiplier, Is.EqualTo(AuthoredAlpha));
+            Assert.That(controller.BloomFog.IntensityMultiplier, Is.EqualTo(AuthoredBloomFog));
+            foreach (var ev in events)
+            {
+                animator.AddEvent(ev);
+            }
+
+            atsc.MoveToJsonTime(0f);
+            Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(AuthoredAlpha));
+            Assert.That(controller.BloomFogIntensityMultiplier, Is.EqualTo(AuthoredBloomFog));
+            atsc.MoveToJsonTime(17f);
+            Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(5f));
+            Assert.That(controller.BloomFogIntensityMultiplier, Is.EqualTo(6f));
+            yield break;
+        }
+
         // ParametricBloomFogLightController.Refresh pushes the animated multipliers onto the
         // physical box/sprite lights only via Initialize's one-time copy; a later
         // SetColorAlphaMultiplier must re-push Box.AlphaMultiplier and Sprite.AlphaMultiplier

@@ -202,7 +202,8 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleEditModeChanged(EditingMode mode)
     {
         targetObject.SetActive(mode.HasFlag(EditingMode.EventBox));
-        if (!mode.HasFlag(EditingMode.EventBox)) SetBoxIndex(0);
+        if (!editModeContext.IsTemporaryModeChange && !mode.HasFlag(EditingMode.EventBox))
+            SetBoxIndex(0);
     }
 
     private void HandleGroupChanged(BaseEventBoxGroup group)

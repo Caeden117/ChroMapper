@@ -261,6 +261,7 @@ namespace Beatmap.Animations
             case "time":
                 AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
                 break;
+            case "_interactable":
             case "interactable":
                 AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Interactable.Add(f), PointDataParsers.ParseFloat, p, 1);
                 break;

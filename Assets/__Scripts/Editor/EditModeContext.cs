@@ -17,6 +17,22 @@ public class EditModeContext : MonoBehaviour, CMInput.IEditModeActions, IEditorS
         }
     }
 
+    public bool IsTemporaryModeChange { get; private set; }
+
+    // Playing needs the gameplay camera's tracks without discarding the workspace's editing state.
+    public void SetTemporaryEditingMode(EditingMode mode)
+    {
+        IsTemporaryModeChange = true;
+        try
+        {
+            EditingMode = mode;
+        }
+        finally
+        {
+            IsTemporaryModeChange = false;
+        }
+    }
+
     public event Action<EditingMode> OnEditModeChanged;
     // Keep the active workspace tab with the context that publishes tab changes.
     public string StateKey => "editingMode";

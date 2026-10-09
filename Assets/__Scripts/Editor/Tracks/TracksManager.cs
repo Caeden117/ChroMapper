@@ -229,6 +229,44 @@ public class TracksManager : MonoBehaviour
         }
     }
 
+    public void RefreshBpmTiming(float jsonTime)
+    {
+        var changedSongTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);
+        foreach (var collection in objectContainerCollections)
+        {
+            foreach (var pair in collection.LoadedContainers)
+            {
+                var data = (BaseGrid)pair.Key;
+                if (pair.Value.Animator.enabled
+                    && (data.JsonTime >= jsonTime || data.DespawnSongBpmTime >= changedSongTime))
+                {
+                    pair.Value.Animator.AttachToObject(data);
+                }
+            }
+        }
+
+        foreach (var track in animationTracks.Values)
+        {
+            foreach (var property in track.AnimatedProperties.Values)
+            {
+                property.RefreshBpmTiming();
+            }
+
+            track.PushOnStoppedTimeChanged();
+            var fog = track.GetComponent<FogAnimator>();
+            if (fog != null)
+            {
+                fog.RefreshBpmTiming();
+            }
+
+            var tubeBloom = track.GetComponent<TubeBloomAnimator>();
+            if (tubeBloom != null)
+            {
+                tubeBloom.RefreshBpmTiming();
+            }
+        }
+    }
+
     public Track GetTrackAtTime(float beatInSongBpm, int rotation)
     {
         if (!Settings.Instance.RotateTrack) return CreateTrack(0);

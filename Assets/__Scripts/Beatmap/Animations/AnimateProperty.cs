@@ -15,6 +15,7 @@ namespace Beatmap.Animations
         public bool ResetEvaluatedValue();
         public void Sort();
         public void RemoveEvent(BaseCustomEvent ev);
+        public void RefreshBpmTiming();
     }
 
     public class AnimateProperty<T> : IAnimateProperty
@@ -29,6 +30,8 @@ namespace Beatmap.Animations
         private int count;
         private bool hasEvaluatedValue;
         private T evaluatedValue;
+        private readonly List<(PointDefinition<T>.Parser Parser, IPointDefinition.UntypedParams Parameters,
+            BaseCustomEvent Source)> sourceDefinitions = new();
 
         public AnimateProperty(List<PointDefinition<T>> points, Action<T> setter, T _default)
         {
@@ -53,6 +56,13 @@ namespace Beatmap.Animations
         }
 
         public void AddPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, BaseCustomEvent source)
+        {
+            sourceDefinitions.Add((parser, p, source));
+            AddPointDefinitions(parser, p, source);
+        }
+
+        private void AddPointDefinitions(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p,
+            BaseCustomEvent source)
         {
             // Repeats past song end cannot be played. Cap them here to avoid allocating unused definitions.
             var repeat = p.Repeat;
@@ -248,7 +258,36 @@ namespace Beatmap.Animations
 
         public void RemoveEvent(BaseCustomEvent ev)
         {
+            sourceDefinitions.RemoveAll(definition => definition.Source == ev);
             PointDefinitions.RemoveAll((pd) => pd.Source == ev);
+        }
+
+        public void RefreshBpmTiming()
+        {
+            var hasRepeats = false;
+            foreach (var definition in sourceDefinitions)
+            {
+                if (definition.Parameters.Repeat > 0 && definition.Parameters.Duration > 0)
+                {
+                    hasRepeats = true;
+                    break;
+                }
+            }
+
+            if (!hasRepeats)
+            {
+                return;
+            }
+
+            // A BPM edit changes the song-end beat, so repeats clipped during loading may become reachable.
+            PointDefinitions.Clear();
+            foreach (var definition in sourceDefinitions)
+            {
+                AddPointDefinitions(definition.Parser, definition.Parameters, definition.Source);
+            }
+
+            Sort();
+            ResetEvaluatedValue();
         }
 
         private void GetIndexes(float time, out int prev, out int next)

@@ -287,8 +287,9 @@ namespace Beatmap.Animations
             if (!enabled) return;
 
             obj.RecomputeSpawnParameters();
-            disableNoteLook = obj.CustomData?.HasKey("disableNoteLook") == true
-                && obj.CustomData["disableNoteLook"].AsBool;
+            var noteLookKey = TracksManager.IsV2Map ? "_disableNoteLook" : "disableNoteLook";
+            disableNoteLook = obj.CustomData?.HasKey(noteLookKey) == true
+                && obj.CustomData[noteLookKey].AsBool;
             float duration;
             switch (container)
             {

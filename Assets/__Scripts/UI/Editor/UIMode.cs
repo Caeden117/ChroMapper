@@ -17,6 +17,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     private Quaternion savedCamRotation = Quaternion.identity;
     private UIModeType modeBeforePreview = UIModeType.Normal;
     private EditingMode editingModeBeforePlaying = EditingMode.Gameplay;
+    private float visualBeatOriginBeforePlaying;
 
     public static event Action<UIModeType> OnUIModeSwitched;
     public static event Action OnPreviewModeSwitched;
@@ -196,11 +197,14 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         if (nextMode == UIModeType.Playing && SelectedMode != UIModeType.Playing)
         {
             editingModeBeforePlaying = editModeContext.EditingMode;
-            editModeContext.EditingMode = EditingMode.Gameplay;
+            visualBeatOriginBeforePlaying = atsc.VisualBeatOrigin;
+            editModeContext.SetTemporaryEditingMode(EditingMode.Gameplay);
         }
         else if (SelectedMode == UIModeType.Playing && nextMode != UIModeType.Playing)
         {
-            editModeContext.EditingMode = editingModeBeforePlaying;
+            editModeContext.SetTemporaryEditingMode(editingModeBeforePlaying);
+            // Switching through Gameplay clears the node grid origin. Restore it after the workspace callbacks finish.
+            atsc.VisualBeatOrigin = visualBeatOriginBeforePlaying;
         }
 
         SelectedMode = nextMode;

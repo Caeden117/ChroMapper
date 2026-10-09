@@ -75,11 +75,14 @@ namespace Beatmap.Animations
                 prop.RemoveEvent(ev);
                 if (prop.IsEmpty())
                 {
+                    RestoreBaseline(key);
                     animatedProperties.Remove(key);
                 }
             }
 
             RefreshProperties();
+            RefreshControllers();
+            PushOnStoppedTimeChanged();
         }
 
         private void RefreshProperties()
@@ -128,6 +131,11 @@ namespace Beatmap.Animations
                 }
             }
 
+            RefreshControllers();
+        }
+
+        private void RefreshControllers()
+        {
             for (var i = 0; i < controllers.Length; ++i)
             {
                 var controller = controllers[i];
@@ -175,14 +183,30 @@ namespace Beatmap.Animations
             enabled = false;
         }
 
+        public void RefreshBpmTiming()
+        {
+            foreach (var property in properties)
+            {
+                property.RefreshBpmTiming();
+            }
+
+            PushOnStoppedTimeChanged();
+        }
+
         private AnimateProperty<float> GetProperty(string key)
         {
             if (!animatedProperties.TryGetValue(key, out var prop))
             {
+                // Re-adding a deleted event must retain the authored values instead of capturing its last animated write.
+                if (resolved && !baselines.ContainsKey(key))
+                {
+                    baselines[key] = controllers.Select(controller => ReadParam(controller, key)).ToArray();
+                }
+
                 prop = new AnimateProperty<float>(
                     new List<PointDefinition<float>>(),
                     value => WriteParam(key, value),
-                    0f);
+                    baselines.TryGetValue(key, out var values) && values.Length > 0 ? values[0] : 0f);
                 animatedProperties[key] = prop;
             }
 

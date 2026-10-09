@@ -12,6 +12,66 @@ namespace Tests.Editor
 {
     public class EditModePlayingCameraTest : PreviewWorkflowTestBase
     {
+        [UnityTest]
+        public IEnumerator ReturningFromPlayingPreservesGlsCursorAndSnapping()
+        {
+            var uiMode = Object.FindAnyObjectByType<UIMode>();
+            var editMode = Object.FindAnyObjectByType<EditModeContext>();
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var previousSnapping = atsc.GridMeasureSnapping;
+            try
+            {
+                editMode.EditingMode = EditingMode.GLS;
+                yield return null;
+                atsc.GridMeasureSnapping = 8;
+                atsc.MoveToJsonTime(12.375f);
+                Assert.That(atsc.IsSnapped, Is.True);
+                uiMode.SetUIMode(UIModeType.Playing, false);
+                yield return null;
+                uiMode.TryExitPreviewMode();
+                yield return null;
+                Assert.That(editMode.EditingMode, Is.EqualTo(EditingMode.GLS));
+                Assert.That(atsc.CurrentJsonTime, Is.EqualTo(12.375f), "Leaving Playing reset the GLS cursor.");
+                Assert.That(atsc.GridMeasureSnapping, Is.EqualTo(8));
+                Assert.That(atsc.IsSnapped, Is.True);
+            }
+            finally
+            {
+                atsc.GridMeasureSnapping = previousSnapping;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator ReturningFromPlayingPreservesGlsNodeGridOrigin()
+        {
+            var uiMode = Object.FindAnyObjectByType<UIMode>();
+            var editMode = Object.FindAnyObjectByType<EditModeContext>();
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var previousSnapping = atsc.GridMeasureSnapping;
+            try
+            {
+                editMode.EditingMode = EditingMode.EventBox;
+                atsc.GridMeasureSnapping = 8;
+                atsc.VisualBeatOrigin = 22.07f;
+                atsc.MoveToJsonTime(23.07f);
+                Assert.That(atsc.IsSnapped, Is.True);
+                uiMode.SetUIMode(UIModeType.Playing, false);
+                yield return null;
+                uiMode.TryExitPreviewMode();
+                yield return null;
+                Assert.That(editMode.EditingMode, Is.EqualTo(EditingMode.EventBox));
+                Assert.That(atsc.VisualBeatOrigin, Is.EqualTo(22.07f),
+                    "Leaving Playing reset the node grid's relative beat labels and snap origin.");
+                Assert.That(atsc.CurrentJsonTime, Is.EqualTo(23.07f));
+                Assert.That(atsc.IsSnapped, Is.True);
+            }
+            finally
+            {
+                atsc.VisualBeatOrigin = 0f;
+                atsc.GridMeasureSnapping = previousSnapping;
+            }
+        }
+
         // SwitchingToGlsWhilePlayingKeepsTheGameplayWorkspace reproduces issue 51a19: F2 must not disable the
         // gameplay tracks that drive the playing camera while the editor is in a preview UI mode.
         [Test]

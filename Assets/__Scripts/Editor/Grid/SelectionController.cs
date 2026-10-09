@@ -103,7 +103,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     private void OnDestroy() => editModeContext.OnEditModeChanged -= HandleEditModeChanged;
 
-    private void HandleEditModeChanged(EditingMode mode) => DeselectAll();
+    private void HandleEditModeChanged(EditingMode mode)
+    {
+        if (!editModeContext.IsTemporaryModeChange)
+            DeselectAll();
+    }
 
     public void OnPaste(InputAction.CallbackContext context)
     {

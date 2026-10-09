@@ -13,8 +13,6 @@ public class MapLoader : MonoBehaviour
 
     private BaseDifficulty map;
 
-    public void ResetAnimationTracks() => manager.ResetAnimationTracks();
-
     public void DestroyTrackBoundEnvironmentObjects()
     {
         manager.DestroyTrackBoundEnvironmentObjects();

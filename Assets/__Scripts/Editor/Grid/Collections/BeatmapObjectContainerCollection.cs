@@ -514,6 +514,11 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             }
         }
 
+        // Path animations cache song-time windows. Rebuild them only after custom events have been retimed.
+        var customEvents = GetCollectionForType<CustomEventGridContainer>(ObjectType.CustomEvent);
+        if (customEvents != null)
+            customEvents.RefreshBpmTiming(jsonTime);
+
         // Bookmarks aren't in the ContainerCollection yet so we have this
         foreach (var bookmark in bookmarkManagerInstance.bookmarkContainers)
             if (bookmark.Data.JsonTime > jsonTime)

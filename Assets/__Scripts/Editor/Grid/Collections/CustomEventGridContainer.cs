@@ -56,6 +56,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         RebuildV2FogBinding();
     }
 
+    public void RefreshBpmTiming(float jsonTime) => tracksManager.RefreshBpmTiming(jsonTime);
+
     public void OnAssignObjectstoTrack(InputAction.CallbackContext context)
     {
         if (EditContext.EditingMode.HasFlag(ViewableMode)
@@ -242,7 +244,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 if (ev.CustomTrack == null) return;
                 // The preview camera represents both Root and Head. Skip hand targets with a warning because
                 // the editor has no VR controllers to animate.
-                var playerTarget = ev.Data?.HasKey("target") == true ? (string)ev.Data["target"] : "Root";
+                var targetKey = tracksManager.IsV2Map ? "_target" : "target";
+                var playerTarget = ev.Data?.HasKey(targetKey) == true ? (string)ev.Data[targetKey] : "Root";
                 if (playerTarget is not ("Root" or "Head"))
                 {
                     Debug.LogWarning(
