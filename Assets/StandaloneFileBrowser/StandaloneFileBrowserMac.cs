@@ -1,4 +1,5 @@
-#if UNITY_STANDALONE_OSX
+// Match the editor host so switching its build target never selects another OS's native dialog library.
+#if (UNITY_STANDALONE_OSX && !UNITY_EDITOR) || UNITY_EDITOR_OSX
 
 using System;
 using System.Runtime.InteropServices;

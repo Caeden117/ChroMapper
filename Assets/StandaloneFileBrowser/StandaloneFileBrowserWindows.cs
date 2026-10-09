@@ -1,4 +1,5 @@
-#if UNITY_STANDALONE_WIN
+// Windows dialog assemblies are imported only by Windows editors and Windows players, regardless of the editor's build target.
+#if (UNITY_STANDALONE_WIN && !UNITY_EDITOR) || UNITY_EDITOR_WIN
 
 using System;
 using System.IO;
