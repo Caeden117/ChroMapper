@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 namespace TestsEditMode
 {
-    // Source-font CJK rows require rectangular clipping without generating stencil materials, so
-    // inspect the real serialized scene instead of accepting only a synthetic render hierarchy.
+    // Inspect the imported scene so synthetic render tests cannot miss viewport wiring regressions.
     public class SongListCjkMaskTest
     {
         private Scene scene;
@@ -48,8 +47,7 @@ namespace TestsEditMode
             }
         }
 
-        // SongListCjkMetadataUsesSourceFontRenderer verifies the renderer; this guards the matching
-        // scene clip path against reintroducing player-only stencil material generation.
+        // Rectangular clipping avoids creating additional stencil materials for dynamic TMP submeshes.
         [Test]
         public void SongListViewportUsesRectMask2D()
         {
