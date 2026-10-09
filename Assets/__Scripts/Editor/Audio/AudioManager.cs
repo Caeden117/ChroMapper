@@ -35,6 +35,14 @@ public class AudioManager : MonoBehaviour
     private ComputeBuffer cachedFFTBuffer;
     private ComputeBuffer dummyBuffer;
 
+    // The deferred coroutine's temporary buffers are instance fields because StopCoroutine and scene teardown
+    // abandon the enumerator without running its end-of-method cleanup. NativeArray(.., Allocator.Persistent) has no
+    // finalizer, so OnDestroy and the next generation must be able to release it.
+    private ComputeBuffer fftWindowCoeffBuffer;
+    private ComputeBuffer fftRealBuffer;
+    private ComputeBuffer fftImaginaryBuffer;
+    private NativeArray<float> fftChunkData;
+
     private Coroutine activeFFTCoroutine;
 
     // ReSharper disable ParameterHidesMember
@@ -46,6 +54,8 @@ public class AudioManager : MonoBehaviour
             StopCoroutine(activeFFTCoroutine);
             activeFFTCoroutine = null;
         }
+
+        ReleaseFFTChunkBuffers();
 
         activeFFTCoroutine = StartCoroutine(GenerateFFTDeferred(clip, sampleSize, quality, showDuringGenerating));
     }
@@ -115,16 +125,17 @@ public class AudioManager : MonoBehaviour
         Shader.SetGlobalBuffer(fftResults, cachedFFTBuffer);
 
         // Prepare window coefficient buffer (persists across all chunks)
-        using var windowCoeffBuffer = new ComputeBuffer(sampleSize, sizeof(float));
-        windowCoeffBuffer.SetData(window);
+        fftWindowCoeffBuffer = new ComputeBuffer(sampleSize, sizeof(float));
+        fftWindowCoeffBuffer.SetData(window);
 
         // Process FFT in chunks, one chunk per frame
         var samplesPerWindow = sampleSize / quality;
 
         // Allocate our temporary buffers once and reuse them for each chunk
-        var realBuffer = new ComputeBuffer(chunkWindowCount * sampleSize, sizeof(float));
-        var imaginaryBuffer = new ComputeBuffer(chunkWindowCount * sampleSize, sizeof(float));
-        var chunkData = new NativeArray<float>(chunkWindowCount * sampleSize, Allocator.Persistent);
+        fftRealBuffer = new ComputeBuffer(chunkWindowCount * sampleSize, sizeof(float));
+        fftImaginaryBuffer = new ComputeBuffer(chunkWindowCount * sampleSize, sizeof(float));
+        // This bad boy was memory leaking hard
+        fftChunkData = new NativeArray<float>(chunkWindowCount * sampleSize, Allocator.Persistent);
         var zeroData = new float[chunkWindowCount * sampleSize]; // Used to reinitialize buffers to zero
 
         // We generate chucnkWindowCount FFT windows per frame.
@@ -133,9 +144,9 @@ public class AudioManager : MonoBehaviour
         for (var windowStart = 0; windowStart < totalWindows; windowStart += chunkWindowCount)
         {
             // Clear buffers to zero to remove garbage data
-            realBuffer.SetData(zeroData);
-            imaginaryBuffer.SetData(zeroData);
-            chunkData.CopyFrom(zeroData);
+            fftRealBuffer.SetData(zeroData);
+            fftImaginaryBuffer.SetData(zeroData);
+            fftChunkData.CopyFrom(zeroData);
 
             var windowsThisChunk = Mathf.Min(chunkWindowCount, totalWindows - windowStart);
             var chunkElementCount = windowsThisChunk * sampleSize;
@@ -148,23 +159,23 @@ public class AudioManager : MonoBehaviour
                 var dstIndex = i * quality;
                 var length = Mathf.Clamp(sampleCount - srcIndex, 0, sampleSize);
                 if (length > 0)
-                    NativeArray<float>.Copy(SampleBufferManager.MonoSamples, srcIndex, chunkData, dstIndex, length);
+                    NativeArray<float>.Copy(SampleBufferManager.MonoSamples, srcIndex, fftChunkData, dstIndex, length);
             }
 
-            realBuffer.SetData(chunkData);
+            fftRealBuffer.SetData(fftChunkData);
 
             // Multiply by window coefficients
-            multiplyShader.SetBuffer(0, multiplyA, realBuffer);
-            multiplyShader.SetBuffer(0, multiplyB, windowCoeffBuffer);
+            multiplyShader.SetBuffer(0, multiplyA, fftRealBuffer);
+            multiplyShader.SetBuffer(0, multiplyB, fftWindowCoeffBuffer);
             ExecuteOverLargeArray(multiplyShader, chunkElementCount);
 
             // Step 2: Prepare imaginary components (zeroed)
-            initializeShader.SetBuffer(0, initializeBuffer, imaginaryBuffer);
+            initializeShader.SetBuffer(0, initializeBuffer, fftImaginaryBuffer);
             ExecuteOverLargeArray(initializeShader, chunkElementCount);
 
             // Step 3: Execute FFT for this chunk
-            fftShader.SetBuffer(0, fftReal, realBuffer);
-            fftShader.SetBuffer(0, fftImaginary, imaginaryBuffer);
+            fftShader.SetBuffer(0, fftReal, fftRealBuffer);
+            fftShader.SetBuffer(0, fftImaginary, fftImaginaryBuffer);
             fftShader.SetInt(chunkOffset, windowStart);
 
             ExecuteOverLargeArray(fftShader, windowsThisChunk);
@@ -172,14 +183,36 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
 
-        // Cleanup temporary buffers
-        // Using "using" statements seem to cause issues when used in a coroutine.
-        realBuffer.Dispose();
-        imaginaryBuffer.Dispose();
-        chunkData.Dispose();
+        ReleaseFFTChunkBuffers();
 
         activeFFTCoroutine = null;
         Shader.SetGlobalInt(fftInitialized, 1);
+    }
+
+    private void ReleaseFFTChunkBuffers()
+    {
+        if (fftWindowCoeffBuffer != null)
+        {
+            fftWindowCoeffBuffer.Dispose();
+            fftWindowCoeffBuffer = null;
+        }
+
+        if (fftRealBuffer != null)
+        {
+            fftRealBuffer.Dispose();
+            fftRealBuffer = null;
+        }
+
+        if (fftImaginaryBuffer != null)
+        {
+            fftImaginaryBuffer.Dispose();
+            fftImaginaryBuffer = null;
+        }
+
+        if (fftChunkData.IsCreated)
+        {
+            fftChunkData.Dispose();
+        }
     }
     // ReSharper restore ParameterHidesMember
     // ReSharper restore LocalVariableHidesMember
@@ -234,8 +267,10 @@ public class AudioManager : MonoBehaviour
             activeFFTCoroutine = null;
         }
 
+        ReleaseFFTChunkBuffers();
+
         ClearFFTCache();
-        
+
         dummyBuffer.Dispose();
         dummyBuffer = null;
     }

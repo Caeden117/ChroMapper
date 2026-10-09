@@ -15,11 +15,12 @@ namespace SFB {
         private static IStandaloneFileBrowser _platformWrapper = null;
 
         static StandaloneFileBrowser() {
-#if UNITY_STANDALONE_OSX
+            // An editor can target another OS; choose its host's native dialog wrapper to match the imported plugins.
+#if (UNITY_STANDALONE_OSX && !UNITY_EDITOR) || UNITY_EDITOR_OSX
             _platformWrapper = new StandaloneFileBrowserMac();
-#elif UNITY_STANDALONE_WIN
+#elif (UNITY_STANDALONE_WIN && !UNITY_EDITOR) || UNITY_EDITOR_WIN
             _platformWrapper = new StandaloneFileBrowserWindows();
-#elif UNITY_STANDALONE_LINUX
+#elif (UNITY_STANDALONE_LINUX && !UNITY_EDITOR) || UNITY_EDITOR_LINUX
             _platformWrapper = new StandaloneFileBrowserLinux();
 #elif UNITY_EDITOR
             _platformWrapper = new StandaloneFileBrowserEditor();

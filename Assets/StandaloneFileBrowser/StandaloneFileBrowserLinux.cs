@@ -1,4 +1,5 @@
-#if UNITY_STANDALONE_LINUX
+// Match the editor host so switching its build target never selects another OS's native dialog library.
+#if (UNITY_STANDALONE_LINUX && !UNITY_EDITOR) || UNITY_EDITOR_LINUX
 
 using System;
 using System.IO;
