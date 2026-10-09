@@ -34,10 +34,18 @@ public class AudioPreviewGenerator : MonoBehaviour
         // Reinitialize view bounds to encompass the entire thing
         Shader.SetGlobalFloat(viewStart, 0);
         Shader.SetGlobalFloat(viewEnd, BeatSaberSongContainer.Instance.LoadedSongLength);
-        
+
         Shader.SetGlobalFloat(editorScale, 1f);
         Shader.SetGlobalFloat(songBpm, 120f);
-        
+
+        // (Test Perf..) Test map reloads pass through this scene before every fixture. The preview spectrogram is never
+        // displayed in batchmode, so skip the clip decode + FFT generation that dominated per-load memory.
+        if (Application.isBatchMode)
+        {
+            previewGameObject.SetActive(true);
+            return;
+        }
+
         ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
         

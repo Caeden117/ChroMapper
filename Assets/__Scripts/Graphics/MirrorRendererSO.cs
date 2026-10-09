@@ -23,6 +23,7 @@ public class MirrorRendererSO : ScriptableObject
     private bool disableDepthTexture = true;
 
     private Camera mirrorCamera;
+    private CameraDisableUIRendering mirrorUiSuppressor;
     private RenderTexture mirrorBloomRaw;
     private RenderTexture mirrorBloomTexture;
     private int antialiasing = 1;
@@ -185,7 +186,16 @@ public class MirrorRendererSO : ScriptableObject
         var clipPlane = CameraSpacePlane(worldToCameraMatrix, planePos, planeNormal);
         mirrorCamera.projectionMatrix = mirrorCamera.CalculateObliqueMatrix(clipPlane);
 
-        mirrorCamera.Render();
+        // Disable UI callbacks before Camera.Render because canvas updates run before camera callbacks.
+        mirrorUiSuppressor.SuppressCanvasCallbacks();
+        try
+        {
+            mirrorCamera.Render();
+        }
+        finally
+        {
+            mirrorUiSuppressor.RestoreCanvasCallbacks();
+        }
     }
 
     private void EnsureMirrorBloomTextures()
@@ -253,6 +263,7 @@ public class MirrorRendererSO : ScriptableObject
                 hideFlags = HideFlags.HideAndDontSave
             };
             mirrorCamera = go.GetComponent<Camera>();
+            mirrorUiSuppressor = go.GetComponent<CameraDisableUIRendering>();
             mirrorCamera.enabled = false;
         }
 
