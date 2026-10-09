@@ -50,8 +50,8 @@ public class SpectrogramDataProvider : MonoBehaviour
 
             if (!HasInitialized) return;
             audioSource = AudioLink.audioSource;
-            AudioLink.audioDataToggle = true;
-            AudioLink.EnableReadback();
+            // Profile3 spent about 3 ms per frame copying AudioLink's CPU texture, while this spectrogram reads the audio source directly.
+            AudioLink.DisableReadback();
         }
     }
 

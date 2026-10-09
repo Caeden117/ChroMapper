@@ -266,6 +266,7 @@ public class AudioTimeSyncController : MonoBehaviour,
         LoadInitialMap.OnLevelLoaded -= OnLevelLoaded;
         Settings.ClearSettingNotifications("SongSpeed");
         Settings.ClearSettingNotifications("SongVolume");
+        Settings.ClearSettingNotifications(nameof(Settings.TrackLength));
     }
 
     // Save the timeline denominator beside the cursor so each map restores the grid on which that cursor was authored.

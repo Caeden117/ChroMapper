@@ -1,3 +1,4 @@
+using System.IO;
 using NUnit.Framework;
 
 namespace TestsEditMode
@@ -38,11 +39,15 @@ namespace TestsEditMode
             Assert.AreEqual("//server/share/maps", PathUtils.Combine("\\\\server\\share", "maps"));
         }
 
-        // Preserve Path.Combine semantics when callers pass an already absolute child path.
+        // A native absolute child replaces the parent on both Windows and Linux.
         [Test]
         public void CombineRootedChildDiscardsEarlierSegments()
         {
-            Assert.AreEqual("D:/Maps/bookmarks.dat", PathUtils.Combine("C:/Maps/Bookmarks", "D:\\Maps\\bookmarks.dat"));
+            var tempDirectory = Path.GetTempPath().Replace('\\', '/').TrimEnd('/');
+            var parent = $"{tempDirectory}/PathUtilsTest/Maps/Bookmarks";
+            var child = $"{tempDirectory}/PathUtilsTest/bookmarks.dat";
+
+            Assert.AreEqual(child, PathUtils.Combine(parent, child));
         }
     }
 }
