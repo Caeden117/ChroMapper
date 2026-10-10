@@ -21,7 +21,7 @@ MonoBehaviour:
   m_enableParseEscapeCharacters: 1
   m_EnableRaycastTarget: 1
   m_GetFontFeaturesAtRuntime: 1
-  m_missingGlyphCharacter: 0
+  m_missingGlyphCharacter: 9633
   m_ClearDynamicDataOnBuild: 1
   m_warningsDisabled: 1
   m_defaultFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -33,7 +33,9 @@ MonoBehaviour:
   m_defaultTextMeshProUITextContainerSize: {x: 200, y: 50}
   m_autoSizeTextContainer: 0
   m_IsTextObjectScaleStatic: 0
-  m_fallbackFontAssets: []
+  m_fallbackFontAssets:
+  - {fileID: 11400000, guid: 390a3cf4e21ab144a9d9840a7e8807f4, type: 2}
+  - {fileID: 11400000, guid: 329d979bbd9d62542bcc54517c445e06, type: 2}
   m_matchMaterialPreset: 1
   m_HideSubTextObjects: 0
   m_defaultSpriteAsset: {fileID: 11400000, guid: c41005c129ba4d66911b75229fd70b45,

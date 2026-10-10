@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -117,7 +117,8 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     public void AssignSong(BaseInfo mapInfo, string searchFieldText)
     {
-        if (this.mapInfo == mapInfo && previousSearch == searchFieldText) return;
+        if (this.mapInfo == mapInfo && previousSearch == searchFieldText)
+            return;
 
         StopCoroutine(nameof(LoadImage));
         StopCoroutine(nameof(LoadDuration));
@@ -125,11 +126,11 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
         previousSearch = searchFieldText;
         this.mapInfo = mapInfo;
         var songName = HighlightSubstring(mapInfo.SongName, searchFieldText);
+        var subName = mapInfo.SongSubName.StripTMPTags();
         var artistName = HighlightSubstring(mapInfo.SongAuthorName, searchFieldText);
-
-        title.text = $"{songName} <size=50%><i>{mapInfo.SongSubName.StripTMPTags()}</i></size>";
+        title.text = $"{songName} <size=50%><i>{subName}</i></size>";
         artist.text = artistName;
-        folder.text = mapInfo.Directory;
+        folder.text = mapInfo.Directory.StripTMPTags();
 
         duration.text = "-:--";
         bpm.text = $"{mapInfo.BeatsPerMinute:N0}";
