@@ -47,14 +47,16 @@ namespace TestsEditMode
             }
         }
 
-        // Rectangular clipping avoids creating additional stencil materials for dynamic TMP submeshes.
+        // Stencil masking also clips fallback submeshes created after the canvas clipping pass.
         [Test]
-        public void SongListViewportUsesRectMask2D()
+        public void SongListViewportUsesNativeStencilMask()
         {
-            Assert.That(viewport.GetComponent<Mask>(), Is.Null,
-                "SongList viewport must not create stencil materials for CJK metadata.");
-            Assert.That(viewport.GetComponent<RectMask2D>(), Is.Not.Null,
-                "SongList viewport must retain rectangular clipping with RectMask2D.");
+            Assert.That(viewport.GetComponent<Mask>(), Is.Not.Null,
+                "SongList viewport must stencil-mask newly created fallback submeshes before their first draw.");
+            Assert.That(viewport.GetComponent<Image>(), Is.Not.Null,
+                "The stencil mask requires the viewport's graphic.");
+            Assert.That(viewport.GetComponent<RectMask2D>(), Is.Null,
+                "SongList must not depend on a clipping pass that precedes fallback mesh creation.");
         }
 
         // Direct hierarchy traversal keeps the assertion tied to the SongList when other viewports exist.

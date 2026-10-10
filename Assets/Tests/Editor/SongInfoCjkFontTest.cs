@@ -188,7 +188,7 @@ namespace Tests.Editor
             Assert.Zero(unresolved, "song-list fields contain characters with no resolved glyph");
         }
 
-        // A counted reference must retain the cached atlas material after the last row is destroyed.
+        // Active TMP submeshes must retain their materials without permanently pinning them.
         [UnityTest]
         public IEnumerator SongListSubMeshMaterialSurvivesFallbackCleanup()
         {
@@ -198,35 +198,38 @@ namespace Tests.Editor
             var canvasGo = new GameObject("TestCanvas", typeof(Canvas));
             canvasGo.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
             var go = Object.Instantiate(prefab, canvasGo.transform);
-            var item = go.GetComponent<SongListItem>();
-            Assert.NotNull(item, "SongListElement has no SongListItem");
+            try
+            {
+                var item = go.GetComponent<SongListItem>();
+                Assert.NotNull(item, "SongListElement has no SongListItem");
 
-            var info = LoadCjkSongFixture();
-            info.SongName = "Fallback ✧";
-            info.SongSubName = "";
-            info.SongAuthorName = "Artist";
-            item.AssignSong(info, "");
-            yield return null;
-            yield return null;
+                var info = LoadCjkSongFixture();
+                info.SongName = "Fallback ✧";
+                info.SongSubName = "";
+                info.SongAuthorName = "Artist";
+                item.AssignSong(info, "");
+                yield return null;
+                yield return null;
 
-            var subMesh = go.GetComponentsInChildren<TMP_SubMeshUI>(true)
-                .FirstOrDefault(sm => sm.mesh != null && sm.mesh.vertexCount > 0 && sm.sharedMaterial != null);
-            Assert.NotNull(subMesh, "no fallback sub-mesh with live geometry was created");
-            var fallbackMaterial = subMesh.sharedMaterial;
+                var subMesh = go.GetComponentsInChildren<TMP_SubMeshUI>(true)
+                    .FirstOrDefault(sm => sm.mesh != null && sm.mesh.vertexCount > 0 && sm.sharedMaterial != null);
+                Assert.NotNull(subMesh, "no fallback sub-mesh with live geometry was created");
+                var fallbackMaterial = subMesh.sharedMaterial;
 
-            // Destroy every row using the material, then exercise both TMP and Unity cleanup.
-            Object.DestroyImmediate(go);
-            Object.DestroyImmediate(canvasGo);
-            TMP_MaterialManager.CleanupFallbackMaterials();
-            yield return Resources.UnloadUnusedAssets();
+                TMP_MaterialManager.CleanupFallbackMaterials();
+                yield return Resources.UnloadUnusedAssets();
 
-            Assert.IsTrue(
-                fallbackMaterial != null,
-                "fallback material was collected; TMP's cache will keep returning the corpse, " +
-                "leaving materialForRendering null and CJK text invisible");
-            Assert.IsTrue(
-                TMPFallbackMaterialHolder.IsPinned(fallbackMaterial),
-                "fallback material was never retained in TMP's material cache");
+                Assert.IsTrue(fallbackMaterial != null, "TMP released a material still used by an active row.");
+                Assert.AreSame(fallbackMaterial, subMesh.sharedMaterial);
+                Assert.AreSame(fallbackMaterial, subMesh.canvasRenderer.GetMaterial(0));
+                Assert.Greater(subMesh.mesh.vertexCount, 0, "Cleanup removed the active fallback mesh.");
+            }
+            finally
+            {
+                Object.DestroyImmediate(go);
+                Object.DestroyImmediate(canvasGo);
+                TMP_MaterialManager.CleanupFallbackMaterials();
+            }
         }
 
         // Resolved glyphs alone do not prove that TMP's layout and masking present any pixels.
@@ -252,14 +255,14 @@ namespace Tests.Editor
             canvas.planeDistance = 1;
 
             var maskGo = new GameObject("Song List Viewport", typeof(RectTransform), typeof(CanvasRenderer),
-                typeof(Image), typeof(RectMask2D));
+                typeof(Image), typeof(Mask));
             maskGo.layer = 5;
             maskGo.transform.SetParent(canvasGo.transform, false);
             var maskRect = maskGo.GetComponent<RectTransform>();
             maskRect.anchorMin = new Vector2(0.5f, 0.5f);
             maskRect.anchorMax = new Vector2(0.5f, 0.5f);
             maskRect.sizeDelta = new Vector2(1024, 512);
-            maskGo.GetComponent<Image>().enabled = false;
+            maskGo.GetComponent<Mask>().showMaskGraphic = false;
 
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SongListElementPrefabPath);
             Assert.NotNull(prefab, "SongListElement prefab missing");

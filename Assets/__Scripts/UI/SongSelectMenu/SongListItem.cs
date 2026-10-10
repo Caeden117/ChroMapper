@@ -49,20 +49,6 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
 
     private SongList songList;
 
-    private void Awake()
-    {
-        title.OnPreRenderText += PinFallbackMaterials;
-        artist.OnPreRenderText += PinFallbackMaterials;
-        folder.OnPreRenderText += PinFallbackMaterials;
-    }
-
-    private void OnDestroy()
-    {
-        title.OnPreRenderText -= PinFallbackMaterials;
-        artist.OnPreRenderText -= PinFallbackMaterials;
-        folder.OnPreRenderText -= PinFallbackMaterials;
-    }
-
     private void Start()
     {
         rightPanel.SetActive(false);
@@ -127,15 +113,6 @@ public class SongListItem : RecyclingListViewItem, IPointerEnterHandler, IPointe
             ? stripped.Substring(0, idx) + "<color=#ff0000ff>" + stripped.Substring(idx, search.Length) + "</color>" +
               stripped.Substring(idx + search.Length)
             : stripped;
-    }
-
-    private static void PinFallbackMaterials(TMP_TextInfo textInfo)
-    {
-        // TMP has resolved the atlas materials here, before the mesh is submitted to the canvas.
-        for (var i = 1; i < textInfo.materialCount; i++)
-        {
-            TMPFallbackMaterialHolder.Pin(textInfo.meshInfo[i].material);
-        }
     }
 
     public void AssignSong(BaseInfo mapInfo, string searchFieldText)

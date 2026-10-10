@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Beatmap.Info;
 using NUnit.Framework;
@@ -39,7 +40,8 @@ namespace Tests.Editor
             canvas.worldCamera = camera;
             canvas.planeDistance = 1;
 
-            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D));
+            var viewport = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(Mask));
+            viewport.GetComponent<Mask>().showMaskGraphic = false;
             viewport.layer = 5;
             viewport.transform.SetParent(canvas.transform, false);
             viewport.GetComponent<RectTransform>().sizeDelta = new Vector2(1024, 512);
@@ -243,7 +245,7 @@ namespace Tests.Editor
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
                 "Assets/_Prefabs/UI/SongListElement.prefab");
             var normalFontSize = prefab.transform.Find(path).GetComponent<TextMeshProUGUI>().fontSize;
-            var viewport = row.transform.parent.GetComponent<RectMask2D>();
+            var viewport = row.transform.parent.GetComponent<Mask>();
             var rowRect = row.GetComponent<RectTransform>();
             rowRect.pivot = Vector2.one * 0.5f;
             viewport.rectTransform.sizeDelta = rowRect.sizeDelta;
@@ -270,12 +272,15 @@ namespace Tests.Editor
 
                 var clippedPixels = CountRenderedTextPixels();
                 field.overflowMode = TextOverflowModes.Overflow;
+                // Disabling Mask reveals its Image, so hide that graphic during the unmasked text comparison.
+                viewport.graphic.enabled = false;
                 viewport.enabled = false;
                 var completePixels = CountRenderedTextPixels();
                 Assert.Greater(completePixels, 20, path + " rendered no text for the clipping comparison.");
                 Assert.AreEqual(completePixels, clippedPixels,
                     "Normal-size glyphs or descenders were clipped in " + path + ": " + songName);
                 field.overflowMode = TextOverflowModes.Ellipsis;
+                viewport.graphic.enabled = true;
                 viewport.enabled = true;
             }
         }
@@ -442,6 +447,244 @@ namespace Tests.Editor
         }
 
         [UnityTest]
+        public IEnumerator NativeTmpRecreatesFallbackMaterialsAfterCleanup()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/_Prefabs/UI/SongListElement.prefab");
+            var parent = row.transform.parent;
+            // A separate preset isolates this row's fallback material references from other tests.
+            var preset = new Material(title.fontSharedMaterial)
+            {
+                hideFlags = HideFlags.DontUnloadUnusedAsset
+            };
+            try
+            {
+                for (var cycle = 0; cycle < 2; cycle++)
+                {
+                    title.fontSharedMaterial = preset;
+                    title.text = "漢◠\U0001F700 gyp";
+                    foreach (var graphic in row.GetComponentsInChildren<Graphic>(true))
+                    {
+                        if (!graphic.transform.IsChildOf(title.transform) && graphic != title)
+                            graphic.color = Color.clear;
+                    }
+
+                    yield return null;
+                    yield return null;
+                    var beforeCleanup = CountRenderedTextPixels();
+                    Assert.Greater(beforeCleanup, 20, "The initial fallback text rendered no pixels.");
+                    var unicodes = new uint[] { 0x6F22, 0x25E0, 0x1F700 };
+                    for (var i = 0; i < unicodes.Length; i++)
+                    {
+                        Assert.AreEqual(unicodes[i], title.textInfo.characterInfo[i].textElement.unicode);
+                        Assert.IsTrue(title.textInfo.characterInfo[i].isVisible);
+                    }
+
+                    var materials = new List<Material>();
+                    foreach (var subMesh in title.GetComponentsInChildren<TMP_SubMeshUI>(true))
+                    {
+                        if (subMesh.fallbackMaterial != null)
+                            materials.Add(subMesh.fallbackMaterial);
+                    }
+
+                    Assert.Greater(materials.Count, 0, "No fallback materials were generated.");
+
+                    row.SetActive(false);
+                    TMP_MaterialManager.CleanupFallbackMaterials();
+                    yield return Resources.UnloadUnusedAssets();
+                    foreach (var material in materials)
+                        Assert.IsTrue(material == null,
+                            "TMP did not release the unused fallback material: " +
+                            (material != null ? material.name : "destroyed"));
+
+                    row.SetActive(true);
+                    yield return null;
+                    yield return null;
+                    Assert.AreEqual(beforeCleanup, CountRenderedTextPixels(),
+                        "Re-enabling the row after native TMP cleanup lost fallback pixels.");
+
+                    Object.DestroyImmediate(row);
+                    TMP_MaterialManager.CleanupFallbackMaterials();
+                    yield return Resources.UnloadUnusedAssets();
+                    row = Object.Instantiate(prefab, parent);
+                    var rect = row.GetComponent<RectTransform>();
+                    rect.anchorMin = Vector2.one * 0.5f;
+                    rect.anchorMax = Vector2.one * 0.5f;
+                    rect.anchoredPosition = Vector2.zero;
+                    item = row.GetComponent<SongListItem>();
+                    title = row.transform.Find("Text/Title").GetComponent<TextMeshProUGUI>();
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(row);
+                TMP_MaterialManager.CleanupFallbackMaterials();
+                Object.DestroyImmediate(preset);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator FirstFallbackSubMeshesReceiveViewportClippingBeforeDrawing()
+        {
+            var viewport = row.transform.parent.GetComponent<Mask>();
+            viewport.rectTransform.sizeDelta = new Vector2(500, 40);
+            var rect = row.GetComponent<RectTransform>();
+            rect.pivot = Vector2.one * 0.5f;
+            rect.anchoredPosition = new Vector2(0, -55);
+            info.SongName = "Latin";
+            item.AssignSong(info, "");
+            yield return null;
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+            var firstDrawClipping = new List<bool>();
+            var fields = new[]
+            {
+                title,
+                row.transform.Find("Text/Artist").GetComponent<TextMeshProUGUI>(),
+                row.transform.Find("Text/Folder").GetComponent<TextMeshProUGUI>()
+            };
+            foreach (var field in fields)
+            {
+                Assert.Greater(field.materialForRendering.GetInt(ShaderUtilities.ID_StencilID), 0,
+                    "The primary text must already use the viewport's stencil mask.");
+                Assert.IsEmpty(field.GetComponentsInChildren<TMP_SubMeshUI>(true),
+                    "The reproduction must start before any fallback submesh exists.");
+                field.OnPreRenderText += _ =>
+                {
+                    foreach (var subMesh in field.GetComponentsInChildren<TMP_SubMeshUI>(true))
+                        firstDrawClipping.Add(subMesh.materialForRendering.GetInt(ShaderUtilities.ID_StencilID) > 0);
+                };
+            }
+
+            info = new BaseInfo
+            {
+                SongName = "漢◠\U0001F700",
+                SongSubName = "",
+                SongAuthorName = "漢◠\U0001F700",
+                Directory = "漢◠\U0001F700"
+            };
+            item.AssignSong(info, "");
+            // TMP can generate new submeshes after this frame's viewport clipping pass.
+            foreach (var field in fields)
+                field.ForceMeshUpdate();
+
+            Assert.Greater(firstDrawClipping.Count, 0, "No new fallback submeshes were created.");
+            foreach (var isClipped in firstDrawClipping)
+                Assert.IsTrue(isClipped, "A fallback submesh would draw outside the viewport on its first frame.");
+
+            firstDrawClipping.Clear();
+            row.SetActive(false);
+            row.SetActive(true);
+            foreach (var field in fields)
+                field.ForceMeshUpdate();
+
+            Assert.Greater(firstDrawClipping.Count, 0, "The re-enabled row did not regenerate its fallback meshes.");
+            foreach (var isClipped in firstDrawClipping)
+                Assert.IsTrue(isClipped, "A re-enabled fallback submesh would draw outside the viewport.");
+
+            rect.anchoredPosition = Vector2.zero;
+            yield return null;
+            yield return null;
+            foreach (var graphic in row.GetComponentsInChildren<Graphic>(true))
+            {
+                if (!graphic.transform.IsChildOf(title.transform) && graphic != title)
+                    graphic.color = Color.clear;
+            }
+
+            Assert.Greater(CountRenderedTextPixels(), 20,
+                "Fallback text must become visible when its row scrolls into the viewport.");
+        }
+
+        [UnityTest]
+        public IEnumerator FastScrollingRecycledRowsClipsFallbackMeshesOnFirstDraw()
+        {
+            var viewport = row.transform.parent.GetComponent<Mask>();
+            var viewportRect = viewport.rectTransform;
+            Object.DestroyImmediate(row);
+            var listObject = new GameObject("Recycled Scroll List", typeof(RectTransform), typeof(ScrollRect));
+            listObject.transform.SetParent(canvasObject.transform, false);
+            listObject.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 40);
+            viewportRect.SetParent(listObject.transform, false);
+            viewportRect.sizeDelta = new Vector2(500, 40);
+            var content = new GameObject("Content", typeof(RectTransform)).GetComponent<RectTransform>();
+            content.SetParent(viewportRect, false);
+            content.anchorMin = new Vector2(0, 1);
+            content.anchorMax = new Vector2(0, 1);
+            content.pivot = new Vector2(0, 1);
+            content.sizeDelta = new Vector2(500, 0);
+            var scroll = listObject.GetComponent<ScrollRect>();
+            scroll.viewport = viewportRect;
+            scroll.content = content;
+            scroll.horizontal = false;
+            scroll.inertia = false;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+            var list = listObject.AddComponent<RecyclingListView>();
+            list.ChildPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/_Prefabs/UI/SongListElement.prefab").GetComponent<SongListItem>();
+            list.RowPadding = 10;
+            var subscribedRows = new HashSet<RecyclingListViewItem>();
+            var firstDrawClipping = new List<bool>();
+            list.ItemCallback = (child, index) =>
+            {
+                var metadata = child.transform.Find("Text");
+                foreach (var graphic in child.GetComponentsInChildren<Graphic>(true))
+                    graphic.color = graphic.transform.IsChildOf(metadata) ? Color.white : Color.clear;
+
+                if (subscribedRows.Add(child))
+                {
+                    foreach (var field in metadata.GetComponentsInChildren<TextMeshProUGUI>())
+                    {
+                        field.OnPreRenderText += textInfo =>
+                        {
+                            if (textInfo.materialCount <= 1)
+                                return;
+
+                            foreach (var subMesh in field.GetComponentsInChildren<TMP_SubMeshUI>(true))
+                                firstDrawClipping.Add(subMesh.materialForRendering.GetInt(ShaderUtilities.ID_StencilID) > 0);
+                        };
+                    }
+                }
+
+                var text = index < 10 ? "Latin" : "漢◠\U0001F700 " + index;
+                ((SongListItem)child).AssignSong(new BaseInfo
+                {
+                    SongName = text,
+                    SongSubName = "",
+                    SongAuthorName = text,
+                    Directory = text
+                }, "");
+            };
+            list.RowCount = 10000;
+            yield return null;
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+
+            foreach (var index in new[] { 50, 1000, 80, 9990, 100 })
+            {
+                firstDrawClipping.Clear();
+                list.ScrollToRow(index);
+                scroll.onValueChanged.Invoke(Vector2.zero);
+                Canvas.ForceUpdateCanvases();
+                Assert.Greater(firstDrawClipping.Count, 0, "The fast scroll did not rebuild any fallback text.");
+                foreach (var isClipped in firstDrawClipping)
+                    Assert.IsTrue(isClipped,
+                        "A recycled fallback submesh has no clipping on its first draw after scrolling to " + index);
+
+                var corners = new Vector3[4];
+                viewportRect.GetWorldCorners(corners);
+                var camera = cameraObject.GetComponent<Camera>();
+                var lower = camera.WorldToScreenPoint(corners[0]);
+                var upper = camera.WorldToScreenPoint(corners[2]);
+                var clipBounds = Rect.MinMaxRect(lower.x, lower.y, upper.x, upper.y);
+                Assert.AreEqual(0, CountRenderedTextPixels(false, clipBounds),
+                    "Fallback text escaped the viewport on the first frame after scrolling to " + index);
+                Assert.Greater(CountRenderedTextPixels(false), 20,
+                    "The scrolled fallback rows must still draw inside the viewport.");
+                yield return null;
+            }
+        }
+
+        [UnityTest]
         public IEnumerator MetadataUsesTmpFallbackWithoutLegacyRenderer()
         {
             info.SongName = "漢 ◠ gyp";
@@ -452,9 +695,11 @@ namespace Tests.Editor
             Assert.IsEmpty(row.GetComponentsInChildren<Text>(true), "Obsolete Text renderers remain in the row.");
         }
 
-        private int CountRenderedTextPixels()
+        private int CountRenderedTextPixels(bool updateCanvas = true, Rect? excludedBounds = null)
         {
-            Canvas.ForceUpdateCanvases();
+            if (updateCanvas)
+                Canvas.ForceUpdateCanvases();
+
             cameraObject.GetComponent<Camera>().Render();
             var previous = RenderTexture.active;
             RenderTexture.active = target;
@@ -463,8 +708,13 @@ namespace Tests.Editor
             image.Apply();
             RenderTexture.active = previous;
             var count = 0;
-            foreach (var pixel in image.GetPixels32())
+            var pixels = image.GetPixels32();
+            for (var i = 0; i < pixels.Length; i++)
             {
+                if (excludedBounds.HasValue && excludedBounds.Value.Contains(new Vector2(i % image.width, i / image.width)))
+                    continue;
+
+                var pixel = pixels[i];
                 if (pixel.a > 16 && pixel.r > 32)
                 {
                     count++;
