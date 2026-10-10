@@ -153,14 +153,14 @@ public class Settings
     public float CameraFOV = 60f;
     public float PlayerCameraFOV = 60f;
     public float PlayerCameraOffsetZ = 3.6f; // 3.6m => 6 Z
-    public int CameraAA = 0;
+    // Default only applies to new installations, this wont bump anyone already at 0 to 4
+    public int CameraAA = 4;
     public int RenderScale = 100;
 
     #endregion
 
     #region Appearance
 
-    public bool MeasureLinesShowOnTop = false;
     public bool HighContrastGrids = false;
     public bool DisplayHJDLine = true;
     public float GridTransparency = 0f;

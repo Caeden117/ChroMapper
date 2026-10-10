@@ -202,12 +202,6 @@ MonoBehaviour:
       \u043F\u0440\u0435\u043F\u044F\u0442\u0441\u0442\u0432\u0438\u0439"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "\u041E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435
-      \u043B\u0438\u043D\u0438\u0439 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u044F
-      \u043F\u043E\u0432\u0435\u0440\u0445 \u0432\u0441\u0435\u0433\u043E"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -560,11 +554,6 @@ MonoBehaviour:
   - m_Id: 104
     m_Localized: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u043E\u0442\u0440\u0430\u0436\u0435\u043D\u0438\u044F
       \u0441\u0432\u0435\u0442\u0430 \u0438 \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
     m_Metadata:
       m_Items: []
   - m_Id: 106

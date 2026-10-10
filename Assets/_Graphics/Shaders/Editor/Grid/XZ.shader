@@ -8,20 +8,32 @@
         _GridThickness("Grid Thickness", Vector) = (0.1, 0.05, 0.025, 0.0125)
         _GridOffset("Grid Offset", Vector) = (0, 0, 0, 0)
         _GridScale("Grid Scale", Range(0, 2)) = 1
+        _LaneEdgeInset("Lane Edge Inset", Range(0, 0.5)) = 0
+        _ZEdgeInset("Z Edge Inset", Range(0, 0.5)) = 0
     }
     SubShader
     {
+        Tags
+        {
+            "Queue"="Transparent"
+            "IgnoreProjector"="True"
+            "RenderType"="Transparent"
+        }
         Cull Off
+        ZWrite Off
         Lighting Off
+        Blend SrcAlpha OneMinusSrcAlpha, Zero Zero
 
         Pass
         {
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
             #pragma multi_compile_instancing
 
             #include "UnityCG.cginc"
+            #include "../../ShaderLibrary/GridCoverage.hlsl"
 
             uniform float _SongBPM = 120;
             uniform float _SongTimeOrigin = 0;
@@ -41,6 +53,8 @@
                 UNITY_DEFINE_INSTANCED_PROP(float4, _GridThickness)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _GridOffset)
                 UNITY_DEFINE_INSTANCED_PROP(float, _GridScale)
+                UNITY_DEFINE_INSTANCED_PROP(float, _LaneEdgeInset)
+                UNITY_DEFINE_INSTANCED_PROP(float, _ZEdgeInset)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct appdata
@@ -53,6 +67,7 @@
             {
                 float4 pos : SV_POSITION;
                 float3 rotatedPos : TEXCOORD0;
+                float2 quadPos : TEXCOORD1;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -74,6 +89,7 @@
                 float newZ = worldPos.z * cos(rotationInRadians) + worldPos.x * sin(rotationInRadians);
 
                 o.rotatedPos = float3(newX, worldPos.y, newZ);
+                o.quadPos = v.vertex.xy;
 
                 return o;
             }
@@ -108,7 +124,14 @@
                 float4 gridOffset = UNITY_ACCESS_INSTANCED_PROP(Props, _GridOffset);
                 float gridScale = UNITY_ACCESS_INSTANCED_PROP(Props, _GridScale);
                 half4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-                color.a = 0;
+
+                // Mask the true track bounds within the quad's overdraw margin.
+                float laneEdge = 0.5 - UNITY_ACCESS_INSTANCED_PROP(Props, _LaneEdgeInset);
+                float zEdge = 0.5 - UNITY_ACCESS_INSTANCED_PROP(Props, _ZEdgeInset);
+                float localXFilter = fwidth(i.quadPos.x);
+                float localZFilter = fwidth(i.quadPos.y);
+                float edgeMask = GridEdgeMask(i.quadPos.x, laneEdge, 0.0, localXFilter);
+                float zEdgeMask = GridEdgeMask(i.quadPos.y, zEdge, 0.0, localZFilter);
 
                 float scale = _EditorScale * gridScale;
                 //WHERE'S THE LAMB SAUCE (unedited beat time)
@@ -120,39 +143,46 @@
                 // Apply visual beat origin offset (precomputed as JSON time on CPU)
                 time -= _SongTimeOrigin;
 
-                // HJD line
+                // Keep HJD relative to the cursor in song-BPM time, before BPM changes and origin offsets.
                 float timeOffsetToCursor = timeButRAWWW - _SongBpmTime.y;
-                float hjdRange = gridThickness / 10;
-                if (_DisplayHJDLine && _CurrentHJD - hjdRange < timeOffsetToCursor && timeOffsetToCursor < _CurrentHJD +
-                    hjdRange)
-                {
-                    return half4(0.5, 0, 0, 0);
-                }
+                float timeFilter = max(fwidth(timeButRAWWW), 1e-7);
+                float hjdRange = gridThickness.x * 0.34;
+                float hjdCoverage = _DisplayHJDLine
+                    ? GridLineCoverageAtDistance(abs(timeOffsetToCursor - _CurrentHJD), hjdRange, timeFilter)
+                    : 0;
+                hjdCoverage *= edgeMask * zEdgeMask;
 
-                // Sub-beat
                 float t = time * scale / _EditorScale;
-                // return t;
+                float tFilter = max(fwidth(t), 1e-7);
+                float coverage = 0;
                 for (int idx = 0; idx < 4; idx++)
                 {
                     float spacing = gridSpacing[idx];
-                    float thickness = gridThickness[idx];
-                    if (abs(t) % spacing / spacing <= thickness / 2 ||
-                        abs(t) % spacing / spacing >= 1 - thickness / 2)
-                    {
-                        return color;
-                    }
+                    if (spacing <= 0) continue;
+                    float halfWidth = spacing * gridThickness[idx] * 0.5;
+                    coverage = max(coverage, GridLineCoverage(t, spacing, halfWidth, tFilter)
+                        * edgeMask * zEdgeMask);
                 }
 
-                // Lane line
-                if (abs(i.rotatedPos.x + gridOffset.x) % gridScale / gridScale <= 0.1 / 2 * gridScale ||
-                    abs(i.rotatedPos.x + gridOffset.x) % gridScale / gridScale >= 1 - 0.1 / 2 * gridScale)
+                // Keep lane lines' outer AA ramps at the side edges, but stop their ends at the track bounds.
+                if (gridScale > 0)
                 {
-                    return color;
+                    float laneHalfWidth = 0.05 * gridScale * gridScale;
+                    float laneFilter = max(fwidth(i.rotatedPos.x), 1e-7);
+                    float lanePlateau, laneRamp;
+                    GridLineKernel(laneHalfWidth, laneFilter, lanePlateau, laneRamp);
+                    float laneReach = (lanePlateau + laneRamp) * localXFilter / laneFilter;
+                    coverage = max(coverage, GridLineCoverage(
+                        i.rotatedPos.x + gridOffset.x, gridScale,
+                        laneHalfWidth, laneFilter)
+                        * GridEdgeMask(i.quadPos.x, laneEdge, laneReach, localXFilter)
+                        * zEdgeMask);
                 }
 
-                discard;
-                // why it needs to return anyway idk, compiler complained
-                return color;
+                // Keep the grid visible beneath the HJD line's faded edges.
+                coverage = max(coverage, hjdCoverage);
+                clip(coverage - 0.004);
+                return half4(lerp(color.rgb, half3(0.5, 0, 0), hjdCoverage), coverage);
             }
             ENDHLSL
         }

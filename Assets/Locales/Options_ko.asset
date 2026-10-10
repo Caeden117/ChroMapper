@@ -185,11 +185,6 @@ MonoBehaviour:
     m_Localized: "\uAC00\uC9DC \uBCBD \uAD6C\uBCC4"
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: "\uBAA8\uB4E0 \uD56D\uBAA9\uC5D0 \uB80C\uB354\uB9C1\uB418\uB294
-      \uC120 \uCE21\uC815"
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -471,13 +466,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: "\uC870\uBA85 \uBC0F \uBB3C\uCCB4\uC758 \uBC18\uC0AC\uB97C \uD1A0\uAE00\uD569\uB2C8\uB2E4."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: "\uC2DC\uAC04 \uD14D\uC2A4\uD2B8\uAC00 <i>\uAC00\uC7A5</i>\uC704\uC5D0
-      \uB098\uD0C0\uB098\uB3C4\uB85D \uD569\uB2C8\uB2E4. \uB178\uD2B8\uB97C \uBCFC
-      \uB54C \uC57D\uAC04\uC758 \uBC84\uBC85\uAC70\uB9BC\uC774 \uBC1C\uC0DD\uD560
-      \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 106

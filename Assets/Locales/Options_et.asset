@@ -184,10 +184,6 @@ MonoBehaviour:
     m_Localized: Color Fake Walls
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Localized: Measure Lines Render Over Everything
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Localized: Bloom
     m_Metadata:
@@ -453,11 +449,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Localized: Toggles reflections caused by lights and objects.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Localized: Makes Measure Line texts appear on top of <i>everything</i>. Can
-      cause some jankiness when looking through a note.
     m_Metadata:
       m_Items: []
   - m_Id: 106

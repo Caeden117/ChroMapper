@@ -179,10 +179,6 @@ MonoBehaviour:
     m_Key: graphics.colorfakewalls
     m_Metadata:
       m_Items: []
-  - m_Id: 43
-    m_Key: graphics.measurelinesontop
-    m_Metadata:
-      m_Items: []
   - m_Id: 44
     m_Key: graphics.bloom
     m_Metadata:
@@ -397,10 +393,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104
     m_Key: graphics.reflection.tooltip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 105
-    m_Key: graphics.measurelinesontop.tooltip
     m_Metadata:
       m_Items: []
   - m_Id: 106
