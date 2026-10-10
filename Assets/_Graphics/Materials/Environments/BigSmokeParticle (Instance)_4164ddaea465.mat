@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BigSmokeParticle (Instance)_4164ddaea465
+  m_Shader: {fileID: 4800000, guid: f37e27f7abee47e783236b976c416d6b, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - HEIGHT_FOG
+  - MAIN_TEXTURE
+  - SOFT_PARTICLES
+  - VERTEX_COLOR
+  - _ALPHACHANNEL_RED
+  - _FOGTYPE_COLOR
+  m_InvalidKeywords:
+  - DISTORTION_NONE
+  - _BILLBOARD_NONE
+  - _CURVE_VERTICES_NONE
+  - _CUSTOM_TIME_STANDARD
+  - _CUTOUTTYPE_NONE
+  - _OVERRIDE_FINAL_ALPHA_NONE
+  - _SECONDARY_UVS_NONE
+  - _WHITEBOOSTTYPE_NONE
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColorGradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DisplacementTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DissolveTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortionTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ErosionTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FlowTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 7960c02eebce8fc48a93415341bec974, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask2Tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MotionVectorTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondaryColorTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - Distortion: 0
+    - Distortion_Target: 0
+    - _3DDisplacement: 0
+    - _AlphaChannel: 1
+    - _AlphaEnd: 1
+    - _AlphaMultiplier: 1
+    - _AlphaStart: 1
+    - _BaseLayer: 1
+    - _Billboard: 0
+    - _BillboardScale: 1
+    - _BlendModeDst: 1
+    - _BlendModeDstA: 1
+    - _BlendModeSrc: 1
+    - _BlendModeSrcA: 0
+    - _BlendOp: 0
+    - _BloomMultiplier: 1
+    - _CloseCameraDisappearDistance: 0.5
+    - _CloseCameraDisappearWidth: 0.5
+    - _CullMode: 0
+    - _Curve_Vertices: 0
+    - _Custom_Time: 0
+    - _CutColorFalloff: 4
+    - _Cutout: 0.5
+    - _CutoutGradientWidth: 0.05
+    - _CutoutTexScale: 1
+    - _CutoutType: 0
+    - _Diagonal_Channel: 0
+    - _DisplacementPanningSpeed: 1
+    - _DisplacementPerParticleRandomization: 0
+    - _DisplacementSecondaryUVs: 0
+    - _DisplacementStrength: 0.1
+    - _DissolveColorIntensity: 1
+    - _DissolveEndValue: 10
+    - _DissolveOffset: 0
+    - _DissolveProgress: 0
+    - _DissolveProgressFromVertexAlpha: 0
+    - _DissolveReverse: 0
+    - _DissolveScale: 5
+    - _DissolveStartValue: 0
+    - _DissolveTextureInfluence: 0.2
+    - _Dissolve_Grid: 0
+    - _Dissolve_Space: 0
+    - _DistortionParticleRandomization: 0
+    - _DistortionSecondaryUVs: 0
+    - _DistortionStrength: 0.2
+    - _DistortionTexWorldspacePanning: 0
+    - _EnableCloseToCameraDisappear: 0
+    - _EnableCustomPadding: 0
+    - _EnableDissolve: 0
+    - _EnableFakeMirrorTransparency: 0
+    - _EnableFillAlpha: 0
+    - _EnableHeightFog: 1
+    - _EnableHologram: 0
+    - _EnableLifetime: 0
+    - _EnableMainTexWorldSpacePanning: 0
+    - _EnableMask: 0
+    - _EnableMask2: 0
+    - _EnableMipmapBias: 0
+    - _EnableNoiseDithering: 0
+    - _EnableObstacle: 0
+    - _EnableReveal: 0
+    - _EnableRotateUV: 0
+    - _EnableSecondaryColor: 0
+    - _EnableSoftParticles: 1
+    - _EnableStartEnd: 0
+    - _EnableTextureColor: 0
+    - _EnableVertexColor: 1
+    - _EnableVertexDistortion: 0
+    - _EnableVertexFlipbook: 0
+    - _EnableVertexFlipbookFade: 0
+    - _EnableViewAlignDisappear: 0
+    - _EnableWorldNoise: 0
+    - _EnableWorldSpacePanning: 0
+    - _Erosion: 0
+    - _ErosionPerParticleRandomization: 0
+    - _ErosionSecondaryUVs: 0
+    - _ErosionSmoothness: 0.1
+    - _ErosionTexWorldspacePanning: 0
+    - _ErosionThreshold: 0.5
+    - _ErosionVertexThreshold: 0
+    - _Erosion_Source: 0
+    - _FakeMirrorTransparency: 1
+    - _FillAlpha: 0.1
+    - _FillColor: 0
+    - _FillMask: 0
+    - _FlipbookBlendingOff: 0
+    - _FlipbookColumns: 8
+    - _FlipbookNonloopableFrames: 0
+    - _FlipbookRows: 8
+    - _FlipbookSpeed: 1
+    - _FlowSpeed: 0.2
+    - _FlowStrength: 0.2
+    - _FlowmapParticleRandomization: 0
+    - _FlowmapSecondaryUVs: 0
+    - _FlowmapTexWorldspacePanning: 0
+    - _FogColorHighlight: 0
+    - _FogHeightOffset: 0
+    - _FogHeightScale: 1
+    - _FogScale: 0
+    - _FogStartOffset: 0
+    - _FogType: 2
+    - _Fog_Mask_Source: 0
+    - _GradientPanningSpeed: 0
+    - _GradientPosition: 0.5
+    - _GradientUseAlpha: 0
+    - _GreenChannelWhiteboost: 0
+    - _GridFalloff: 4
+    - _GridSize: 10
+    - _GridSpeed: 0.1
+    - _GridThickness: 1.5
+    - _Intensity: 1
+    - _LeftRightFadeAngle: 0.5
+    - _MainPerParticleRandomization: 0
+    - _MainTexSecondaryUVs: 0
+    - _Mask2Blend: 0
+    - _Mask2ParticleRandomization: 0
+    - _Mask2RedIsAlpha: 0
+    - _Mask2SecondaryUVs: 0
+    - _Mask2Strength: 1
+    - _Mask2TexWorldspacePanning: 0
+    - _MaskBlend: 0
+    - _MaskDissolve: 0
+    - _MaskDissolveOffset: 0
+    - _MaskDissolveTiling: 3
+    - _MaskPerParticleRandomization: 0
+    - _MaskRedIsAlpha: 0
+    - _MaskSecondaryUVs: 0
+    - _MaskStrength: 1
+    - _MaskTexWorldspacePanning: 0
+    - _MeshPacking: 0
+    - _MeshPackingId: 1
+    - _MipmapBias: 0
+    - _MotionVectorColumns: 8
+    - _MotionVectorIntensity: 1
+    - _MotionVectorRows: 8
+    - _MotionVectorSpeed: 1
+    - _MultiplyDissolveGridByAlpha: 0
+    - _ObstacleColorInfluence: 0.5
+    - _ObstacleFogHighlightMultiplier: 30000
+    - _ObstacleFogMax: 1
+    - _ObstacleFogMultiplier: 1
+    - _OffsetFactor: 0
+    - _OffsetUnits: 0
+    - _OverrideFinalAlpha: 0.7
+    - _Override_Final_Alpha: 0
+    - _Pixelate: 0
+    - _PlaneClipping: 0
+    - _PreciseFog: 0
+    - _QuestWhiteboostMultiplier: 1
+    - _RedIsVertexAlpha: 0
+    - _RemapWhiteboostStart: 0
+    - _RimLight: 0
+    - _RimLightEdgeStart: 0.5
+    - _RimLightIntensity: 1
+    - _RimlightInvert: 0
+    - _RotateMainUVOnly: 0
+    - _RotateUV: 0
+    - _Secondary_UVs: 0
+    - _SoftFactor: 0.2
+    - _Spectrogram: 0
+    - _SpectrogramBaseValue: 0.2
+    - _SpectrogramRange: 0.2
+    - _SquareAlpha: 0
+    - _SquareAngleForViewAlignDisappear: 0
+    - _SquareVertexAlpha: 0
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _TopBotFadeAngle: 0.5
+    - _UV3Offset: 0
+    - _UV3Scale: 1
+    - _UseChromaticAberration: 0
+    - _UseColorArray: 0
+    - _UseColorGradient: 0
+    - _UseDissolveColor: 0
+    - _UseDissolveProgress: 0
+    - _UseDissolveTexture: 0
+    - _UseMainTex: 1
+    - _UseMotionVectors: 0
+    - _UseSpectrogram: 0
+    - _UseTextureFlipbook: 0
+    - _UsesParticleVertexStream: 0
+    - _VertexChannels: 0
+    - _VertexDisplacement: 0
+    - _VertexFlipbookCount: 1
+    - _VertexFlipbookSpeed: 1
+    - _ViewAlignFactor: 1.5
+    - _ViewAlignOffset: 0
+    - _WhiteBoostRemapStart: 0
+    - _WhiteBoostType: 0
+    - _WidthEnd: 1
+    - _WidthStart: 1
+    - _WorldNoiseIntensityOffset: 0
+    - _WorldNoiseIntensityScale: 1
+    - _WorldNoiseScale: 1
+    - _WorldspacePanningSpeed: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    m_Colors:
+    - _ChromaticAberration: {r: 5, g: 0, b: 0, a: 0}
+    - _ClippingPlaneNormal: {r: 0, g: 1, b: 1, a: 0}
+    - _ClippingPlanePosition: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CustomPadding: {r: 0, g: 0, b: 0, a: 0}
+    - _CutoutTexOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _DisplacementAxes: {r: 1, g: 1, b: 1, a: 0}
+    - _DisplacementPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _DissolveAxisVector: {r: 0, g: 1, b: 0, a: 0}
+    - _DissolveColor: {r: 0, g: 1, b: 1, a: 0}
+    - _DissolveTextureSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _DistortionAxes: {r: 1, g: 1, b: 0, a: 0}
+    - _DistortionPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _ErosionPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _FlowAdd: {r: 0, g: 0, b: 0, a: 0}
+    - _FlowPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _HologramColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Mask2Panning: {r: 0, g: 0, b: 0, a: 0}
+    - _MaskPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _PixelateResolution: {r: 64, g: 64, b: 0, a: 0}
+    - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SecondaryColorPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _UVManualOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _UVScale: {r: 1, g: 1, b: 1, a: 1}
+    - _UvPanning: {r: 0, g: 0, b: 0, a: 0}
+    - _WorldNoiseScrolling: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

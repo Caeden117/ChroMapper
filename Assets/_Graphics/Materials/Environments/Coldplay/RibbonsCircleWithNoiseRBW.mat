@@ -22,6 +22,7 @@ Material:
   - VERTEXDISPLACEMENT_MASK
   - _ACES_APPROACH_BEFORE_EMISSIVE
   - _CUSTOM_TIME_FREEZE
+  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
   - _EMISSIONCOLORTYPE_GRADIENT
   - _EMISSIONTEXTURE_SIMPLE
   - _EMISSION_ALPHA_SOURCE_COPY_EMISSION
@@ -46,7 +47,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2015
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -194,6 +195,7 @@ Material:
     - _EmissionBrightness: 0.5
     - _EmissionColorType: 2
     - _EmissionFogSuppression: 0.309
+    - _EmissionGradientAffectsAlpha: 0
     - _EmissionGradientIntensity: 1
     - _EmissionGradientPanningSpeed: 0
     - _EmissionGradientPosition: 2.68

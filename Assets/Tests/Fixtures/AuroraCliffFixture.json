@@ -1,0 +1,79 @@
+{
+  "_version": "2.2.0",
+  "_notes": [],
+  "_obstacles": [
+    {
+      "_time": 363,
+      "_lineIndex": 0,
+      "_type": 0,
+      "_duration": 242,
+      "_width": 0,
+      "_customData": {
+        "_track": "bigCliff",
+        "_noteJumpStartBeatOffset": 5,
+        "_noteJumpMovementSpeed": 18,
+        "_interactable": false,
+        "_scale": [
+          0.083,
+          0.083,
+          0.083
+        ],
+        "_animation": {
+          "_scale": [
+            [
+              168.679,
+              350.058,
+              101.272,
+              0
+            ],
+            [
+              168.679,
+              350.058,
+              101.272,
+              1
+            ]
+          ],
+          "_localRotation": [
+            [
+              7.361,
+              127.082,
+              -10.339,
+              0
+            ],
+            [
+              7.361,
+              127.082,
+              -10.339,
+              1
+            ]
+          ],
+          "_definitePosition": [
+            [
+              27.684,
+              7.858,
+              221.632,
+              0
+            ],
+            [
+              27.684,
+              7.858,
+              221.632,
+              1
+            ]
+          ]
+        },
+        "_color": [
+          1.337,
+          1.337,
+          1.337,
+          0
+        ]
+      }
+    }
+  ],
+  "_events": [],
+  "_customData": {
+    "_environment": [],
+    "_customEvents": []
+  }
+}

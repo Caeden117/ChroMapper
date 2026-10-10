@@ -30485,6 +30485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -46155,6 +46160,7 @@ MonoBehaviour:
   tracksParent: {fileID: 1300313309}
   rotationEventGridContainer: {fileID: 379166760}
   atsc: {fileID: 570484802}
+  cameraManager: {fileID: 1206999167}
   vNjsProvider: {fileID: 597767624}
 --- !u!1001 &903183536
 PrefabInstance:
@@ -93892,6 +93898,7 @@ MonoBehaviour:
   modesGameObject: {fileID: 756850812}
   selected: {fileID: 540347201}
   cameraManager: {fileID: 1206999167}
+  editModeContext: {fileID: 405385889}
   gameObjectsWithRenderersToToggle:
   - {fileID: 1591641560}
   - {fileID: 1629008648}

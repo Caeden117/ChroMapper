@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Beatmap.Base;
 using NUnit.Framework;
 using Tests.Infrastructure;
@@ -148,7 +149,29 @@ namespace Tests.Editor
                 "The Second's negative integer i bypassed the OEM clamp without customData.step.");
         }
 
-        private Transform GetObservedRing()
+        [Test]
+        public void TheSecondRingZoomKeepsRingElementsInBakedSlotOrder()
+        {
+            var effect = GetRingZoomEffect();
+
+            var current = InsertRingZoomEvent(1f, 4);
+            var next = InsertRingZoomEvent(3f, 4);
+            ApplyAtMidpoint(current, next);
+
+            // Value 4 gives the 1 + (0.5 * 4) = 3 spacing; the baked ChromaID index records which zoom slot
+            // owns each ring's light IDs, so ring N must land at N * step rather than its sibling index.
+            const float step = 1f + (0.5f * 4f);
+            foreach (Transform ring in effect.transform)
+            {
+                var slot = GetBakedRingSlot(ring);
+                Assert.That(
+                    ring.localPosition.z,
+                    Is.EqualTo(slot * step).Within(0.0001f),
+                    $"Ring '{ring.name}' bearing baked element index {slot} landed in the wrong zoom slot.");
+            }
+        }
+
+        private StateManager<BaseEvent> GetRingZoomEffect()
         {
             Assert.That(
                 effectManager.EventTypeToEffects.TryGetValue(
@@ -164,12 +187,29 @@ namespace Tests.Editor
                 effect,
                 Is.Not.Null,
                 "The Second's Event 9 registration does not contain its smooth-step ring zoom effect.");
+            return effect;
+        }
 
+        private Transform GetObservedRing()
+        {
+            var effect = GetRingZoomEffect();
             Assert.That(
                 effect.transform.childCount,
                 Is.GreaterThan(1),
                 "The Second ring zoom effect is not attached to its ordered ring group.");
             return effect.transform.GetChild(1);
+        }
+
+        private static int GetBakedRingSlot(Transform ring)
+        {
+            var marker = ring.GetComponent<ChromaIDMarker>();
+            Assert.That(marker != null, Is.True, $"Ring '{ring.name}' lost its baked ChromaID marker.");
+            var match = Regex.Match(marker.ChromaID, @"SmallTrackLaneRingsGroup\.\[(\d+)\]");
+            Assert.That(
+                match.Success,
+                Is.True,
+                $"Ring '{ring.name}' ChromaID '{marker.ChromaID}' has no baked element index.");
+            return int.Parse(match.Groups[1].Value);
         }
 
         private BaseEvent InsertRingZoomEvent(float beat, int value, float? customStep = null)

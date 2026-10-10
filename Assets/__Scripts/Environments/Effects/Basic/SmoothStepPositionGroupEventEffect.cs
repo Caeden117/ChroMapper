@@ -1,3 +1,4 @@
+using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
@@ -22,13 +23,22 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
         BaseOffset.z = 1f;
 
         // The Second uses a plain ordered child group rather than TrackLaneRingsManager/TrackLaneRing components.
-        Elements = new Transform[transform.childCount];
+        var children = new Transform[transform.childCount];
         initialPositions = new Vector3[transform.childCount];
         for (var i = 0; i < transform.childCount; i++)
         {
-            Elements[i] = transform.GetChild(i);
-            initialPositions[i] = Elements[i].localPosition;
+            children[i] = transform.GetChild(i);
+            initialPositions[i] = children[i].localPosition;
         }
+
+        // TheSecondRingZoomKeepsRingElementsInBakedSlotOrder: serialized Elements shipped empty and the exported
+        // sibling order is scrambled, so recover the OEM slot order from authored offsets along the movement axis
+        // or the first zoom teleports each ring's baked lights into the wrong slot.
+        var elementOrder = Enumerable.Range(0, children.Length)
+            .OrderBy(i => Vector3.Dot(initialPositions[i], MovementVector))
+            .ToArray();
+        Elements = elementOrder.Select(i => children[i]).ToArray();
+        initialPositions = elementOrder.Select(i => initialPositions[i]).ToArray();
 
         tween.Easing = Easing.Cubic.InOut;
     }

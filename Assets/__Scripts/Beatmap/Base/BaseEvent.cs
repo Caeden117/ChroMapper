@@ -502,60 +502,17 @@ namespace Beatmap.Base
             return node;
         }
 
-        public override int CompareTo(BaseObject other)
-        {
-            var comparison = base.CompareTo(other);
-
-            // Early return if we're comparing against a different object type
-            if (other is not BaseEvent @event) return comparison;
-
-            // Compare by type if times match
-            if (comparison == 0) comparison = Type.CompareTo(@event.Type);
-
-            // Compare by value if type matches
-            if (comparison == 0) comparison = Value.CompareTo(@event.Value);
-
-            // Compare by float value if value matches
-            if (comparison == 0) comparison = FloatValue.CompareTo(@event.FloatValue);
-
-            // Compare by lightID if float value matches
-            // (we need to implement this ourselves because StructuralComparisons.StructuralComparer.Compare fails at differing length arrays
-            if (comparison == 0)
-            {
-                switch ((customLightID, @event.customLightID))
-                {
-                    case (null, not null):
-                        return -1;
-                    case (not null, null):
-                        return 1;
-                    case (not null, not null):
-                        var length = Mathf.Min(customLightID.Length, @event.customLightID.Length);
-
-                        for (var i = 0; i < length; i++)
-                        {
-                            comparison = customLightID[i].CompareTo(@event.customLightID[i]);
-
-                            if (comparison != 0) return comparison;
-                        }
-
-                        // Equal Light-ID arrays must continue to custom-data comparison so easing and lerp edits register.
-                        comparison = customLightID.Length.CompareTo(@event.customLightID.Length);
-                        if (comparison != 0)
-                            return comparison;
-                        break;
-                }
-            }
-            //if (comparison == 0) comparison = StructuralComparisons.StructuralComparer.Compare(CustomLightID, @event.CustomLightID);
-
-            // All matching vanilla properties so compare custom data as a final check
-            if (comparison == 0)
-                comparison = string.Compare(
-                    CustomData?.ToString(),
-                    @event.CustomData?.ToString(),
-                    StringComparison.Ordinal);
-
-            return comparison;
-        }
+        // Network copies do not carry the local FileOrder. Compare their event payloads independently of
+        // callback ordering.
+        public override bool HasSameContent(BaseObject other) =>
+            other is BaseEvent evt
+            && base.HasSameContent(other)
+            && Type == evt.Type
+            && Value == evt.Value
+            && FloatValue.Equals(evt.FloatValue)
+            && ((customLightID == null && evt.customLightID == null)
+                || (customLightID != null && evt.customLightID != null && customLightID.SequenceEqual(evt.customLightID)))
+            && string.Equals(CustomData?.ToString(), evt.CustomData?.ToString(), StringComparison.Ordinal);
 
         public override JSONNode ToJson() =>
             Settings.Instance.MapVersion switch

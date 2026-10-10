@@ -45,7 +45,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public bool CanMerge(IMergeableAction previous)
     {
         if (previous is not BeatmapObjectModifiedAction previousAction) return false;
-        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && OriginalObject == previousAction.EditedObject && EditedData.CompareTo(previousAction.OriginalData) != 0;
+        return MergeType != ActionMergeType.None && previous.MergeType == MergeType && OriginalObject == previousAction.EditedObject && !EditedData.HasSameContent(previousAction.OriginalData);
     }
 
     public IMergeableAction DoMerge(IMergeableAction previous)
@@ -65,7 +65,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         var restoreOriginalSelection = preserveSelection && SelectionController.IsObjectSelected(EditedObject);
-        if (OriginalObject != EditedObject || EditedData.CompareTo(OriginalData) != 0)
+        if (OriginalObject != EditedObject || !EditedData.HasSameContent(OriginalData))
         {
             DeleteObject(EditedObject, false, EditedObject is not BaseGLSEvent);
 
@@ -89,7 +89,7 @@ public class BeatmapObjectModifiedAction : BeatmapAction, IMergeableAction
     public override void Redo(BeatmapActionContainer.BeatmapActionParams param)
     {
         var restoreEditedSelection = preserveSelection && SelectionController.IsObjectSelected(OriginalObject);
-        if (OriginalObject != EditedObject || EditedData.CompareTo(OriginalData) != 0)
+        if (OriginalObject != EditedObject || !EditedData.HasSameContent(OriginalData))
         {
             if (Networked && MergeCount > 0)
             {

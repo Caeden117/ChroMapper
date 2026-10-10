@@ -24,6 +24,9 @@ public class ParametricBoxLight : MonoBehaviour
     private MaterialPropertyBlock mpb;
     private Color color;
     private bool hasInitialized;
+    // Chroma overrides position and scale independently, so a light refresh must retain only the transform properties supplied by the map or its track.
+    private Vector3? authoredLocalPosition;
+    private Vector3? authoredLocalScale;
     private static readonly int colorId = Shader.PropertyToID("_Color");
     private static readonly int alphaWidthId = Shader.PropertyToID("_AlphaWidth");
 
@@ -52,16 +55,39 @@ public class ParametricBoxLight : MonoBehaviour
         SetColor(color);
     }
 
+    public void CaptureAuthoredPosition()
+    {
+        authoredLocalPosition = transform.localPosition;
+    }
+
+    public void CaptureAuthoredScale()
+    {
+        authoredLocalScale = transform.localScale;
+    }
+
+    // Seeking before a track event restores its spawn pose.
+    // Only refresh overrides that were already authored or animated.
+    public void RecaptureAuthoredTransform()
+    {
+        if (authoredLocalPosition.HasValue)
+            CaptureAuthoredPosition();
+        if (authoredLocalScale.HasValue)
+            CaptureAuthoredScale();
+    }
+
     public void SetColor(Color col)
     {
         color = col;
         if (!hasInitialized) return;
 
         var height = UseCollision ? Mathf.Min(CollisionHeight, Height) : Height;
+        // refresh must preserve each authored mesh property independently while native dimensions still drive any property without an override.
         if (UpdateTransform)
         {
-            tr.localScale = new Vector3(Width * 0.5f, height * 0.5f, Length * 0.5f);
-            tr.localPosition = new Vector3(0f, (0.5f - Center) * height, 0f);
+            tr.localScale = authoredLocalScale
+                ?? new Vector3(Width * 0.5f, height * 0.5f, Length * 0.5f);
+            tr.localPosition = authoredLocalPosition
+                ?? new Vector3(0f, (0.5f - Center) * height, 0f);
         }
 
         var newCol = color;

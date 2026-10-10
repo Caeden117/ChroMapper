@@ -203,17 +203,13 @@ namespace Beatmap.Base.Customs
             return Data;
         }
 
-        public override int CompareTo(BaseObject other)
-        {
-            var comparison = base.CompareTo(other);
-
-            if (other is not BaseCustomEvent customEvent) return comparison; ;
-
-            // Order by custom event type if times match up
-            return comparison == 0
-                ? string.Compare(Type, customEvent.Type, StringComparison.Ordinal)
-                : comparison;
-        }
+        // Custom-event edits can change only Data. Beat/type equality alone would discard those edits and
+        // match the wrong packet.
+        public override bool HasSameContent(BaseObject other) =>
+            other is BaseCustomEvent customEvent
+            && base.HasSameContent(other)
+            && Type == customEvent.Type
+            && string.Equals(Data?.ToString(), customEvent.Data?.ToString(), StringComparison.Ordinal);
         
         // Duration is measured in beats, but animation points contain values and normalized times.
         // Replace only duration on a shallow export copy so saving cannot round the editable Data tree.

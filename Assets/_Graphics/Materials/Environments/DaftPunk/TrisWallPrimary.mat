@@ -20,6 +20,7 @@ Material:
   - NOISE_DITHERING
   - REFLECTION_PROBE_BOX_PROJECTION
   - _ACES_APPROACH_BEFORE_EMISSIVE
+  - _DIFFUSE_TEXTURE_SOURCE_TEXTURE
   - _EMISSIONCOLORTYPE_WHITEBOOST
   - _EMISSIONTEXTURE_SIMPLE
   - _VERTEXMODE_COLOR
@@ -41,7 +42,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2017
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -189,6 +190,7 @@ Material:
     - _EmissionBrightness: 0.8
     - _EmissionColorType: 1
     - _EmissionFogSuppression: 1
+    - _EmissionGradientAffectsAlpha: 0
     - _EmissionGradientIntensity: 1
     - _EmissionGradientPanningSpeed: 0
     - _EmissionGradientPosition: 0.5

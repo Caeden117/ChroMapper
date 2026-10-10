@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Comparers;
 using Beatmap.V2.Customs;
 using SimpleJSON;
 using UnityEngine;
@@ -38,20 +39,21 @@ namespace Beatmap.V2
                     allEvents.Add(new BaseBpmEvent { JsonTime = 0, Bpm = insertedBpm });
                 }
 
-                allEvents.Sort((lhs, rhs) => lhs.JsonTime.CompareTo(rhs.JsonTime));
-                foreach (var e in allEvents) events.Add(e.ToJson());
+                // Preserve authored order when timestamps tie because in-memory sorting can reorder
+                // simultaneous events.
+                foreach (var e in BaseObject.InFileOrder(allEvents)) events.Add(e.ToJson());
                 json["_events"] = events;
 
                 var notes = new JSONArray();
-                foreach (var n in difficulty.Notes) notes.Add(n.ToJson());
+                foreach (var n in BaseObject.InFileOrder(difficulty.Notes)) notes.Add(n.ToJson());
                 json["_notes"] = notes;
 
                 var obstacles = new JSONArray();
-                foreach (var o in difficulty.Obstacles) obstacles.Add(o.ToJson());
+                foreach (var o in BaseObject.InFileOrder(difficulty.Obstacles)) obstacles.Add(o.ToJson());
                 json["_obstacles"] = obstacles;
 
                 var waypoints = new JSONArray();
-                foreach (var w in difficulty.Waypoints) waypoints.Add(w.ToJson());
+                foreach (var w in BaseObject.InFileOrder(difficulty.Waypoints)) waypoints.Add(w.ToJson());
                 json["_waypoints"] = waypoints;
 
                 json["_sliders"] = new JSONArray();
@@ -81,20 +83,22 @@ namespace Beatmap.V2
             if (difficulty.Bookmarks.Any())
             {
                 var bookmarks = new JSONArray();
-                foreach (var b in difficulty.Bookmarks) bookmarks.Add(b.ToJson());
+                foreach (var b in BaseObject.InFileOrder(difficulty.Bookmarks)) bookmarks.Add(b.ToJson());
                 customData["_bookmarks"] = bookmarks;
                 customData[difficulty.BookmarksUseOfficialBpmEventsKey] = true;
             }
 
             if (difficulty.CustomEvents.Any())
             {
+                // Chroma runs custom events at the same beat in file order, with the last assignment winning.
                 var customEvents = new JSONArray();
-                foreach (var c in difficulty.CustomEvents) customEvents.Add(c.ToJson());
+                foreach (var c in BaseObject.InFileOrder(difficulty.CustomEvents)) customEvents.Add(c.ToJson());
                 customData["_customEvents"] = customEvents;
             }
 
             if (difficulty.EnvironmentEnhancements.Any())
             {
+                // Environment enhancements execute sequentially, so export their current list order.
                 var envEnhancements = new JSONArray();
                 foreach (var e in difficulty.EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
                 customData["_environment"] = envEnhancements;
@@ -145,22 +149,22 @@ namespace Beatmap.V2
                             foreach (JSONNode n in node)
                             {
                                 if (n["_type"] != null && n["_type"] == 100)
-                                    map.BpmEvents.Add(V2BpmEvent.GetFromJson(n));
+                                    map.BpmEvents.Add(map.WithFileOrder(V2BpmEvent.GetFromJson(n)));
                                 else if (n["_type"] != null && (n["_type"] == 14 || n["_type"] == 15))
-                                    map.RotationEvents.Add(V2RotationEvent.GetFromJson(n));
+                                    map.RotationEvents.Add(map.WithFileOrder(V2RotationEvent.GetFromJson(n)));
                                 else
-                                    map.Events.Add(V2Event.GetFromJson(n));
+                                    map.Events.Add(map.WithFileOrder(V2Event.GetFromJson(n)));
                             }
 
                             break;
                         case "_notes":
-                            foreach (JSONNode n in node) map.Notes.Add(V2Note.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Notes.Add(map.WithFileOrder(V2Note.GetFromJson(n)));
                             break;
                         case "_obstacles":
-                            foreach (JSONNode n in node) map.Obstacles.Add(V2Obstacle.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Obstacles.Add(map.WithFileOrder(V2Obstacle.GetFromJson(n)));
                             break;
                         case "_waypoints":
-                            foreach (JSONNode n in node) map.Waypoints.Add(V2Waypoint.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Waypoints.Add(map.WithFileOrder(V2Waypoint.GetFromJson(n)));
                             break;
                         case "_specialEventsKeywordFilter":
                             map.EventTypesWithKeywords = V2SpecialEventsKeywordFilters.GetFromJson(node);
@@ -171,7 +175,7 @@ namespace Beatmap.V2
                 // Do not assume map is sorted
                 map.BpmEvents.Sort();
                 map.RotationEvents.Sort();
-                map.Events.Sort();
+                map.Events.Sort(EventOrderComparer.Instance);
                 map.Notes.Sort();
                 map.Obstacles.Sort();
                 map.Waypoints.Sort();
@@ -215,19 +219,19 @@ namespace Beatmap.V2
                             switch (cKey)
                             {
                                 case "_BPMChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(map.WithFileOrder(V2BpmChange.GetFromJson(n)));
                                     map.CustomData.Remove(cKey);
                                     break;
                                 case "_bpmChanges":
-                                    foreach (JSONNode n in cNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                                    foreach (JSONNode n in cNode) bpmList.Add(map.WithFileOrder(V2BpmChange.GetFromJson(n)));
                                     map.CustomData.Remove(cKey);
                                     break;
                                 case "_bookmarks":
-                                    foreach (JSONNode n in cNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
+                                    foreach (JSONNode n in cNode) bookmarksList.Add(map.WithFileOrder(V2Bookmark.GetFromJson(n)));
                                     map.CustomData.Remove(cKey);
                                     break;
                                 case "_customEvents":
-                                    foreach (JSONNode n in cNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
+                                    foreach (JSONNode n in cNode) customEventsList.Add(map.WithFileOrder(V2CustomEvent.GetFromJson(n)));
                                     map.CustomData.Remove(cKey);
                                     break;
                                 case "_pointDefinitions":
@@ -243,6 +247,7 @@ namespace Beatmap.V2
                                     map.CustomData.Remove(cKey);
                                     break;
                                 case "_environment":
+                                    // Environment enhancements execute in array order and bypass chronological sorting.
                                     foreach (JSONNode n in cNode)
                                         envEnhancementsList.Add(V2EnvironmentEnhancement.GetFromJson(n));
                                     map.CustomData.Remove(cKey);
@@ -272,16 +277,16 @@ namespace Beatmap.V2
 
                     // Keys can be present outside of root CustomData from legacy community editor
                     case "_BPMChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(map.WithFileOrder(V2BpmChange.GetFromJson(n)));
                         break;
                     case "_bpmChanges":
-                        foreach (JSONNode n in mNode) bpmList.Add(V2BpmChange.GetFromJson(n));
+                        foreach (JSONNode n in mNode) bpmList.Add(map.WithFileOrder(V2BpmChange.GetFromJson(n)));
                         break;
                     case "_bookmarks":
-                        foreach (JSONNode n in mNode) bookmarksList.Add(V2Bookmark.GetFromJson(n));
+                        foreach (JSONNode n in mNode) bookmarksList.Add(map.WithFileOrder(V2Bookmark.GetFromJson(n)));
                         break;
                     case "_customEvents":
-                        foreach (JSONNode n in mNode) customEventsList.Add(V2CustomEvent.GetFromJson(n));
+                        foreach (JSONNode n in mNode) customEventsList.Add(map.WithFileOrder(V2CustomEvent.GetFromJson(n)));
                         break;
                 }
             }
@@ -295,7 +300,8 @@ namespace Beatmap.V2
             // Sort and assign
             map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
-            map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
+            map.CustomEvents = customEventsList.DistinctBy(x => x.ToString())
+                .OrderBy(evt => evt, EventOrderComparer.Instance).ToList();
             map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
             map.Materials = materials;

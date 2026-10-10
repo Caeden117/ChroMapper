@@ -29,6 +29,9 @@ public class BasicEventEffectManager : MonoBehaviour
 
     public void Initialize(AudioTimeSyncController atsc)
     {
+        // Keep BTS's disabled ring zoom out of the initial event timeline.
+        RemoveDisabledRingPositionEffects();
+
         foreach (var manager in Effects)
         {
             manager.Atsc = atsc;
@@ -50,7 +53,22 @@ public class BasicEventEffectManager : MonoBehaviour
 
     public void Reinitialize()
     {
+        // Environment enhancement can add disabled ring zoom clones after Initialize.
+        RemoveDisabledRingPositionEffects();
         foreach (var manager in Effects) manager.Initialize();
+    }
+
+    // BTS disables its ring-position spawner. Remove both scene effects and newly cloned effects after
+    // enhancement setup, so Event 8 cannot compress the rings or initialize an inert clone. Caused issues in The 15 Sublimit.
+    private void RemoveDisabledRingPositionEffects()
+    {
+        Effects.RemoveAll(effect => effect is TrackLaneRingsPositionEffect position
+            && position.Visual != null && !position.Visual.enabled);
+        foreach (var effects in EventTypeToEffects.Values)
+        {
+            effects.RemoveAll(effect => effect is TrackLaneRingsPositionEffect position
+                && position.Visual != null && !position.Visual.enabled);
+        }
     }
 
     public void Refresh()
@@ -166,6 +184,21 @@ public class BasicEventEffectManager : MonoBehaviour
                 .First(entry => entry.Type == controller.Type && entry.Manager is BasicLightEffect)
                 .Manager as BasicLightEffect;
             manager!.Register(controller, strict);
+        }
+        else
+            Debug.LogError("Could not find manager for type " + controller.Type);
+    }
+
+    // Environment-enhancement registrations (duplicates, ILightWithId retargets, geometry lights) follow
+    // Chroma's RegisterLight+RegisterIndex. Append index plus a lightID-table entry at the requested key.
+    public void Register(LightController controller, int? requestedKey)
+    {
+        if (effectEntries.Exists(entry => entry.Type == controller.Type && entry.Manager is BasicLightEffect))
+        {
+            var manager = effectEntries
+                .First(entry => entry.Type == controller.Type && entry.Manager is BasicLightEffect)
+                .Manager as BasicLightEffect;
+            manager!.Register(controller, requestedKey);
         }
         else
             Debug.LogError("Could not find manager for type " + controller.Type);

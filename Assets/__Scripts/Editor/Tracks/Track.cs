@@ -56,6 +56,17 @@ public class Track : MonoBehaviour
             position * zScale);
     }
 
+    // Definite-position notes must stay at their resting lane height while fading in. Clear travel Z and pin
+    // parent Y so UpdateTime cannot add the jump arc. Other grid objects retain their Y position.
+    public void HoldDefinitePosition()
+    {
+        var position = ObjectParentTransform.localPosition;
+        var y = gridObject is BaseNote note
+            ? note.GetPosition().y + BeatmapConstant.YOffset + BeatmapConstant.PlayerYOffset
+            : position.y;
+        ObjectParentTransform.localPosition = new Vector3(position.x, y, 0f);
+    }
+
     public void UpdateTime(float time)
     {
         float z;

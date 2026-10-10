@@ -63993,6 +63993,12 @@ MonoBehaviour:
   Keywords:
   - bloom
   - fog
+--- !u!224 &2147000004 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
+    type: 3}
+  m_PrefabInstance: {fileID: 2147000001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1753057382
 GameObject:
   m_ObjectHideFlags: 0
@@ -75759,6 +75765,12 @@ MonoBehaviour:
   Keywords:
   - screen
   - displacement
+--- !u!224 &2147000014 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
+    type: 3}
+  m_PrefabInstance: {fileID: 2147000011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2053843380
 GameObject:
   m_ObjectHideFlags: 0

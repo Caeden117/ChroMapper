@@ -15,3 +15,10 @@ Jenkins runs Linux Unity in batchmode under Xvfb. That environment does not prov
 Tests of playback-driven behavior must use a deterministic test clock and retain the production behavior they claim to cover, including playback state, `OnPlayToggled`, `OnTimeChanged`, and callback-controller frame ordering. Explicitly stop native audio in the test so Windows exercises the same unavailable-backend condition. Do not replace the production callback path with a direct visual refresh merely to avoid the audio dependency.
 
 `BasicEventChunkingTestBase.StartDeterministicPlaybackAtSongBpmTime` and `PauseDeterministicPlayback` are the established helpers for Basic Event chunking tests.
+
+## Whole-map fixtures
+
+- Pass the fixture's BPM, environment, clip length and `difficultyInfo` to `TestUtils.ReloadMap` so movement providers initialize from the fixture's metadata. Use `forceSceneReload: true` when setup requires a fresh mapper scene; the default reload reuses the mapper scene and replaces the environment.
+- Whole-map fixtures that clean up by reloading the map override `CleanupTestObjects` with an empty body. This prevents `TestBase` from destroying enhancement controllers before the reload can release their track-parented targets. Restore `UIModeType.Normal`, the editing camera and saved settings in `[UnityTearDown]`, then reload an empty map with `forceSceneReload: true` in `[UnityOneTimeTearDown]`.
+- `CensoredLaserResetParityTest` clones the authored JSON before loading it so its independent oracle is not altered by the loader's mutation of custom-event data.
+- `AuroraMapParityTest` samples late-frame captures through `AuroraRenderStageProbe` after animation `LateUpdate` calls, rather than capturing when the test coroutine resumes.

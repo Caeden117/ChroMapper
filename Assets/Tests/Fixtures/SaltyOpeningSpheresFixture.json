@@ -1,0 +1,170 @@
+{
+  "version": "3.3.0",
+  "bpmEvents": [
+    {
+      "b": 0,
+      "m": 215
+    },
+    {
+      "b": 1.75,
+      "m": 100000
+    },
+    {
+      "b": 2.047515,
+      "m": 215
+    }
+  ],
+  "rotationEvents": [],
+  "colorNotes": [],
+  "bombNotes": [],
+  "obstacles": [],
+  "sliders": [],
+  "burstSliders": [],
+  "waypoints": [],
+  "basicBeatmapEvents": [
+    {
+      "b": 0,
+      "et": 0,
+      "i": 1,
+      "f": 1,
+      "customData": {
+        "color": [
+          3,
+          3,
+          3
+        ],
+        "lightID": [
+          10
+        ]
+      }
+    },
+    {
+      "b": 0,
+      "et": 1,
+      "i": 1,
+      "f": 1,
+      "customData": {
+        "color": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "lightColorEventBoxGroups": [],
+  "lightRotationEventBoxGroups": [],
+  "lightTranslationEventBoxGroups": [],
+  "vfxEventBoxGroups": [],
+  "_fxEventsCollection": {
+    "_fl": [],
+    "_il": []
+  },
+  "useNormalEventsAsCompatibleEvents": true,
+  "customData": {
+    "time": 0,
+    "BPMChanges": [],
+    "bookmarks": [],
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "hehe",
+            "hehe2"
+          ],
+          "parentTrack": "die"
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "die",
+          "duration": 0,
+          "easing": "easeOutQuad",
+          "position": [
+            [
+              0,
+              -6969,
+              -6969,
+              0
+            ]
+          ],
+          "scale": [
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      }
+    ],
+    "environment": [
+      {
+        "geometry": {
+          "type": "Sphere",
+          "material": "BLACK"
+        },
+        "track": "hehe",
+        "scale": [
+          7,
+          7,
+          7
+        ],
+        "position": [
+          0,
+          1,
+          10
+        ]
+      },
+      {
+        "geometry": {
+          "type": "Sphere",
+          "material": "GLOW"
+        },
+        "track": "hehe2",
+        "scale": [
+          16,
+          16,
+          16
+        ],
+        "position": [
+          0,
+          0.37,
+          20
+        ],
+        "components": {
+          "ILightWithId": {
+            "type": 0,
+            "lightID": 10
+          }
+        }
+      }
+    ],
+    "materials": {
+      "BLACK": {
+        "color": [
+          0,
+          0,
+          0
+        ],
+        "shader": "Standard",
+        "track": "color track"
+      },
+      "GLOW": {
+        "shader": "TransparentLight",
+        "track": "E"
+      }
+    },
+    "pointDefinitions": {},
+    "fakeColorNotes": [],
+    "fakeBombNotes": [],
+    "fakeObstacles": [],
+    "fakeBurstSliders": []
+  }
+}

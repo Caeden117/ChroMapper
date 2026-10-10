@@ -43,6 +43,22 @@ namespace Beatmap.Containers
             container.Context = context;
             container.Animator.Context = context;
             container.Animator.TracksManager = tracksManager;
+
+            // Material animation needs a separate ObjectAnimator because AttachToMaterial resets state used
+            // by transform animation. Give it a child transform so position properties on a material track
+            // cannot move the geometry itself or access a missing LocalTarget. Keep it disabled until a
+            // material is attached.
+            var materialAnimatorTarget = new GameObject("AnimationTarget");
+            materialAnimatorTarget.layer = container.gameObject.layer;
+            materialAnimatorTarget.transform.SetParent(container.transform, false);
+            var materialAnimator = materialAnimatorTarget.AddComponent<ObjectAnimator>();
+            materialAnimator.LocalTarget = materialAnimatorTarget.transform;
+            materialAnimator.WorldTarget = materialAnimatorTarget.transform;
+            materialAnimator.Context = context;
+            materialAnimator.TracksManager = tracksManager;
+            materialAnimator.enabled = false;
+            container.MaterialAnimator = materialAnimator;
+
             container.EnvironmentEnhancement = eh;
 
             if (eh.Geometry != null)
@@ -101,7 +117,6 @@ namespace Beatmap.Containers
             if (eh.Components?.HasKey("ILightWithId") ?? false)
             {
                 var controller = shape.AddComponent<ParametricBloomFogLightController>();
-
                 var light = shape.AddComponent<ParametricBoxLight>();
                 light.UpdateTransform = false;
                 light.Renderer = container.MpbController.Renderers[0];
@@ -111,8 +126,7 @@ namespace Beatmap.Containers
                 controller.BloomFog = bf;
 
                 controller.Type = eh.LightType ?? 0;
-                controller.ID = eh.LightID ?? -1;
-                descriptor.Register(controller, false);
+                descriptor.Register(controller, eh.LightID);
             }
 
             if (eh.Components?.HasKey("TubeBloomPrePassLight") ?? false)
@@ -121,9 +135,9 @@ namespace Beatmap.Containers
                 var controller = shape.GetComponent<ParametricBloomFogLightController>();
                 if (controller == null) return;
                 if (ppLight["colorAlphaMultiplier"] != null)
-                    controller.ColorAlphaMultiplier = ppLight["colorAlphaMultiplier"];
+                    controller.SetColorAlphaMultiplier(ppLight["colorAlphaMultiplier"]);
                 if (ppLight["bloomFogIntensityMultiplier"] != null)
-                    controller.BloomFogIntensityMultiplier = ppLight["bloomFogIntensityMultiplier"];
+                    controller.SetBloomFogIntensityMultiplier(ppLight["bloomFogIntensityMultiplier"]);
             }
         }
 
@@ -144,6 +158,14 @@ namespace Beatmap.Containers
             // Yes, all the matching IDs, don't ask me why
             var targetObjects = chromaIDMarkers.Where(marker => FindMarker(marker, eh)).Select(x => (x, x)).ToList();
 
+            // Mirror Chroma's lookup warning format so missing enhancements can be compared between the editor
+            // and game.
+            if (targetObjects.Count == 0)
+            {
+                Debug.LogWarning(
+                    $"Environment enhancement ID [\"{eh.ID}\"] using method [{eh.LookupMethod:G}] found nothing.");
+            }
+
             // We need to handle duplicates if defined!
             if (eh.Duplicate != null)
             {
@@ -163,38 +185,52 @@ namespace Beatmap.Containers
                 {
                     for (var i = 0; i < duplicates; i++)
                     {
-                        var duplicateObject = Instantiate(original.gameObject, original.transform.parent);
+                        // Instantiate the clone as a root so it can be moved into the original environment
+                        // scene before parenting. Parenting during Instantiate can place it in the mapper
+                        // scene, where it would survive an environment reload.
+                        var duplicateObject = Instantiate(original.gameObject);
+                        SceneManager.MoveGameObjectToScene(duplicateObject, original.gameObject.scene);
+                        duplicateObject.transform.SetParent(original.transform.parent, true);
                         var duplicate = duplicateObject.GetComponent<ChromaIDMarker>();
                         var originalParentId = duplicate.ChromaID;
                         duplicate.ChromaID = original.ChromaID[..(original.ChromaID.LastIndexOf(']') + 1)]
                             + duplicate.name;
+                        // GetComponentsInChildren includes the root marker, whose final ChromaID was assigned
+                        // above. Rewrite only child IDs to avoid appending a second "(Clone)" to the root.
                         foreach (var childMarker in duplicateObject.GetComponentsInChildren<ChromaIDMarker>())
                         {
-                            childMarker.ChromaID = childMarker.ChromaID.Replace(originalParentId, duplicate.ChromaID);
+                            if (childMarker != duplicate)
+                            {
+                                childMarker.ChromaID =
+                                    childMarker.ChromaID.Replace(originalParentId, duplicate.ChromaID);
+                            }
+
                             descriptor.ChromaIDMarkers.Add(childMarker);
                         }
 
                         newTargetObjects.Add((original, duplicate));
-                        if (duplicateObject.transform.root == duplicateObject.transform)
-                            SceneManager.MoveGameObjectToScene(duplicateObject, ctx.Descriptor.gameObject.scene);
                     }
                 }
 
                 targetObjects = newTargetObjects;
             }
 
-            // lets pretend this is always valid
-            if (eh.Components?.HasKey("BloomFogEnvironment") ?? false)
+            // Apply fog overrides only when the matched objects contain the fog component. Its preview state
+            // lives on the environment descriptor root.
+            var ownsFog = targetObjects.Any(pair =>
+                pair.Item2.transform == descriptor.transform
+                || descriptor.transform.IsChildOf(pair.Item2.transform));
+            if (!ownsFog && (eh.Components?.HasKey("BloomFogEnvironment") ?? false))
+                Debug.LogWarning($"BloomFogEnvironment enhancement ID [{eh.ID}] matched no fog component.");
+            if (ownsFog && (eh.Components?.HasKey("BloomFogEnvironment") ?? false))
             {
                 var bloomFog = eh.Components["BloomFogEnvironment"];
                 if (bloomFog["attenuation"] != null) descriptor.BloomFogParams.Attenuation = bloomFog["attenuation"];
                 if (bloomFog["offset"] != null) descriptor.BloomFogParams.Offset = bloomFog["offset"];
                 if (bloomFog["startY"] != null) descriptor.BloomFogParams.StartY = bloomFog["startY"];
                 if (bloomFog["height"] != null) descriptor.BloomFogParams.Height = bloomFog["height"];
-                if (bloomFog["autoExposureLimit"] != null)
-                    descriptor.BloomFogParams.AutoExposureLimit = bloomFog["autoExposureLimit"];
-                if (bloomFog["legacyAutoExposure"] != null)
-                    descriptor.BloomFogParams.LegacyAutoExposure = bloomFog["legacyAutoExposure"];
+
+                ctx.NotifyBloomFogParamsChanged();
             }
 
             // Cache the map-version decision once because every matched marker uses the same V2 unit conversion.
@@ -207,6 +243,12 @@ namespace Beatmap.Containers
             {
                 if (eh.Active != null) target.gameObject.SetActive(eh.Active.AsBool);
 
+                var boxLight = eh.Position != null || eh.LocalPosition != null || eh.Scale != null || eh.Track != null
+                    ? target.GetComponentInChildren<ParametricBoxLight>(true)
+                    : null;
+                if (boxLight != null)
+                    boxLight.InitIfNeeded();
+
                 // Chroma applies authored enhancement transforms before attaching a track and never reparents the
                 // matched object, which preserves nested BigTrackLaneRing renderers in all four parity cases.
                 if (eh.Scale != null) target.transform.localScale = eh.Scale.Value;
@@ -216,6 +258,16 @@ namespace Beatmap.Containers
                 if (eh.LocalRotation != null)
                     target.transform.localRotation = Quaternion.Euler(eh.LocalRotation.Value);
                 else if (eh.Rotation != null) target.transform.rotation = Quaternion.Euler(eh.Rotation.Value);
+
+                // Capture the box mesh after applying the enhancement so later light refreshes preserve only
+                // the position and scale overrides.
+                if (boxLight != null)
+                {
+                    if (eh.Position != null || eh.LocalPosition != null)
+                        boxLight.CaptureAuthoredPosition();
+                    if (eh.Scale != null)
+                        boxLight.CaptureAuthoredScale();
+                }
 
                 // A track with no transform property must be inert; a present property is applied directly to each
                 // matched transform by its own animator, matching Chroma without flattening the OEM hierarchy.
@@ -227,35 +279,38 @@ namespace Beatmap.Containers
                     animator.AttachToEnvironmentObject(
                         target.transform,
                         eh.Track,
-                        v2);
+                        v2,
+                        boxLight);
+                    if (target.transform == descriptor.transform
+                        || descriptor.transform.IsChildOf(target.transform))
+                        tracksManager.BindFogComponentTarget(eh.Track);
                 }
 
                 if (eh.Duplicate != null) HandleDuplicateComponents(original.transform, target.transform);
 
                 foreach (var controller in target.GetComponentsInChildren<LightController>(true))
                 {
-                    if (eh.Duplicate == null) descriptor.Unregister(controller);
-                    if (controller.Kind == LightController.LightKind.Basic)
+                    var customized = eh.LightType.HasValue || eh.LightID.HasValue;
+                    if (eh.Duplicate != null || customized)
                     {
-                        controller.Type = eh.LightType ?? controller.Type;
-                        controller.ID = eh.LightID ?? controller.ID;
-                    }
+                        if (eh.Duplicate == null) descriptor.Unregister(controller);
+                        if (controller.Kind == LightController.LightKind.Basic)
+                            controller.Type = eh.LightType ?? controller.Type;
 
-                    descriptor.Register(controller, false);
+                        descriptor.Register(controller, eh.LightID);
+                    }
 
                     if (eh.Components?.HasKey("TubeBloomPrePassLight") ?? false)
                     {
                         var ppLight = eh.Components["TubeBloomPrePassLight"];
                         if (controller is not ParametricBloomFogLightController pbflc) continue;
                         if (ppLight["colorAlphaMultiplier"] != null)
-                            pbflc.ColorAlphaMultiplier = ppLight["colorAlphaMultiplier"];
+                            pbflc.SetColorAlphaMultiplier(ppLight["colorAlphaMultiplier"]);
                         if (ppLight["bloomFogIntensityMultiplier"] != null)
-                            pbflc.BloomFogIntensityMultiplier = ppLight["bloomFogIntensityMultiplier"];
+                            pbflc.SetBloomFogIntensityMultiplier(ppLight["bloomFogIntensityMultiplier"]);
                     }
                 }
 
-                foreach (var pbl in target.GetComponentsInChildren<ParametricBoxLight>(true))
-                    pbl.UpdateTransform = false;
             }
 
             return;

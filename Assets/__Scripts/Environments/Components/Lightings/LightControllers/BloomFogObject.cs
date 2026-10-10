@@ -45,6 +45,7 @@ public sealed class BloomFogObject : MonoBehaviour
 
     private void OnEnable()
     {
+        CachedTransform = transform;
         // Environment objects can be re-enabled during scene transitions
         // without a matching disable callback. Keep one render entry per light.
         if (!AllBloomFogLights.Contains(this)) AllBloomFogLights.Add(this);

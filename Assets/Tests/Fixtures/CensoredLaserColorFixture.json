@@ -1,0 +1,7 @@
+{
+  "version": "3.3.0",
+  "basicBeatmapEvents": [
+    { "b": 164, "et": 3, "i": 1, "f": 1, "customData": { "color": [0.556, 0.641, 1] } },
+    { "b": 164, "et": 2, "i": 1, "f": 1, "customData": { "color": [0.556, 0.641, 1] } }
+  ]
+}

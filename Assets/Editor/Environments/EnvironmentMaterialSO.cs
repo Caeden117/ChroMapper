@@ -167,6 +167,7 @@ public class EnvironmentMaterialSO : ScriptableObject
         }
 
         variant.Unused = false;
+        variant.RenderQueue = material.RenderQueue;
         variant.Keywords ??= new List<string>();
         if (material.Keywords != null)
             variant.Keywords.AddRange(material.Keywords.Where(keyword => !variant.Keywords.Contains(keyword)));
@@ -231,6 +232,7 @@ public class EnvironmentMaterialSO : ScriptableObject
         return new MaterialVariant
         {
             Hash = variantHash,
+            RenderQueue = material.RenderQueue,
             Keywords = material.Keywords?.ToList() ?? new List<string>(),
             FloatProps = shaderProps
                 .Where(entry => IsNumeric(entry.Value))
@@ -317,6 +319,7 @@ public class MaterialVariant
 {
     public Material Material;
     public string Hash;
+    public int RenderQueue = -1;
     public List<string> Keywords;
     public List<ShaderProps<float>> FloatProps;
     public List<ShaderProps<Vector4>> VectorProps;

@@ -533,8 +533,8 @@ public class Settings
         }
         else if (!nameToActions.ContainsKey(name) && callback != null)
         {
-            var newBoy = new Action<object>(callback);
-            nameToActions.Add(name, newBoy);
+            // Keep the original callback so unsubscription removes the delegate that was registered.
+            nameToActions.Add(name, callback);
         }
     }
 

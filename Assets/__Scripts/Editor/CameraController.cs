@@ -70,6 +70,31 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     private Vector2 savedMousePos = Vector2.zero;
 
+    // ResumingPlayingDoesNotRestoreEditingCameraMousePosition regression seam: batch mode cannot apply a
+    // real OS cursor lock or warp, so SetLockState's native cursor calls route through this adapter. The
+    // adapter only mirrors the existing Cursor.lockState/WarpCursorPosition behavior so the test can
+    // record the call sequence - the adapter itself owns no logic; lock ownership is tracked separately
+    // by cursorLockOwner inside SetLockState.
+    internal interface ICursorState
+    {
+        CursorLockMode LockState { get; set; }
+        void Warp(Vector2 position);
+    }
+
+    private sealed class NativeCursorState : ICursorState
+    {
+        public CursorLockMode LockState
+        {
+            get => Cursor.lockState;
+            set => Cursor.lockState = value;
+        }
+        public void Warp(Vector2 position) => Mouse.current.WarpCursorPosition(position);
+    }
+
+    internal static ICursorState CursorState { get; set; } = new NativeCursorState();
+
+    private static CameraController cursorLockOwner;
+
     private bool canMoveCamera;
 
     private bool lockOntoNoteGrid;
@@ -81,6 +106,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private List<TrackAnimator> playerTracks = new();
     private TrackAnimator currentTrack;
 
+    private bool cameraHomeCaptured;
+    private Transform cameraHomeParent;
+    private Vector3 cameraHomeLocalPosition;
+    private Quaternion cameraHomeLocalRotation;
+    private Vector3 cameraHomeLocalScale;
 
     private bool ignoreInitialMouseMovement = false;
     private int framesAfterRightClick = 0;
@@ -107,6 +137,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void ClearPlayerTracks()
     {
+        // A live binding outlives the lists: TrackAnimator.ResetForMapLoad already emptied the track's
+        // Children on map load, so without disconnecting the cameraAnimator stays parented but undriven.
+        DisconnectPlayerTrack();
         playerTrackTimes.Clear();
         playerTracks.Clear();
     }
@@ -117,22 +150,50 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         UpdateAA(Settings.Instance.CameraAA);
         UpdateRenderScale(Settings.Instance.RenderScale);
         UpdatePlayerCameraOffsetZ(Settings.Instance.PlayerCameraOffsetZ);
+        // In-place map swaps and difficulty switches keep this rig alive, and direct field writes to these
+        // settings bypass the NotifyBySettingName callbacks; re-apply the same Start-time snapshot on every
+        // map load so the camera reads current settings exactly like a fresh scene load would.
+        LoadInitialMap.OnLevelLoaded += HandleMapLoaded;
+        LoadedDifficultySelectController.OnLoadedDifficultyChanged += HandleMapLoaded;
         Settings.NotifyBySettingName(nameof(Settings.CameraAA), UpdateAA);
         Settings.NotifyBySettingName(nameof(Settings.RenderScale), UpdateRenderScale);
         Settings.NotifyBySettingName(nameof(Settings.PlayerCameraOffsetZ), UpdatePlayerCameraOffsetZ);
         if (!playerCamera)
         {
-            instance = this;
             OnLocation(0);
             LockedOntoNoteGrid = true;
         }
         else
+        {
             laneRotationProvider.OnSmoothedPlaybackChanged += HandleRotationChanged;
+            // Salty camera regression (SaltyBeat537HeadCameraParityTest /
+            // Beat532CameraStaysHomeBeforeAndAfterHeadTrackVisit): binding only ran from Update, one
+            // frame after a stopped seek, so the camera lagged a beat and mode switches/rewinds left
+            // it on a stale track. Subscribe to seek and mode events so the bind/detach is
+            // synchronous with the time/mode change.
+            atsc.OnTimeChanged += SyncPlayerTrack;
+            UIMode.OnUIModeSwitched += OnPlayerCameraModeSwitched;
+        }
     }
 
     private void OnDestroy()
     {
-        if (playerCamera) laneRotationProvider.OnSmoothedPlaybackChanged -= HandleRotationChanged;
+        if (playerCamera)
+        {
+            laneRotationProvider.OnSmoothedPlaybackChanged -= HandleRotationChanged;
+            atsc.OnTimeChanged -= SyncPlayerTrack;
+            UIMode.OnUIModeSwitched -= OnPlayerCameraModeSwitched;
+        }
+        LoadInitialMap.OnLevelLoaded -= HandleMapLoaded;
+        LoadedDifficultySelectController.OnLoadedDifficultyChanged -= HandleMapLoaded;
+    }
+
+    private void HandleMapLoaded()
+    {
+        Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
+        UpdateAA(Settings.Instance.CameraAA);
+        UpdateRenderScale(Settings.Instance.RenderScale);
+        UpdatePlayerCameraOffsetZ(Settings.Instance.PlayerCameraOffsetZ);
     }
 
     private void Update()
@@ -142,39 +203,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
 
-        if (playerCamera)
-        {
-            if (!UIMode.AnimationMode || (playerTrackTimes?.Count ?? 0) == 0) return;
-
-            // 1 after last point, inverted (probably)
-            var later = playerTrackTimes.BinarySearch(atsc.CurrentJsonTime);
-
-            var current = (later < 0)
-                ? (~later) - 1
-                : later;
-
-            if (current < 0)
-            {
-                DisconnectPlayerTrack();
-                return;
-            }
-
-            if (playerTracks[current] != currentTrack)
-            {
-                DisconnectPlayerTrack();
-                cameraAnimator.ResetData();
-                currentTrack = playerTracks[current];
-                cameraAnimator.transform.SetParent(currentTrack.Track.ObjectParentTransform);
-                cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
-                cameraAnimator.WorldTarget = cameraAnimator.transform;
-                cameraAnimator.enabled = true;
-                cameraAnimator.TargetType = ObjectAnimator.TargetTypes.Transform;
-
-                currentTrack.Children.Add(cameraAnimator);
-                currentTrack.OnChildrenChanged();
-            }
-        }
-        else if (canMoveCamera)
+        if (!playerCamera && canMoveCamera)
         {
             if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
             {
@@ -206,10 +235,71 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
             eulerAngles.z = 0;
             transform.eulerAngles = eulerAngles;
         }
-        else
+        else if (!playerCamera)
         {
             z = x = 0;
             SetLockState(false);
+        }
+    }
+
+    // Handles the mode switch after UIMode.SelectedMode has already been updated.
+    private void OnPlayerCameraModeSwitched(UIModeType mode) => SyncPlayerTrack();
+
+    private void SyncPlayerTrack()
+    {
+        if (UIMode.SelectedMode != UIModeType.Playing || !UIMode.AnimationMode || playerTrackTimes.Count == 0)
+        {
+            DisconnectPlayerTrack();
+            return;
+        }
+
+        // 1 after last point, inverted (probably)
+        var later = playerTrackTimes.BinarySearch(atsc.CurrentJsonTime);
+
+        var current = (later < 0)
+            ? (~later) - 1
+            : later;
+
+        if (current < 0)
+        {
+            DisconnectPlayerTrack();
+            return;
+        }
+
+        if (playerTracks[current] != currentTrack)
+        {
+            DisconnectPlayerTrack();
+            currentTrack = playerTracks[current];
+            if (!cameraHomeCaptured)
+            {
+                cameraHomeCaptured = true;
+                var rigTransform = cameraAnimator.transform;
+                cameraHomeParent = rigTransform.parent;
+                cameraHomeLocalPosition = rigTransform.localPosition;
+                cameraHomeLocalRotation = rigTransform.localRotation;
+                cameraHomeLocalScale = rigTransform.localScale;
+            }
+
+            var isV2Map = BeatSaberSongContainer.Instance.Map.MajorVersion == 2;
+            var rig = cameraAnimator.transform;
+            rig.SetParent(currentTrack.Track.ObjectParentTransform, false);
+            rig.localPosition = cameraHomeLocalPosition;
+            rig.localRotation = cameraHomeLocalRotation;
+            rig.localScale = cameraHomeLocalScale;
+            cameraAnimator.ResetData();
+            cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
+            cameraAnimator.WorldTarget = rig;
+            cameraAnimator.TargetType = ObjectAnimator.TargetTypes.Transform;
+            if (!isV2Map)
+            {
+                cameraAnimator.WorldPosition.Preload(cameraHomeLocalPosition);
+                cameraAnimator.WorldPosition.HoldUntilFlush = true;
+            }
+
+            cameraAnimator.enabled = true;
+            currentTrack.AddChild(cameraAnimator);
+            currentTrack.PushToChild(cameraAnimator);
+            cameraAnimator.LateUpdate();
         }
     }
 
@@ -241,21 +331,25 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void SetLockState(bool lockMouse)
     {
-        var mouseLocked = Cursor.lockState == CursorLockMode.Locked;
+        var mouseLocked = CursorState.LockState == CursorLockMode.Locked;
         if (lockMouse && !mouseLocked)
         {
-            instance.savedMousePos = Mouse.current.position.ReadValue();
+            savedMousePos = Mouse.current.position.ReadValue();
+            cursorLockOwner = this;
 
             mouseX = 0;
             mouseY = 0;
             // Locked state automatically hides the cursor, so no need to set visibility
-            Cursor.lockState = CursorLockMode.Locked;
+            CursorState.LockState = CursorLockMode.Locked;
         }
-        else if (!lockMouse && mouseLocked)
+        else if (!lockMouse && ReferenceEquals(cursorLockOwner, this))
         {
-            Cursor.lockState = CursorLockMode.None;
-
-            Mouse.current.WarpCursorPosition(instance.savedMousePos);
+            cursorLockOwner = null;
+            if (mouseLocked)
+            {
+                CursorState.LockState = CursorLockMode.None;
+                CursorState.Warp(savedMousePos);
+            }
         }
     }
 
@@ -379,12 +473,18 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void OnLocation4(CallbackContext context) => OnLocation(3);
 
+    private void OnEnable()
+    {
+        if (!playerCamera) instance = this;
+    }
+
     private void OnDisable()
     {
+        SetLockState(false);
         Settings.ClearSettingNotifications(nameof(Settings.CameraAA));
         Settings.ClearSettingNotifications(nameof(Settings.RenderScale));
         Settings.ClearSettingNotifications(nameof(Settings.PlayerCameraOffsetZ));
-        instance = null;
+        if (ReferenceEquals(instance, this)) instance = null;
     }
 
     public void OnSecondSetModifier(CallbackContext context) => secondSetOfLocations = context.performed;
@@ -428,5 +528,17 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         cameraAnimator.ResetData();
         cameraAnimator.enabled = false;
+
+        // The rig transform was reparented under the track's ObjectParentTransform on bind and nothing
+        // else moves it back, so without this restore it stays under the (possibly already
+        // scene-unloaded) track at its last animated spot
+        if (cameraHomeCaptured)
+        {
+            var rigTransform = cameraAnimator.transform;
+            rigTransform.SetParent(cameraHomeParent);
+            rigTransform.localPosition = cameraHomeLocalPosition;
+            rigTransform.localRotation = cameraHomeLocalRotation;
+            rigTransform.localScale = cameraHomeLocalScale;
+        }
     }
 }

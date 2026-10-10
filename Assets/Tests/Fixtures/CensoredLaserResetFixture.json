@@ -1,0 +1,110 @@
+{
+  "version": "3.3.0",
+  "colorNotes": [],
+  "bombNotes": [],
+  "obstacles": [],
+  "basicBeatmapEvents": [
+    {
+      "b": 159.938004,
+      "et": 13,
+      "i": 8,
+      "f": 0,
+      "customData": {
+        "speed": 7.8,
+        "direction": 0,
+        "lockRotation": true
+      }
+    },
+    {
+      "b": 159.938004,
+      "et": 12,
+      "i": 8,
+      "f": 0,
+      "customData": {
+        "speed": 7.8,
+        "direction": 0,
+        "lockRotation": true
+      }
+    },
+    {
+      "b": 164,
+      "et": 12,
+      "i": 1,
+      "f": 1
+    },
+    {
+      "b": 164,
+      "et": 13,
+      "i": 1,
+      "f": 1
+    }
+  ],
+  "customData": {
+    "environment": [
+      {
+        "id": "FitBeatEnvironment.[0]Environment.[18]RotatingLasersPair",
+        "lookupMethod": "Exact",
+        "track": "yeet",
+        "scale": [
+          2,
+          1,
+          2
+        ]
+      },
+      {
+        "id": "FitBeatEnvironment.[0]Environment.[19]RotatingLasersPair (1)",
+        "lookupMethod": "Exact",
+        "track": "yeet",
+        "scale": [
+          2,
+          1,
+          2
+        ]
+      }
+    ],
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": "yeet",
+          "parentTrack": "bruhaa"
+        }
+      },
+      {
+        "b": 159.5,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "bruhaa",
+          "duration": 0,
+          "easing": "easeOutQuad",
+          "scale": [
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 163.875,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "bruhaa",
+          "duration": 0,
+          "easing": "easeOutQuad",
+          "scale": [
+            [
+              1,
+              1,
+              1,
+              0
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

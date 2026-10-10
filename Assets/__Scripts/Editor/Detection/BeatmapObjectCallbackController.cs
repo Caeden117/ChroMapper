@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Beatmap.Base;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -33,6 +34,16 @@ public class BeatmapObjectCallbackController : MonoBehaviour
     [FormerlySerializedAs("useAudioTime")] public bool UseAudioTime;
 
     private float curTime;
+
+    // A sequential spawn walk can stop at a short-jump note before reaching a later note that is already due.
+    // Index notes whose HalfJumpDuration exceeds Offset by their own due beat, and mark early emissions so
+    // the walk cannot emit them twice. Rebuild on play start, note edits, or Offset changes.
+    private readonly List<(float dueSongBpmTime, int mapIndex, BaseObject note)> pendingNoteSpawns =
+        new();
+    private readonly HashSet<BaseObject> earlyEmittedNotes = new();
+    // Keep consumed entries behind the cursor to avoid shifting the list during playback.
+    private int pendingNoteSpawnCursor;
+    private float pendingNoteSpawnOffset = float.NaN;
 
     public event Action<bool, int, BaseObject> OnNotePassedThreshold;
     public event Action<bool, int> OnRecursiveNoteCheckFinished;
@@ -87,6 +98,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         if (timeSyncController.IsPlaying)
         {
             curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
+            if (Offset != pendingNoteSpawnOffset) RebuildPendingNoteSpawns();
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
 
@@ -121,6 +133,9 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         nextNoteIndex = noteGridContainer.MapObjects.BinarySearchBy(songTime + Offset, obj => obj.SongBpmTime);
         if (nextNoteIndex < 0) nextNoteIndex = ~nextNoteIndex;
 
+        earlyEmittedNotes.Clear();
+        RebuildPendingNoteSpawns();
+
         OnRecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
     }
 
@@ -149,15 +164,61 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         while (nextNoteIndex < objects.Count)
         {
             var obj = objects[nextNoteIndex];
+            // Clear early-emission marks as the sequential cursor passes to prevent duplicate spawns and
+            // unbounded retained marks.
+            if (earlyEmittedNotes.Remove(obj))
+            {
+                nextNoteIndex++;
+                continue;
+            }
             var offset = useAnimationsOffset ? Math.Max(obj.HalfJumpDuration, Offset) + Track.JUMP_TIME : Offset;
 
-            if (obj.SongBpmTime > curTime + offset) return;
+            if (obj.SongBpmTime > curTime + offset) break;
 
             if (obj.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
                 OnNotePassedThreshold?.Invoke(natural, nextNoteIndex, obj);
 
             nextNoteIndex++;
         }
+
+        if (useAnimationsOffset)
+        {
+            while (pendingNoteSpawnCursor < pendingNoteSpawns.Count
+                && pendingNoteSpawns[pendingNoteSpawnCursor].dueSongBpmTime <= curTime)
+            {
+                var pending = pendingNoteSpawns[pendingNoteSpawnCursor++];
+                if (earlyEmittedNotes.Contains(pending.note) || pending.mapIndex < nextNoteIndex)
+                    continue;
+                if (pending.note.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
+                {
+                    OnNotePassedThreshold?.Invoke(natural, pending.mapIndex, pending.note);
+                    earlyEmittedNotes.Add(pending.note);
+                }
+            }
+        }
+    }
+
+    private void RebuildPendingNoteSpawns()
+    {
+        pendingNoteSpawnOffset = Offset;
+        pendingNoteSpawns.Clear();
+        pendingNoteSpawnCursor = 0;
+        var objects = noteGridContainer.MapObjects;
+        for (var i = Math.Max(0, nextNoteIndex); i < objects.Count; ++i)
+        {
+            var obj = objects[i];
+            if (obj.HalfJumpDuration > Offset && !earlyEmittedNotes.Contains(obj))
+            {
+                pendingNoteSpawns.Add(
+                    (obj.SongBpmTime - Math.Max(obj.HalfJumpDuration, Offset) - Track.JUMP_TIME,
+                        i, obj));
+            }
+        }
+        pendingNoteSpawns.Sort((a, b) =>
+        {
+            var byDue = a.dueSongBpmTime.CompareTo(b.dueSongBpmTime);
+            return byDue != 0 ? byDue : a.mapIndex.CompareTo(b.mapIndex);
+        });
     }
 
     private void RecursiveCheckEvents(bool init, bool natural)
@@ -190,9 +251,20 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
-    private void NoteGridContainerOnObjectSpawned(BaseObject obj) => OnObjSpawn(obj, ref nextNoteIndex);
+    private void NoteGridContainerOnObjectSpawned(BaseObject obj)
+    {
+        OnObjSpawn(obj, ref nextNoteIndex);
+        // Insertion changes stored map indices as well as due times, so rebuild the early-spawn index.
+        if (timeSyncController.IsPlaying) RebuildPendingNoteSpawns();
+    }
 
-    private void NoteGridContainerOnObjectDeleted(BaseObject obj) => OnObjDeleted(obj, ref nextNoteIndex);
+    private void NoteGridContainerOnObjectDeleted(BaseObject obj)
+    {
+        OnObjDeleted(obj, ref nextNoteIndex);
+        if (!timeSyncController.IsPlaying) return;
+        earlyEmittedNotes.Remove(obj);
+        RebuildPendingNoteSpawns();
+    }
 
     private void GridContainerOnObjectSpawnedGrid(BaseObject obj) => OnObjSpawn(obj, ref nextEventIndex);
 

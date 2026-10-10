@@ -363,14 +363,14 @@ namespace Tests.Placement
             // Node 1 must remain solid before moved node 2; the grid already has no transition ribbon in this interval.
             atsc.MoveToJsonTime(1f);
             atsc.MoveToJsonTime(2f);
-            Assert.That(previewLight.Color, Is.EqualTo(Color.red));
+            Assert.That(previewLight.Color, Is.EqualTo(NativeNormalColor(Color.red)));
 
             // Once node 2 becomes active, the reported preview repairs itself and resumes its node-2-to-node-3 fade.
             atsc.MoveToJsonTime(2.5f);
             atsc.MoveToJsonTime(2.75f);
 
             var expectedAfterNode2 = Color.LerpUnclamped(Color.green, Color.blue, 0.5f);
-            Assert.That(previewLight.Color, Is.EqualTo(expectedAfterNode2));
+            Assert.That(previewLight.Color, Is.EqualTo(NativeNormalColor(expectedAfterNode2)));
         }
 
         // Inserting node 2 into a live node-1-to-node-3 transition must recalculate the light cache before node 2.
@@ -421,13 +421,13 @@ namespace Tests.Placement
             // Playback before node 2 must stay solid red even though the original transition previously ended at node 3.
             atsc.MoveToJsonTime(1f);
             atsc.MoveToJsonTime(1.5f);
-            Assert.That(previewLight.Color, Is.EqualTo(Color.red));
+            Assert.That(previewLight.Color, Is.EqualTo(NativeNormalColor(Color.red)));
 
             // The existing transition must then start from node 2 once node 2 is reached.
             atsc.MoveToJsonTime(2f);
             atsc.MoveToJsonTime(2.5f);
             var expectedAfterMiddle = Color.LerpUnclamped(Color.green, Color.blue, 0.5f);
-            Assert.That(previewLight.Color, Is.EqualTo(expectedAfterMiddle));
+            Assert.That(previewLight.Color, Is.EqualTo(NativeNormalColor(expectedAfterMiddle)));
         }
 
         // Each alpha-zero sample is an independent case because one broken fade-in assertion must not prevent NUnit
@@ -562,7 +562,7 @@ namespace Tests.Placement
                 context,
                 new[] { previewLight });
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                Color.red,
+                NativeNormalColor(Color.red),
                 incremental[0],
                 "live preview immediately before the shifted node");
         }
@@ -603,7 +603,7 @@ namespace Tests.Placement
                 context,
                 new[] { previewLight });
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                Color.red,
+                NativeNormalColor(Color.red),
                 incremental[0],
                 "live preview immediately before pasted nodes");
         }
@@ -822,11 +822,11 @@ namespace Tests.Placement
                 context,
                 new[] { destinationLight, sourceLight });
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                Color.red,
+                NativeNormalColor(Color.red),
                 incremental[0],
                 "destination before shifted node");
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                Color.yellow,
+                NativeNormalColor(Color.yellow),
                 incremental[1],
                 "vacated source before shifted node");
         }
@@ -1185,7 +1185,7 @@ namespace Tests.Placement
             var pasted = SelectionController.SelectedObjects.OfType<BaseEvent>().Single();
             Assert.That(pasted.JsonTime, Is.EqualTo(20f));
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                Color.red,
+                NativeNormalColor(Color.red),
                 previewLight.Color,
                 "pasting an On node must immediately stop the old transition before the pasted beat");
             atsc.MoveToJsonTime(34f);
@@ -2561,9 +2561,16 @@ namespace Tests.Placement
         {
             atsc.MoveToJsonTime(jsonTime);
             AssertColorsEqualRoundedToThreeDecimalPlaces(
-                expected,
+                NativeNormalColor(expected),
                 previewLight.Color,
                 $"Legacy Chroma gradient preview was wrong at JSON beat {jsonTime} for Basic Event type {previewLight.Type}");
+        }
+
+        // These DefaultEnvironment cases use colored normal endpoints, whose shipped ColorSO alpha is .7490196.
+        private static Color NativeNormalColor(Color authoredColor)
+        {
+            authoredColor.a *= .7490196f;
+            return authoredColor;
         }
 
         private static BaseEvent PlaceScenarioLightEvent(

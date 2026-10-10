@@ -17,6 +17,22 @@ public class EditModeContext : MonoBehaviour, CMInput.IEditModeActions, IEditorS
         }
     }
 
+    public bool IsTemporaryModeChange { get; private set; }
+
+    // Playing needs the gameplay camera's tracks without discarding the workspace's editing state.
+    public void SetTemporaryEditingMode(EditingMode mode)
+    {
+        IsTemporaryModeChange = true;
+        try
+        {
+            EditingMode = mode;
+        }
+        finally
+        {
+            IsTemporaryModeChange = false;
+        }
+    }
+
     public event Action<EditingMode> OnEditModeChanged;
     // Keep the active workspace tab with the context that publishes tab changes.
     public string StateKey => "editingMode";
@@ -63,13 +79,17 @@ public class EditModeContext : MonoBehaviour, CMInput.IEditModeActions, IEditorS
         if (context.performed) EditingMode = EditingMode.Gameplay;
     }
 
+    // prevents F2 from disabling the gameplay tracks that own the playing camera while a preview UI mode is active.
     public void OnGLSEdit(InputAction.CallbackContext context)
     {
-        if (context.performed) EditingMode = EditingMode.GLS;
+        if (context.performed && !UIMode.PreviewMode)
+            EditingMode = EditingMode.GLS;
     }
 
+    // Ditto but F3
     public void OnBasicEventEdit(InputAction.CallbackContext context)
     {
-        if (context.performed) EditingMode = EditingMode.BasicEvent;
+        if (context.performed && !UIMode.PreviewMode)
+            EditingMode = EditingMode.BasicEvent;
     }
 }

@@ -15,7 +15,6 @@ Material:
   - DIFFUSE
   - FOG
   - HEIGHT_FOG
-  - LIGHT_FALLOFF
   - MULTIPLY_REFLECTIONS
   - REFLECTION_PROBE_BOX_PROJECTION
   - SPECULAR
@@ -41,7 +40,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2010
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -189,6 +188,7 @@ Material:
     - _EmissionBrightness: 1
     - _EmissionColorType: 0
     - _EmissionFogSuppression: 0
+    - _EmissionGradientAffectsAlpha: 0
     - _EmissionGradientIntensity: 1
     - _EmissionGradientPanningSpeed: 0
     - _EmissionGradientPosition: 0.5
@@ -222,7 +222,7 @@ Material:
     - _EnableGroundFade: 0
     - _EnableHeightFog: 1
     - _EnableHeightFogSoften: 0
-    - _EnableLightFalloff: 1
+    - _EnableLightFalloff: 0
     - _EnableLightmap: 0
     - _EnableMetalSmoothnessTex: 0
     - _EnableMultiplyReflections: 1
@@ -292,7 +292,7 @@ Material:
     - _MaskBlend: 0
     - _MeshPacking: 0
     - _MeshPackingId: 1
-    - _Metallic: 0.27
+    - _Metallic: 0
     - _Metallic_Texture: 0
     - _Metallic_Texture_Source: 0
     - _MpmMipBias: 0
@@ -325,7 +325,7 @@ Material:
     - _ReflectionProbeBoxProjection: 1
     - _ReflectionProbeDisabledWhiteboost: 0
     - _ReflectionProbeGrayscale: 0.2
-    - _ReflectionProbeIntensity: 1
+    - _ReflectionProbeIntensity: 0.48
     - _ReflectionSingleCubemap: 0
     - _ReflectionStatic: 0
     - _ReflectionTexIntensity: 1
@@ -334,8 +334,8 @@ Material:
     - _RimDistanceScale: 0.3
     - _RimLight: 0
     - _RimLightBloomIntensity: 1
-    - _RimLightEdgeStart: 0.5
-    - _RimLightIntensity: 1
+    - _RimLightEdgeStart: 0.58
+    - _RimLightIntensity: 0.24
     - _RimLightWhiteboostMultiplier: 1
     - _RimOffset: 1
     - _RimScale: 1
@@ -362,13 +362,13 @@ Material:
     - _Secondary_Mask_Blend: 0
     - _Secondary_UVs: 0
     - _SegmentToHighlight: -1
-    - _Smoothness: 0.407
+    - _Smoothness: 0.25
     - _Smoothness_Texture: 0
     - _Smoothness_Texture_Source: 0
     - _Spectrogram: 0
     - _SpecularAntiflicker: 0
-    - _SpecularIntensity: 0.57
-    - _SphericalNormalOffsetIntensity: 0.1
+    - _SpecularIntensity: 0.15
+    - _SphericalNormalOffsetIntensity: 0.5
     - _StartOffset: 1
     - _StencilComp: 8
     - _StencilPass: 0
@@ -396,7 +396,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AdditiveUVOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.32099995, g: 0.32099995, b: 0.32099995, a: 0}
+    - _Color: {r: 0.29999998, g: 0.29999998, b: 0.29999998, a: 0}
     - _CutPlane: {r: 1, g: 0, b: 0, a: 0}
     - _DarkeningCenter: {r: 0, g: 0, b: 0, a: 0}
     - _DarkeningDirection: {r: 1, g: 1, b: 1, a: 1}

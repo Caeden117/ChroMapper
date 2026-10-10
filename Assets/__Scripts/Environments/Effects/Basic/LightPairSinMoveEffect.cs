@@ -50,7 +50,9 @@ public class LightPairSinMoveEffect : BasicMovementEffect<LightPairSinMoveStateD
             current.LeftEnabled = false;
             current.RightEnabled = false;
             current.OverrideRandomValues = Visual.OverrideRandomValues;
-            current.SwitchEventCount = 0;
+            // Beat Saber numbers sameTypeIndex from 1 (BasicBeatmapEventData.SetFirstSameTypeIndex),
+            // so the first switch event must evaluate the parity as odd; the old zero seed inverted it.
+            current.SwitchEventCount = 1;
             current.RandomPhaseFrame = int.MinValue;
             current.CallbackSeconds = 0f;
             return;

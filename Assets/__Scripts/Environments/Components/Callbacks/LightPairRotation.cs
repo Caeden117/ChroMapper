@@ -48,7 +48,8 @@ public class LightPairRotation : MonoBehaviour
         {
             var container = Transforms[i];
             container.StartAngle = i == 0 ? StartRotation : -StartRotation;
-            container.Start = container.Transform.rotation;
+            container.Start = container.Transform.localRotation
+                * Quaternion.Inverse(Quaternion.Euler(RotationVector * container.StartAngle));
             container.Transform.localRotation =
                 container.Start * Quaternion.Euler(RotationVector * container.StartAngle);
         }

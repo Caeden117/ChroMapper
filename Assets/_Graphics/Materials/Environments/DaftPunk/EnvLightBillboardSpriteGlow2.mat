@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EnvLightBillboardSpriteGlow2
+  m_Shader: {fileID: 4800000, guid: 7f020873d09bfb30e92edf9fcc23b42c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - ALPHA_WIDTH_SCALE
+  - FOG
+  - NOISE_DITHERING
+  - USE_FOG_FOR_LIGHTS
+  - Y_AXIS_BILLBOARD
+  - _WHITEBOOSTTYPE_MAINEFFECT
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2501
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 1b37249a5097c134db3f1a4084053c88, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BlendModeDst: 1
+    - _BlendModeDstA: 1
+    - _BlendModeSrc: 1
+    - _BlendModeSrcA: 5
+    - _BlendOp: 0
+    - _BloomMultiplier: 1
+    - _BloomWhiteMultiplier: 1
+    - _CapUVSize: 0.36
+    - _CullMode: 2
+    - _EnableAlphaWidthScale: 1
+    - _EnableEmissionAngleDisappear: 0
+    - _EnableFog: 1
+    - _EnableHeightFog: 0
+    - _EnableNoiseDithering: 1
+    - _EnableWorldNoise: 0
+    - _EnableWorldSpaceFade: 0
+    - _EnableYAxisBillboard: 1
+    - _FogHeightOffset: 0
+    - _FogHeightScale: 1
+    - _FogScale: 0.2
+    - _FogStartOffset: 0
+    - _NoiseWarpSkewStrength: 0
+    - _NoiseWarpZoomStrength: 0
+    - _OffsetFactor: 0
+    - _OffsetUnits: 0
+    - _SquareAlpha: 0
+    - _StencilComp: 8
+    - _StencilPass: 0
+    - _StencilRefValue: 0
+    - _UseFogForLights: 1
+    - _WhiteBoostType: 1
+    - _WorldNoiseIntensityOffset: 0
+    - _WorldNoiseIntensityScale: 1
+    - _WorldNoiseScale: 0.1
+    - _WorldNoiseSkew: 0
+    - _WorldSpaceFadePos: 0
+    - _WorldSpaceFadeSlope: 1
+    - _ZTest: 4
+    m_Colors:
+    - _WorldNoiseScrolling: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

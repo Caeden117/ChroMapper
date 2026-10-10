@@ -729,7 +729,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
     private void FinalizeBasicEventTweak(EventContainer e, BaseObject original, ActionMergeType mergeType)
     {
-        if (e.EventData.CompareTo(original) == 0) return;
+        if (e.EventData.HasSameContent(original))
+            return;
 
         eventAppearance.SetAppearance(e, TrackDefinition);
         // Record successful scrolling before the replacement action invalidates the hovered container.

@@ -73,7 +73,7 @@ namespace Tests.Editor
             atsc.MoveToJsonTime(2f);
 
             AssertColor(
-                new Color(expectedRed, expectedGreen, expectedBlue, 1f),
+                new Color(expectedRed, expectedGreen, expectedBlue, .7490196f),
                 previewLight.Color,
                 $"Preview {transition} lerpType {lerpType}");
         }

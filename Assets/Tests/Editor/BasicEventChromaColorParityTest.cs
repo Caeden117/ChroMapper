@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Tests.Editor
 {
-    // These regressions compare the grid ribbon and live environment preview to one Chroma-derived expected color.
+    // Ribbons display authored brightness, while native scene dispatch also applies the switch's ColorSO alpha.
     public class BasicEventChromaColorParityTest : BasicEventChunkingTestBase
     {
         private static readonly int colorAId = Shader.PropertyToID("_ColorA");
@@ -90,6 +90,58 @@ namespace Tests.Editor
             AssertRibbonAndPreviewMatch(expected, ribbonColor, previewLight.Color, scenario);
         }
 
+        // ChromaGradientController eases _lightGradient colors through Heck's own function table, whose
+        // Bounce family is a min-parabola variant rather than the easings.net curve - WorldCavesIn's
+        // beat-280 fade-out uses easeInBounce. The ribbon shader keeps its own curve set (no in-game
+        // equivalent), so only the live light output, the parity surface, is asserted here.
+        [TestCase(0.4f)]
+        [TestCase(0.55f)]
+        public void LegacyGradientLightPreviewUsesHeckBounceEasing(float progress)
+        {
+            PrepareColorPreview();
+            var previewLight = CreatePreviewLight((int)EventTypeValue.Event2);
+            var start = new Color(0.125f, 0.125f, 0.5f, 1.5f);
+            var end = new Color(0f, 0f, 0f, 0f);
+            PlaceUtils.Place(new BaseEvent
+            {
+                JsonTime = 2f,
+                Type = (int)EventTypeValue.Event2,
+                Value = (int)LightValue.RedOn,
+                FloatValue = 1f,
+                CustomLightGradient = new ChromaLightGradient(start, end, 2f, "easeInBounce")
+            });
+
+            var expected = Color.LerpUnclamped(start, end, HeckEaseInBounce(progress));
+            expected.a *= .7490196f;
+
+            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(2f + (2f * progress));
+
+            Assert.That(
+                ColorsMatch(expected, previewLight.Color, 0.0001f),
+                Is.True,
+                $"The light preview showed {previewLight.Color} at gradient progress {progress} instead " +
+                $"of the Heck-eased {expected}; _lightGradient._easing resolves through Chroma's own " +
+                "min-parabola Bounce variant, not the easings.net curve.");
+        }
+
+        // Independent reference for Heck's EaseInBounce: 1 - OutBounce(1 - p), where OutBounce is the
+        // minimum of four parabolas with collision points 4/11, 8/11, 9/11, 1.
+        private static float HeckEaseInBounce(float p)
+        {
+            var k = 1f - p;
+            var x = (121f / 16f) * k * k;
+            var q1 = k - (6f / 11f);
+            var b = ((363f / 40f) * q1 * q1) + (7f / 10f);
+            if (b < x) x = b;
+            var q2 = k - (179f / 220f);
+            var c = ((4356f / 361f) * q2 * q2) + (91f / 100f);
+            if (c < x) x = c;
+            var q3 = k - (19f / 20f);
+            var d = ((54f / 5f) * q3 * q3) + (973f / 1000f);
+            if (d < x) x = d;
+            return 1f - x;
+        }
+
         // Test-owned preview registration and shared appearance settings must not leak into other editor fixtures.
         protected override void AfterCleanup()
         {
@@ -144,7 +196,7 @@ namespace Tests.Editor
                 (BasicEventColorLerpType)properties.GetInt(useHsvId));
         }
 
-        // One conjunction prevents either visual consumer from silently adopting a different expected-value fixture.
+        // The ribbon retains authored alpha. Chroma multiplies the native normal ColorSO into scene-light alpha.
         private static void AssertRibbonAndPreviewMatch(
             Color expected,
             Color ribbon,
@@ -152,13 +204,11 @@ namespace Tests.Editor
             string scenario)
         {
             const float tolerance = 0.0001f;
-            var ribbonMatches = ColorsMatch(expected, ribbon, tolerance);
-            var previewMatches = ColorsMatch(expected, preview, tolerance);
-            Assert.That(
-                ribbonMatches && previewMatches,
-                Is.True,
-                $"Chroma parity failed for {scenario}; expected {expected}, ribbon calculated {ribbon}, "
-                + $"and live preview calculated {preview}.");
+            Assert.That(ColorsMatch(expected, ribbon, tolerance), Is.True,
+                $"Authored ribbon mismatch for {scenario}; expected {expected}, calculated {ribbon}.");
+            expected.a *= .7490196f;
+            Assert.That(ColorsMatch(expected, preview, tolerance), Is.True,
+                $"Native Chroma preview mismatch for {scenario}; expected {expected}, calculated {preview}.");
         }
 
         // Component-wise comparison makes HDR alpha failures visible without relying on Unity Color equality semantics.
