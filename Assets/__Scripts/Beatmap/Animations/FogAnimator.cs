@@ -338,12 +338,21 @@ namespace Beatmap.Animations
 
             var index = GetAssignmentIndex(time);
 
+            // A replacement track may animate only some fog fields, or none. Start from the authored
+            // environment parameters so the previous assignment cannot leave its values behind.
+            RestoreBaseline();
             if (index >= 0)
             {
                 assignments[index].Animator.PushLegacyValuesAt(time);
                 return;
             }
 
+        }
+
+        public void RestoreBaseline()
+        {
+            if (!baselineCaptured)
+                return;
             var fog = context.Descriptor.BloomFogParams;
             fog.Attenuation = attenuation;
             fog.Offset = offset;

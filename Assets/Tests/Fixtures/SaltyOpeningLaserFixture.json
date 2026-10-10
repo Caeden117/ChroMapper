@@ -1,0 +1,242 @@
+{
+  "version": "3.3.0",
+  "bpmEvents": [
+    {
+      "b": 0,
+      "m": 215
+    },
+    {
+      "b": 1.75,
+      "m": 100000
+    },
+    {
+      "b": 2.047515,
+      "m": 215
+    }
+  ],
+  "rotationEvents": [],
+  "colorNotes": [],
+  "bombNotes": [],
+  "obstacles": [],
+  "sliders": [],
+  "burstSliders": [],
+  "waypoints": [],
+  "basicBeatmapEvents": [
+    {
+      "b": 0,
+      "et": 0,
+      "i": 1,
+      "f": 1,
+      "customData": {
+        "color": [
+          3,
+          3,
+          3
+        ],
+        "lightID": [
+          10
+        ]
+      }
+    },
+    {
+      "b": 0,
+      "et": 1,
+      "i": 1,
+      "f": 1,
+      "customData": {
+        "color": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "b": 2.594,
+      "et": 0,
+      "i": 5,
+      "f": 1,
+      "customData": {
+        "lightID": [
+          1
+        ]
+      }
+    },
+    {
+      "b": 2.672,
+      "et": 0,
+      "i": 0,
+      "f": 1,
+      "customData": {
+        "lightID": [
+          1
+        ]
+      }
+    }
+  ],
+  "lightColorEventBoxGroups": [],
+  "lightRotationEventBoxGroups": [],
+  "lightTranslationEventBoxGroups": [],
+  "vfxEventBoxGroups": [],
+  "_fxEventsCollection": {
+    "_fl": [],
+    "_il": []
+  },
+  "useNormalEventsAsCompatibleEvents": true,
+  "customData": {
+    "time": 0,
+    "BPMChanges": [],
+    "bookmarks": [],
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "hehe",
+            "hehe2"
+          ],
+          "parentTrack": "die"
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "die",
+          "duration": 0,
+          "easing": "easeOutQuad",
+          "position": [
+            [
+              0,
+              -6969,
+              -6969,
+              0
+            ]
+          ],
+          "scale": [
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "contruc"
+          ],
+          "parentTrack": "ahhhh"
+        }
+      }
+    ],
+    "environment": [
+      {
+        "geometry": {
+          "type": "Sphere",
+          "material": "BLACK"
+        },
+        "track": "hehe",
+        "scale": [
+          7,
+          7,
+          7
+        ],
+        "position": [
+          0,
+          1,
+          10
+        ]
+      },
+      {
+        "geometry": {
+          "type": "Sphere",
+          "material": "GLOW"
+        },
+        "track": "hehe2",
+        "scale": [
+          16,
+          16,
+          16
+        ],
+        "position": [
+          0,
+          0.37,
+          20
+        ],
+        "components": {
+          "ILightWithId": {
+            "type": 0,
+            "lightID": 10
+          }
+        }
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[10]TrackConstruction",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[9]TrackMirror",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[19]ConstructionGlowLine (4)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[20]ConstructionGlowLine (5)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[21]ConstructionGlowLine (6)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[22]ConstructionGlowLine (7)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[23]ConstructionGlowLine (8)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      },
+      {
+        "id": "PanicEnvironment.[0]Environment.[24]ConstructionGlowLine (15)",
+        "lookupMethod": "Exact",
+        "track": "contruc"
+      }
+    ],
+    "materials": {
+      "BLACK": {
+        "color": [
+          0,
+          0,
+          0
+        ],
+        "shader": "Standard",
+        "track": "color track"
+      },
+      "GLOW": {
+        "shader": "TransparentLight",
+        "track": "E"
+      }
+    },
+    "pointDefinitions": {},
+    "fakeColorNotes": [],
+    "fakeBombNotes": [],
+    "fakeObstacles": [],
+    "fakeBurstSliders": []
+  }
+}

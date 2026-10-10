@@ -78,6 +78,7 @@ namespace Beatmap.Animations
         private bool directEnvironmentHasParentAnimator;
         private Matrix4x4 directEnvironmentParentMatrix;
         private Vector3 directEnvironmentSpawnLocalPosition;
+        private Transform directEnvironmentOriginalParent;
         private bool directEnvironmentEverApplied;
         private int directEnvironmentLastTrackUpdateVersion = -1;
         private bool trackParentTarget;
@@ -126,6 +127,7 @@ namespace Beatmap.Animations
             directEnvironmentSpawnRotation = Quaternion.identity;
             directEnvironmentSpawnScale = Vector3.one;
             directEnvironmentParentAnimator = null;
+            directEnvironmentOriginalParent = null;
             directEnvironmentHasParentAnimator = false;
             trackParentTarget = false;
             trackParentTargetIsV2 = false;
@@ -274,6 +276,19 @@ namespace Beatmap.Animations
             OpacityArrow.Flush();
             Interactable.Flush();
             colorRestorePending |= animatedColorApplied;
+        }
+
+        public void RefreshTrackAnimation()
+        {
+            // An edit can remove values already queued for LateUpdate. Rebuild all contributions before
+            // restoring defaults, including other tracks and the object's own path animation.
+            FlushPendingAnimations();
+            foreach (var track in tracks)
+                track.PushToChild(this);
+
+            Update();
+            ApplyCurrentPose();
+            LateUpdate();
         }
 
         public void AttachToObject(BaseGrid obj)
@@ -433,6 +448,17 @@ namespace Beatmap.Animations
             SubscribeTimeCallbacks();
         }
 
+        // Path definitions are cached per visible gameplay object. Event edits must rebuild that cache
+        // without recycling unrelated containers or replacing an object's authored color with its animated color.
+        public void RefreshPathAnimation()
+        {
+            if (TargetType != TargetTypes.GameplayObject)
+                return;
+
+            RestoreAuthoredColor();
+            AttachToObject((BaseGrid)container.ObjectData);
+        }
+
         public void AttachToGeometry(BaseEnvironmentEnhancement eh)
         {
             // Use the loaded map's version to choose legacy position units.
@@ -443,8 +469,6 @@ namespace Beatmap.Animations
 
             LocalTarget = AnimationThis.transform;
             WorldTarget = AnimationThis.transform;
-
-            WorldRotation = LocalRotation;
 
             if (eh.Scale is Vector3 scale) Scale.Default = scale;
             if (eh.Position is Vector3 p) OffsetPosition.Default = (v2 ? BeatmapConstant.LaneSize : 1f) * p;
@@ -500,6 +524,7 @@ namespace Beatmap.Animations
             directEnvironmentSpawnPosition = target.position;
             directEnvironmentSpawnRotation = target.rotation;
             directEnvironmentSpawnScale = target.localScale;
+            directEnvironmentOriginalParent = target.parent;
 
             AddParent(track);
             // Physically parent enhanced objects only when their track has an AssignTrackParent ancestor.
@@ -529,6 +554,17 @@ namespace Beatmap.Animations
 
             LocalTarget.SetParent(trackParent, worldPositionStays);
             CaptureDirectEnvironmentParent(trackParent.GetComponentInParent<ObjectAnimator>());
+        }
+
+        public void ClearDirectTrackParent()
+        {
+            if (!directEnvironmentTarget)
+                return;
+
+            LocalTarget.SetParent(directEnvironmentOriginalParent, true);
+            RestoreDirectEnvironmentSpawnPose();
+            CaptureDirectEnvironmentParent(null);
+            directEnvironmentLastTrackUpdateVersion = -1;
         }
 
         private void CaptureDirectEnvironmentParent(ObjectAnimator parentAnimator)
@@ -609,18 +645,23 @@ namespace Beatmap.Animations
             trackParentRootMatrix = WorldTarget.parent.localToWorldMatrix;
         }
 
-        // Sample the existing parents pose without moving Unity objects or replaying map events.
-        // This is queried only when a completed geometry animation needs a new parent-relative anchor.
-        private Matrix4x4 GetTrackParentMatrix(float jsonTime)
+        // Sample the parent pose without depending on Unity's update order or moving the playhead.
+        private Matrix4x4 GetTrackParentSelfMatrix(float jsonTime)
         {
             var ancestor = trackParentHasAncestor
                 ? trackParentAncestor.GetTrackParentMatrix(jsonTime)
                 : trackParentRootMatrix;
+            var rotation = ReadTrackProperty(trackParentPropertySource, "_rotation", "rotation", jsonTime,
+                trackParentSpawnRotation);
+            return ancestor * Matrix4x4.TRS(trackParentSpawnPosition, rotation, trackParentSpawnScale);
+        }
+
+        private Matrix4x4 GetTrackParentMatrix(float jsonTime)
+        {
             var source = trackParentPropertySource;
-            var rotation = ReadTrackProperty(source, "_rotation", "rotation", jsonTime, trackParentSpawnRotation);
+            var self = GetTrackParentSelfMatrix(jsonTime);
             var localRotation = ReadTrackProperty(source, "_localRotation", "localRotation", jsonTime, Quaternion.identity);
             var scale = ReadTrackProperty(source, "_scale", "scale", jsonTime, Vector3.one);
-            var self = ancestor * Matrix4x4.TRS(trackParentSpawnPosition, rotation, trackParentSpawnScale);
             var offset = ReadTrackProperty(source, "_position", "offsetPosition", jsonTime, Vector3.zero)
                 * BeatmapConstant.LaneSize;
             var position = offset;
@@ -634,8 +675,13 @@ namespace Beatmap.Animations
                 else if (source.AnimatedProperties.TryGetValue("position", out var worldProperty)
                     && jsonTime >= worldProperty.StartTime)
                 {
-                    var world = ((AnimateProperty<Vector3>)worldProperty).GetLerpedValue(jsonTime);
-                    position = self.inverse.MultiplyVector(world);
+                    var property = (AnimateProperty<Vector3>)worldProperty;
+                    var world = property.GetLerpedValue(jsonTime);
+                    var anchorTime = property.GetTransformAnchorTime(jsonTime);
+                    var anchor = anchorTime == jsonTime
+                        ? self
+                        : GetTrackParentSelfMatrix(anchorTime);
+                    position = anchor.inverse.MultiplyVector(world);
                 }
             }
 
@@ -696,6 +742,7 @@ namespace Beatmap.Animations
 
             TargetType = TargetTypes.Material;
             container = con;
+            Colors.Default = con.MpbController.Mpb.GetColor(colorId);
 
             enabled = true;
             AddParent(track);
@@ -771,7 +818,10 @@ namespace Beatmap.Animations
                 return;
             }
 
-            if (LocalRotation.Count > 0) LocalTarget.localRotation = LocalRotation.Get();
+            if (container is GeometryContainer)
+                ApplyGeometryRotation(false);
+            else if (LocalRotation.Count > 0)
+                LocalTarget.localRotation = LocalRotation.Get();
 
             // Choose the version-specific position source before writing transforms.
             if (trackParentTarget || (TargetType == TargetTypes.Transform && container is GeometryContainer))
@@ -926,6 +976,16 @@ namespace Beatmap.Animations
 
                     break;
                 }
+                case ArcContainer arc:
+                    arc.SetColor(arc.ArcData.CustomColor
+                        ?? (arc.ArcData.Color == (int)NoteColor.Red ? scheme.LeftNoteColor : scheme.RightNoteColor));
+                    break;
+                case ObstacleContainer obstacle:
+                    obstacle.SetColor(obstacle.ObstacleData.CustomColor ?? Colors.Default);
+                    break;
+                case GeometryContainer geometry:
+                    geometry.MpbController.Mpb.SetColor(colorId, Colors.Default);
+                    break;
             }
         }
 
@@ -984,7 +1044,7 @@ namespace Beatmap.Animations
                 applied = true;
             }
 
-            if (hasWorldRotation)
+            if (hasWorldRotation && !hasLocalRotation)
             {
                 WorldTarget.rotation = worldRotation;
                 applied = true;
@@ -1002,6 +1062,65 @@ namespace Beatmap.Animations
             if (applied)
                 directEnvironmentEverApplied = true;
             return applied;
+        }
+
+        // Heck chooses localRotation over rotation for a transform target. Sharing the two aggregators
+        // multiplied noncommuting quaternions in dictionary order, which changed after deleting and undoing events.
+        private void ApplyGeometryRotation(bool restoreDefault)
+        {
+            var hasLocal = LocalRotation.Count > 0;
+            var hasWorld = WorldRotation.Count > 0;
+            var local = LocalRotation.Get();
+            var world = WorldRotation.Get();
+            if (hasLocal || (restoreDefault && !hasWorld))
+                LocalTarget.localRotation = local;
+            else if (hasWorld)
+                WorldTarget.rotation = world;
+        }
+
+        public void RestoreRemovedTrackProperty(string key)
+        {
+            if (key is "_time" or "time")
+                SetLifeTime(-1);
+
+            if ((key is "_dissolve" or "dissolve") && container != null)
+            {
+                Opacity.Flush();
+                container.MpbController.Mpb.SetFloat(cutoutId, 1f - Opacity.Get());
+                container.UpdateMaterials();
+            }
+
+            if (!directEnvironmentTarget)
+                return;
+
+            // Other properties can remain animated when one is deleted, so a whole-pose scrub reset is insufficient.
+            switch (key)
+            {
+                case "_scale":
+                case "scale":
+                    LocalTarget.localScale = directEnvironmentSpawnScale;
+                    if (directEnvironmentHasBoxLight)
+                        directEnvironmentBoxLight.CaptureAuthoredScale();
+
+                    break;
+                case "_position":
+                case "position":
+                case "_localPosition":
+                case "localPosition":
+                    ApplyDirectEnvironmentPosition(directEnvironmentHasParentAnimator
+                        ? directEnvironmentSpawnLocalPosition
+                        : directEnvironmentSpawnPosition, !directEnvironmentHasParentAnimator);
+                    if (directEnvironmentHasBoxLight)
+                        directEnvironmentBoxLight.CaptureAuthoredPosition();
+
+                    break;
+                case "_rotation":
+                case "rotation":
+                case "_localRotation":
+                case "localRotation":
+                    LocalTarget.rotation = directEnvironmentSpawnRotation;
+                    break;
+            }
         }
 
         private void ApplyTransformPosition(bool includeSpawnDefault)
@@ -1029,12 +1148,17 @@ namespace Beatmap.Animations
                 if (trackParentTarget)
                 {
                     var source = trackParentPropertySource;
-                    // Reapply held world positions only when the property source changes, allowing ancestor motion to carry the child.
-                    if (source == null || source.UpdateVersion != trackParentLastUpdateVersion)
-                    {
+                    if (source == null)
                         LocalTarget.position = worldPosition + WorldTarget.position;
-                        if (source != null)
-                            trackParentLastUpdateVersion = source.UpdateVersion;
+                    else if (source.UpdateVersion != trackParentLastUpdateVersion)
+                    {
+                        // Completed positions keep the parent's pose at their final write. Using the current pose
+                        // when preview reactivates a track shifts Censored's text after a saved-cursor restore.
+                        var property = (AnimateProperty<Vector3>)source.AnimatedProperties["position"];
+                        var anchorTime = property.GetTransformAnchorTime(Context.Atsc.CurrentJsonTime);
+                        LocalTarget.localPosition = GetTrackParentSelfMatrix(anchorTime)
+                            .inverse.MultiplyVector(worldPosition);
+                        trackParentLastUpdateVersion = source.UpdateVersion;
                     }
                 }
                 else
@@ -1112,6 +1236,12 @@ namespace Beatmap.Animations
         {
             if (Context.Atsc.IsPlaying) return;
 
+            ApplyCurrentPose();
+        }
+
+        private void ApplyCurrentPose()
+        {
+
             if (directEnvironmentTarget)
             {
                 if (!ApplyDirectEnvironmentTargets() && directEnvironmentEverApplied)
@@ -1123,7 +1253,10 @@ namespace Beatmap.Animations
                 return;
             }
 
-            LocalTarget.localRotation = LocalRotation.Get();
+            if (container is GeometryContainer)
+                ApplyGeometryRotation(true);
+            else
+                LocalTarget.localRotation = LocalRotation.Get();
 
             if (trackParentTarget || (TargetType == TargetTypes.Transform && container is GeometryContainer))
             {

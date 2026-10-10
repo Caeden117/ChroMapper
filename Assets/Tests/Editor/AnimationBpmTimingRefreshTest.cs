@@ -198,6 +198,9 @@ namespace Tests.Editor
                 atsc.StopScheduled = true;
             }
 
+            // The test owns the clock while production playback state and time callbacks stay active.
+            // Unity's frame clock would advance beyond the requested sample during these yields.
+            atsc.enabled = false;
             playbackSeconds.SetValue(atsc, atsc.GetSecondsFromBeat(songBpmTime));
             yield return null;
             yield return null;
@@ -214,6 +217,9 @@ namespace Tests.Editor
                 $"The path note is absent at song time {atsc.CurrentSongBpmTime}, authored beat {atsc.CurrentJsonTime}. "
                 + $"Its song-time window is {data.SpawnSongBpmTime}..{data.DespawnSongBpmTime}.");
             var note = (NoteContainer)loaded;
+            Debug.Log($"[AnimationBpmTiming] requestedSongBeat={songBpmTime} currentSongBeat={atsc.CurrentSongBpmTime} " +
+                $"currentJsonBeat={atsc.CurrentJsonTime} scale={note.Animator.LocalTarget.localScale.x} " +
+                $"authoredScale={1f + (atsc.CurrentJsonTime - 8f) / 4f}");
             Assert.That(note.Animator.LocalTarget.localScale.x, Is.EqualTo(expectedScale).Within(0.03f),
                 "The cached AssignPathAnimation transition still uses the pre-edit song-time window.");
         }
@@ -249,9 +255,12 @@ namespace Tests.Editor
 
         private void StopPlayback()
         {
-            if (atsc != null && atsc.IsPlaying)
+            if (atsc != null)
             {
-                atsc.TogglePlaying();
+                if (atsc.IsPlaying)
+                    atsc.TogglePlaying();
+
+                atsc.enabled = true;
             }
         }
 

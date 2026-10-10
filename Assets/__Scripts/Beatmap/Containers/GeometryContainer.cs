@@ -126,8 +126,7 @@ namespace Beatmap.Containers
                 controller.BloomFog = bf;
 
                 controller.Type = eh.LightType ?? 0;
-                controller.ID = eh.LightID ?? -1;
-                descriptor.Register(controller, false);
+                descriptor.Register(controller, eh.LightID);
             }
 
             if (eh.Components?.HasKey("TubeBloomPrePassLight") ?? false)
@@ -291,14 +290,15 @@ namespace Beatmap.Containers
 
                 foreach (var controller in target.GetComponentsInChildren<LightController>(true))
                 {
-                    if (eh.Duplicate == null) descriptor.Unregister(controller);
-                    if (controller.Kind == LightController.LightKind.Basic)
+                    var customized = eh.LightType.HasValue || eh.LightID.HasValue;
+                    if (eh.Duplicate != null || customized)
                     {
-                        controller.Type = eh.LightType ?? controller.Type;
-                        controller.ID = eh.LightID ?? controller.ID;
-                    }
+                        if (eh.Duplicate == null) descriptor.Unregister(controller);
+                        if (controller.Kind == LightController.LightKind.Basic)
+                            controller.Type = eh.LightType ?? controller.Type;
 
-                    descriptor.Register(controller, false);
+                        descriptor.Register(controller, eh.LightID);
+                    }
 
                     if (eh.Components?.HasKey("TubeBloomPrePassLight") ?? false)
                     {

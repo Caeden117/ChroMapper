@@ -78,6 +78,51 @@ public class LoadInitialMap : MonoBehaviour
         OnLevelLoaded?.Invoke();
     }
 
+    // Reload map data without replacing the mapper scene. Still reload the environment scene so spawned
+    // enhancements and environment state cannot survive from the previous map.
+    public IEnumerator ReloadCurrentMapInPlace()
+    {
+        if (BeatSaberSongContainer.Instance == null)
+            yield break;
+
+        yield return new WaitUntil(() => context.Atsc.Initialized);
+        EditorStateService.BeginMapLoad();
+
+        var previousEnvironment = context.Descriptor != null
+            ? context.Descriptor.gameObject.scene
+            : default;
+        if (previousEnvironment.IsValid())
+        {
+            // Track parenting moves environment objects into the mapper scene, where environment unload
+            // cannot destroy them. Destroy them before resetting the animators that hold their references.
+            loader.DestroyTrackBoundEnvironmentObjects();
+            // Stop animators before unloading their environment targets so they cannot write to a destroyed object or cleared descriptor.
+            loader.ResetAnimationTracks();
+            context.SetEnvironment(null);
+            var unload = SceneManager.UnloadSceneAsync(previousEnvironment);
+            while (!unload.isDone)
+                yield return null;
+        }
+
+        var envName = EnvironmentInfoHelper.GetCurrentEnvironment();
+        var platform = context.EnvironmentList.GetEnvironmentOrDefault(envName);
+        var sceneLoading = SceneManager.LoadSceneAsync(platform.ID, LoadSceneMode.Additive);
+        while (!sceneLoading.isDone)
+            yield return null;
+
+        context.SetEnvironment(FindAnyObjectByType<EnvironmentDescriptor>());
+
+        PopulateColorsFromMapInfo();
+        context.NotifyColorScheme();
+        UpdateObjectContainerColors();
+
+        loader.UpdateMapData(BeatSaberSongContainer.Instance.Map);
+        loader.HardRefreshBeforeEditorStateRestore(context.Descriptor);
+        yield return null;
+        EditorStateService.LoadMapData(BeatSaberSongContainer.Instance.Info);
+        OnLevelLoaded?.Invoke();
+    }
+
     public void PopulateColorsFromMapInfo()
     {
         var infoDifficulty = BeatSaberSongContainer.Instance.MapDifficultyInfo;

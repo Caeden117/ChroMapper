@@ -229,6 +229,32 @@ public class TracksManager : MonoBehaviour
         }
     }
 
+    public void ResetTrackParent(string name)
+    {
+        var track = GetAnimationTrack(name);
+        foreach (var parent in track.Parents)
+            parent.RemoveChild(track.Animator);
+
+        track.Parents.Clear();
+        if (track.Animator != null)
+        {
+            track.Animator.ResetData();
+            track.Animator.enabled = false;
+        }
+
+        track.Track.SelfTransform.SetParent(tracksParent, false);
+        track.Track.SelfTransform.localPosition = Vector3.zero;
+        track.Track.SelfTransform.localRotation = Quaternion.identity;
+        track.Track.SelfTransform.localScale = Vector3.one;
+        track.Track.ObjectParentTransform.localPosition = Vector3.zero;
+        track.Track.ObjectParentTransform.localRotation = Quaternion.identity;
+        track.Track.ObjectParentTransform.localScale = Vector3.one;
+        foreach (var child in track.Children)
+            child.ClearDirectTrackParent();
+
+        track.OnChildrenChanged();
+    }
+
     public void RefreshBpmTiming(float jsonTime)
     {
         var changedSongTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);

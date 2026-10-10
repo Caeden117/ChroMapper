@@ -12,6 +12,9 @@ public class InstancedMaterialLightController : LightController
     public MultiplyColorByAlphaType MultiplyColorByAlpha;
     public bool SaturateIntensity;
 
+    private bool startColorWasSet;
+    private float startAlpha;
+
     public override bool IsPhysical => true;
     protected override bool Initialize() => MpbColorSetter != null;
 
@@ -20,9 +23,16 @@ public class InstancedMaterialLightController : LightController
         Color = color;
         if (!HasInitialized) return;
 
+        // Native color-only lights keep the first dispatched alpha while later events recolor them.
+        if (!startColorWasSet)
+        {
+            startAlpha = color.a;
+            startColorWasSet = true;
+        }
+
         var a = color.a;
         if (SetColorOnly)
-            a = color.a;
+            a = startAlpha;
         else
         {
             a = Mathf.Max(MinAlpha, a) * Intensity;

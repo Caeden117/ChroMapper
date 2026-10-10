@@ -31,6 +31,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     public Dictionary<string, List<BaseCustomEvent>> EventsByTrack;
     private readonly List<FogAnimator> legacyFogAnimators = new();
+    private readonly Dictionary<string, List<BaseCustomEvent>> parentAssignments = new();
+    private readonly List<BaseCustomEvent> playerAssignments = new();
+    private bool loadingEvents;
+    private LegacyFogBinding legacyFogBinding;
 
     private void Start()
     {
@@ -45,13 +49,18 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     public void LoadAll()
     {
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
+        parentAssignments.Clear();
+        playerAssignments.Clear();
+        legacyFogBinding = null;
         // The camera rig survives map swaps, but player-track assignments belong to one map. Clear its
         // previous bindings before loading the new map's assignments.
         playerCamera.ClearPlayerTracks();
 
         var span = MapObjects.AsSpan();
 
+        loadingEvents = true;
         foreach (var ev in span) AddCustomEvent(ev);
+        loadingEvents = false;
         // Build the V2 fog assignment timeline after parsing all events so it retains callback times and file order.
         RebuildV2FogBinding();
     }
@@ -115,6 +124,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 EventsByTrack.Remove(track);
             }
 
+            if (ev.Type == "AssignPathAnimation")
+                tracksManager.GetAnimationTrack(track).RefreshPathAnimations();
+
             // Removing a V2 AnimateTrack event must stop both its fog properties and its object transforms.
             if (ev.Type == "AnimateTrack")
             {
@@ -141,6 +153,26 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
                 }
             }
         }
+
+        RemoveAssignment(ev);
+    }
+
+    private void RemoveAssignment(BaseCustomEvent ev)
+    {
+        if (ev.Type == "AssignTrackParent")
+        {
+            foreach (var child in ParentChildren(ev))
+            {
+                parentAssignments[child].Remove(ev);
+                RebuildParentAssignment(child);
+            }
+        }
+
+        if (ev.Type == "AssignPlayerToTrack")
+        {
+            playerAssignments.Remove(ev);
+            RebuildPlayerAssignments();
+        }
     }
 
     private void AddCustomEvent(BaseCustomEvent ev)
@@ -160,6 +192,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             }
 
             EventsByTrack[track].Add(ev);
+
+            if (ev.Type == "AssignPathAnimation")
+                tracksManager.GetAnimationTrack(track).RefreshPathAnimations();
 
             if (ev.Type == "AnimateTrack")
             {
@@ -194,70 +229,100 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         {
             case "AssignTrackParent":
                 if (ev.DataParentTrack == null) return;
-                var parent = tracksManager.GetAnimationTrack(ev.DataParentTrack);
-                var children = ev.DataChildrenTracks switch
+                foreach (var child in ParentChildren(ev))
                 {
-                    JSONArray arr => arr,
-                    JSONString s => JSONObject.Parse($"[{s}]").AsArray,
-                    _ => new JSONArray(),
-                };
-                foreach (var tr in children)
-                {
-                    var at = tracksManager.GetAnimationTrack(tr.Value);
-                    at.ParentWorldPositionStays = ev.DataWorldPositionStays ?? false;
-                    at.Track.transform.SetParent(
-                        parent.Track.ObjectParentTransform,
-                        ev.DataWorldPositionStays ?? false);
-                    if (at.Animator == null)
+                    if (!parentAssignments.TryGetValue(child, out var assignments))
                     {
-                        at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
-                        at.Animator.Context = BeatmapContext;
+                        assignments = new List<BaseCustomEvent>();
+                        parentAssignments.Add(child, assignments);
                     }
 
-                    // Reinitialize a reused proxy animator to discard held transforms from the previous map.
-                    // Use tracksManager.IsV2Map because Settings.MapVersion can still refer to the outgoing
-                    // map during HardRefresh.
-                    at.Animator.AttachToTrack(at.Track, tr.Value, tracksManager.IsV2Map);
-
-                    // Parent already-attached environment targets under the child track's object parent so
-                    // they follow the animated parent. Later attachments follow the same rule in
-                    // ObjectAnimator.AttachToEnvironmentObject.
-                    foreach (var child in at.Children)
-                    {
-                        child.ParentDirectTargetToTrack(at.Track.ObjectParentTransform, at.ParentWorldPositionStays);
-                    }
-
-                    if (!parent.Children.Contains(at.Animator))
-                    {
-                        parent.Children.Add(at.Animator);
-                        at.Parents.Add(parent);
-                        at.OnChildrenChanged();
-                    }
-
-                    // Rebind the property source even when the animator is already in parent.Children.
-                    // Reparenting must update which track can reapply its held world position.
-                    at.Animator.BindPropertySource(parent);
+                    assignments.Insert(assignments.AsSpan().UpperBoundBy(ev, item => item, SortComparer), ev);
+                    if (loadingEvents)
+                        ApplyParentAssignment(ev, child);
+                    else
+                        RebuildParentAssignment(child);
                 }
 
                 break;
             case "AssignPlayerToTrack":
-                if (ev.CustomTrack == null) return;
-                // The preview camera represents both Root and Head. Skip hand targets with a warning because
-                // the editor has no VR controllers to animate.
-                var targetKey = tracksManager.IsV2Map ? "_target" : "target";
-                var playerTarget = ev.Data?.HasKey(targetKey) == true ? (string)ev.Data[targetKey] : "Root";
-                if (playerTarget is not ("Root" or "Head"))
-                {
-                    Debug.LogWarning(
-                        $"AssignPlayerToTrack target [{playerTarget}] has no editor preview representation; the event was skipped.");
-                    return;
-                }
-
-                playerCamera.gameObject.SetActive(true);
-                var track = tracksManager.GetAnimationTrack(ev.CustomTrack);
-                playerCamera.AddPlayerTrack(ev.JsonTime, track);
+                playerAssignments.Insert(playerAssignments.AsSpan().UpperBoundBy(ev, item => item, SortComparer), ev);
+                if (loadingEvents)
+                    ApplyPlayerAssignment(ev);
+                else
+                    RebuildPlayerAssignments();
                 break;
         }
+    }
+
+    private static IEnumerable<string> ParentChildren(BaseCustomEvent ev) => ev.DataChildrenTracks switch
+    {
+        JSONString name => new[] { name.Value },
+        JSONArray names => names.Children.Select(name => name.Value),
+        _ => System.Array.Empty<string>()
+    };
+
+    private void ApplyParentAssignment(BaseCustomEvent ev, string child)
+    {
+        var parent = tracksManager.GetAnimationTrack(ev.DataParentTrack);
+        var at = tracksManager.GetAnimationTrack(child);
+        // Reassignment must disconnect the previous source before the proxy is reset and rebound.
+        // Otherwise both parents push values, even when the new parent has no animation.
+        foreach (var previousParent in at.Parents)
+            previousParent.RemoveChild(at.Animator);
+
+        at.Parents.Clear();
+        at.ParentWorldPositionStays = ev.DataWorldPositionStays ?? false;
+        at.Track.transform.SetParent(parent.Track.ObjectParentTransform, at.ParentWorldPositionStays);
+        if (at.Animator == null)
+        {
+            at.Animator = at.gameObject.AddComponent<ObjectAnimator>();
+            at.Animator.Context = BeatmapContext;
+        }
+
+        at.Animator.AttachToTrack(at.Track, child, tracksManager.IsV2Map);
+        foreach (var target in at.Children)
+            target.ParentDirectTargetToTrack(at.Track.ObjectParentTransform, at.ParentWorldPositionStays);
+
+        if (!parent.Children.Contains(at.Animator))
+        {
+            parent.Children.Add(at.Animator);
+            at.Parents.Add(parent);
+            at.OnChildrenChanged();
+        }
+
+        at.Animator.BindPropertySource(parent);
+    }
+
+    private void RebuildParentAssignment(string child)
+    {
+        // Rebuild only the edited child from its surviving assignments, after discarding the old parent's pose.
+        tracksManager.ResetTrackParent(child);
+        foreach (var assignment in parentAssignments[child])
+            ApplyParentAssignment(assignment, child);
+    }
+
+    private void RebuildPlayerAssignments()
+    {
+        playerCamera.ClearPlayerTracks();
+        foreach (var assignment in playerAssignments)
+            ApplyPlayerAssignment(assignment);
+    }
+
+    private void ApplyPlayerAssignment(BaseCustomEvent ev)
+    {
+        if (ev.CustomTrack == null) return;
+        var targetKey = tracksManager.IsV2Map ? "_target" : "target";
+        var playerTarget = ev.Data?.HasKey(targetKey) == true ? (string)ev.Data[targetKey] : "Root";
+        if (playerTarget is not ("Root" or "Head"))
+        {
+            Debug.LogWarning(
+                $"AssignPlayerToTrack target [{playerTarget}] has no editor preview representation; the event was skipped.");
+            return;
+        }
+
+        playerCamera.gameObject.SetActive(true);
+        playerCamera.AddPlayerTrack(ev.JsonTime, tracksManager.GetAnimationTrack(ev.CustomTrack));
     }
 
     private FogAnimator GetFogAnimator(string track)
@@ -277,11 +342,13 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     // loading would make later assignments affect earlier times.
     private void RebuildV2FogBinding()
     {
+        legacyFogBinding?.RestoreBaseline();
         foreach (var animator in legacyFogAnimators) animator.SetLegacyBinding(null, false);
         legacyFogAnimators.Clear();
         if (Settings.Instance.MapVersion != 2) return;
 
         var binding = new LegacyFogBinding(BeatmapContext);
+        legacyFogBinding = binding;
         FogAnimator controller = null;
         foreach (var ev in MapObjects)
         {

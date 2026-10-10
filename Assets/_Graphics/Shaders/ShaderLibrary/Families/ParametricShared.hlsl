@@ -14,7 +14,7 @@ inline float CalculateParametricHeightRamp(
 {
     float height = saturate(
         (worldY * heightScale + heightOffset - (globalHeight + globalStartY)) /
-        max(globalHeight, 1e-5));
+        (globalHeight == 0 ? 1e-5 : globalHeight)); // globalHeight absolutely can go negative, capping it to positive nonzero epsilon breaks Spells, which has -600 globalHeight for fog for example.
     return height * height * (3.0 - 2.0 * height);
 }
 

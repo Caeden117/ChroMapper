@@ -71,15 +71,20 @@ namespace Beatmap.Animations
                 AnimatedProperties[prop].RemoveEvent(ev);
                 if (AnimatedProperties[prop].IsEmpty())
                 {
+                    foreach (var child in CachedChildren)
+                        child.RestoreRemovedTrackProperty(prop);
+
                     AnimatedProperties.Remove(prop);
                     childPushers.Remove(prop);
                 }
             }
-            RefreshProperties();
+            RefreshProperties(true);
         }
 
-        private void RefreshProperties()
+        private void RefreshProperties(bool refreshTargets = false)
         {
+            // Structural edits invalidate held target poses even when the remaining sampled values are unchanged.
+            UpdateVersion++;
             properties = new IAnimateProperty[AnimatedProperties.Count];
             var i = 0;
             foreach (var prop in AnimatedProperties)
@@ -89,6 +94,9 @@ namespace Beatmap.Animations
             }
 
             DoUpdate();
+            if (refreshTargets)
+                foreach (var child in CachedChildren)
+                    child.RefreshTrackAnimation();
         }
 
         private bool preload = false;
@@ -131,6 +139,13 @@ namespace Beatmap.Animations
         {
             Children.Remove(oa);
             OnChildrenChanged();
+        }
+
+        public void RefreshPathAnimations()
+        {
+            // Reattachment updates Children, so retain only the affected track's current children for this edit.
+            foreach (var child in Children.ToArray())
+                child.RefreshPathAnimation();
         }
 
         public void PushToChild(ObjectAnimator child)

@@ -30485,6 +30485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
         type: 3}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20081004887261610, guid: 20e633c6c4c50f744a0f7f171d45ad00,
+        type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

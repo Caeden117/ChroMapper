@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Beatmap.Animations;
 using UnityEngine;
 
@@ -35,6 +36,16 @@ public class BeatmapRuntimeContext : MonoBehaviour
             SetColorScheme(listing.ColorScheme);
             SetTrackDefinitions(listing.TrackDefinitions);
             Descriptor.Initialize(this);
+            // Chroma's EnvironmentEnhancementManager permanently deactivates /Environment/GradientBackground
+            // on every map load, and ChromaGLS mirrors that when the map declares it without requiring
+            // Chroma, so any difficulty listing either mod never renders the prepass gradient in-game.
+            // Maps without either mod keep it as the vanilla game renders it.
+            if (MapDeclaresChromaFamily())
+            {
+                var gradientBackground = Descriptor.transform.Find("GradientBackground");
+                if (gradientBackground != null)
+                    gradientBackground.gameObject.SetActive(false);
+            }
             // TODO: also move this elsewhere
             if (BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData["_environmentRemoval"] != null)
             {
@@ -61,6 +72,15 @@ public class BeatmapRuntimeContext : MonoBehaviour
             OnEnvironmentLoaded?.Invoke(Descriptor);
         else
             OnEnvironmentUnloaded?.Invoke();
+    }
+
+    private static bool MapDeclaresChromaFamily()
+    {
+        var info = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+        static bool IsChromaFamily(string name) =>
+            name.Equals("Chroma", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("ChromaGLS", StringComparison.OrdinalIgnoreCase);
+        return info.CustomRequirements.Any(IsChromaFamily) || info.CustomSuggestions.Any(IsChromaFamily);
     }
 
     public void NotifyBloomFogParamsChanged() => OnBloomFogParamsChanged?.Invoke(Descriptor.BloomFogParams);
