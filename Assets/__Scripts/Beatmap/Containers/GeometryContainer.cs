@@ -93,7 +93,7 @@ namespace Beatmap.Containers
             else
             {
                 if (!Enum.TryParse(eh.Geometry[eh.GeometryKeyType], out type))
-                    Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'!");
+                    Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'! {BeatmapLogContext.Describe(eh)}");
             }
 
             var shape = GameObject.CreatePrimitive(type);
@@ -163,7 +163,7 @@ namespace Beatmap.Containers
             if (targetObjects.Count == 0)
             {
                 Debug.LogWarning(
-                    $"Environment enhancement ID [\"{eh.ID}\"] using method [{eh.LookupMethod:G}] found nothing.");
+                    $"Environment enhancement ID [\"{eh.ID}\"] using method [{eh.LookupMethod:G}] found nothing. {BeatmapLogContext.Describe(eh)}");
             }
 
             // We need to handle duplicates if defined!
@@ -174,7 +174,7 @@ namespace Beatmap.Containers
                 if (targetObjects.Count > 100)
                 {
                     Debug.LogError(
-                        "Extreme value reached, you are attempting to duplicate over 100 objects! Environment enhancements stopped");
+                        $"Extreme value reached, you are attempting to duplicate over 100 objects! Environment enhancements stopped. {BeatmapLogContext.Describe(eh)}");
                     return;
                 }
 
@@ -221,7 +221,7 @@ namespace Beatmap.Containers
                 pair.Item2.transform == descriptor.transform
                 || descriptor.transform.IsChildOf(pair.Item2.transform));
             if (!ownsFog && (eh.Components?.HasKey("BloomFogEnvironment") ?? false))
-                Debug.LogWarning($"BloomFogEnvironment enhancement ID [{eh.ID}] matched no fog component.");
+                Debug.LogWarning($"BloomFogEnvironment enhancement ID [{eh.ID}] matched no fog component. {BeatmapLogContext.Describe(eh)}");
             if (ownsFog && (eh.Components?.HasKey("BloomFogEnvironment") ?? false))
             {
                 var bloomFog = eh.Components["BloomFogEnvironment"];

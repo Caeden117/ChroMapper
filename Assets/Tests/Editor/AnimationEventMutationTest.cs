@@ -142,6 +142,54 @@ namespace Tests.Editor
             ? new JSONObject { [Key("childrenTracks")] = "mutationChild", [Key("parentTrack")] = name }
             : new JSONObject { [Key("track")] = name };
 
+        [UnityTest]
+        public IEnumerator MissingTubePointDefinitionKeepsAuthoredMultiplier()
+        {
+            version = 3;
+            target = "Tube";
+            eventType = "AnimateComponent";
+            Settings.Instance.Animations = true;
+            yield return TestUtils.ReloadMap(version, Fixture(), environmentName: "BillieEnvironment");
+            atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            actions = Object.FindAnyObjectByType<BeatmapActionContainer>();
+            Object.FindAnyObjectByType<UIMode>().SetUIMode(UIModeType.Playing, false);
+            yield return Sample();
+            var baseline = Capture();
+
+            var data = Properties(1);
+            data["TubeBloomPrePassLight"]["colorAlphaMultiplier"] = "missingTubePoints";
+            var ev = Event(4, eventType, data);
+            var loggedMissingReference = false;
+            void ObserveLog(string message, string stack, LogType type)
+            {
+                loggedMissingReference |= type == LogType.Error
+                    && message.StartsWith("Could not find point definition [missingTubePoints].")
+                    && message.Contains("AnimateComponent at beat 4")
+                    && message.Contains(ev.CustomTrack.ToString())
+                    && message.Contains("Property [colorAlphaMultiplier]");
+            }
+
+            var ignoreFailingMessages = LogAssert.ignoreFailingMessages;
+            Application.logMessageReceived += ObserveLog;
+            LogAssert.ignoreFailingMessages = true;
+            try
+            {
+                BeatmapActionContainer.AddAction(new BeatmapObjectPlacementAction(ev, new BaseObject[0], "Missing tube points"), true);
+                yield return Sample();
+                var actual = Capture();
+                Assert.That(actual[0], Is.EqualTo(baseline[0]),
+                    "A missing named point definition must leave the authored tube multiplier unchanged.");
+                Assert.That(actual[2], Is.EqualTo(baseline[2]), "The box light must retain its authored alpha multiplier.");
+                Assert.That(actual[1], Is.EqualTo(7f), "Other valid properties in the event must still animate.");
+                Assert.That(loggedMissingReference, Is.True, "Bad references must be logged and skipped.");
+            }
+            finally
+            {
+                LogAssert.ignoreFailingMessages = ignoreFailingMessages;
+                Application.logMessageReceived -= ObserveLog;
+            }
+        }
+
         // Use the same editor action stack as node edits and deletion. Direct animator.RemoveEvent calls
         // cannot catch stale path caches, assignment lists, or track routing in CustomEventGridContainer.
         [UnityTest]

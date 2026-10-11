@@ -250,7 +250,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
             || liveGroup.GetType() != originalGroup.GetType())
         {
             // A rejected drag must never publish an invalid transient group merely because its original snapshot cannot be applied.
-            Debug.LogError("Could not restore a rejected GLS drag because its group context was unavailable.");
+            Debug.LogError($"Could not restore a rejected GLS drag because its group context was unavailable. {Beatmap.BeatmapLogContext.Describe(originalGroup ?? liveGroup)}");
             return;
         }
 

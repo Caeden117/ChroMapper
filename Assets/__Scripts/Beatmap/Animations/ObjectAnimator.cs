@@ -347,89 +347,20 @@ namespace Beatmap.Animations
             RequireAnimationTrack();
             WorldTarget = AnimationTrack.transform;
 
-            var bug = false;
-
-            if (obj.CustomTrack != null)
-            {
-                var tracks = obj.CustomTrack switch
-                {
-                    JSONString s => new List<string> { s },
-                    JSONArray arr => new List<string>(arr.Children.Select(c => (string)c)),
-                    _ => new List<string>()
-                };
-                foreach (var tr in tracks)
-                {
-                    AddParent(tr);
-
-                    List<BaseCustomEvent> events = null;
-
-                    BeatmapObjectContainerCollection
-                        .GetCollectionForType<CustomEventGridContainer>(ObjectType.CustomEvent)
-                        .EventsByTrack
-                        ?.TryGetValue(tr, out events);
-                    if (events == null) continue;
-
-                    var map = BeatSaberSongContainer.Instance.Map;
-                    foreach (var ce in events.Where(ev => ev.Type == "AssignPathAnimation"))
-                    {
-                        foreach (var jprop in ce.Data)
-                        {
-                            // Null leaves this path property unassigned.
-                            if (jprop.Value == null || jprop.Value.IsNull)
-                                continue;
-
-                            if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
-                            var p = new IPointDefinition.UntypedParams
-                            {
-                                Key = $"track_{jprop.Key}",
-                                Overwrite = false,
-                                Points = jprop.Value,
-                                Easing = ce.DataEasing,
-                                Time = ce.SongBpmTime,
-                                Transition = ce.DataDuration ?? 0,
-                                TimeBegin = timeBegin,
-                                TimeEnd = timeEnd,
-                            };
-                            if (p.Transition != 0)
-                            {
-                                p.Transition = (float)map.JsonTimeToSongBpmTime(ce.JsonTime + p.Transition)
-                                    - ce.SongBpmTime;
-                            }
-
-                            AddPointDef(p, jprop.Key, ce);
-                        }
-                    }
-                }
-
-                if (tracks.Count > 0)
-                    AnimationTrack.transform.SetParent(this.tracks[0].Track.ObjectParentTransform, false);
-            }
-
-            // Individual Path Animation
-            if (obj.CustomAnimation != null)
-            {
-                foreach (var jprop in obj.CustomAnimation.AsObject)
-                {
-                    if (jprop.Key == "_definitePosition" || jprop.Key == "definitePosition") bug = true;
-                    var p = new IPointDefinition.UntypedParams
-                    {
-                        Key = jprop.Key,
-                        Overwrite = true,
-                        Points = jprop.Value,
-                        Easing = null,
-                        TimeBegin = timeBegin,
-                        TimeEnd = timeEnd,
-                    };
-                    AddPointDef(p, jprop.Key, null);
-                }
-            }
+            var preparation = TracksManager.PathAnimations.Prepare(obj, BeatSaberSongContainer.Instance.Map);
+            foreach (var name in preparation.TrackDefinitions.Names) AddParent(name);
+            BindPreparedPathDefinitions(preparation.TrackDefinitions.Definitions);
+            if (preparation.TrackDefinitions.Names.Length > 0)
+                AnimationTrack.transform.SetParent(tracks[0].Track.ObjectParentTransform, false);
+            BindPreparedPathDefinitions(preparation.ObjectDefinitions);
+            var bug = preparation.HasDefinitePosition;
 
             // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             if (bug
                 && (obj.CustomData["_disableNoteGravity"]?.AsBool
                     ?? obj.CustomData["disableNoteGravity"]?.AsBool ?? false))
             {
-                Debug.LogError("disableNoteGravity is bugged when combined with definitePosition, please remove it!");
+                Debug.LogError($"disableNoteGravity is bugged when combined with definitePosition, please remove it! {BeatmapLogContext.Describe(obj)}");
                 var position = AnimationTrack.ObjectParentTransform.localPosition;
                 position.y = (position.y * -0.1f) + 1;
                 AnimationTrack.ObjectParentTransform.localPosition = position;
@@ -439,7 +370,7 @@ namespace Beatmap.Animations
             var i = 0;
             foreach (var prop in AnimatedProperties)
             {
-                prop.Value.Sort();
+                prop.Value.CompletePreparedOrder();
                 properties[i++] = prop.Value;
             }
 
@@ -448,8 +379,7 @@ namespace Beatmap.Animations
             SubscribeTimeCallbacks();
         }
 
-        // Path definitions are cached per visible gameplay object. Event edits must rebuild that cache
-        // without recycling unrelated containers or replacing an object's authored color with its animated color.
+        // Event edits rebind affected objects without replacing their authored color with an animated color.
         public void RefreshPathAnimation()
         {
             if (TargetType != TargetTypes.GameplayObject)
@@ -484,7 +414,9 @@ namespace Beatmap.Animations
                 // Paradigm's held child positions must move with later parent animations, including
                 // stopped seeks across the door cut and the boss streaks (ParadigmMapParityTest).
                 geometryParentAnimator = tracks[0].Animator;
-                var positionKey = v2 ? "_position" : "position";
+                var positionKey = v2
+                    ? AnimationPropertyKeys.LegacyPositionKey
+                    : AnimationPropertyKeys.PositionKey;
                 if (tracks[0].AnimatedProperties.TryGetValue(positionKey, out var positionProperty))
                 {
                     geometryWorldPositionProperty = positionProperty as AnimateProperty<Vector3>;
@@ -585,8 +517,12 @@ namespace Beatmap.Animations
                 ? directEnvironmentParentAnimator.GetTrackParentMatrix(jsonTime)
                 : directEnvironmentParentMatrix;
             var source = tracks[0];
-            var localKey = directEnvironmentTargetIsV2 ? "_localPosition" : "localPosition";
-            var worldKey = directEnvironmentTargetIsV2 ? "_position" : "position";
+            var localKey = directEnvironmentTargetIsV2
+                ? AnimationPropertyKeys.LegacyLocalPositionKey
+                : AnimationPropertyKeys.LocalPositionKey;
+            var worldKey = directEnvironmentTargetIsV2
+                ? AnimationPropertyKeys.LegacyPositionKey
+                : AnimationPropertyKeys.PositionKey;
             var units = directEnvironmentTargetIsV2 ? BeatmapConstant.LaneSize : 1f;
             if (source.AnimatedProperties.TryGetValue(localKey, out var localProperty)
                 && jsonTime >= localProperty.StartTime)
@@ -651,7 +587,8 @@ namespace Beatmap.Animations
             var ancestor = trackParentHasAncestor
                 ? trackParentAncestor.GetTrackParentMatrix(jsonTime)
                 : trackParentRootMatrix;
-            var rotation = ReadTrackProperty(trackParentPropertySource, "_rotation", "rotation", jsonTime,
+            var rotation = ReadTrackProperty(trackParentPropertySource,
+                AnimationPropertyKeys.LegacyRotationKey, AnimationPropertyKeys.RotationKey, jsonTime,
                 trackParentSpawnRotation);
             return ancestor * Matrix4x4.TRS(trackParentSpawnPosition, rotation, trackParentSpawnScale);
         }
@@ -660,19 +597,23 @@ namespace Beatmap.Animations
         {
             var source = trackParentPropertySource;
             var self = GetTrackParentSelfMatrix(jsonTime);
-            var localRotation = ReadTrackProperty(source, "_localRotation", "localRotation", jsonTime, Quaternion.identity);
-            var scale = ReadTrackProperty(source, "_scale", "scale", jsonTime, Vector3.one);
-            var offset = ReadTrackProperty(source, "_position", "offsetPosition", jsonTime, Vector3.zero)
+            var localRotation = ReadTrackProperty(source,
+                AnimationPropertyKeys.LegacyLocalRotationKey, AnimationPropertyKeys.LocalRotationKey,
+                jsonTime, Quaternion.identity);
+            var scale = ReadTrackProperty(source,
+                AnimationPropertyKeys.LegacyScaleKey, AnimationPropertyKeys.ScaleKey, jsonTime, Vector3.one);
+            var offset = ReadTrackProperty(source,
+                AnimationPropertyKeys.LegacyPositionKey, AnimationPropertyKeys.OffsetPositionKey, jsonTime, Vector3.zero)
                 * BeatmapConstant.LaneSize;
             var position = offset;
             if (!trackParentTargetIsV2)
             {
-                if (source.AnimatedProperties.TryGetValue("localPosition", out var localProperty)
+                if (source.AnimatedProperties.TryGetValue(AnimationPropertyKeys.LocalPositionKey, out var localProperty)
                     && jsonTime >= localProperty.StartTime)
                 {
                     position = ((AnimateProperty<Vector3>)localProperty).GetLerpedValue(jsonTime);
                 }
-                else if (source.AnimatedProperties.TryGetValue("position", out var worldProperty)
+                else if (source.AnimatedProperties.TryGetValue(AnimationPropertyKeys.PositionKey, out var worldProperty)
                     && jsonTime >= worldProperty.StartTime)
                 {
                     var property = (AnimateProperty<Vector3>)worldProperty;
@@ -1080,10 +1021,10 @@ namespace Beatmap.Animations
 
         public void RestoreRemovedTrackProperty(string key)
         {
-            if (key is "_time" or "time")
+            if (key is AnimationPropertyKeys.LegacyTimeKey or AnimationPropertyKeys.TimeKey)
                 SetLifeTime(-1);
 
-            if ((key is "_dissolve" or "dissolve") && container != null)
+            if ((key is AnimationPropertyKeys.LegacyDissolveKey or AnimationPropertyKeys.DissolveKey) && container != null)
             {
                 Opacity.Flush();
                 container.MpbController.Mpb.SetFloat(cutoutId, 1f - Opacity.Get());
@@ -1096,17 +1037,17 @@ namespace Beatmap.Animations
             // Other properties can remain animated when one is deleted, so a whole-pose scrub reset is insufficient.
             switch (key)
             {
-                case "_scale":
-                case "scale":
+                case AnimationPropertyKeys.LegacyScaleKey:
+                case AnimationPropertyKeys.ScaleKey:
                     LocalTarget.localScale = directEnvironmentSpawnScale;
                     if (directEnvironmentHasBoxLight)
                         directEnvironmentBoxLight.CaptureAuthoredScale();
 
                     break;
-                case "_position":
-                case "position":
-                case "_localPosition":
-                case "localPosition":
+                case AnimationPropertyKeys.LegacyPositionKey:
+                case AnimationPropertyKeys.PositionKey:
+                case AnimationPropertyKeys.LegacyLocalPositionKey:
+                case AnimationPropertyKeys.LocalPositionKey:
                     ApplyDirectEnvironmentPosition(directEnvironmentHasParentAnimator
                         ? directEnvironmentSpawnLocalPosition
                         : directEnvironmentSpawnPosition, !directEnvironmentHasParentAnimator);
@@ -1114,10 +1055,10 @@ namespace Beatmap.Animations
                         directEnvironmentBoxLight.CaptureAuthoredPosition();
 
                     break;
-                case "_rotation":
-                case "rotation":
-                case "_localRotation":
-                case "localRotation":
+                case AnimationPropertyKeys.LegacyRotationKey:
+                case AnimationPropertyKeys.RotationKey:
+                case AnimationPropertyKeys.LegacyLocalRotationKey:
+                case AnimationPropertyKeys.LocalRotationKey:
                     LocalTarget.rotation = directEnvironmentSpawnRotation;
                     break;
             }
@@ -1154,7 +1095,7 @@ namespace Beatmap.Animations
                     {
                         // Completed positions keep the parent's pose at their final write. Using the current pose
                         // when preview reactivates a track shifts Censored's text after a saved-cursor restore.
-                        var property = (AnimateProperty<Vector3>)source.AnimatedProperties["position"];
+                        var property = (AnimateProperty<Vector3>)source.AnimatedProperties[AnimationPropertyKeys.PositionKey];
                         var anchorTime = property.GetTransformAnchorTime(Context.Atsc.CurrentJsonTime);
                         LocalTarget.localPosition = GetTrackParentSelfMatrix(anchorTime)
                             .inverse.MultiplyVector(worldPosition);
@@ -1305,20 +1246,31 @@ namespace Beatmap.Animations
             }
         }
 
+        private void BindPreparedPathDefinitions(ObjectPathAnimationRegistry.Definition[] definitions)
+        {
+            foreach (var definition in definitions)
+            {
+                var parameters = definition.Parameters;
+                parameters.TimeBegin = timeBegin;
+                parameters.TimeEnd = timeEnd;
+                AddPointDef(parameters, definition.PropertyName, definition.Source);
+            }
+        }
+
         private void AddPointDef(IPointDefinition.UntypedParams p, string key, BaseCustomEvent source)
         {
             switch (key)
             {
-                case "_dissolve":
-                case "dissolve":
+                case AnimationPropertyKeys.LegacyDissolveKey:
+                case AnimationPropertyKeys.DissolveKey:
                     AddPointDef(source, f => Opacity.Add(f), PointDataParsers.ParseFloat, p, 0);
                     break;
-                case "_dissolveArrow":
-                case "dissolveArrow":
+                case AnimationPropertyKeys.LegacyDissolveArrowKey:
+                case AnimationPropertyKeys.DissolveArrowKey:
                     AddPointDef(source, f => OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 0);
                     break;
-                case "_localRotation":
-                case "localRotation":
+                case AnimationPropertyKeys.LegacyLocalRotationKey:
+                case AnimationPropertyKeys.LocalRotationKey:
                     AddPointDef(
                         source,
                         q => LocalRotation.Add(q),
@@ -1326,8 +1278,8 @@ namespace Beatmap.Animations
                         p,
                         Quaternion.identity);
                     break;
-                case "_rotation":
-                case "offsetWorldRotation":
+                case AnimationPropertyKeys.LegacyRotationKey:
+                case AnimationPropertyKeys.OffsetWorldRotationKey:
                     AddPointDef(
                         source,
                         v => WorldRotation.Add(v),
@@ -1335,8 +1287,8 @@ namespace Beatmap.Animations
                         p,
                         Quaternion.identity);
                     break;
-                case "_position":
-                case "offsetPosition":
+                case AnimationPropertyKeys.LegacyPositionKey:
+                case AnimationPropertyKeys.OffsetPositionKey:
                     AddPointDef(
                         source,
                         v => OffsetPosition.Add(v * BeatmapConstant.LaneSize),
@@ -1344,8 +1296,8 @@ namespace Beatmap.Animations
                         p,
                         Vector3.zero);
                     break;
-                case "_definitePosition":
-                case "definitePosition":
+                case AnimationPropertyKeys.LegacyDefinitePositionKey:
+                case AnimationPropertyKeys.DefinitePositionKey:
                     AddPointDef(
                         source,
                         v => WorldPosition.Add(v * BeatmapConstant.LaneSize),
@@ -1353,8 +1305,8 @@ namespace Beatmap.Animations
                         p,
                         Vector3.zero);
                     break;
-                case "_scale":
-                case "scale":
+                case AnimationPropertyKeys.LegacyScaleKey:
+                case AnimationPropertyKeys.ScaleKey:
                     AddPointDef(
                         source,
                         v => Scale.Add(v),
@@ -1362,12 +1314,12 @@ namespace Beatmap.Animations
                         p,
                         Vector3.one);
                     break;
-                case "_color":
-                case "color":
+                case AnimationPropertyKeys.LegacyColorKey:
+                case AnimationPropertyKeys.ColorKey:
                     AddPointDef<Color>(source, (Color c) => Colors.Add(c), PointDataParsers.ParseColor, p, Color.white);
                     break;
-                case "_interactable":
-                case "interactable":
+                case AnimationPropertyKeys.LegacyInteractableKey:
+                case AnimationPropertyKeys.InteractableKey:
                     AddPointDef(source, f => Interactable.Add(f), PointDataParsers.ParseFloat, p, 1);
                     break;
             }
@@ -1380,7 +1332,7 @@ namespace Beatmap.Animations
             IPointDefinition.UntypedParams p,
             T @default) where T : struct
         {
-            if (AnimateProperty<T>.SkipsMissingPointDefinition(p))
+            if (AnimateProperty<T>.SkipsMissingPointDefinition(p, source))
                 return;
 
             try
@@ -1394,11 +1346,11 @@ namespace Beatmap.Animations
                     );
                 }
 
-                GetAnimateProperty(p.Key, setter, @default).AddPointDef(parser, p, source);
+                GetAnimateProperty(p.Key, setter, @default).AddPreparedPointDef(parser, p, source);
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                Debug.LogError($"Could not load animation property. {new AnimationLogContext(p, source).Describe()}\n{e}");
             }
         }
 

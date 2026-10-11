@@ -568,7 +568,18 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         "LoadedObjects allocates a copy of the backing list of objects. Please avoid this unless you absolutely cannot grab a more precise type.")]
     public override List<BaseObject> LoadedObjects => MapObjects.ConvertAll(it => it as BaseObject);
 
-    public List<T> MapObjects = new();
+    private List<T> mapObjects = new();
+    public List<T> MapObjects
+    {
+        get => mapObjects;
+        set
+        {
+            mapObjects = value;
+            OnMapObjectsAssigned();
+        }
+    }
+
+    protected virtual void OnMapObjectsAssigned() { }
 
     public virtual IComparer<T> SortComparer => Comparer<T>.Default;
 
@@ -779,7 +790,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             if (obj.HasAttachedContainer && LoadedContainers.ContainsKey(obj))
             {
                 Debug.LogError(
-                    $"[BeatmapObjectCollection] Orphaned {ContainerType} container at beat {obj.JsonTime}.");
+                    $"[BeatmapObjectCollection] Orphaned {ContainerType} container. {Beatmap.BeatmapLogContext.Describe(obj)}");
             }
             return;
         }
@@ -859,7 +870,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         if (TryBinarySearchForObjectIndex(obj, out index))
             return true;
 
-        Debug.LogError($"This object at beat {obj.JsonTime} is not in the collection and appears to be a ghost. Please report this.");
+        Debug.LogError($"This object is not in the collection and appears to be a ghost. Please report this. {Beatmap.BeatmapLogContext.Describe(obj)}");
         return false;
     }
 

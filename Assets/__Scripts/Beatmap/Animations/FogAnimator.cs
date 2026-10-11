@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 using Beatmap.Base.Customs;
@@ -11,14 +9,23 @@ namespace Beatmap.Animations
     // Fog animation writes the preview renderer's environment parameters rather than object transforms.
     public class FogAnimator : MonoBehaviour
     {
-        private const string ComponentName = "BloomFogEnvironment";
+        private const string ComponentKey = "BloomFogEnvironment";
+        private const string AttenuationKey = "attenuation";
+        private const string OffsetKey = "offset";
+        private const string HeightKey = "height";
+        private const string StartYKey = "startY";
+        private const string LegacyAttenuationKey = "_attenuation";
+        private const string LegacyOffsetKey = "_offset";
+        private const string LegacyHeightKey = "_height";
+        private const string LegacyStartYKey = "_startY";
 
         public AudioTimeSyncController Atsc;
         public BeatmapRuntimeContext Context;
 
         private readonly Dictionary<string, AnimateProperty<float>> animatedProperties = new();
         private readonly Dictionary<string, float> baselines = new();
-        private IAnimateProperty[] properties = Array.Empty<IAnimateProperty>();
+        // Keep a reusable snapshot so removing events can delete dictionary entries during iteration.
+        private readonly List<KeyValuePair<string, AnimateProperty<float>>> properties = new(4);
         private bool baselineCaptured;
         // Fog events take effect only when this track owns the fog component or is selected by AssignFogTrack.
         private bool hasComponentEvents;
@@ -26,9 +33,9 @@ namespace Beatmap.Animations
         private LegacyFogBinding legacyBinding;
         private bool controlsLegacyBinding;
 
-        public void AddEvent(BaseCustomEvent ev)
+        public void AddEvent(BaseCustomEvent ev, bool refresh = true)
         {
-            if (ev.Data?[ComponentName] is not JSONObject component) return;
+            if (ev.Data?[ComponentKey] is not JSONObject component) return;
 
             hasComponentEvents = true;
 
@@ -37,20 +44,17 @@ namespace Beatmap.Animations
                 // Null stops further writes and leaves the current fog value in place.
                 if (jprop.Value == null || jprop.Value.IsNull)
                 {
-                    if (animatedProperties.Remove(jprop.Key))
-                    {
-                        RefreshProperties();
-                    }
+                    animatedProperties.Remove(jprop.Key);
 
                     continue;
                 }
 
                 switch (jprop.Key)
                 {
-                    case "attenuation":
-                    case "offset":
-                    case "height":
-                    case "startY":
+                    case AttenuationKey:
+                    case OffsetKey:
+                    case HeightKey:
+                    case StartYKey:
                         break;
                     default:
                         continue;
@@ -59,30 +63,27 @@ namespace Beatmap.Animations
                 AddProperty(jprop.Key, jprop.Value, ev);
             }
 
-            RefreshProperties();
+            if (refresh) RefreshProperties();
         }
 
         // V2 stores fog parameters on AnimateTrack; normalize their names to the V3 component names.
-        public void AddLegacyEvent(BaseCustomEvent ev)
+        public void AddLegacyEvent(BaseCustomEvent ev, bool refresh = true)
         {
             foreach (var jprop in ev.Data)
             {
                 var key = jprop.Key switch
                 {
-                    "_attenuation" => "attenuation",
-                    "_offset" => "offset",
-                    "_height" => "height",
-                    "_startY" => "startY",
+                    LegacyAttenuationKey => AttenuationKey,
+                    LegacyOffsetKey => OffsetKey,
+                    LegacyHeightKey => HeightKey,
+                    LegacyStartYKey => StartYKey,
                     _ => null
                 };
                 if (key == null) continue;
 
                 if (jprop.Value == null || jprop.Value.IsNull)
                 {
-                    if (animatedProperties.Remove(key))
-                    {
-                        RefreshProperties();
-                    }
+                    animatedProperties.Remove(key);
 
                     continue;
                 }
@@ -90,8 +91,10 @@ namespace Beatmap.Animations
                 AddProperty(key, jprop.Value, ev);
             }
 
-            RefreshProperties();
+            if (refresh) RefreshProperties();
         }
+
+        public void CompleteEventLoad() => RefreshProperties();
 
         // Events may load before fog is attached. Apply them only after this track becomes the component owner.
         public void BindFogComponentTarget()
@@ -123,7 +126,8 @@ namespace Beatmap.Animations
             };
 
             // Skip missing point definitions before creating a property. Empty properties cannot be sorted.
-            if (AnimateProperty<float>.SkipsMissingPointDefinition(p)) return;
+            if (AnimateProperty<float>.SkipsMissingPointDefinition(p, ev))
+                return;
 
             GetProperty(key).AddPointDef(PointDataParsers.ParseFloat, p, ev);
         }
@@ -133,18 +137,18 @@ namespace Beatmap.Animations
         {
             var ownsFog = hasFogComponentTarget
                 || (legacyBinding != null && legacyBinding.IsAssignedTo(this, Atsc.CurrentJsonTime));
-            foreach (var key in animatedProperties.Keys.ToList())
+            foreach (var pair in properties)
             {
-                var prop = animatedProperties[key];
+                var prop = pair.Value;
                 prop.RemoveEvent(ev);
                 if (prop.IsEmpty())
                 {
-                    if (ownsFog && baselines.TryGetValue(key, out var baseline))
+                    if (ownsFog && baselines.TryGetValue(pair.Key, out var baseline))
                     {
-                        WriteParam(key, baseline);
+                        WriteParam(pair.Key, baseline);
                     }
 
-                    animatedProperties.Remove(key);
+                    animatedProperties.Remove(pair.Key);
                 }
             }
 
@@ -155,19 +159,18 @@ namespace Beatmap.Animations
 
         private void RefreshProperties()
         {
-            properties = new IAnimateProperty[animatedProperties.Count];
-            var i = 0;
-            foreach (var prop in animatedProperties.Values)
+            properties.Clear();
+            foreach (var pair in animatedProperties)
             {
-                prop.Sort();
-                properties[i++] = prop;
+                pair.Value.Sort();
+                properties.Add(pair);
             }
 
             RefreshEnabled();
         }
 
         private void RefreshEnabled() =>
-            enabled = (properties.Length > 0 && hasComponentEvents && hasFogComponentTarget)
+            enabled = (properties.Count > 0 && hasComponentEvents && hasFogComponentTarget)
                 || controlsLegacyBinding;
 
         private void Update() => PushAt(Atsc != null ? Atsc.CurrentJsonTime : 0);
@@ -186,7 +189,7 @@ namespace Beatmap.Animations
                 legacyBinding.PushAt(time);
             }
 
-            if (!hasComponentEvents || !hasFogComponentTarget || properties.Length == 0) return;
+            if (!hasComponentEvents || !hasFogComponentTarget || properties.Count == 0) return;
 
             PushValuesAt(time);
         }
@@ -194,7 +197,7 @@ namespace Beatmap.Animations
         // The assignment timeline can read an inactive track without enabling its Update.
         public void PushLegacyValuesAt(float time)
         {
-            if (properties.Length > 0) PushValuesAt(time);
+            PushValuesAt(time);
         }
 
         private void PushValuesAt(float time)
@@ -217,10 +220,10 @@ namespace Beatmap.Animations
                 }
             }
 
-            for (var i = 0; i < properties.Length; ++i)
+            for (var i = 0; i < properties.Count; ++i)
             {
                 // Evaluate before StartTime too, so backward seeks restore the captured defaults.
-                properties[i].UpdateProperty(time);
+                properties[i].Value.UpdateProperty(time);
             }
 
             // Publish descriptor changes to the renderer's shader globals.
@@ -232,7 +235,7 @@ namespace Beatmap.Animations
         {
             animatedProperties.Clear();
             baselines.Clear();
-            properties = Array.Empty<IAnimateProperty>();
+            properties.Clear();
             baselineCaptured = false;
             hasComponentEvents = false;
             hasFogComponentTarget = false;
@@ -243,9 +246,9 @@ namespace Beatmap.Animations
 
         public void RefreshBpmTiming()
         {
-            foreach (var property in properties)
+            foreach (var pair in properties)
             {
-                property.RefreshBpmTiming();
+                pair.Value.RefreshBpmTiming();
             }
 
             PushOnStoppedTimeChanged();
@@ -271,10 +274,10 @@ namespace Beatmap.Animations
             var parameters = Context.Descriptor.BloomFogParams;
             return key switch
             {
-                "attenuation" => parameters.Attenuation,
-                "offset" => parameters.Offset,
-                "height" => parameters.Height,
-                "startY" => parameters.StartY,
+                AttenuationKey => parameters.Attenuation,
+                OffsetKey => parameters.Offset,
+                HeightKey => parameters.Height,
+                StartYKey => parameters.StartY,
                 _ => 0f
             };
         }
@@ -284,16 +287,16 @@ namespace Beatmap.Animations
             var parameters = Context.Descriptor.BloomFogParams;
             switch (key)
             {
-                case "attenuation":
+                case AttenuationKey:
                     parameters.Attenuation = value;
                     break;
-                case "offset":
+                case OffsetKey:
                     parameters.Offset = value;
                     break;
-                case "height":
+                case HeightKey:
                     parameters.Height = value;
                     break;
-                case "startY":
+                case StartYKey:
                     parameters.StartY = value;
                     break;
             }
@@ -340,25 +343,30 @@ namespace Beatmap.Animations
 
             // A replacement track may animate only some fog fields, or none. Start from the authored
             // environment parameters so the previous assignment cannot leave its values behind.
-            RestoreBaseline();
+            RestoreBaselineValues();
             if (index >= 0)
             {
                 assignments[index].Animator.PushLegacyValuesAt(time);
                 return;
             }
-
+            context.NotifyBloomFogParamsChanged();
         }
 
         public void RestoreBaseline()
         {
             if (!baselineCaptured)
                 return;
+            RestoreBaselineValues();
+            context.NotifyBloomFogParamsChanged();
+        }
+
+        private void RestoreBaselineValues()
+        {
             var fog = context.Descriptor.BloomFogParams;
             fog.Attenuation = attenuation;
             fog.Offset = offset;
             fog.Height = height;
             fog.StartY = startY;
-            context.NotifyBloomFogParamsChanged();
         }
     }
 }

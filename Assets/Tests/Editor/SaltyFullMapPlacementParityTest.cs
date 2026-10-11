@@ -823,8 +823,8 @@ namespace Tests.Editor
                 }
                 var beat0 = FindTrackAnimator("beat0");
                 var quarter = FindTrackAnimator("1/4");
-                report.AppendLine($"  track beat0 CachedChildren={(beat0 == null ? "no-track" : beat0.CachedChildren.Length.ToString())} " +
-                    $"track 1/4 CachedChildren={(quarter == null ? "no-track" : quarter.CachedChildren.Length.ToString())}");
+                report.AppendLine($"  track beat0 CachedChildren={(beat0 == null ? "no-track" : beat0.CachedChildren.Count.ToString())} " +
+                    $"track 1/4 CachedChildren={(quarter == null ? "no-track" : quarter.CachedChildren.Count.ToString())}");
                 var ct = camera.transform;
                 report.AppendLine($"  playing camera world={ct.position} local={ct.localPosition} " +
                     $"parent={(ct.parent == null ? "null" : ct.parent.name)} fov={camera.fieldOfView} " +
@@ -1241,8 +1241,8 @@ namespace Tests.Editor
                 }
                 var beat0 = FindTrackAnimator("beat0");
                 var quarter = FindTrackAnimator("1/4");
-                report.AppendLine($"  beat0 CachedChildren={(beat0 == null ? "no-track" : beat0.CachedChildren.Length.ToString())} " +
-                    $"1/4 CachedChildren={(quarter == null ? "no-track" : quarter.CachedChildren.Length.ToString())} " +
+                report.AppendLine($"  beat0 CachedChildren={(beat0 == null ? "no-track" : beat0.CachedChildren.Count.ToString())} " +
+                    $"1/4 CachedChildren={(quarter == null ? "no-track" : quarter.CachedChildren.Count.ToString())} " +
                     $"camera world={camera.transform.position} fov={camera.fieldOfView}");
             }
 
@@ -1316,7 +1316,7 @@ namespace Tests.Editor
             {
                 foreach (var (name, ta) in new[] { ("beat0", beat0Track), ("1/4", quarterTrack), ("pee2", pee2Track) })
                     report.AppendLine($"  track {name} {label}: enabled={ta.enabled} " +
-                        $"active={ta.isActiveAndEnabled} CachedChildren={ta.CachedChildren.Length}");
+                        $"active={ta.isActiveAndEnabled} CachedChildren={ta.CachedChildren.Count}");
             }
 
             var tracksField = typeof(ObjectAnimator).GetField("tracks",

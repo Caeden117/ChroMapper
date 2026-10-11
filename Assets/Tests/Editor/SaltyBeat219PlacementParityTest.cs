@@ -501,7 +501,7 @@ namespace Tests.Editor
                 if (tracks != null && tracks.TryGetAnimationTrack(tn, out var ta) && ta != null)
                 {
                     sb.Append($" | {tn}#{ta.GetInstanceID()} en={ta.enabled} " +
-                        $"children={ta.Children.Count} cached={ta.CachedChildren.Length} " +
+                        $"children={ta.Children.Count} cached={ta.CachedChildren.Count} " +
                         $"ver={ta.UpdateVersion} props=[{string.Join(",", ta.AnimatedProperties.Keys)}] " +
                         $"optLocal={ta.Track.ObjectParentTransform.localPosition} " +
                         $"trackRefs={TrackFieldDump(ta.Track, null, null)}");

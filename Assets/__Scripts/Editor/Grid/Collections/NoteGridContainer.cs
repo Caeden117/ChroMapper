@@ -19,11 +19,20 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     [SerializeField] private CountersPlusController countersPlus;
 
     private readonly List<ObjectContainer> objectsAtSameTime = new();
+    private readonly NoteJumpDurationIndex jumpDurations = new();
     private bool isPlaying;
 
     public static bool ShowArcVisualizer { get; private set; }
 
     public override ObjectType ContainerType => ObjectType.Note;
+
+    protected override void OnMapObjectsAssigned() => jumpDurations.Reset(MapObjects);
+
+    public override void SilentRemoveObject(BaseObject obj)
+    {
+        base.SilentRemoveObject(obj);
+        if (obj is BaseNote note && !ContainsObject(note)) jumpDurations.Remove(note);
+    }
 
     internal override void SubscribeToCallbacks()
     {
@@ -45,6 +54,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     internal override void UnsubscribeToCallbacks()
     {
+        jumpDurations.Clear();
         SpawnCallbackController.OnNotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.OnRecursiveNoteCheckFinished -= OnRecursiveCheckFinished;
         DespawnCallbackController.OnNotePassedThreshold -= DespawnCallback;
@@ -106,12 +116,14 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
             var walkStart = span.LowerBoundBy(time + spawnOffset, obj => obj.SongBpmTime);
             var spawnFloor = walkStart < span.Length ? span[walkStart].JsonTime : float.PositiveInfinity;
 
-            // Evaluate each note's spawn window independently because HalfJumpDuration can differ between
-            // neighboring notes. An ineligible short-jump note must not hide a later long-jump note that is
-            // already due.
+            // Hit-time order differs from jump-in order. Bound the query by the longest current jump,
+            // then check each candidate so a short-jump note cannot hide a later long-jump note.
+            var upperBound = UIMode.AnimationMode
+                ? Mathf.Max(time + spawnOffset, time + Mathf.Max(jumpDurations.Maximum, spawnOffset) + Track.JUMP_TIME)
+                : time + spawnOffset;
             RefreshPool(
-                float.NegativeInfinity,
-                float.PositiveInfinity,
+                Mathf.Min(time + DespawnCallbackController.Offset, time + spawnOffset),
+                upperBound,
                 forceRefresh,
                 new PausedGameplayNoteFilter(
                     time + DespawnCallbackController.Offset,
@@ -201,11 +213,17 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         }
     }
 
-    protected override void HandleObjectSpawned(BaseObject _, bool __ = false) =>
+    protected override void HandleObjectSpawned(BaseObject obj, bool inCollection = false)
+    {
+        jumpDurations.Add((BaseNote)obj);
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+    }
 
-    protected override void HandleObjectDelete(BaseObject _, bool __ = false) =>
+    protected override void HandleObjectDelete(BaseObject obj, bool inCollection = false)
+    {
+        jumpDurations.Remove((BaseNote)obj);
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+    }
 
     // Here we check to see if any special angled notes are required.
     protected override void HandleContainerSpawn(ObjectContainer container, BaseObject obj) =>

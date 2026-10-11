@@ -4,6 +4,21 @@ using UnityEngine;
 
 namespace Beatmap.Animations
 {
+    internal static class BaseColorProviderKeys
+    {
+        internal const string BaseNote0ColorKey = "baseNote0Color";
+        internal const string BaseNote1ColorKey = "baseNote1Color";
+        internal const string BaseObstaclesColorKey = "baseObstaclesColor";
+        internal const string BaseSaberAColorKey = "baseSaberAColor";
+        internal const string BaseSaberBColorKey = "baseSaberBColor";
+        internal const string BaseEnvironmentColor0Key = "baseEnvironmentColor0";
+        internal const string BaseEnvironmentColor1Key = "baseEnvironmentColor1";
+        internal const string BaseEnvironmentColorWKey = "baseEnvironmentColorW";
+        internal const string BaseEnvironmentColor0BoostKey = "baseEnvironmentColor0Boost";
+        internal const string BaseEnvironmentColor1BoostKey = "baseEnvironmentColor1Boost";
+        internal const string BaseEnvironmentColorWBoostKey = "baseEnvironmentColorWBoost";
+    }
+
     // Resolves base* point values from the editor's current camera, colors, song time, and movement settings.
     internal static class BaseProviderManager
     {
@@ -41,15 +56,21 @@ namespace Beatmap.Animations
         }
 
         // Unknown providers are logged and skipped rather than aborting map loading.
-        internal static IPointDefinition.IValueSegment Resolve(string key)
+        internal static IPointDefinition.IValueSegment Resolve(
+            string key,
+            AnimationLogContext logContext = default,
+            int pointIndex = -1)
         {
-            if (BaseSegments.TryGetValue(key, out var segment)) return segment;
-            if (ResolvedSegments.TryGetValue(key, out segment)) return segment;
+            if (BaseSegments.TryGetValue(key, out var segment))
+                return segment;
+
+            if (ResolvedSegments.TryGetValue(key, out segment))
+                return segment;
 
             var dot = key.IndexOf('.');
             if (dot <= 0 || !BaseSegments.TryGetValue(key[..dot], out var source))
             {
-                Debug.LogError($"Could not find base provider [{key}]; the point was skipped.");
+                Debug.LogError($"Could not find base provider [{key}]; the point was skipped. {logContext.Describe(pointIndex)}");
                 return null;
             }
 
@@ -82,7 +103,7 @@ namespace Beatmap.Animations
                         };
                         if (indices[i] < 0 || indices[i] >= current.Dimension)
                         {
-                            Debug.LogError($"Base provider [{key}] has an invalid swizzle [{suffix}]; the point was skipped.");
+                            Debug.LogError($"Base provider [{key}] has an invalid swizzle [{suffix}]; the point was skipped. {logContext.Describe(pointIndex)}");
                             return null;
                         }
                     }
@@ -125,8 +146,8 @@ namespace Beatmap.Animations
         private static Dictionary<string, IPointDefinition.IValueSegment> BuildSegments()
         {
             // The editor has no VR controllers, so hand providers return zero.
-            var zero3 = Live(3, WriteZeros(3));
-            var zero1 = Live(1, WriteZeros(1));
+            IPointDefinition.IValueSegment zero3 = new StaticValues(new float[3]);
+            IPointDefinition.IValueSegment zero1 = new StaticValues(new float[1]);
             return new Dictionary<string, IPointDefinition.IValueSegment>
             {
                 ["baseHeadPosition"] = Live(3, WriteHeadPosition),
@@ -146,17 +167,17 @@ namespace Beatmap.Animations
                 ["baseRightHandLocalScale"] = zero3,
 
                 // Read the original scheme colors, before the editor mirrors note colors for left-handed mode.
-                ["baseNote0Color"] = Live(4, (t, o) => WriteSchemeColor(scheme => scheme.LeftNoteColor, t, o)),
-                ["baseNote1Color"] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
-                ["baseObstaclesColor"] = Live(4, (t, o) => WriteSchemeColor(s => s.ObstacleColor, t, o)),
-                ["baseSaberAColor"] = Live(4, (t, o) => WriteSchemeColor(s => s.LeftNoteColor, t, o)),
-                ["baseSaberBColor"] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
-                ["baseEnvironmentColor0"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftColor, t, o)),
-                ["baseEnvironmentColor1"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightColor, t, o)),
-                ["baseEnvironmentColorW"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteColor, t, o)),
-                ["baseEnvironmentColor0Boost"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftBoostColor, t, o)),
-                ["baseEnvironmentColor1Boost"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightBoostColor, t, o)),
-                ["baseEnvironmentColorWBoost"] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteBoostColor, t, o)),
+                [BaseColorProviderKeys.BaseNote0ColorKey] = Live(4, (t, o) => WriteSchemeColor(scheme => scheme.LeftNoteColor, t, o)),
+                [BaseColorProviderKeys.BaseNote1ColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
+                [BaseColorProviderKeys.BaseObstaclesColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.ObstacleColor, t, o)),
+                [BaseColorProviderKeys.BaseSaberAColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.LeftNoteColor, t, o)),
+                [BaseColorProviderKeys.BaseSaberBColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColor0Key] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColor1Key] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColorWKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColor0BoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftBoostColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColor1BoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightBoostColor, t, o)),
+                [BaseColorProviderKeys.BaseEnvironmentColorWBoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteBoostColor, t, o)),
 
                 // The preview has no gameplay score. Keep score values at their initial state while song time stays live.
                 ["baseCombo"] = zero1,
@@ -213,47 +234,24 @@ namespace Beatmap.Animations
             WriteColor(scheme == null ? DefaultColors.White : selector(scheme), target, offset);
         }
 
-        private static void Copy(Vector3? value, float[] target, int offset)
+        private static void Copy(Vector3 value, float[] target, int offset)
         {
-            if (value.HasValue)
-            {
-                target[offset] = value.Value.x;
-                target[offset + 1] = value.Value.y;
-                target[offset + 2] = value.Value.z;
-            }
+            target[offset] = value.x;
+            target[offset + 1] = value.y;
+            target[offset + 2] = value.z;
         }
 
-        private static void CopyEuler(Quaternion? rotation, float[] target, int offset)
+        private static void CopyEuler(Quaternion rotation, float[] target, int offset)
         {
-            if (rotation.HasValue)
-            {
-                var euler = rotation.Value.eulerAngles;
-                target[offset] = euler.x;
-                target[offset + 1] = euler.y;
-                target[offset + 2] = euler.z;
-            }
+            Copy(rotation.eulerAngles, target, offset);
         }
 
-        private static void WriteColor(Color? color, float[] target, int offset)
+        private static void WriteColor(Color color, float[] target, int offset)
         {
-            var value = color ?? DefaultColors.White;
-            target[offset] = value.r;
-            target[offset + 1] = value.g;
-            target[offset + 2] = value.b;
-            target[offset + 3] = value.a;
-        }
-
-        private static Action<float[], int> WriteZeros(int count)
-        {
-            void Write(float[] target, int offset)
-            {
-                for (var i = 0; i < count; ++i)
-                {
-                    target[offset + i] = 0f;
-                }
-            }
-
-            return Write;
+            target[offset] = color.r;
+            target[offset + 1] = color.g;
+            target[offset + 2] = color.b;
+            target[offset + 3] = color.a;
         }
 
         private sealed class LiveValues : IPointDefinition.IValueSegment

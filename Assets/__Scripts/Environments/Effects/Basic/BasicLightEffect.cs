@@ -40,28 +40,33 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
 
     private int activeSize => activeControllers.Count;
 
+    // Enhancements can register thousands of lights. Seed indexes from serialized scene data once,
+    // then update membership and append counters with each registration.
     // Fix O(n^2) issue on controllers. Big deal on envs with massive amounts of clones.
     private int nextRegistrationId = -1;
-    private HashSet<int> remapKeys;
+    private int nextRemapKey;
+    private readonly HashSet<int> remapKeys = new();
+    private readonly HashSet<LightController> registeredControllers = new();
+    private readonly Dictionary<int, LightController> registeredIds = new();
 
     private List<ChromaLiteData> chromaLiteData = new();
     private List<ChromaGradientData> chromaGradientData = new();
 
+    private void Awake() => ReseedRegistrationCounters();
     private void Start() => ColorBoostEffect.OnStateChanged += HandleBoostChanged;
     private void OnDestroy() => ColorBoostEffect.OnStateChanged -= HandleBoostChanged;
 
     public void Register(LightController controller, bool strict = true)
     {
         LightController overlight = null;
-        if (lightEntries.Exists(l => l == controller))
+        if (registeredControllers.Contains(controller))
         {
             Debug.LogWarning($"{controller} is already registered in {this}");
             return;
         }
 
-        if (strict && controller.ID != -1 && lightEntries.Exists(l => l.ID == controller.ID))
+        if (strict && controller.ID != -1 && registeredIds.TryGetValue(controller.ID, out overlight))
         {
-            overlight = lightEntries.First(l => l.ID == controller.ID);
             var marker = controller.GetComponent<ChromaIDMarker>();
             var overmarker = overlight.GetComponent<ChromaIDMarker>();
             Debug.LogError(
@@ -71,8 +76,11 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         }
 
         if (controller.ID == -1) controller.ID = 0;
-        while (lightEntries.Exists(l => l.ID == controller.ID)) controller.ID++;
+        while (registeredIds.ContainsKey(controller.ID))
+            controller.ID++;
         lightEntries.Add(controller);
+        registeredControllers.Add(controller);
+        registeredIds.Add(controller.ID, controller);
         if (controller.ID > nextRegistrationId) nextRegistrationId = controller.ID;
         if (overlight != null) Register(overlight, false);
     }
@@ -84,21 +92,21 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
     // light - e.g. RunwayAndTrapezoidLightsFollowChromaLightIdsAroundBeat170's duplicated runway lights.
     public void Register(LightController controller, int? requestedKey)
     {
-        if (lightEntries.Exists(l => l == controller))
+        if (registeredControllers.Contains(controller))
         {
             Debug.LogWarning($"{controller} is already registered in {this}");
             return;
         }
 
-        if (nextRegistrationId < 0)
-            nextRegistrationId = lightEntries.Count != 0 ? lightEntries.Max(l => l.ID) : -1;
         controller.ID = ++nextRegistrationId;
         lightEntries.Add(controller);
+        registeredControllers.Add(controller);
+        registeredIds.Add(controller.ID, controller);
 
-        remapKeys ??= LightIdRemapEntries.Select(entry => (int)entry.x).ToHashSet();
-        var key = requestedKey ?? (remapKeys.Count != 0 ? remapKeys.Max() + 1 : 0);
+        var key = requestedKey ?? nextRemapKey;
         while (remapKeys.Contains(key)) key++;
         remapKeys.Add(key);
+        nextRemapKey = remapKeys.Count == 1 ? key + 1 : Mathf.Max(nextRemapKey, key + 1);
         LightIdRemapEntries.Add(new Vector2(key, controller.ID));
 
         // The serialized entries feed CalculateMapping, so the new key/index survives the post-enhancement
@@ -138,7 +146,7 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         var remapIndex = LightIdRemapEntries.FindIndex(entry => (int)entry.y == controller.ID);
         if (remapIndex != -1)
         {
-            remapKeys?.Remove((int)LightIdRemapEntries[remapIndex].x);
+            remapKeys.Remove((int)LightIdRemapEntries[remapIndex].x);
             LightIdRemapEntries.RemoveAt(remapIndex);
         }
 
@@ -216,8 +224,23 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
     // serialized lists may have been edited outside Register (scene deserialization, full rebuilds).
     private void ReseedRegistrationCounters()
     {
-        nextRegistrationId = lightEntries.Count != 0 ? lightEntries.Max(l => l.ID) : -1;
-        remapKeys = LightIdRemapEntries.Select(entry => (int)entry.x).ToHashSet();
+        registeredControllers.Clear();
+        registeredIds.Clear();
+        nextRegistrationId = lightEntries.Count == 0 ? -1 : lightEntries[0].ID;
+        foreach (var controller in lightEntries)
+        {
+            registeredControllers.Add(controller);
+            registeredIds.TryAdd(controller.ID, controller);
+            nextRegistrationId = Mathf.Max(nextRegistrationId, controller.ID);
+        }
+        remapKeys.Clear();
+        nextRemapKey = LightIdRemapEntries.Count == 0 ? 0 : (int)LightIdRemapEntries[0].x + 1;
+        foreach (var entry in LightIdRemapEntries)
+        {
+            var key = (int)entry.x;
+            remapKeys.Add(key);
+            nextRemapKey = Mathf.Max(nextRemapKey, key + 1);
+        }
     }
 
     // Environment enhancements register their generated ILightWithId lights during 

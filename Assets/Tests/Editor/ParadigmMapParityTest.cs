@@ -177,7 +177,7 @@ namespace Tests.Editor
                         var track = Object.FindAnyObjectByType<TracksManager>().GetAnimationTrack("s_boss39");
                         var property = (Beatmap.Animations.AnimateProperty<Vector3>)track.AnimatedProperties["position"];
                         Debug.Log($"[ParadigmParity] playback detail: json={atsc.CurrentJsonTime:F5}, " +
-                            $"trackEnabled={track.enabled}, children={track.CachedChildren.Length}, " +
+                            $"trackEnabled={track.enabled}, children={track.CachedChildren.Count}, " +
                             $"animatorEnabled={target.Animator.enabled}, worldCount={target.Animator.WorldPosition.Count}, " +
                             $"property={property.GetLerpedValue(atsc.CurrentJsonTime):F3}, " +
                             $"local={target.transform.localPosition:F3}, parent={target.transform.parent.position:F3}");

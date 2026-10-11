@@ -18,20 +18,21 @@ namespace Beatmap.Animations
         public ObjectAnimator Animator;
 
         public Dictionary<string, IAnimateProperty> AnimatedProperties = new Dictionary<string, IAnimateProperty>();
-        private IAnimateProperty[] properties = new IAnimateProperty[0];
+        // Removing an event can remove dictionary entries, so keep a reusable snapshot of the properties.
+        private readonly List<KeyValuePair<string, IAnimateProperty>> properties = new();
 
         public int UpdateVersion { get; private set; }
 
         public List<TrackAnimator> Parents = new List<TrackAnimator>();
         public List<ObjectAnimator> Children = new List<ObjectAnimator>();
-        public ObjectAnimator[] CachedChildren = new ObjectAnimator[] {};
+        public readonly List<ObjectAnimator> CachedChildren = new();
 
         private readonly Dictionary<string, Action<ObjectAnimator>> childPushers = new();
 
         // Enhancements attach after parenting events load, so keep worldPositionStays for new children.
         public bool ParentWorldPositionStays;
 
-        public void AddEvent(BaseCustomEvent ev)
+        public void AddEvent(BaseCustomEvent ev, bool refresh = true)
         {
             foreach (var jprop in ev.Data)
             {
@@ -41,7 +42,6 @@ namespace Beatmap.Animations
                     if (AnimatedProperties.Remove(jprop.Key))
                     {
                         childPushers.Remove(jprop.Key);
-                        RefreshProperties();
                     }
 
                     continue;
@@ -61,15 +61,19 @@ namespace Beatmap.Animations
                 AddPointDef(p, jprop.Key, ev);
             }
 
-            RefreshProperties();
+            if (refresh)
+                RefreshProperties();
         }
+
+        public void CompleteEventLoad() => RefreshProperties();
 
         public void RemoveEvent(BaseCustomEvent ev)
         {
-            foreach (var prop in AnimatedProperties.Keys.ToList())
+            foreach (var pair in properties)
             {
-                AnimatedProperties[prop].RemoveEvent(ev);
-                if (AnimatedProperties[prop].IsEmpty())
+                var prop = pair.Key;
+                pair.Value.RemoveEvent(ev);
+                if (pair.Value.IsEmpty())
                 {
                     foreach (var child in CachedChildren)
                         child.RestoreRemovedTrackProperty(prop);
@@ -85,12 +89,11 @@ namespace Beatmap.Animations
         {
             // Structural edits invalidate held target poses even when the remaining sampled values are unchanged.
             UpdateVersion++;
-            properties = new IAnimateProperty[AnimatedProperties.Count];
-            var i = 0;
+            properties.Clear();
             foreach (var prop in AnimatedProperties)
             {
                 prop.Value.Sort();
-                properties[i++] = prop.Value;
+                properties.Add(prop);
             }
 
             DoUpdate();
@@ -106,16 +109,16 @@ namespace Beatmap.Animations
         private void DoUpdate()
         {
             var time = Atsc.CurrentJsonTime;
-            if (CachedChildren.Length == 0)
+            if (CachedChildren.Count == 0)
             {
                 enabled = false;
                 if (Animator != null) Animator.enabled = false;
                 return;
             }
             var changed = false;
-            for (var i = 0; i < properties.Length; ++i)
+            for (var i = 0; i < properties.Count; ++i)
             {
-                var prop = properties[i];
+                var prop = properties[i].Value;
                 if (time >= prop.StartTime)
                 {
                     changed |= prop.UpdateProperty(time);
@@ -132,13 +135,16 @@ namespace Beatmap.Animations
         public void AddChild(ObjectAnimator oa)
         {
             Children.Add(oa);
-            OnChildrenChanged();
+            if (oa.enabled)
+                CachedChildren.Add(oa);
+            RefreshChildActivation();
         }
 
         public void RemoveChild(ObjectAnimator oa)
         {
             Children.Remove(oa);
-            OnChildrenChanged();
+            CachedChildren.Remove(oa);
+            RefreshChildActivation();
         }
 
         public void RefreshPathAnimations()
@@ -156,16 +162,34 @@ namespace Beatmap.Animations
 
         public void OnChildrenChanged()
         {
-            CachedChildren = Children.Where(o => o.enabled).ToArray();
-            enabled = CachedChildren.Length > 0;
-            if (Animator != null) Animator.enabled = enabled;
-            Parents.ForEach((t) => t.OnChildrenChanged());
+            CachedChildren.Clear();
+            foreach (var child in Children)
+            {
+                if (child.enabled)
+                    CachedChildren.Add(child);
+            }
+
+            RefreshChildActivation();
+        }
+
+        private void RefreshChildActivation()
+        {
+            enabled = CachedChildren.Count > 0;
+            if (Animator == null || Animator.enabled == enabled)
+                return;
+
+            Animator.enabled = enabled;
+            // A track proxy stays in its parents' child lists while inactive. Only an activation change
+            // affects those parents, and their child order must remain the authored order.
+            foreach (var parent in Parents)
+                parent.OnChildrenChanged();
         }
 
         // Push values before ObjectAnimator applies them. Playback already pushes each frame.
         public void PushOnStoppedTimeChanged()
         {
-            if (!isActiveAndEnabled || Atsc.IsPlaying) return;
+            if (!isActiveAndEnabled || Atsc.IsPlaying)
+                return;
             DoUpdate();
         }
 
@@ -181,12 +205,12 @@ namespace Beatmap.Animations
             Track.ObjectParentTransform.localScale = Vector3.one;
 
             AnimatedProperties.Clear();
-            properties = Array.Empty<IAnimateProperty>();
+            properties.Clear();
             childPushers.Clear();
             UpdateVersion = 0;
             Parents.Clear();
             Children.Clear();
-            CachedChildren = Array.Empty<ObjectAnimator>();
+            CachedChildren.Clear();
             ParentWorldPositionStays = false;
             enabled = false;
             if (Animator != null)
@@ -205,90 +229,90 @@ namespace Beatmap.Animations
         {
             switch (key)
             {
-            case "_dissolve":
-            case "dissolve":
-                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
-                break;
-            case "_dissolveArrow":
-            case "dissolveArrow":
-                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
-                break;
-            case "_localRotation":
-            case "localRotation":
-                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
-                break;
-            case "rotation":
-                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldRotation.Add(v); }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
-                break;
-            case "_rotation":
-            case "offsetWorldRotation":
-                AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
-                break;
-            case "_position":
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v * BeatmapConstant.LaneSize), PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
-            case "offsetPosition":
-                // Convert gameplay offsets from lane units to world units.
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.GameplayObject) animator.OffsetPosition.Add(v * BeatmapConstant.LaneSize); }, PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
-            case "_localPosition":
-                AddPointDef<Vector3>(
-                    source,
-                    (ObjectAnimator animator, Vector3 v) =>
+                case AnimationPropertyKeys.LegacyDissolveKey:
+                case AnimationPropertyKeys.DissolveKey:
+                    AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Opacity.Add(f), PointDataParsers.ParseFloat, p, 1);
+                    break;
+                case AnimationPropertyKeys.LegacyDissolveArrowKey:
+                case AnimationPropertyKeys.DissolveArrowKey:
+                    AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.OpacityArrow.Add(f), PointDataParsers.ParseFloat, p, 1);
+                    break;
+                case AnimationPropertyKeys.LegacyLocalRotationKey:
+                case AnimationPropertyKeys.LocalRotationKey:
+                    AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.LocalRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                    break;
+                case AnimationPropertyKeys.RotationKey:
+                    AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.Transform) animator.WorldRotation.Add(v); }, PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                    break;
+                case AnimationPropertyKeys.LegacyRotationKey:
+                case AnimationPropertyKeys.OffsetWorldRotationKey:
+                    AddPointDef<Quaternion>(source, (ObjectAnimator animator, Quaternion v) => animator.WorldRotation.Add(v), PointDataParsers.ParseQuaternion, p, Quaternion.identity);
+                    break;
+                case AnimationPropertyKeys.LegacyPositionKey:
+                    AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.OffsetPosition.Add(v * BeatmapConstant.LaneSize), PointDataParsers.ParseVector3, p, Vector3.zero);
+                    break;
+                case AnimationPropertyKeys.OffsetPositionKey:
+                    // Convert gameplay offsets from lane units to world units.
+                    AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => { if (animator.TargetType == ObjectAnimator.TargetTypes.GameplayObject) animator.OffsetPosition.Add(v * BeatmapConstant.LaneSize); }, PointDataParsers.ParseVector3, p, Vector3.zero);
+                    break;
+                case AnimationPropertyKeys.LegacyLocalPositionKey:
+                    AddPointDef<Vector3>(
+                        source,
+                        (ObjectAnimator animator, Vector3 v) =>
+                        {
+                            if (animator.TargetType == ObjectAnimator.TargetTypes.Transform)
+                                animator.LocalPosition.Add(v * BeatmapConstant.LaneSize);
+                        },
+                        PointDataParsers.ParseVector3,
+                        p,
+                        Vector3.zero);
+                    break;
+                case AnimationPropertyKeys.LocalPositionKey:
+                    AddPointDef<Vector3>(
+                        source,
+                        (ObjectAnimator animator, Vector3 v) =>
+                        {
+                            if (animator.TargetType == ObjectAnimator.TargetTypes.Transform)
+                                animator.LocalPosition.Add(v);
+                        },
+                        PointDataParsers.ParseVector3,
+                        p,
+                        Vector3.zero);
+                    break;
+                case AnimationPropertyKeys.PositionKey:
+                    AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) =>
                     {
                         if (animator.TargetType == ObjectAnimator.TargetTypes.Transform)
-                            animator.LocalPosition.Add(v * BeatmapConstant.LaneSize);
-                    },
-                    PointDataParsers.ParseVector3,
-                    p,
-                    Vector3.zero);
-                break;
-            case "localPosition":
-                AddPointDef<Vector3>(
-                    source,
-                    (ObjectAnimator animator, Vector3 v) =>
-                    {
-                        if (animator.TargetType == ObjectAnimator.TargetTypes.Transform)
-                            animator.LocalPosition.Add(v);
-                    },
-                    PointDataParsers.ParseVector3,
-                    p,
-                    Vector3.zero);
-                break;
-            case "position":
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) =>
-                {
-                    if (animator.TargetType == ObjectAnimator.TargetTypes.Transform)
-                    {
-                        animator.WorldPosition.Add(v);
-                    }
-                }, PointDataParsers.ParseVector3, p, Vector3.zero);
-                break;
-            case "_scale":
-            case "scale":
-                AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
-                break;
-            case "_color":
-            case "color":
-                AddPointDef<Color>(source, (ObjectAnimator animator, Color v) => { if (animator.TargetType != ObjectAnimator.TargetTypes.Transform) animator.Colors.Add(v); }, PointDataParsers.ParseColor, p, Color.white);
-                break;
-            case "_time":
-            case "time":
-                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
-                break;
-            case "_interactable":
-            case "interactable":
-                AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Interactable.Add(f), PointDataParsers.ParseFloat, p, 1);
-                break;
+                        {
+                            animator.WorldPosition.Add(v);
+                        }
+                    }, PointDataParsers.ParseVector3, p, Vector3.zero);
+                    break;
+                case AnimationPropertyKeys.LegacyScaleKey:
+                case AnimationPropertyKeys.ScaleKey:
+                    AddPointDef<Vector3>(source, (ObjectAnimator animator, Vector3 v) => animator.Scale.Add(v), PointDataParsers.ParseVector3, p, Vector3.one);
+                    break;
+                case AnimationPropertyKeys.LegacyColorKey:
+                case AnimationPropertyKeys.ColorKey:
+                    AddPointDef<Color>(source, (ObjectAnimator animator, Color v) => { if (animator.TargetType != ObjectAnimator.TargetTypes.Transform) animator.Colors.Add(v); }, PointDataParsers.ParseColor, p, Color.white);
+                    break;
+                case AnimationPropertyKeys.LegacyTimeKey:
+                case AnimationPropertyKeys.TimeKey:
+                    AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.SetLifeTime(f), PointDataParsers.ParseFloat, p, -1);
+                    break;
+                case AnimationPropertyKeys.LegacyInteractableKey:
+                case AnimationPropertyKeys.InteractableKey:
+                    AddPointDef<float>(source, (ObjectAnimator animator, float f) => animator.Interactable.Add(f), PointDataParsers.ParseFloat, p, 1);
+                    break;
             }
         }
 
         private void AddPointDef<T>(BaseCustomEvent source, Action<ObjectAnimator, T> _setter, PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p, T _default) where T : struct
         {
-            if (AnimateProperty<T>.SkipsMissingPointDefinition(p))
+            if (AnimateProperty<T>.SkipsMissingPointDefinition(p, source))
                 return;
 
-            Action<T> setter = (v) => { for (var i = 0; i < CachedChildren.Length; ++i) { _setter(CachedChildren[i], v); } };
+            Action<T> setter = (v) => { for (var i = 0; i < CachedChildren.Count; ++i) { _setter(CachedChildren[i], v); } };
 
             var animateProperty = GetAnimateProperty<T>(p.Key, setter, _default);
             animateProperty.AddPointDef(parser, p, source);

@@ -21,6 +21,7 @@ public class TracksManager : MonoBehaviour
     private readonly Stack<Track> trackPool = new();
     private readonly Dictionary<Vector3, Track> loadedTracks = new();
     private readonly Dictionary<string, TrackAnimator> animationTracks = new();
+    internal readonly ObjectPathAnimationRegistry PathAnimations = new();
 
     private readonly List<BeatmapObjectContainerCollection> objectContainerCollections = new();
 
@@ -201,6 +202,7 @@ public class TracksManager : MonoBehaviour
     // so reused tracks start with fresh map state.
     public void ResetAnimationTracks()
     {
+        PathAnimations.Reset();
         // Reset shared smoothed-base state even when the incoming map has no named animation tracks.
         BaseProviderManager.ResetForMapLoad();
 
@@ -257,6 +259,7 @@ public class TracksManager : MonoBehaviour
 
     public void RefreshBpmTiming(float jsonTime)
     {
+        PathAnimations.RefreshBpmTiming();
         var changedSongTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);
         foreach (var collection in objectContainerCollections)
         {

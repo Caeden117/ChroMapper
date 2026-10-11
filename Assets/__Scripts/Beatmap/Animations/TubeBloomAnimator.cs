@@ -10,39 +10,39 @@ namespace Beatmap.Animations
 {
     public class TubeBloomAnimator : MonoBehaviour
     {
-        private const string ComponentName = "TubeBloomPrePassLight";
+        private const string ComponentKey = "TubeBloomPrePassLight";
+        private const string ColorAlphaMultiplierKey = "colorAlphaMultiplier";
+        private const string BloomFogIntensityMultiplierKey = "bloomFogIntensityMultiplier";
 
         public AudioTimeSyncController Atsc;
 
         private readonly Dictionary<string, AnimateProperty<float>> animatedProperties = new();
         private readonly Dictionary<string, float[]> baselines = new();
-        private IAnimateProperty[] properties = Array.Empty<IAnimateProperty>();
+        // Keep a reusable snapshot so removing events can delete dictionary entries during iteration.
+        private readonly List<KeyValuePair<string, AnimateProperty<float>>> properties = new(2);
         private ParametricBloomFogLightController[] controllers = Array.Empty<ParametricBloomFogLightController>();
         private TrackAnimator trackAnimator;
         private bool resolved;
 
         private void Awake() => trackAnimator = GetComponent<TrackAnimator>();
 
-        public void AddEvent(BaseCustomEvent ev)
+        public void AddEvent(BaseCustomEvent ev, bool refresh = true)
         {
-            if (ev.Data?[ComponentName] is not JSONObject component) return;
+            if (ev.Data?[ComponentKey] is not JSONObject component) return;
 
             foreach (var jprop in component)
             {
                 if (jprop.Value == null || jprop.Value.IsNull)
                 {
-                    if (animatedProperties.Remove(jprop.Key))
-                    {
-                        RefreshProperties();
-                    }
+                    animatedProperties.Remove(jprop.Key);
 
                     continue;
                 }
 
                 switch (jprop.Key)
                 {
-                    case "colorAlphaMultiplier":
-                    case "bloomFogIntensityMultiplier":
+                    case ColorAlphaMultiplierKey:
+                    case BloomFogIntensityMultiplierKey:
                         break;
                     default:
                         continue;
@@ -60,23 +60,28 @@ namespace Beatmap.Animations
                     Repeat = ev.DataRepeat ?? 0
                 };
 
+                if (AnimateProperty<float>.SkipsMissingPointDefinition(p, ev))
+                    continue;
+
                 GetProperty(jprop.Key).AddPointDef(PointDataParsers.ParseFloat, p, ev);
             }
 
-            RefreshProperties();
+            if (refresh) RefreshProperties();
         }
+
+        public void CompleteEventLoad() => RefreshProperties();
 
         // Drop empty properties before RefreshProperties tries to sort them.
         public void RemoveEvent(BaseCustomEvent ev)
         {
-            foreach (var key in animatedProperties.Keys.ToList())
+            foreach (var pair in properties)
             {
-                var prop = animatedProperties[key];
+                var prop = pair.Value;
                 prop.RemoveEvent(ev);
                 if (prop.IsEmpty())
                 {
-                    RestoreBaseline(key);
-                    animatedProperties.Remove(key);
+                    RestoreBaseline(pair.Key);
+                    animatedProperties.Remove(pair.Key);
                 }
             }
 
@@ -87,15 +92,14 @@ namespace Beatmap.Animations
 
         private void RefreshProperties()
         {
-            properties = new IAnimateProperty[animatedProperties.Count];
-            var i = 0;
-            foreach (var prop in animatedProperties.Values)
+            properties.Clear();
+            foreach (var pair in animatedProperties)
             {
-                prop.Sort();
-                properties[i++] = prop;
+                pair.Value.Sort();
+                properties.Add(pair);
             }
 
-            enabled = properties.Length > 0;
+            enabled = properties.Count > 0;
         }
 
         private void Update() => PushAt(Atsc != null ? Atsc.CurrentJsonTime : 0);
@@ -109,7 +113,7 @@ namespace Beatmap.Animations
 
         private void PushAt(float time)
         {
-            if (properties.Length == 0) return;
+            if (properties.Count == 0) return;
 
             // Resolve lights after enhancements have spawned them, and save their authored values for backward seeks.
             if (!resolved)
@@ -119,7 +123,7 @@ namespace Beatmap.Animations
 
             if (controllers.Length == 0) return;
 
-            foreach (var pair in animatedProperties)
+            foreach (var pair in properties)
             {
                 if (time >= pair.Value.StartTime)
                 {
@@ -177,7 +181,7 @@ namespace Beatmap.Animations
         {
             animatedProperties.Clear();
             baselines.Clear();
-            properties = Array.Empty<IAnimateProperty>();
+            properties.Clear();
             controllers = Array.Empty<ParametricBloomFogLightController>();
             resolved = false;
             enabled = false;
@@ -185,9 +189,9 @@ namespace Beatmap.Animations
 
         public void RefreshBpmTiming()
         {
-            foreach (var property in properties)
+            foreach (var pair in properties)
             {
-                property.RefreshBpmTiming();
+                pair.Value.RefreshBpmTiming();
             }
 
             PushOnStoppedTimeChanged();
@@ -215,8 +219,8 @@ namespace Beatmap.Animations
 
         private float ReadParam(ParametricBloomFogLightController controller, string key) => key switch
         {
-            "colorAlphaMultiplier" => controller.ColorAlphaMultiplier,
-            "bloomFogIntensityMultiplier" => controller.BloomFogIntensityMultiplier,
+            ColorAlphaMultiplierKey => controller.ColorAlphaMultiplier,
+            BloomFogIntensityMultiplierKey => controller.BloomFogIntensityMultiplier,
             _ => 0f
         };
 
@@ -224,9 +228,9 @@ namespace Beatmap.Animations
         private void RestoreBaseline(string key)
         {
             if (!baselines.TryGetValue(key, out var values)) return;
-            for (var i = 0; i < controllers.Length && i < baselines[key].Length; ++i)
+            for (var i = 0; i < controllers.Length && i < values.Length; ++i)
             {
-                WriteParam(controllers[i], key, baselines[key][i]);
+                WriteParam(controllers[i], key, values[i]);
             }
         }
 
@@ -242,10 +246,10 @@ namespace Beatmap.Animations
         {
             switch (key)
             {
-                case "colorAlphaMultiplier":
+                case ColorAlphaMultiplierKey:
                     controller.SetColorAlphaMultiplier(value);
                     break;
-                case "bloomFogIntensityMultiplier":
+                case BloomFogIntensityMultiplierKey:
                     controller.SetBloomFogIntensityMultiplier(value);
                     break;
             }

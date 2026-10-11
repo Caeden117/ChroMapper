@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
+using Beatmap.Base;
 using Beatmap.Base.Customs;
 
 namespace Beatmap.Animations
@@ -20,6 +21,9 @@ namespace Beatmap.Animations
             public float TimeBegin;
             public float TimeEnd;
             public int Repeat;
+            internal int PreparedIndex;
+            internal int PreparedLength;
+            internal BaseObject LogSource;
         }
 
         // A point can combine literal values with live base providers.
@@ -50,7 +54,15 @@ namespace Beatmap.Animations
     public class PointDefinition<T> : IPointDefinition, IComparable<PointDefinition<T>>
         where T : struct
     {
+        private const string BaseProviderPrefixKey = "base";
+        private const string EasingPrefixKey = "ease";
+        private const string LinearEasingKey = "easeLinear";
+        private const string SplineCatmullRomKey = "splineCatmullRom";
+        private const string LerpHSVKey = "lerpHSV";
+
         public BaseCustomEvent Source;
+        private readonly AnimationLogContext logContext;
+        private int parsingPointIndex;
         public PointData[] Points;
 
         public float StartTime { get; private set; } = 0;
@@ -72,14 +84,18 @@ namespace Beatmap.Animations
             StartTime = start;
         }
 
-        public PointDefinition(Parser parser, IPointDefinition.UntypedParams p, BaseCustomEvent source)
+        public PointDefinition(
+            Parser parser,
+            IPointDefinition.UntypedParams p,
+            BaseCustomEvent source)
         {
             Source = source;
+            logContext = new AnimationLogContext(p, source);
             StartTime = p.Time;
             Transition = p.Transition;
             Duration = p.Duration;
             // Use Heck's curve variants for event easing, including Back, Bounce, Elastic, and Expo.
-            Easing = global::Easing.HeckNamed(p.Easing ?? "easeLinear");
+            Easing = global::Easing.HeckNamed(p.Easing ?? LinearEasingKey);
 
             // Keep the parser argument for existing callers. T determines how values are decoded.
             var data = ResolvePointsNode(p);
@@ -101,6 +117,7 @@ namespace Beatmap.Animations
             var parsed = new List<PointData>(data.Count);
             for (var i = 0; i < data.Count; ++i)
             {
+                parsingPointIndex = i;
                 var point = ParsePoint(data[i].AsArray, p.TimeBegin, p.TimeEnd, barePoint: false);
                 if (point != null)
                 {
@@ -178,6 +195,11 @@ namespace Beatmap.Animations
         // Only the single-point shorthand may omit time.
         private PointData ParsePoint(JSONArray row, float tbegin, float tend, bool barePoint)
         {
+            // Literal points are reparsed when pooled objects attach. They need no provider segments,
+            // modifiers, or temporary lists. Keep the full parser for points that use those features.
+            if (TryParseLiteralPoint(row, tbegin, tend, barePoint, out var literal))
+                return literal;
+
             var segments = new List<IPointDefinition.IValueSegment>();
             var staticRun = new List<float>();
             var flags = new List<string>();
@@ -190,16 +212,20 @@ namespace Beatmap.Animations
                 if (item is JSONArray modifierNode)
                 {
                     var modifier = ParseModifier(modifierNode);
-                    if (modifier == null) return null;
+                    if (modifier == null)
+                        return null;
+
                     modifiers.Add(modifier);
                 }
                 else if (item is JSONString)
                 {
-                    if (item.Value.StartsWith("base", StringComparison.Ordinal))
+                    if (item.Value.StartsWith(BaseProviderPrefixKey, StringComparison.Ordinal))
                     {
                         FlushStaticRun(segments, staticRun);
-                        var segment = BaseProviderManager.Resolve(item.Value);
-                        if (segment == null) return null;
+                        var segment = BaseProviderManager.Resolve(item.Value, logContext, parsingPointIndex);
+                        if (segment == null)
+                            return null;
+
                         segments.Add(segment);
                         hasLiveSegment = true;
                     }
@@ -219,7 +245,7 @@ namespace Beatmap.Animations
                 }
                 else
                 {
-                    Debug.LogError($"Point contains an unsupported entry [{item.Value}] and was skipped.");
+                    LogError($"Point contains an unsupported entry [{item.Value}] and was skipped.");
                     return null;
                 }
             }
@@ -232,7 +258,7 @@ namespace Beatmap.Animations
                 var minimumCount = barePoint ? dimension : dimension + 1;
                 if (staticRun.Count < minimumCount || staticRun.Count > requiredCount)
                 {
-                    Debug.LogError(
+                    LogError(
                         $"Point for [{typeof(T).Name}] must have {dimension} numbers plus an optional time; got {staticRun.Count} and it was skipped.");
                     return null;
                 }
@@ -275,7 +301,7 @@ namespace Beatmap.Animations
             }
             else
             {
-                Debug.LogError(
+                LogError(
                     $"Point for [{typeof(T).Name}] must have {dimension} numbers plus a time, but got {total} and it was skipped.");
                 return null;
             }
@@ -287,6 +313,66 @@ namespace Beatmap.Animations
                 ResolveTime(time, tbegin, tend),
                 ResolveEasing(flags),
                 ResolveLerp(flags));
+        }
+
+        private bool TryParseLiteralPoint(
+            JSONArray row,
+            float tbegin,
+            float tend,
+            bool barePoint,
+            out PointData point)
+        {
+            point = null;
+            Span<float> values = stackalloc float[5];
+            var count = 0;
+            string easingName = null;
+            var lerp = PointDataInterpolators.LinearLerp<T>();
+            for (var i = 0; i < row.Count; i++)
+            {
+                var item = row[i];
+                if (item is JSONNumber || item == null || item.IsNull)
+                {
+                    if (count < values.Length)
+                        values[count] = item == null || item.IsNull
+                            ? 0f
+                            : item.AsFloat;
+
+                    count++;
+                }
+                else if (item is JSONString)
+                {
+                    var flag = item.Value;
+                    if (flag.StartsWith(BaseProviderPrefixKey, StringComparison.Ordinal))
+                        return false;
+                    else if (easingName == null && flag.StartsWith(EasingPrefixKey, StringComparison.Ordinal))
+                        easingName = flag;
+                    if (flag == SplineCatmullRomKey)
+                        lerp = PointDataInterpolators.CatmullRomLerp<T>();
+                    if (flag == LerpHSVKey)
+                        lerp = PointDataInterpolators.HSVLerp<T>();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            var dimension = PointType<T>.Dimension;
+            if (count < (barePoint ? dimension : dimension + 1) || count > dimension + 1)
+            {
+                LogError(
+                    $"Point for [{typeof(T).Name}] must have {dimension} numbers plus an optional time; got {count} and it was skipped.");
+                return true;
+            }
+
+            point = new PointData(
+                PointType<T>.FromComponents(values),
+                null,
+                Array.Empty<PointModifier<T>>(),
+                ResolveTime(count > dimension ? values[dimension] : 0f, tbegin, tend),
+                easingName == null ? global::Easing.Linear : global::Easing.HeckNamed(easingName),
+                lerp);
+            return true;
         }
 
         private PointModifier<T> ParseModifier(JSONArray row)
@@ -304,16 +390,18 @@ namespace Beatmap.Animations
                 {
                     // Nested modifiers do not break a run of literal operands.
                     var inner = ParseModifier(innerNode);
-                    if (inner == null) return null;
+                    if (inner == null)
+                        return null;
                     nested.Add(inner);
                 }
                 else if (item is JSONString)
                 {
-                    if (item.Value.StartsWith("base", StringComparison.Ordinal))
+                    if (item.Value.StartsWith(BaseProviderPrefixKey, StringComparison.Ordinal))
                     {
                         FlushStaticRun(segments, staticRun);
-                        var segment = BaseProviderManager.Resolve(item.Value);
-                        if (segment == null) return null;
+                        var segment = BaseProviderManager.Resolve(item.Value, logContext, parsingPointIndex);
+                        if (segment == null)
+                            return null;
                         segments.Add(segment);
                         hasLiveSegment = true;
                     }
@@ -323,7 +411,7 @@ namespace Beatmap.Animations
                     }
                     else
                     {
-                        Debug.LogError("Modifier must have exactly one operation. The point was skipped.");
+                        LogError("Modifier must have exactly one operation. The point was skipped.");
                         return null;
                     }
                 }
@@ -333,14 +421,14 @@ namespace Beatmap.Animations
                 }
                 else
                 {
-                    Debug.LogError($"Modifier contains an unsupported entry [{item.Value}] and was skipped.");
+                    LogError($"Modifier contains an unsupported entry [{item.Value}] and was skipped.");
                     return null;
                 }
             }
 
             if (operation == null)
             {
-                Debug.LogError("Modifier must have one operation. The point was skipped.");
+                LogError("Modifier must have one operation. The point was skipped.");
                 return null;
             }
 
@@ -348,7 +436,7 @@ namespace Beatmap.Animations
             {
                 if (staticRun.Count != PointType<T>.Dimension)
                 {
-                    Debug.LogError(
+                    LogError(
                         $"Modifier for [{typeof(T).Name}] must have {PointType<T>.Dimension} numbers but got {staticRun.Count} and the point was skipped.");
                     return null;
                 }
@@ -372,7 +460,7 @@ namespace Beatmap.Animations
 
             if (total != PointType<T>.Dimension)
             {
-                Debug.LogError(
+                LogError(
                     $"Modifier for [{typeof(T).Name}] must have {PointType<T>.Dimension} numbers but got {total} and the point was skipped.");
                 return null;
             }
@@ -380,11 +468,18 @@ namespace Beatmap.Animations
             return new PointModifier<T>(null, segments.ToArray(), nested.ToArray(), operation);
         }
 
+        private void LogError(string message)
+        {
+            Debug.LogError($"{message} {logContext.Describe(parsingPointIndex)}");
+        }
+
         private static void FlushStaticRun(
             List<IPointDefinition.IValueSegment> segments,
             List<float> staticRun)
         {
-            if (staticRun.Count == 0) return;
+            if (staticRun.Count == 0)
+                return;
+
             segments.Add(new StaticValues(staticRun.ToArray()));
             staticRun.Clear();
         }
@@ -397,7 +492,7 @@ namespace Beatmap.Animations
         {
             foreach (var flag in flags)
             {
-                if (flag.StartsWith("ease", StringComparison.Ordinal))
+                if (flag.StartsWith(EasingPrefixKey, StringComparison.Ordinal))
                 {
                     return global::Easing.HeckNamed(flag);
                 }
@@ -412,12 +507,12 @@ namespace Beatmap.Animations
             foreach (var flag in flags)
             {
                 // Now catmull is in my google search history forever
-                if (flag == "splineCatmullRom")
+                if (flag == SplineCatmullRomKey)
                 {
                     lerp = PointDataInterpolators.CatmullRomLerp<T>();
                 }
 
-                if (flag == "lerpHSV")
+                if (flag == LerpHSVKey)
                 {
                     lerp = PointDataInterpolators.HSVLerp<T>();
                 }
@@ -482,7 +577,9 @@ namespace Beatmap.Animations
                 foreach (var segment in segments)
                 {
                     // Stop once the property's components are filled; the remaining value is the timestamp.
-                    if (offset >= buffer.Length) break;
+                    if (offset >= buffer.Length)
+                        break;
+
                     segment.Append(buffer, ref offset);
                 }
 
@@ -493,6 +590,11 @@ namespace Beatmap.Animations
         }
     }
 
+    // Parsed by PointDefinition<T>.ParseModifier from arrays such as [2, "opMul"].
+    // Point resolves the literal or live base-provider operand, then applies nested modifiers in authored order.
+    // The containing point or modifier applies Operation to its own value and this operand, before interpolation.
+    // This represents Heck.Animation.Modifier<T> and its type-specific subclasses. IValueSegment supplies
+    // Heck's IValues behavior, while PointType<T> supplies the type-specific conversion and operations.
     internal sealed class PointModifier<T>
         where T : struct
     {
@@ -536,7 +638,9 @@ namespace Beatmap.Animations
             var offset = 0;
             foreach (var segment in segments)
             {
-                if (offset >= buffer.Length) break;
+                if (offset >= buffer.Length)
+                    break;
+
                 segment.Append(buffer, ref offset);
             }
 
@@ -544,24 +648,33 @@ namespace Beatmap.Animations
         }
     }
 
+    internal static class PointModifierKeys
+    {
+        internal const string OpAddKey = "opAdd";
+        internal const string OpSubKey = "opSub";
+        internal const string OpMulKey = "opMul";
+        internal const string OpDivKey = "opDiv";
+        internal const string OpNoneKey = "opNone";
+    }
+
     internal static class PointType<T>
         where T : struct
     {
         internal static readonly int Dimension = ResolveDimension();
-        internal static readonly Func<float[], T> Convert = CreateConverter();
+        internal static readonly Func<float[], T> Convert = static values => FromComponents(values);
         internal static readonly Func<T, T, string, T> ApplyOperation = CreateOperations();
+
+        internal static T FromComponents(ReadOnlySpan<float> values) =>
+            typeof(T) == typeof(float) ? (T)(object)values[0]
+            : typeof(T) == typeof(Vector3) ? (T)(object)new Vector3(values[0], values[1], values[2])
+            : typeof(T) == typeof(Quaternion) ? (T)(object)Quaternion.Euler(values[0], values[1], values[2])
+            : (T)(object)new Color(values[0], values[1], values[2], values[3]);
 
         private static int ResolveDimension() =>
             typeof(T) == typeof(float) ? 1
             : typeof(T) == typeof(Vector3) || typeof(T) == typeof(Quaternion) ? 3
             : typeof(T) == typeof(Color) ? 4
             : throw new Exception($"Unhandled point definition type {typeof(T).Name}");
-
-        private static Func<float[], T> CreateConverter() =>
-            typeof(T) == typeof(float) ? values => (T)(object)values[0]
-            : typeof(T) == typeof(Vector3) ? values => (T)(object)new Vector3(values[0], values[1], values[2])
-            : typeof(T) == typeof(Quaternion) ? values => (T)(object)Quaternion.Euler(values[0], values[1], values[2])
-            : values => (T)(object)new Color(values[0], values[1], values[2], values[3]);
 
         private static Func<T, T, string, T> CreateOperations() =>
             typeof(T) == typeof(float)
@@ -571,11 +684,11 @@ namespace Beatmap.Animations
                     var b = (float)(object)modifier;
                     return (T)(object)(operation switch
                     {
-                        "opAdd" => a + b,
-                        "opSub" => a - b,
-                        "opMul" => a * b,
-                        "opDiv" => a / b,
-                        "opNone" => a,
+                        PointModifierKeys.OpAddKey => a + b,
+                        PointModifierKeys.OpSubKey => a - b,
+                        PointModifierKeys.OpMulKey => a * b,
+                        PointModifierKeys.OpDivKey => a / b,
+                        PointModifierKeys.OpNoneKey => a,
                         _ => throw new Exception($"[{operation}] cannot be performed on type float.")
                     });
                 }
@@ -586,11 +699,11 @@ namespace Beatmap.Animations
                     var b = (Vector3)(object)modifier;
                     return (T)(object)(operation switch
                     {
-                        "opAdd" => a + b,
-                        "opSub" => a - b,
-                        "opMul" => Vector3.Scale(a, b),
-                        "opDiv" => new Vector3(a.x / b.x, a.y / b.y, a.z / b.z),
-                        "opNone" => a,
+                        PointModifierKeys.OpAddKey => a + b,
+                        PointModifierKeys.OpSubKey => a - b,
+                        PointModifierKeys.OpMulKey => Vector3.Scale(a, b),
+                        PointModifierKeys.OpDivKey => new Vector3(a.x / b.x, a.y / b.y, a.z / b.z),
+                        PointModifierKeys.OpNoneKey => a,
                         _ => throw new Exception($"[{operation}] cannot be performed on type Vector3.")
                     });
                 }
@@ -602,11 +715,11 @@ namespace Beatmap.Animations
                     var b = ((Quaternion)(object)modifier).eulerAngles;
                     var result = operation switch
                     {
-                        "opAdd" => a + b,
-                        "opSub" => a - b,
-                        "opMul" => Vector3.Scale(a, b),
-                        "opDiv" => new Vector3(a.x / b.x, a.y / b.y, a.z / b.z),
-                        "opNone" => a,
+                        PointModifierKeys.OpAddKey => a + b,
+                        PointModifierKeys.OpSubKey => a - b,
+                        PointModifierKeys.OpMulKey => Vector3.Scale(a, b),
+                        PointModifierKeys.OpDivKey => new Vector3(a.x / b.x, a.y / b.y, a.z / b.z),
+                        PointModifierKeys.OpNoneKey => a,
                         _ => throw new Exception($"[{operation}] cannot be performed on type Quaternion.")
                     };
                     return (T)(object)Quaternion.Euler(result);
@@ -617,11 +730,11 @@ namespace Beatmap.Animations
                 var b = (Color)(object)modifier;
                 return (T)(object)(operation switch
                 {
-                    "opAdd" => a + b,
-                    "opSub" => a - b,
-                    "opMul" => a * b,
-                    "opDiv" => new Color(a.r / b.r, a.g / b.g, a.b / b.b, a.a / b.a),
-                    "opNone" => a,
+                    PointModifierKeys.OpAddKey => a + b,
+                    PointModifierKeys.OpSubKey => a - b,
+                    PointModifierKeys.OpMulKey => a * b,
+                    PointModifierKeys.OpDivKey => new Color(a.r / b.r, a.g / b.g, a.b / b.b, a.a / b.a),
+                    PointModifierKeys.OpNoneKey => a,
                     _ => throw new Exception($"[{operation}] cannot be performed on type Color.")
                 });
             };
@@ -650,15 +763,15 @@ namespace Beatmap.Animations
                 {
                     // Intentionally not supporting baseSaber_Color since those don't mirror with left handed
                     // mode while baseNote_Color does. Should almost always use baseNote over baseSaber.
-                    "baseNote0Color" => ColorScheme.LeftNoteColor,
-                    "baseNote1Color" => ColorScheme.RightNoteColor,
-                    "baseEnvironmentColor0" => ColorScheme.EnvironmentLeftColor,
-                    "baseEnvironmentColor1" => ColorScheme.EnvironmentRightColor,
-                    "baseEnvironmentColorW" => ColorScheme.EnvironmentWhiteColor,
-                    "baseEnvironmentColor0Boost" => ColorScheme.EnvironmentLeftBoostColor,
-                    "baseEnvironmentColor1Boost" => ColorScheme.EnvironmentRightBoostColor,
-                    "baseEnvironmentColorWBoost" => ColorScheme.EnvironmentWhiteBoostColor,
-                    "baseObstaclesColor" => ColorScheme.ObstacleColor,
+                    BaseColorProviderKeys.BaseNote0ColorKey => ColorScheme.LeftNoteColor,
+                    BaseColorProviderKeys.BaseNote1ColorKey => ColorScheme.RightNoteColor,
+                    BaseColorProviderKeys.BaseEnvironmentColor0Key => ColorScheme.EnvironmentLeftColor,
+                    BaseColorProviderKeys.BaseEnvironmentColor1Key => ColorScheme.EnvironmentRightColor,
+                    BaseColorProviderKeys.BaseEnvironmentColorWKey => ColorScheme.EnvironmentWhiteColor,
+                    BaseColorProviderKeys.BaseEnvironmentColor0BoostKey => ColorScheme.EnvironmentLeftBoostColor,
+                    BaseColorProviderKeys.BaseEnvironmentColor1BoostKey => ColorScheme.EnvironmentRightBoostColor,
+                    BaseColorProviderKeys.BaseEnvironmentColorWBoostKey => ColorScheme.EnvironmentWhiteBoostColor,
+                    BaseColorProviderKeys.BaseObstaclesColorKey => ColorScheme.ObstacleColor,
                     _ => DefaultColors.White
                 };
             }
@@ -679,10 +792,10 @@ namespace Beatmap.Animations
 
                 result = colorOp switch
                 {
-                    "opAdd" => result + subColor,
-                    "opSub" => result - subColor,
-                    "opMul" => result * subColor,
-                    "opDiv" => new Color(
+                    PointModifierKeys.OpAddKey => result + subColor,
+                    PointModifierKeys.OpSubKey => result - subColor,
+                    PointModifierKeys.OpMulKey => result * subColor,
+                    PointModifierKeys.OpDivKey => new Color(
                         result.r / subColor.r,
                         result.g / subColor.g,
                         result.b / subColor.b,

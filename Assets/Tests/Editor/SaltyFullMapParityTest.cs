@@ -2528,7 +2528,7 @@ namespace Tests.Editor
                     .Select(g => $"{g.Key.GetHashCode():X8}x{g.Count()}")
                     .ToList();
                 report.AppendLine($"  trackAnim[{kv.Key}]: children={kv.Value.Children.Count} " +
-                    $"cached={kv.Value.CachedChildren.Length} enabled={kv.Value.enabled} " +
+                    $"cached={kv.Value.CachedChildren.Count} enabled={kv.Value.enabled} " +
                     $"dupChildren={(dups.Count == 0 ? "<none>" : string.Join(",", dups))} " +
                     $"pushSubs={CountEarlyPushSubscriptions(atsc, kv.Value)}");
             }

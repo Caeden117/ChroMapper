@@ -186,7 +186,7 @@ public class BasicEventEffectManager : MonoBehaviour
             manager!.Register(controller, strict);
         }
         else
-            Debug.LogError("Could not find manager for type " + controller.Type);
+            Debug.LogError($"Could not find manager for event type [{controller.Type}], light ID [{controller.ID}], object [{controller.name}].", controller);
     }
 
     // Environment-enhancement registrations (duplicates, ILightWithId retargets, geometry lights) follow
@@ -201,7 +201,7 @@ public class BasicEventEffectManager : MonoBehaviour
             manager!.Register(controller, requestedKey);
         }
         else
-            Debug.LogError("Could not find manager for type " + controller.Type);
+            Debug.LogError($"Could not find manager for event type [{controller.Type}], light ID [{controller.ID}], object [{controller.name}].", controller);
     }
 
     public void Unregister(LightController controller)
@@ -214,7 +214,7 @@ public class BasicEventEffectManager : MonoBehaviour
             manager!.Unregister(controller);
         }
         else
-            Debug.LogError("Could not find manager for type " + controller.Type);
+            Debug.LogError($"Could not find manager for event type [{controller.Type}], light ID [{controller.ID}], object [{controller.name}].", controller);
     }
 }
 

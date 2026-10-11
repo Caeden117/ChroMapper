@@ -313,7 +313,7 @@ namespace Tests.Editor
             var expectedLastWins = 3f * BeatmapConstant.LaneSize; // V2 _position is lane-scaled.
 
             Assert.That(
-                parent.CachedChildren.Length,
+                parent.CachedChildren.Count,
                 Is.EqualTo(1),
                 "The parent track must receive the child track's animator so its events push somewhere.");
             Assert.That(

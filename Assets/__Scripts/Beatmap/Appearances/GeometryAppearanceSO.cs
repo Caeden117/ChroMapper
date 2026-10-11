@@ -51,7 +51,7 @@ namespace Beatmap.Appearances
                     {
                         if (!BeatSaberSongContainer.Instance.Map.Materials.TryGetValue(str.Value, out basemat))
                         {
-                            Debug.LogError($"Missing material \"{str.Value}\"!");
+                            Debug.LogError($"Missing material \"{str.Value}\"! {BeatmapLogContext.Describe(eh)}");
                             basemat = standard;
                         }
                     }
@@ -61,13 +61,13 @@ namespace Beatmap.Appearances
                     basemat = new BaseMaterial(obj);
                     break;
                 default:
-                    Debug.LogError("Geometry with invalid material!");
+                    Debug.LogError($"Geometry with invalid material [{eh.Geometry[eh.GeometryKeyMaterial]}]! {BeatmapLogContext.Describe(eh)}");
                     break;
             }
 
             ShaderType shader = ShaderType.Standard;
             if (!Enum.TryParse(basemat.Shader ?? "Standard", out shader))
-                Debug.LogError($"Invalid shader '{basemat.Shader}'!");
+                Debug.LogError($"Invalid shader '{basemat.Shader}'! {BeatmapLogContext.Describe(eh)}");
 
             var material = shader switch
             {

@@ -34,6 +34,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
     private readonly Dictionary<string, List<BaseCustomEvent>> parentAssignments = new();
     private readonly List<BaseCustomEvent> playerAssignments = new();
     private bool loadingEvents;
+    private readonly HashSet<TrackAnimator> pendingTrackAnimations = new();
+    private readonly HashSet<FogAnimator> pendingFogAnimations = new();
+    private readonly HashSet<TubeBloomAnimator> pendingTubeAnimations = new();
     private LegacyFogBinding legacyFogBinding;
 
     private void Start()
@@ -48,6 +51,7 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     public void LoadAll()
     {
+        tracksManager.PathAnimations.Reset();
         EventsByTrack = new Dictionary<string, List<BaseCustomEvent>>();
         parentAssignments.Clear();
         playerAssignments.Clear();
@@ -61,8 +65,24 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         loadingEvents = true;
         foreach (var ev in span) AddCustomEvent(ev);
         loadingEvents = false;
+        CompleteAnimationEventLoad();
         // Build the V2 fog assignment timeline after parsing all events so it retains callback times and file order.
         RebuildV2FogBinding();
+    }
+
+    // Parse the complete timeline before sorting. Parenting can sample existing track values, so flush
+    // the preceding events before applying an assignment as well as at the end of loading.
+    private void CompleteAnimationEventLoad()
+    {
+        foreach (var animator in pendingTrackAnimations)
+            animator.CompleteEventLoad();
+        foreach (var animator in pendingFogAnimations)
+            animator.CompleteEventLoad();
+        foreach (var animator in pendingTubeAnimations)
+            animator.CompleteEventLoad();
+        pendingTrackAnimations.Clear();
+        pendingFogAnimations.Clear();
+        pendingTubeAnimations.Clear();
     }
 
     public void RefreshBpmTiming(float jsonTime) => tracksManager.RefreshBpmTiming(jsonTime);
@@ -125,7 +145,10 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             }
 
             if (ev.Type == "AssignPathAnimation")
+            {
+                tracksManager.PathAnimations.Remove(track, ev);
                 tracksManager.GetAnimationTrack(track).RefreshPathAnimations();
+            }
 
             // Removing a V2 AnimateTrack event must stop both its fog properties and its object transforms.
             if (ev.Type == "AnimateTrack")
@@ -194,18 +217,26 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             EventsByTrack[track].Add(ev);
 
             if (ev.Type == "AssignPathAnimation")
+            {
+                tracksManager.PathAnimations.Add(track, ev);
                 tracksManager.GetAnimationTrack(track).RefreshPathAnimations();
+            }
 
             if (ev.Type == "AnimateTrack")
             {
                 var at = tracksManager.GetAnimationTrack(track);
-                at.AddEvent(ev);
+                at.AddEvent(ev, !loadingEvents);
+                if (loadingEvents)
+                    pendingTrackAnimations.Add(at);
 
                 // V2 fog parameters arrive through AnimateTrack. They can be parsed before AssignFogTrack
                 // because the fog animator writes only while bound.
                 if (Settings.Instance.MapVersion == 2 && HasLegacyFogProperty(ev))
                 {
-                    GetFogAnimator(track).AddLegacyEvent(ev);
+                    var fog = GetFogAnimator(track);
+                    fog.AddLegacyEvent(ev, !loadingEvents);
+                    if (loadingEvents)
+                        pendingFogAnimations.Add(fog);
                 }
             }
 
@@ -215,12 +246,18 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
             {
                 if (ev.Data?.HasKey("BloomFogEnvironment") == true)
                 {
-                    GetFogAnimator(track).AddEvent(ev);
+                    var fog = GetFogAnimator(track);
+                    fog.AddEvent(ev, !loadingEvents);
+                    if (loadingEvents)
+                        pendingFogAnimations.Add(fog);
                 }
 
                 if (ev.Data?.HasKey("TubeBloomPrePassLight") == true)
                 {
-                    GetTubeBloomAnimator(track).AddEvent(ev);
+                    var tube = GetTubeBloomAnimator(track);
+                    tube.AddEvent(ev, !loadingEvents);
+                    if (loadingEvents)
+                        pendingTubeAnimations.Add(tube);
                 }
             }
         }
@@ -229,6 +266,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
         {
             case "AssignTrackParent":
                 if (ev.DataParentTrack == null) return;
+                if (loadingEvents)
+                    CompleteAnimationEventLoad();
                 foreach (var child in ParentChildren(ev))
                 {
                     if (!parentAssignments.TryGetValue(child, out var assignments))
@@ -246,6 +285,8 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
                 break;
             case "AssignPlayerToTrack":
+                if (loadingEvents)
+                    CompleteAnimationEventLoad();
                 playerAssignments.Insert(playerAssignments.AsSpan().UpperBoundBy(ev, item => item, SortComparer), ev);
                 if (loadingEvents)
                     ApplyPlayerAssignment(ev);
@@ -286,9 +327,9 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
         if (!parent.Children.Contains(at.Animator))
         {
-            parent.Children.Add(at.Animator);
             at.Parents.Add(parent);
             at.OnChildrenChanged();
+            parent.AddChild(at.Animator);
         }
 
         at.Animator.BindPropertySource(parent);
@@ -311,13 +352,19 @@ public class CustomEventGridContainer : BeatmapObjectContainerCollection<BaseCus
 
     private void ApplyPlayerAssignment(BaseCustomEvent ev)
     {
-        if (ev.CustomTrack == null) return;
-        var targetKey = tracksManager.IsV2Map ? "_target" : "target";
-        var playerTarget = ev.Data?.HasKey(targetKey) == true ? (string)ev.Data[targetKey] : "Root";
+        if (ev.CustomTrack == null)
+            return;
+
+        var targetKey = tracksManager.IsV2Map
+            ? "_target"
+            : "target";
+        var playerTarget = ev.Data?.HasKey(targetKey) == true
+            ? (string)ev.Data[targetKey]
+            : "Root";
         if (playerTarget is not ("Root" or "Head"))
         {
             Debug.LogWarning(
-                $"AssignPlayerToTrack target [{playerTarget}] has no editor preview representation; the event was skipped.");
+                $"AssignPlayerToTrack target [{playerTarget}] has no editor preview representation; the event was skipped. {Beatmap.BeatmapLogContext.Describe(ev)}");
             return;
         }
 

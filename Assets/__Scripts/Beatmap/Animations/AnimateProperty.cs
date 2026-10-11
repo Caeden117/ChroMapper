@@ -14,6 +14,7 @@ namespace Beatmap.Animations
         public bool UpdateProperty(float time);
         public bool ResetEvaluatedValue();
         public void Sort();
+        public void CompletePreparedOrder();
         public void RemoveEvent(BaseCustomEvent ev);
         public void RefreshBpmTiming();
     }
@@ -46,12 +47,17 @@ namespace Beatmap.Animations
             return PointDefinitions.Count == 0;
         }
 
-        public static bool SkipsMissingPointDefinition(IPointDefinition.UntypedParams p)
+        public static bool SkipsMissingPointDefinition(
+            IPointDefinition.UntypedParams p,
+            BaseCustomEvent source = null)
         {
-            if (p.Points is not JSONString named) return false;
-            if (BeatSaberSongContainer.Instance.Map.PointDefinitions.ContainsKey(named.Value)) return false;
+            if (p.Points is not JSONString named)
+                return false;
 
-            Debug.LogError($"Could not find point definition [{named.Value}]");
+            if (BeatSaberSongContainer.Instance.Map.PointDefinitions.ContainsKey(named.Value))
+                return false;
+
+            Debug.LogError($"Could not find point definition [{named.Value}]. {new AnimationLogContext(p, source).Describe()}");
             return true;
         }
 
@@ -59,6 +65,33 @@ namespace Beatmap.Animations
         {
             sourceDefinitions.Add((parser, p, source));
             AddPointDefinitions(parser, p, source);
+        }
+
+        // Prepared indices belong to a shared source timeline. Each animator still owns its parsed points.
+        public void AddPreparedPointDef(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p,
+            BaseCustomEvent source)
+        {
+            sourceDefinitions.Add((parser, p, source));
+            var definition = new PointDefinition<T>(parser, p, source);
+            PointDefinitions.Add(definition);
+            if (p.PreparedIndex < 0)
+                return;
+            if (evaluated.Length == 0)
+                evaluated = new PointDefinition<T>[p.PreparedLength];
+            evaluated[p.PreparedIndex] = definition;
+        }
+
+        public void CompletePreparedOrder()
+        {
+            count = 0;
+            // Missing point references are skipped while binding. Compact their unused slots without sorting.
+            for (var i = 0; i < evaluated.Length; i++)
+            {
+                if (evaluated[i] != null)
+                    evaluated[count++] = evaluated[i];
+            }
+
+            StartTime = evaluated[0].StartTime;
         }
 
         private void AddPointDefinitions(PointDefinition<T>.Parser parser, IPointDefinition.UntypedParams p,
@@ -208,52 +241,12 @@ namespace Beatmap.Animations
                 PointDefinitions[i] = indexed[i].definition;
             }
 
-            evaluated = GetAllPointDefinitionsThatArentCutOff();
+            evaluated = AnimationDefinitionOrdering.FilterRepeatedSources(
+                PointDefinitions,
+                static definition => definition.StartTime,
+                static definition => definition.Source);
             StartTime = evaluated[0].StartTime;
             count = evaluated.Length;
-        }
-
-        // A new event stops the previous event's repeats, even at the same beat.
-        private PointDefinition<T>[] GetAllPointDefinitionsThatArentCutOff()
-        {
-            var sourceOriginalIndex = new Dictionary<object, int>(PointDefinitions.Count);
-            var originalStarts = new List<float>(PointDefinitions.Count);
-            var hasRepeats = false;
-            for (var i = 0; i < PointDefinitions.Count; i++)
-            {
-                var key = (object)PointDefinitions[i].Source ?? PointDefinitions[i];
-                if (sourceOriginalIndex.ContainsKey(key))
-                {
-                    hasRepeats = true;
-                    continue;
-                }
-
-                sourceOriginalIndex[key] = originalStarts.Count;
-                originalStarts.Add(PointDefinitions[i].StartTime);
-            }
-
-            if (!hasRepeats)
-                return PointDefinitions.ToArray();
-
-            var kept = new List<PointDefinition<T>>(PointDefinitions.Count);
-            var yielded = new HashSet<object>(sourceOriginalIndex.Count);
-            for (var i = 0; i < PointDefinitions.Count; i++)
-            {
-                var pd = PointDefinitions[i];
-                var key = (object)pd.Source ?? pd;
-                if (yielded.Add(key))
-                {
-                    kept.Add(pd);
-                    continue;
-                }
-
-                var next = sourceOriginalIndex[key] + 1;
-                var boundary = next < originalStarts.Count ? originalStarts[next] : float.PositiveInfinity;
-                if (pd.StartTime < boundary)
-                    kept.Add(pd);
-            }
-
-            return kept.ToArray();
         }
 
         public void RemoveEvent(BaseCustomEvent ev)
@@ -292,7 +285,7 @@ namespace Beatmap.Animations
 
         private void GetIndexes(float time, out int prev, out int next)
         {
-            next = Mathf.Clamp(evaluated.AsSpan().UpperBoundBy(time, static point => point.StartTime),
+            next = Mathf.Clamp(evaluated.AsSpan(0, count).UpperBoundBy(time, static point => point.StartTime),
                 Mathf.Min(1, count), count);
             prev = Mathf.Max(0, next - 1);
         }

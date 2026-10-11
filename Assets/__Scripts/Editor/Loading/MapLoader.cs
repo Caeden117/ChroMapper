@@ -98,6 +98,13 @@ public class MapLoader : MonoBehaviour
 
         collection.MapObjects = objects;
 
+        // Prepare shared path timelines before visuals spawn, so later pool reuse only binds instance data.
+        if (objects is IReadOnlyList<BaseGrid> grids)
+        {
+            for (var i = 0; i < grids.Count; i++)
+                manager.PathAnimations.Prepare(grids[i], map);
+        }
+
         if (objects is List<BaseEvent> eventsList)
         {
             var events = collection as EventGridContainer;

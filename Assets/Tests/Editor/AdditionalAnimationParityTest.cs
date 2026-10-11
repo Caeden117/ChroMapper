@@ -97,7 +97,10 @@ namespace Tests.Editor
         [UnityTest]
         public IEnumerator MalformedPointValueCountIsLoggedAndSkipped()
         {
-            LogAssert.Expect(LogType.Error, "Point for [Color] must have 4 numbers plus an optional time; got 4 and it was skipped.");
+            LogAssert.Expect(
+                LogType.Error,
+                "Point for [Color] must have 4 numbers plus an optional time; got 4 and it was skipped. "
+                    + "AnimateTrack at beat 0, track \"malformedTrack\". Property [color], point[0]");
             yield return LoadMapWithEvents(MalformedColorEvent());
 
             var track = Object.FindAnyObjectByType<TracksManager>().GetAnimationTrack(MalformedTrackName);

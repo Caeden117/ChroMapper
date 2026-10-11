@@ -522,8 +522,7 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     {
         if (currentTrack == null) return;
 
-        currentTrack.Children.Remove(cameraAnimator);
-        currentTrack.OnChildrenChanged();
+        currentTrack.RemoveChild(cameraAnimator);
         currentTrack = null;
 
         cameraAnimator.ResetData();
