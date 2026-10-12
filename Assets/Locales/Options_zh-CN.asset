@@ -176,10 +176,6 @@ MonoBehaviour:
     m_Localized: "RGB\u706F\u6548"
     m_Metadata:
       m_Items: []
-  - m_Id: 41
-    m_Localized: "\u73AF\u5883\u53CD\u5C04"
-    m_Metadata:
-      m_Items: []
   - m_Id: 42
     m_Localized: "\u5F69\u8272\u5047\u5899"
     m_Metadata:
@@ -402,10 +398,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 103
     m_Localized: "\u5F53\u5728\u653E\u7F6E\u5899\u58C1\u6216\u97F3\u7B26\u65F6\u6309\u4F4F\u7CBE\u786E\u653E\u7F6E\u952E\uFF0C\u4F1A\u51FA\u73B0\u4E00\u4E2A\u6269\u5C55\u7684\u7F51\u683C\uFF0C\u4F46\u7981\u7528\u6355\u6349\u529F\u80FD\u3002"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: "\u5207\u6362\u7531\u706F\u5149\u548C\u7269\u4F53\u5F15\u8D77\u7684\u53CD\u5C04\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -1427,12 +1419,20 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683422597120
-    m_Localized: Bloom Fog
+  - m_Id: 664292683443568643
+    m_Localized: Edit Mode World Particles
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683443568640
-    m_Localized: Enables or disables environment bloom fog.
+  - m_Id: 664292683443568644
+    m_Localized: Shows world particles in edit modes. When disabled, particles are only visible in Playing and Preview modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568645
+    m_Localized: Edit Mode Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568646
+    m_Localized: Shows world smoke in edit modes. When disabled, smoke is only visible in Playing and Preview modes.
     m_Metadata:
       m_Items: []
   - m_Id: 664292683443568641

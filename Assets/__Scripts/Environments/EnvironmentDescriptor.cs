@@ -41,6 +41,7 @@ public class EnvironmentDescriptor : MonoBehaviour
             componentUpdates = GetComponentsInChildren<IEnvironmentComponentUpdate>(true);
 
         hasInitialized = true;
+        WorldParticleVisibility.Initialize(transform);
         Shader.SetGlobalFloat("_TrackLaneYPosition", SizeData.TrackLaneType == TrackLaneType.None ? -100f : 0f);
 
         BasicEventEffectManager.Initialize(context.Atsc);
