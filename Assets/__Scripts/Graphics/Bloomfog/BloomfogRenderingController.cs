@@ -96,13 +96,11 @@ public class BloomfogRenderingController : MonoBehaviour
     private readonly Level[] bloomfogPasses =
         new Level[BloomRenderUtility.MaxPyramidSize];
     private bool active;
-    private bool bloomFogEnabled;
-    private bool settingsCallbackSubscribed;
     private bool bloomFogKeywordWasEnabled;
     private float bloomFogAutoExposureLimit = 1000f;
     private bool bloomFogLegacyAutoExposure;
 
-    public bool CanRenderReflections => active && bloomFogEnabled && blurMaterial != null;
+    public bool CanRenderReflections => active && blurMaterial != null;
 
     /// <summary>Captures every shader global that a reflection bloom-fog render can replace.</summary>
     /// <remarks>The returned textures are borrowed references; this controller does not transfer ownership.</remarks>
@@ -167,29 +165,18 @@ public class BloomfogRenderingController : MonoBehaviour
     {
         blurMaterial = new Material(blurShader);
         SetProfileDefaults();
-        if (bloomFogEnabled) Activate();
+        Activate();
     }
 
     private void OnEnable()
     {
         Instance = this;
-        UpdateBloomFog(Settings.Instance.BloomFog);
-        if (!settingsCallbackSubscribed)
-        {
-            Settings.NotifyBySettingName(nameof(Settings.BloomFog), UpdateBloomFog);
-            settingsCallbackSubscribed = true;
-        }
-        if (blurMaterial != null && bloomFogEnabled) Activate();
+        if (blurMaterial != null) Activate();
     }
 
     private void OnDisable()
     {
         if (Instance == this) Instance = null;
-        if (settingsCallbackSubscribed)
-        {
-            Settings.StopNotifyingBySettingName(nameof(Settings.BloomFog), UpdateBloomFog);
-            settingsCallbackSubscribed = false;
-        }
         Deactivate();
     }
 
@@ -415,19 +402,6 @@ public class BloomfogRenderingController : MonoBehaviour
             if (Application.isPlaying) Destroy(blurMaterial);
             else DestroyImmediate(blurMaterial);
             blurMaterial = null;
-        }
-    }
-
-    private void UpdateBloomFog(object value)
-    {
-        bloomFogEnabled = System.Convert.ToBoolean(value);
-        if (bloomFogEnabled)
-        {
-            if (isActiveAndEnabled && blurMaterial != null) Activate();
-        }
-        else
-        {
-            Deactivate();
         }
     }
 

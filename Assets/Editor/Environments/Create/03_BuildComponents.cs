@@ -214,21 +214,38 @@ public partial class EnvironmentSceneCreator
             container.ComponentInstances[data.TubeBloomPrePassLight.InstanceId] = data.TubeBloomPrePassLight;
         }
 
+        var particleRenderers = new List<ParticleSystemRendererData>();
         foreach (var obj in container.Data.Objects.Where(x => x.Components.ParticleSystem != null))
         foreach (var data in obj.Components.ParticleSystem)
         {
-            if (data.Renderer == null) continue;
-            container.ComponentInstances[data.Renderer.InstanceId] =
-                new ParticleSystemRendererData { Instance = data.Instance.GetComponent<ParticleSystemRenderer>() };
+            if (data.Renderer == null)
+            {
+                continue;
+            }
+            var rendererData = new ParticleSystemRendererData
+            {
+                Instance = data.Instance.GetComponent<ParticleSystemRenderer>()
+            };
+            particleRenderers.Add(rendererData);
+            container.ComponentInstances[data.Renderer.InstanceId] = rendererData;
         }
 
-        // apply all components
-        foreach (var data in container.ComponentInstances.Values) data.Apply(container);
+        // ParticleSystemData resolves each renderer's material before the renderer data classifies it.
+        foreach (var data in container.ComponentInstances.Values.Where(data =>
+                     data is not ParticleSystemRendererData))
+        {
+            data.Apply(container);
+        }
+
+        foreach (var data in particleRenderers)
+            data.Apply(container);
 
         // reset the ring
         foreach (var obj in container.Data.Objects.Where(x => x.Components.TrackLaneRingsManager != null))
-        foreach (var data in obj.Components.TrackLaneRingsManager)
-            data.GetComponent().Start();
+        {
+            foreach (var data in obj.Components.TrackLaneRingsManager)
+                data.GetComponent().Start();
+        }
 
         var lightWithIdManager = container
             .Data
