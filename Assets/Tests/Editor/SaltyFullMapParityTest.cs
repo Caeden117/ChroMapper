@@ -233,7 +233,6 @@ namespace Tests.Editor
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
 
             var previousBloom = Settings.Instance.Bloom;
-            var previousBloomFog = Settings.Instance.BloomFog;
             var shotDir = Path.Combine(Application.temporaryCachePath, "SaltyMaterialParity",
                 System.DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
             Directory.CreateDirectory(shotDir);
@@ -250,7 +249,6 @@ namespace Tests.Editor
             try
             {
                 Settings.ApplyOptionByName("Bloom", true);
-                Settings.ApplyOptionByName("BloomFog", true);
                 ApplyDeployedCameraSettings();
                 uiMode.SetUIMode(UIModeType.Playing, false);
                 cameraManager.SelectCamera(CameraType.Playing);
@@ -460,7 +458,6 @@ namespace Tests.Editor
                 camera.transform.rotation = previousRotation;
                 camera.fieldOfView = previousFov;
                 Settings.ApplyOptionByName("Bloom", previousBloom);
-                Settings.ApplyOptionByName("BloomFog", previousBloomFog);
                 if (baseline != null) Object.DestroyImmediate(baseline);
                 if (offCapture != null) Object.DestroyImmediate(offCapture);
                 if (control != null) Object.DestroyImmediate(control);
@@ -486,7 +483,6 @@ namespace Tests.Editor
             var bloom = Object.FindAnyObjectByType<PyramidBloomController>();
             var postProcess = Object.FindAnyObjectByType<PostProcessRenderingController>();
             Debug.Log($"[SaltyDiag] probe: bloom={Settings.Instance.Bloom} " +
-                $"bloomFog={Settings.Instance.BloomFog} " +
                 $"bloomReady={(bloom == null ? "none" : bloom.IsReady.ToString())} " +
                 $"buffers={(postProcess == null ? -1 : camera.GetCommandBuffers(CameraEvent.BeforeImageEffects).Length)}");
 

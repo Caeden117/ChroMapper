@@ -411,7 +411,6 @@ namespace Tests.Editor
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
             var previousBloom = Settings.Instance.Bloom;
-            var previousBloomFog = Settings.Instance.BloomFog;
             var shotDir = Path.Combine(Application.temporaryCachePath, "KamikaziEnding",
                 System.DateTime.UtcNow.ToString("yyyyMMdd-HHmmssfff"));
             Directory.CreateDirectory(shotDir);
@@ -446,7 +445,6 @@ namespace Tests.Editor
                 Settings.Instance.PlayerCameraFOV = 90f;
                 Settings.Instance.PlayerCameraOffsetZ = 0f;
                 Settings.ApplyOptionByName("Bloom", true);
-                Settings.ApplyOptionByName("BloomFog", true);
                 uiMode.SetUIMode(UIModeType.Playing, false);
                 cameraManager.SelectCamera(CameraType.Playing);
                 var cameraFormat = camera.allowHDR
@@ -799,7 +797,6 @@ namespace Tests.Editor
                 camera.transform.rotation = previousRotation;
                 camera.fieldOfView = previousFov;
                 Settings.ApplyOptionByName("Bloom", previousBloom);
-                Settings.ApplyOptionByName("BloomFog", previousBloomFog);
                 Object.Destroy(rt);
                 foreach (var tex in renderTextures) Object.Destroy(tex);
                 foreach (var clone in materialClones) Object.Destroy(clone);
