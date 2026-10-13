@@ -193,10 +193,6 @@ MonoBehaviour:
     m_Localized: "RGB-\u043E\u0441\u0432\u0435\u0449\u0435\u043D\u0438\u0435"
     m_Metadata:
       m_Items: []
-  - m_Id: 41
-    m_Localized: "\u041E\u0442\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u043E\u043A\u0440\u0443\u0436\u0435\u043D\u0438\u044F"
-    m_Metadata:
-      m_Items: []
   - m_Id: 42
     m_Localized: "\u0426\u0432\u0435\u0442 \u0444\u0430\u043B\u044C\u0448\u0438\u0432\u044B\u0445
       \u043F\u0440\u0435\u043F\u044F\u0442\u0441\u0442\u0432\u0438\u0439"
@@ -549,11 +545,6 @@ MonoBehaviour:
   - m_Id: 103
     m_Localized: When holding the precision placement keybind while placing walls
       or notes, an extended grid will appear with snapping disabled.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: "\u0412\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u043E\u0442\u0440\u0430\u0436\u0435\u043D\u0438\u044F
-      \u0441\u0432\u0435\u0442\u0430 \u0438 \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432."
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -1629,12 +1620,20 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683422597120
-    m_Localized: Bloom Fog
+  - m_Id: 664292683443568643
+    m_Localized: Edit Mode World Particles
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683443568640
-    m_Localized: Enables or disables environment bloom fog.
+  - m_Id: 664292683443568644
+    m_Localized: Shows world particles in edit modes. When disabled, particles are only visible in Playing and Preview modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568645
+    m_Localized: Edit Mode Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568646
+    m_Localized: Shows world smoke in edit modes. When disabled, smoke is only visible in Playing and Preview modes.
     m_Metadata:
       m_Items: []
   - m_Id: 664292683443568641

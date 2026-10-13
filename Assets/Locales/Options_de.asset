@@ -176,10 +176,6 @@ MonoBehaviour:
     m_Localized: RGB Beleuchtung
     m_Metadata:
       m_Items: []
-  - m_Id: 41
-    m_Localized: Umgebungsreflexionen
-    m_Metadata:
-      m_Items: []
   - m_Id: 42
     m_Localized: "Falsche W\xE4nde einf\xE4rben"
     m_Metadata:
@@ -430,10 +426,6 @@ MonoBehaviour:
     m_Localized: "Wenn man Shift gedr\xFCckt h\xE4llt beim platzieren von W\xE4nden
       und Bl\xF6cken, erscheint ein erweitertes Raster wo das \"Schnappen\" des Cursors
       deaktiviert ist"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: Schaltet Reflexionen durch Lichter und Objekte um.
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -1465,12 +1457,20 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683422597120
-    m_Localized: Bloom Fog
+  - m_Id: 664292683443568643
+    m_Localized: Edit Mode World Particles
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683443568640
-    m_Localized: Enables or disables environment bloom fog.
+  - m_Id: 664292683443568644
+    m_Localized: Shows world particles in edit modes. When disabled, particles are only visible in Playing and Preview modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568645
+    m_Localized: Edit Mode Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568646
+    m_Localized: Shows world smoke in edit modes. When disabled, smoke is only visible in Playing and Preview modes.
     m_Metadata:
       m_Items: []
   - m_Id: 664292683443568641

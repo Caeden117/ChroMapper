@@ -176,10 +176,6 @@ MonoBehaviour:
     m_Localized: RGB belichting
     m_Metadata:
       m_Items: []
-  - m_Id: 41
-    m_Localized: Reflecties in de omgeving
-    m_Metadata:
-      m_Items: []
   - m_Id: 42
     m_Localized: Kleur nepmuren
     m_Metadata:
@@ -439,10 +435,6 @@ MonoBehaviour:
   - m_Id: 103
     m_Localized: Wanneer je shift inhoudt, zal er een uitgebreid raster verschijnen
       waar je met precisie noten of muren kan plaatsen.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: Schakelt reflectie van lichten en objecten in of uit.
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -1477,12 +1469,20 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683422597120
-    m_Localized: Bloom Fog
+  - m_Id: 664292683443568643
+    m_Localized: Edit Mode World Particles
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683443568640
-    m_Localized: Enables or disables environment bloom fog.
+  - m_Id: 664292683443568644
+    m_Localized: Shows world particles in edit modes. When disabled, particles are only visible in Playing and Preview modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568645
+    m_Localized: Edit Mode Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568646
+    m_Localized: Shows world smoke in edit modes. When disabled, smoke is only visible in Playing and Preview modes.
     m_Metadata:
       m_Items: []
   - m_Id: 664292683443568641

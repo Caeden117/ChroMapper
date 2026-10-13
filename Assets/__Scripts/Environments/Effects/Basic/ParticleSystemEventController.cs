@@ -8,6 +8,8 @@ public class ParticleSystemEventController : MonoBehaviour
     public float StartTime { get; private set; }
     public float EndTime => StartTime + FullDuration;
 
+    private void Awake() => WorldParticleVisibility.Initialize(transform);
+
     public void Initialize(float startTime)
     {
         StartTime = startTime;

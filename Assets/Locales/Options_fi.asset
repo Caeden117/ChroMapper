@@ -176,10 +176,6 @@ MonoBehaviour:
     m_Localized: RGB-Valaistus
     m_Metadata:
       m_Items: []
-  - m_Id: 41
-    m_Localized: "Ymp\xE4rist\xF6n Heijastukset"
-    m_Metadata:
-      m_Items: []
   - m_Id: 42
     m_Localized: "V\xE4rj\xE4\xE4 Feikit Sein\xE4t"
     m_Metadata:
@@ -443,10 +439,6 @@ MonoBehaviour:
   - m_Id: 103
     m_Localized: "Pidett\xE4ess\xE4 Vaihto-n\xE4pp\xE4int\xE4 asettaessa seini\xE4
       tai nuotteja, pidennetty ruudukko ilmestyy ilman lukitusta."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 104
-    m_Localized: Kytkee valojen ja objektien aiheuttamat heijastukset.
     m_Metadata:
       m_Items: []
   - m_Id: 106
@@ -1478,12 +1470,20 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683422597120
-    m_Localized: Bloom Fog
+  - m_Id: 664292683443568643
+    m_Localized: Edit Mode World Particles
     m_Metadata:
       m_Items: []
-  - m_Id: 664292683443568640
-    m_Localized: Enables or disables environment bloom fog.
+  - m_Id: 664292683443568644
+    m_Localized: Shows world particles in edit modes. When disabled, particles are only visible in Playing and Preview modes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568645
+    m_Localized: Edit Mode Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 664292683443568646
+    m_Localized: Shows world smoke in edit modes. When disabled, smoke is only visible in Playing and Preview modes.
     m_Metadata:
       m_Items: []
   - m_Id: 664292683443568641

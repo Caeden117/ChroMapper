@@ -144,12 +144,12 @@ public class Settings
     public int SpectrogramSlices = 0;
     public float SpectrogramHeight = 0.15f;
 
-    public bool Reflections = true;
     public int MirrorQuality = (int)MirrorRendererSO.MirrorQuality.High;
     public bool Bloom = true;
-    public bool BloomFog = true;
     public bool ChromaticAberration = true;
     public bool ScreenDisplacement = true;
+    public bool EditModeWorldParticles = false;
+    public bool EditModeSmoke = false;
     public float CameraFOV = 60f;
     public float PlayerCameraFOV = 60f;
     public float PlayerCameraOffsetZ = 3.6f; // 3.6m => 6 Z
@@ -527,13 +527,15 @@ public class Settings
     /// </summary>
     public static void NotifyBySettingName(string name, Action<object> callback)
     {
-        if (nameToActions.ContainsKey(name) && callback != null)
+        if (callback == null)
+            return;
+
+        if (nameToActions.ContainsKey(name))
         {
             nameToActions[name] += callback;
         }
-        else if (!nameToActions.ContainsKey(name) && callback != null)
+        else
         {
-            // Keep the original callback so unsubscription removes the delegate that was registered.
             nameToActions.Add(name, callback);
         }
     }
