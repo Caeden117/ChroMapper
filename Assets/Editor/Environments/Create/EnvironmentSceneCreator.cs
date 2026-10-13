@@ -21,7 +21,7 @@ public partial class EnvironmentSceneCreator
     private static void CreateEnvironmentFromDataWithoutScript() => ReadSelectedAndCreateEnvironment(false);
 
     [MenuItem("Environment/Create All from Data", false, 1000)]
-    private static void CreateAllEnvironmentFromData()
+    public static void CreateAllEnvironmentFromData()
     {
         // Materialize and validate the complete source set before opening or overwriting any environment scene.
         var environmentDataPaths = AssetDatabase

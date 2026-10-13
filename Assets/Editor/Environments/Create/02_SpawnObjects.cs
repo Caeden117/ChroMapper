@@ -145,7 +145,13 @@ public partial class EnvironmentSceneCreator
         // These helpers are consumed with GetComponent/GetOrAddComponent by fill code. Helpers
         // which fill code always AddComponents are intentionally replaced to avoid duplicates.
         if (componentData.Any(data => data is ParticleSystemData))
+        {
             AddFirstComponent<ParticleSystemRenderer>(go, retainedComponents);
+        }
+        if (componentData.Any(data => data is ParticleSystemData { Renderer: not null }))
+        {
+            AddFirstComponent<WorldParticleVisibility>(go, retainedComponents);
+        }
         if (componentData.Any(data => data is RectangleFakeGlowLightWithIdData))
             AddFirstComponent<MaterialPropertyBlockController>(go, retainedComponents);
         if (componentData.Any(data => data is InstancedMaterialLightWithIdData))
