@@ -34,6 +34,10 @@ public class BeatmapObjectCallbackController : MonoBehaviour
 
     private float curTime;
 
+    // Notes are ordered by hit time, but custom jump durations can make later notes start jumping
+    // before earlier ones. This index lets us also find notes by jump-in time.
+    private readonly EarlyNoteSpawnIndex earlyNoteSpawns = new(Track.JUMP_TIME);
+
     public event Action<bool, int, BaseObject> OnNotePassedThreshold;
     public event Action<bool, int> OnRecursiveNoteCheckFinished;
     public event Action<bool, int, BaseObject> OnEventPassedThreshold;
@@ -87,6 +91,7 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         if (timeSyncController.IsPlaying)
         {
             curTime = UseAudioTime ? timeSyncController.CurrentAudioBeats : timeSyncController.CurrentSongBpmTime;
+            earlyNoteSpawns.RebuildIfOffsetChanged(noteGridContainer.MapObjects, nextNoteIndex, Offset);
             RecursiveCheckNotes(true, true);
             RecursiveCheckEvents(true, true);
 
@@ -121,6 +126,8 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         nextNoteIndex = noteGridContainer.MapObjects.BinarySearchBy(songTime + Offset, obj => obj.SongBpmTime);
         if (nextNoteIndex < 0) nextNoteIndex = ~nextNoteIndex;
 
+        earlyNoteSpawns.Reset(noteGridContainer.MapObjects, nextNoteIndex, Offset);
+
         OnRecursiveNoteCheckFinished?.Invoke(natural, nextNoteIndex - 1);
     }
 
@@ -149,14 +156,32 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         while (nextNoteIndex < objects.Count)
         {
             var obj = objects[nextNoteIndex];
+            if (earlyNoteSpawns.ForgetEmission(obj))
+            {
+                nextNoteIndex++;
+                continue;
+            }
             var offset = useAnimationsOffset ? Math.Max(obj.HalfJumpDuration, Offset) + Track.JUMP_TIME : Offset;
 
-            if (obj.SongBpmTime > curTime + offset) return;
+            if (obj.SongBpmTime > curTime + offset) break;
 
             if (obj.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
                 OnNotePassedThreshold?.Invoke(natural, nextNoteIndex, obj);
 
             nextNoteIndex++;
+        }
+
+        if (useAnimationsOffset)
+        {
+            // Leave the hit-time cursor on the first note that is not due yet.
+            while (earlyNoteSpawns.TryTakeDueNote(curTime, nextNoteIndex, out var mapIndex, out var note))
+            {
+                if (note.HasMatchingTrack(BeatmapObjectContainerCollection.TrackFilterID))
+                {
+                    OnNotePassedThreshold?.Invoke(natural, mapIndex, note);
+                    earlyNoteSpawns.RecordEmission(note);
+                }
+            }
         }
     }
 
@@ -190,9 +215,20 @@ public class BeatmapObjectCallbackController : MonoBehaviour
         }
     }
 
-    private void NoteGridContainerOnObjectSpawned(BaseObject obj) => OnObjSpawn(obj, ref nextNoteIndex);
+    private void NoteGridContainerOnObjectSpawned(BaseObject obj)
+    {
+        OnObjSpawn(obj, ref nextNoteIndex);
+        if (timeSyncController.IsPlaying)
+            earlyNoteSpawns.Rebuild(noteGridContainer.MapObjects, nextNoteIndex, Offset);
+    }
 
-    private void NoteGridContainerOnObjectDeleted(BaseObject obj) => OnObjDeleted(obj, ref nextNoteIndex);
+    private void NoteGridContainerOnObjectDeleted(BaseObject obj)
+    {
+        OnObjDeleted(obj, ref nextNoteIndex);
+        if (!timeSyncController.IsPlaying) return;
+        earlyNoteSpawns.ForgetEmission(obj);
+        earlyNoteSpawns.Rebuild(noteGridContainer.MapObjects, nextNoteIndex, Offset);
+    }
 
     private void GridContainerOnObjectSpawnedGrid(BaseObject obj) => OnObjSpawn(obj, ref nextEventIndex);
 

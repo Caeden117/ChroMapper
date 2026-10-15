@@ -1,0 +1,117 @@
+{
+  "version": "3.3.0",
+  "customData": {
+    "customEvents": [
+      {
+        "b": -1,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "s_bc478"
+          ],
+          "parentTrack": "city",
+          "worldPositionStays": true
+        }
+      },
+      {
+        "b": 448,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "city",
+          "duration": 36,
+          "position": [
+            [
+              0,
+              110,
+              10000,
+              0
+            ],
+            [
+              0,
+              18,
+              10000,
+              0.1111
+            ],
+            [
+              0,
+              0,
+              10000,
+              1,
+              "easeOutSine"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 500,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "s_bc478",
+          "duration": 12,
+          "position": [
+            [
+              59.01,
+              -13.39,
+              111.1504,
+              0
+            ],
+            [
+              59.91,
+              -9.13,
+              110.02,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 512,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "city",
+          "duration": 0,
+          "position": [
+            0,
+            -1000000,
+            -1000000
+          ]
+        }
+      }
+    ],
+    "environment": [
+      {
+        "geometry": {
+          "type": "Cube",
+          "material": "door"
+        },
+        "track": "s_bc478",
+        "position": [
+          59.01,
+          -13.39,
+          -9888.85
+        ],
+        "rotation": [
+          341.608215,
+          333.052,
+          356.272461
+        ],
+        "scale": [
+          2.45145726,
+          8.221707,
+          15.3431044
+        ]
+      }
+    ],
+    "materials": {
+      "door": {
+        "color": [
+          1,
+          0.9793834,
+          0.7311321
+        ],
+        "shader": "Standard"
+      }
+    }
+  },
+  "basicBeatmapEvents": []
+}

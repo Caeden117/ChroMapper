@@ -3,8 +3,6 @@ using UnityEngine;
 
 public abstract class FireEffect : LightController
 {
-    // ChroMapper's Lit and particle adapters expose the source effect start time
-    // through their shared instanced _StartTime property.
     protected static readonly int EffectStartSongTimeId = Shader.PropertyToID("_StartTime");
     protected static readonly int PrivatePointLightColorId = Shader.PropertyToID("_PrivatePointLightColor");
     protected static readonly int EmissionTexColorId = Shader.PropertyToID("_EmissionTexColor");

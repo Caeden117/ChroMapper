@@ -41,7 +41,9 @@ public class MovementEffect : BasicMovementEffect<MovementStateData>
             current.SnapshotSeconds = Atsc.GetSecondsFromBeat(current.StartTime);
             current.SnapshotFrame = Mathf.FloorToInt(current.SnapshotSeconds / Time.fixedDeltaTime);
             current.AssignmentFrame = int.MinValue;
-            current.SameTypeIndex = -1;
+            // Beat Saber numbers sameTypeIndex from 1 (BasicBeatmapEventData.SetFirstSameTypeIndex),
+            // so the first real event must select movement data 1 % len
+            current.SameTypeIndex = 0;
             return;
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Comparers;
 using Beatmap.Enums;
 using Beatmap.V3.Customs;
 using Beatmap.V4;
@@ -41,7 +42,7 @@ namespace Beatmap.V3
                     }.ToJson());
                 }
 
-                foreach (var b in difficulty.BpmEvents)
+                foreach (var b in BaseObject.InFileOrder(difficulty.BpmEvents))
                 {
                     bpmEvents.Add(b.ToJson());
                 }
@@ -52,21 +53,23 @@ namespace Beatmap.V3
                 var colorBoostBeatmapEvents = new JSONArray();
                 var rotationEvents = new JSONArray();
 
-                foreach (var evt in difficulty.Events)
+                // Preserve authored order when timestamps tie because in-memory sorting can reorder
+                // simultaneous events.
+                foreach (var evt in BaseObject.InFileOrder(difficulty.Events))
                 {
                     switch (evt.Type)
                     {
                         case (int)EventTypeValue.ColorBoostEventType:
                             colorBoostBeatmapEvents.Add(evt.ToJson());
                             break;
-                        
+
                         default:
                             basicBeatmapEvents.Add(evt.ToJson());
                             break;
                     }
                 }
-                
-                foreach (var evt in difficulty.RotationEvents) rotationEvents.Add(evt.ToJson());
+
+                foreach (var evt in BaseObject.InFileOrder(difficulty.RotationEvents)) rotationEvents.Add(evt.ToJson());
 
                 json["rotationEvents"] = rotationEvents;
                 json["basicBeatmapEvents"] = basicBeatmapEvents;
@@ -76,7 +79,7 @@ namespace Beatmap.V3
                 var colorNotes = new JSONArray();
                 var bombNotes = new JSONArray();
 
-                foreach (var note in difficulty.Notes)
+                foreach (var note in BaseObject.InFileOrder(difficulty.Notes))
                 {
                     switch (note.Type)
                     {
@@ -89,36 +92,36 @@ namespace Beatmap.V3
                             break;
                     }
                 }
-                
+
                 json["colorNotes"] = colorNotes;
                 json["bombNotes"] = bombNotes;
-                
+
                 var obstacles = new JSONArray();
-                foreach (var o in difficulty.Obstacles.Where(o => !o.CustomFake)) obstacles.Add(o.ToJson());
+                foreach (var o in BaseObject.InFileOrder(difficulty.Obstacles.Where(o => !o.CustomFake))) obstacles.Add(o.ToJson());
                 json["obstacles"] = obstacles;
-                
+
                 var arcs = new JSONArray();
-                foreach (var a in difficulty.Arcs) arcs.Add(a.ToJson());
+                foreach (var a in BaseObject.InFileOrder(difficulty.Arcs)) arcs.Add(a.ToJson());
                 json["sliders"] = arcs;
-                
+
                 var chains = new JSONArray();
-                foreach (var c in difficulty.Chains.Where(c => !c.CustomFake)) chains.Add(c.ToJson());
+                foreach (var c in BaseObject.InFileOrder(difficulty.Chains.Where(c => !c.CustomFake))) chains.Add(c.ToJson());
                 json["burstSliders"] = chains;
 
                 var waypoints = new JSONArray();
-                foreach (var w in difficulty.Waypoints) waypoints.Add(w.ToJson());
+                foreach (var w in BaseObject.InFileOrder(difficulty.Waypoints)) waypoints.Add(w.ToJson());
                 json["waypoints"] = waypoints;
-                
+
                 var lightColorEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.LightColorEventBoxGroups) lightColorEventBoxGroups.Add(e.ToJson());
+                foreach (var e in BaseObject.InFileOrder(difficulty.LightColorEventBoxGroups)) lightColorEventBoxGroups.Add(e.ToJson());
                 json["lightColorEventBoxGroups"] = lightColorEventBoxGroups;
 
                 var lightRotationEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.LightRotationEventBoxGroups) lightRotationEventBoxGroups.Add(e.ToJson());
+                foreach (var e in BaseObject.InFileOrder(difficulty.LightRotationEventBoxGroups)) lightRotationEventBoxGroups.Add(e.ToJson());
                 json["lightRotationEventBoxGroups"] = lightRotationEventBoxGroups;
 
                 var lightTranslationEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.LightTranslationEventBoxGroups) lightTranslationEventBoxGroups.Add(e.ToJson());
+                foreach (var e in BaseObject.InFileOrder(difficulty.LightTranslationEventBoxGroups)) lightTranslationEventBoxGroups.Add(e.ToJson());
                 json["lightTranslationEventBoxGroups"] = lightTranslationEventBoxGroups;
 
                 var floatFxEvents = difficulty.VfxEventBoxGroups
@@ -128,7 +131,7 @@ namespace Beatmap.V3
                     .ToList();
                 
                 var vfxEventBoxGroups = new JSONArray();
-                foreach (var e in difficulty.VfxEventBoxGroups) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEvents));
+                foreach (var e in BaseObject.InFileOrder(difficulty.VfxEventBoxGroups)) vfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.ToJson(e, floatFxEvents));
                 json["vfxEventBoxGroups"] = vfxEventBoxGroups;
                 
                 difficulty.FxEventsCollection.FloatFxEvents = floatFxEvents.ToArray();
@@ -149,7 +152,7 @@ namespace Beatmap.V3
                 {
                     var njsEvents = new JSONArray();
 
-                    foreach (var njsEvent in difficulty.NJSEvents)
+                    foreach (var njsEvent in BaseObject.InFileOrder(difficulty.NJSEvents))
                     {
                         njsEvents.Add(new JSONObject
                         {
@@ -187,20 +190,22 @@ namespace Beatmap.V3
             if (difficulty.Bookmarks.Any())
             {
                 var bookmarks = new JSONArray();
-                foreach (var b in difficulty.Bookmarks) bookmarks.Add(b.ToJson());
+                foreach (var b in BaseObject.InFileOrder(difficulty.Bookmarks)) bookmarks.Add(b.ToJson());
                 customData["bookmarks"] = bookmarks;
                 customData[difficulty.BookmarksUseOfficialBpmEventsKey] = true;
             }
-            
+
             if (difficulty.CustomEvents.Any())
             {
+                // Chroma runs custom events at the same beat in file order, with the last assignment winning.
                 var customEvents = new JSONArray();
-                foreach (var c in difficulty.CustomEvents) customEvents.Add(c.ToJson());
+                foreach (var c in BaseObject.InFileOrder(difficulty.CustomEvents)) customEvents.Add(c.ToJson());
                 customData["customEvents"] = customEvents;
             }
 
             if (difficulty.EnvironmentEnhancements.Any())
             {
+                // Environment enhancements execute sequentially, so export their current list order.
                 var envEnhancements = new JSONArray();
                 foreach (var e in difficulty.EnvironmentEnhancements) envEnhancements.Add(e.ToJson());
                 customData["environment"] = envEnhancements;
@@ -228,7 +233,7 @@ namespace Beatmap.V3
             // All the fake stuff here :3
             var fakeColorNotes = new JSONArray();
             var fakeBombNotes = new JSONArray();
-            foreach (var note in difficulty.Notes)
+            foreach (var note in BaseObject.InFileOrder(difficulty.Notes))
             {
                 switch (note.Type)
                 {
@@ -243,14 +248,14 @@ namespace Beatmap.V3
             }
             customData["fakeColorNotes"] = fakeColorNotes;
             customData["fakeBombNotes"] = fakeBombNotes;
-            
+
 
             var fakeObstacles = new JSONArray();
-            foreach (var o in difficulty.Obstacles.Where(o => o.CustomFake)) fakeObstacles.Add(o.ToJson());
+            foreach (var o in BaseObject.InFileOrder(difficulty.Obstacles.Where(o => o.CustomFake))) fakeObstacles.Add(o.ToJson());
                 customData["fakeObstacles"] = fakeObstacles;
 
             var fakeBurstSliders = new JSONArray();
-            foreach (var c in difficulty.Chains.Where(c => c.CustomFake)) fakeBurstSliders.Add(c.ToJson());
+            foreach (var c in BaseObject.InFileOrder(difficulty.Chains.Where(c => c.CustomFake))) fakeBurstSliders.Add(c.ToJson());
             customData["fakeBurstSliders"] = fakeBurstSliders;
             
             SimpleJSONHelper.CleanObject(customData);
@@ -288,53 +293,53 @@ namespace Beatmap.V3
                     {
                         // Notes and bombs are in same array
                         case "colorNotes":
-                            foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Notes.Add(map.WithFileOrder(V3ColorNote.GetFromJson(n)));
                             break;
                         case "bombNotes":
-                            foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Notes.Add(map.WithFileOrder(V3BombNote.GetFromJson(n)));
                             break;
-                        
+
                         // Basic, boost, and rotation events are in same array
                         case "basicBeatmapEvents":
-                            foreach (JSONNode n in node) map.Events.Add(V3BasicEvent.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Events.Add(map.WithFileOrder(V3BasicEvent.GetFromJson(n)));
                             break;
                         case "colorBoostBeatmapEvents":
-                            foreach (JSONNode n in node) map.Events.Add(V3ColorBoostEvent.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Events.Add(map.WithFileOrder(V3ColorBoostEvent.GetFromJson(n)));
                             break;
                         case "rotationEvents":
-                            foreach (JSONNode n in node) map.RotationEvents.Add(V3RotationEvent.GetFromJson(n));
+                            foreach (JSONNode n in node) map.RotationEvents.Add(map.WithFileOrder(V3RotationEvent.GetFromJson(n)));
                             break;
-                        
+
                         case "bpmEvents":
-                            foreach (JSONNode n in node) map.BpmEvents.Add(V3BpmEvent.GetFromJson(n));
+                            foreach (JSONNode n in node) map.BpmEvents.Add(map.WithFileOrder(V3BpmEvent.GetFromJson(n)));
                             break;
                         case "obstacles":
-                            foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Obstacles.Add(map.WithFileOrder(V3Obstacle.GetFromJson(n)));
                             break;
                         case "sliders":
-                            foreach (JSONNode n in node) map.Arcs.Add(V3Arc.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Arcs.Add(map.WithFileOrder(V3Arc.GetFromJson(n)));
                             break;
                         case "burstSliders":
-                            foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Chains.Add(map.WithFileOrder(V3Chain.GetFromJson(n)));
                             break;
                         case "waypoints":
-                            foreach (JSONNode n in node) map.Waypoints.Add(V3Waypoint.GetFromJson(n));
+                            foreach (JSONNode n in node) map.Waypoints.Add(map.WithFileOrder(V3Waypoint.GetFromJson(n)));
                             break;
                         case "lightColorEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.LightColorEventBoxGroups.Add(V3LightColorEventBoxGroup.GetFromJson(n));
+                                map.LightColorEventBoxGroups.Add(map.WithFileOrder(V3LightColorEventBoxGroup.GetFromJson(n)));
                             break;
                         case "lightRotationEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.LightRotationEventBoxGroups.Add(V3LightRotationEventBoxGroup.GetFromJson(n));
+                                map.LightRotationEventBoxGroups.Add(map.WithFileOrder(V3LightRotationEventBoxGroup.GetFromJson(n)));
                             break;
                         case "lightTranslationEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.LightTranslationEventBoxGroups.Add(V3LightTranslationEventBoxGroup.GetFromJson(n));
+                                map.LightTranslationEventBoxGroups.Add(map.WithFileOrder(V3LightTranslationEventBoxGroup.GetFromJson(n)));
                             break;
                         case "vfxEventBoxGroups":
                             foreach (JSONNode n in node)
-                                map.VfxEventBoxGroups.Add(V3VfxEventEventBoxGroup.GetFromJson(n, map.FxEventsCollection.FloatFxEvents));
+                                map.VfxEventBoxGroups.Add(map.WithFileOrder(V3VfxEventEventBoxGroup.GetFromJson(n, map.FxEventsCollection.FloatFxEvents)));
                             break;
                         case "basicEventTypesWithKeywords":
                             map.EventTypesWithKeywords = V3BasicEventTypesWithKeywords.GetFromJson(node);
@@ -349,7 +354,7 @@ namespace Beatmap.V3
                 
                 // Important!
                 map.Notes.Sort();
-                map.Events.Sort();
+                map.Events.Sort(EventOrderComparer.Instance);
                 map.RotationEvents.Sort();
                 map.NJSEvents.Sort();
                 
@@ -392,13 +397,13 @@ namespace Beatmap.V3
                     case "njsEvents":
                         foreach (JSONNode n in node)
                         {
-                            map.NJSEvents.Add(new BaseNJSEvent
+                            map.NJSEvents.Add(map.WithFileOrder(new BaseNJSEvent
                             {
                                 JsonTime = n["b"].AsFloat,
                                 RelativeNJS = n["d"].AsFloat,
                                 UsePrevious = n["p"].AsInt,
                                 Easing = n["e"].AsInt
-                            });
+                            }));
                         }
                         map.CustomData.Remove(key);
                         break;
@@ -406,31 +411,31 @@ namespace Beatmap.V3
                         map.CustomData.Remove(key);
                         break;
                     case "BPMChanges":
-                        foreach (JSONNode n in node) bpmList.Add(V3BpmChange.GetFromJson(n));
+                        foreach (JSONNode n in node) bpmList.Add(map.WithFileOrder(V3BpmChange.GetFromJson(n)));
                         map.CustomData.Remove(key);
                         break;
                     case "bookmarks":
-                        foreach (JSONNode n in node) bookmarksList.Add(V3Bookmark.GetFromJson(n));
+                        foreach (JSONNode n in node) bookmarksList.Add(map.WithFileOrder(V3Bookmark.GetFromJson(n)));
                         map.CustomData.Remove(key);
                         break;
                     case "customEvents":
-                        foreach (JSONNode n in node) customEventsList.Add(V3CustomEvent.GetFromJson(n));
+                        foreach (JSONNode n in node) customEventsList.Add(map.WithFileOrder(V3CustomEvent.GetFromJson(n)));
                         map.CustomData.Remove(key);
                         break;
                     case "fakeColorNotes":
-                        foreach (JSONNode n in node) map.Notes.Add(V3ColorNote.GetFromJson(n, true));
+                        foreach (JSONNode n in node) map.Notes.Add(map.WithFileOrder(V3ColorNote.GetFromJson(n, true)));
                         map.CustomData.Remove(key);
                         break;
                     case "fakeBombNotes":
-                        foreach (JSONNode n in node) map.Notes.Add(V3BombNote.GetFromJson(n, true));
+                        foreach (JSONNode n in node) map.Notes.Add(map.WithFileOrder(V3BombNote.GetFromJson(n, true)));
                         map.CustomData.Remove(key);
                         break;
                     case "fakeObstacles":
-                        foreach (JSONNode n in node) map.Obstacles.Add(V3Obstacle.GetFromJson(n, true));
+                        foreach (JSONNode n in node) map.Obstacles.Add(map.WithFileOrder(V3Obstacle.GetFromJson(n, true)));
                         map.CustomData.Remove(key);
                         break;
                     case "fakeBurstSliders":
-                        foreach (JSONNode n in node) map.Chains.Add(V3Chain.GetFromJson(n, true));
+                        foreach (JSONNode n in node) map.Chains.Add(map.WithFileOrder(V3Chain.GetFromJson(n, true)));
                         map.CustomData.Remove(key);
                         break;
                     case "pointDefinitions":
@@ -467,7 +472,9 @@ namespace Beatmap.V3
                         map.CustomData.Remove(key);
                         break;
                     case "environment":
-                        foreach (JSONNode n in node) envEnhancementsList.Add(V3EnvironmentEnhancement.GetFromJson(n));
+                        // Environment enhancements execute in array order and bypass chronological sorting.
+                        foreach (JSONNode n in node)
+                            envEnhancementsList.Add(V3EnvironmentEnhancement.GetFromJson(n));
                         map.CustomData.Remove(key);
                         break;
                     case "materials":
@@ -493,7 +500,8 @@ namespace Beatmap.V3
 
             map.BpmChanges = bpmList.DistinctBy(x => x.JsonTime).ToList();
             map.Bookmarks = bookmarksList;
-            map.CustomEvents = customEventsList.DistinctBy(x => x.ToString()).ToList();
+            map.CustomEvents = customEventsList.DistinctBy(x => x.ToString())
+                .OrderBy(evt => evt, EventOrderComparer.Instance).ToList();
             map.PointDefinitions = pointDefinitions;
             map.EnvironmentEnhancements = envEnhancementsList;
             map.Materials = materials;

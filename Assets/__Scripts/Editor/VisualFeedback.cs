@@ -34,7 +34,16 @@ public class VisualFeedback : MonoBehaviour
 
     private void OnEnable() => callbackController.OnNotePassedThreshold += HandleCallback;
 
-    private void OnDisable() => callbackController.OnNotePassedThreshold -= HandleCallback;
+    private void OnDisable()
+    {
+        callbackController.OnNotePassedThreshold -= HandleCallback;
+        // Fix switching views while song playing permanently disabling the visualizer (by softlocking it thinking it's still playing, forever, and never starting a new animation)
+        if (t > 0)
+        {
+            t = 0;
+            UpdateAppearance(0);
+        }
+    }
 
     private void OnDestroy() => atsc.OnPlayToggled -= OnPlayToggle;
 

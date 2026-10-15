@@ -23,8 +23,6 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         .Where(t =>
             t.IsInterface && t != typeof(CMInput.IUtilsActions) && t != typeof(CMInput.IPauseMenuActions));
 
-    private UIModeType previousUIModeType = UIModeType.Normal;
-
     private void Awake() => questSaveButton.SetActive(Adb.IsAdbInstalled(out _));
 
     private void Start() => OptionsController.OnOptionsLoaded += OptionsLoaded;
@@ -37,7 +35,12 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
 
     public void OnPauseEditor(InputAction.CallbackContext context)
     {
-        if (context.performed && !editModeContext.EditingMode.HasFlag(EditingMode.EventBox)) TogglePause();
+        if (!context.performed)
+            return;
+        if (uiMode.TryExitPreviewMode())
+            return;
+        if (!editModeContext.EditingMode.HasFlag(EditingMode.EventBox))
+            TogglePause();
     }
 
     private void OptionsLoaded()
@@ -51,13 +54,10 @@ public class PauseManager : MonoBehaviour, CMInput.IPauseMenuActions
         if (IsPaused)
         {
             CMInputCallbackInstaller.DisableActionMaps(typeof(PauseManager), disabledActionMaps);
-            previousUIModeType = UIMode.SelectedMode;
-            uiMode.SetUIMode(UIModeType.Normal, false);
         }
         else
         {
             CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(PauseManager), disabledActionMaps);
-            uiMode.SetUIMode(previousUIModeType, false);
         }
 
         StartCoroutine(TransitionMenu());

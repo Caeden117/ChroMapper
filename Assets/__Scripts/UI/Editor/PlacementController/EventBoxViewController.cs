@@ -202,7 +202,8 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleEditModeChanged(EditingMode mode)
     {
         targetObject.SetActive(mode.HasFlag(EditingMode.EventBox));
-        if (!mode.HasFlag(EditingMode.EventBox)) SetBoxIndex(0);
+        if (!editModeContext.IsTemporaryModeChange && !mode.HasFlag(EditingMode.EventBox))
+            SetBoxIndex(0);
     }
 
     private void HandleGroupChanged(BaseEventBoxGroup group)
@@ -335,7 +336,7 @@ public class EventBoxViewController : MonoBehaviour
             var group = selectedGlsEvent.EventBoxGroupData;
             if (group == null)
             {
-                Debug.LogError("[PaintProperties] Cannot apply properties to a selected GLS node without an event box group.");
+                Debug.LogError($"[PaintProperties] Cannot apply properties to a selected GLS node without an event box group. {Beatmap.BeatmapLogContext.Describe(selectedGlsEvent)}");
                 continue;
             }
 
@@ -363,8 +364,7 @@ public class EventBoxViewController : MonoBehaviour
                 if (!eventIndex.TryGetCloneEvent(evt, newGroup, out var location, out var newEvt))
                 {
                     Debug.LogError(
-                        $"[PaintProperties] Cannot resolve selected {evt.GetType().Name}: groupId={oldGroup.ID}, " +
-                        $"boxIndex={evt.BoxIndex}.");
+                        $"[PaintProperties] Cannot resolve selected GLS node. {Beatmap.BeatmapLogContext.Describe(evt)}");
                     continue;
                 }
 
@@ -383,7 +383,7 @@ public class EventBoxViewController : MonoBehaviour
                         PreserveColorPayload((BaseLightColorBase)evt, color);
                         break;
                     case BaseLightColorBase color when colorPlacement == null:
-                        Debug.LogWarning("[EventBoxViewController] Color event but colorPlacement is null");
+                        Debug.LogWarning($"[EventBoxViewController] Color event but colorPlacement is null. {Beatmap.BeatmapLogContext.Describe(evt)}");
                         break;
                     case BaseLightRotationBase rotation when rotationPlacement != null:
                         // Log both source and queued rotation values to diagnose mismatched GLS rotation painting.
@@ -398,7 +398,7 @@ public class EventBoxViewController : MonoBehaviour
                         rotation.EaseType = rotationPlacement.QueuedData.EaseType;
                         break;
                     case BaseLightRotationBase rotation when rotationPlacement == null:
-                        Debug.LogWarning("[EventBoxViewController] Rotation event but rotationPlacement is null");
+                        Debug.LogWarning($"[EventBoxViewController] Rotation event but rotationPlacement is null. {Beatmap.BeatmapLogContext.Describe(evt)}");
                         break;
                     case BaseLightTranslationBase translation when translationPlacement != null:
                         Debug.Log($"[EventBoxViewController] Applying translation properties");
@@ -406,7 +406,7 @@ public class EventBoxViewController : MonoBehaviour
                         translation.EaseType = translationPlacement.QueuedData.EaseType;
                         break;
                     case BaseLightTranslationBase translation when translationPlacement == null:
-                        Debug.LogWarning("[EventBoxViewController] Translation event but translationPlacement is null");
+                        Debug.LogWarning($"[EventBoxViewController] Translation event but translationPlacement is null. {Beatmap.BeatmapLogContext.Describe(evt)}");
                         break;
                     case BaseFxEventFloat floatFx when floatFXPlacement != null:
                         Debug.Log($"[EventBoxViewController] Applying floatFX properties");
@@ -414,10 +414,10 @@ public class EventBoxViewController : MonoBehaviour
                         floatFx.Easing = floatFXPlacement.QueuedData.Easing;
                         break;
                     case BaseFxEventFloat floatFx when floatFXPlacement == null:
-                        Debug.LogWarning("[EventBoxViewController] FloatFX event but floatFXPlacement is null");
+                        Debug.LogWarning($"[EventBoxViewController] FloatFX event but floatFXPlacement is null. {Beatmap.BeatmapLogContext.Describe(evt)}");
                         break;
                     default:
-                        Debug.LogWarning($"[EventBoxViewController] Event type {newEvt.GetType().Name} not handled by apply logic");
+                        Debug.LogWarning($"[EventBoxViewController] Event type {newEvt.GetType().Name} not handled by apply logic. {Beatmap.BeatmapLogContext.Describe(evt)}");
                         break;
                 }
             }

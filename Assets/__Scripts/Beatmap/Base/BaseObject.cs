@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base.Customs;
+using Beatmap.Comparers;
 using Beatmap.Enums;
 using LiteNetLib.Utils;
 using SimpleJSON;
@@ -84,6 +86,9 @@ namespace Beatmap.Base
         // really should be private but we need to set this from BaseDifficulty on init
         // TODO: this is not song BPM time, it's grid or timeline position
         internal float? songBpmTime;
+
+        // Export and event chronology retain authored ties. Content equality never includes this local ordinal.
+        internal int FileOrder = int.MaxValue;
         public float SongBpmTime => (float)songBpmTime;
 
         public virtual Color? CustomColor { get; set; }
@@ -174,5 +179,12 @@ namespace Beatmap.Base
 
         // Generic comparison function that only cares about time
         public virtual int CompareTo(BaseObject other) => JsonTime.CompareTo(other.JsonTime);
+
+        public virtual bool HasSameContent(BaseObject other) => ObjectType == other.ObjectType && CompareTo(other) == 0;
+
+        // TODO EFFICIENT?
+        // Use callback ordering for export so events at the same beat execute in the same order after saving.
+        internal static IEnumerable<T> InFileOrder<T>(IEnumerable<T> objects) where T : BaseObject =>
+            objects.OrderBy(o => o, EventOrderComparer.Instance);
     }
 }

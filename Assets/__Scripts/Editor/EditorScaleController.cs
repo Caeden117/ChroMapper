@@ -72,7 +72,7 @@ public class EditorScaleController : MonoBehaviour, CMInput.IEditorScaleActions
         {
             var bps = 60f / currentBpm;
             var songNoteJumpSpeed = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
-            EditorScale = songNoteJumpSpeed * bps;
+            EditorScale = songNoteJumpSpeed * bps / 0.6f; // / 0.6 = Correct accurate NJS scale, per discussion w/ Kival and GalaxyMaster
             Apply();
         }
         else

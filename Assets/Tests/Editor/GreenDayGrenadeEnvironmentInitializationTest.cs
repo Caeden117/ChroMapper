@@ -58,14 +58,15 @@ namespace Tests.Editor
             Assert.That(ringPositionEffects.All(effect => effect.Visual != null), Is.True);
             Assert.That(ringPositionEffects.Any(effect => !effect.Visual.gameObject.activeInHierarchy), Is.True);
 
-            // This inactive OEM template intentionally has no rings before enhancement setup.
+            // The updated OEM export includes thirty rings even though this template is inactive.
             var dormantEffect = descriptor.BasicEventEffectManager.Effects
                 .OfType<TrackLaneRingsRotationEffect>()
                 .Single(effect => effect.name == "LightLinesTrackLaneRings");
             Assert.That(dormantEffect.gameObject.activeInHierarchy, Is.False);
             Assert.That(dormantEffect.Visual, Is.Not.Null);
             Assert.That(dormantEffect.Visual.Manager, Is.Not.Null);
-            Assert.That(dormantEffect.Visual.Manager.Rings, Is.Empty);
+            Assert.That(dormantEffect.Visual.Manager.Rings, Has.Count.EqualTo(30));
+            Assert.That(dormantEffect.Visual.Manager.Rings.All(ring => ring != null), Is.True);
 
             dormantEffect.UpdateTime(false, 0f);
 

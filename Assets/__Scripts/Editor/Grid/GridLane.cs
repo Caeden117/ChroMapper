@@ -162,6 +162,12 @@ public class GridLane : GridChild
         RefreshVisual();
     }
 
+    public void SetGridVisible(bool visible)
+    {
+        XZ.Grid.enabled = visible;
+        XY.Grid.enabled = visible;
+    }
+
     public void SetGridColor(Color color)
     {
         gridColor = color;

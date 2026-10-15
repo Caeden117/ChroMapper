@@ -19,7 +19,8 @@ namespace Beatmap.V2.Customs
             if (material.Color != null) node[KeyColor] = material.Color;
             node[KeyShader] = material.Shader;
             if (material.Track != null) node[KeyTrack] = material.Track;
-            if (material.ShaderKeywords.Count > 0)
+            // An empty keyword array explicitly clears shader keywords, so it must be exported.
+            if (material.ShaderKeywords != null)
             {
                 var keywords = new JSONArray();
                 foreach (var keyword in material.ShaderKeywords)

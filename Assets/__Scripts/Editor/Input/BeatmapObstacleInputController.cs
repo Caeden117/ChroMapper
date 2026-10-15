@@ -60,7 +60,8 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         var data = obs.ObjectData as BaseObstacle;
         data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
         data.Height = Mathf.Min(data.Height, 5 - data.PosY);
-        if (data.CompareTo(original) == 0) return;
+        if (data.HasSameContent(original))
+            return;
         obs.UpdateGridPosition();
         obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
         BeatmapActionContainer.AddAction(
@@ -88,7 +89,8 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
         var original = BeatmapFactory.Clone(obs.ObjectData);
         var data = obs.ObjectData as BaseObstacle;
         data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
-        if (data.CompareTo(original) == 0) return;
+        if (data.HasSameContent(original))
+            return;
         obs.UpdateGridPosition();
         obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
         BeatmapActionContainer.AddAction(

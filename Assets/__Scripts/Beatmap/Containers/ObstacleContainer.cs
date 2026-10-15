@@ -28,6 +28,7 @@ namespace Beatmap.Containers
 
         [Header("State")] [SerializeField] private TracksManager manager;
         public Vector3 ObstacleScale;
+        [SerializeField] private MeshRenderer outlineRenderer;
 
         public BaseObstacle ObstacleData;
 
@@ -65,6 +66,9 @@ namespace Beatmap.Containers
 
         public void SetColor(Color c)
         {
+            // Negative bloom alpha hides the frame in gameplay. Disable its renderer in preview to avoid
+            // white lines along distant water boundaries. (See the "water" wall edges on The 15 Sublimit for example)
+            outlineRenderer.enabled = !UIMode.PreviewMode || c.a >= 0f;
             MpbController.Mpb.SetColor(ColorId, c);
             MpbController.Mpb.SetColor(tintColorId, Color.Lerp(c, Color.white, coreLerpToWhiteFactor));
 
@@ -85,7 +89,9 @@ namespace Beatmap.Containers
             CoreTransform.localScale = scale - (Vector3.one * 0.01f);
             CoreTransform.localPosition = cubeOffset;
 
-            OutlineTransform.localScale = scale;
+            // The cube adapter needs a visible envelope for native frame beams below their edge thickness.
+            OutlineTransform.localScale = new Vector3(
+                scale.x, Mathf.Max(scale.y, obstacleEdgeSize), scale.z);
             OutlineTransform.localPosition = cubeOffset;
 
             MpbController.Mpb.SetVector(worldScaleId, OutlineTransform.localScale);
@@ -110,7 +116,7 @@ namespace Beatmap.Containers
             if (ObstacleData.CustomSize != null
                 && ObstacleData.CustomSize.IsArray
                 && ObstacleData.CustomSize[2].IsNumber)
-                return ObstacleData.CustomSize[2];
+                return ObstacleData.CustomSize[2].AsFloat * BeatmapConstant.LaneSize;
 
             var length = ObstacleData.DurationSongBpmTime;
 
@@ -188,6 +194,9 @@ namespace Beatmap.Containers
                 + (length < 0f ? length : 0f)
                 + BeatmapConstant.ZOffset);
             Animator.LocalTarget.localPosition = ReadPosition();
+            // Noodle "scale" resizes the visual child. Scaling the container root would also move
+            // its coordinate-derived position.
+            Animator.LocalTarget.localScale = ObstacleData.CustomVisualScale;
 
             UpdateScaleWithLength(length);
 

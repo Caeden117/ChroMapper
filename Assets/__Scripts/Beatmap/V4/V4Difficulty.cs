@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Comparers;
 using Beatmap.Enums;
 using Beatmap.Info;
 using SimpleJSON;
@@ -33,7 +34,7 @@ namespace Beatmap.V4
                 var colorNotes = new JSONArray();
                 var colorNotesData = new JSONArray();
                 
-                var notes = difficulty.Notes.Where(x => x.Type != (int)NoteType.Bomb).ToList();
+                var notes = BaseObject.InFileOrder(difficulty.Notes.Where(x => x.Type != (int)NoteType.Bomb)).ToList();
                 List<V4CommonData.Note> colorNotesCommonData = new(); 
                 colorNotesCommonData.AddRange(notes.Select(V4CommonData.Note.FromBaseNote));
                 colorNotesCommonData.AddRange(difficulty.Arcs.Select(V4CommonData.Note.FromBaseSliderHead));
@@ -57,7 +58,7 @@ namespace Beatmap.V4
                 // Bombs
                 var bombNotes = new JSONArray();
                 var bombNotesData = new JSONArray();
-                var bombs = difficulty.Notes.Where(x => x.Type == (int)NoteType.Bomb).ToList();
+                var bombs = BaseObject.InFileOrder(difficulty.Notes.Where(x => x.Type == (int)NoteType.Bomb)).ToList();
                 var bombNotesCommonData = bombs.Select(V4CommonData.Bomb.FromBaseNote).Distinct().ToList();
                 
                 foreach (var bomb in bombs)
@@ -78,9 +79,9 @@ namespace Beatmap.V4
                 var arcsData = new JSONArray();
                 var arcsCommonData = difficulty.Arcs.Select(V4CommonData.Arc.FromBaseArc).Distinct().ToList();
                 
-                foreach (var arc in difficulty.Arcs)
+                foreach (var arc in BaseObject.InFileOrder(difficulty.Arcs))
                 {
-                    arcs.Add(V4Arc.ToJson(arc, colorNotesCommonData, arcsCommonData));   
+                    arcs.Add(V4Arc.ToJson(arc, colorNotesCommonData, arcsCommonData));
                 }
 
                 foreach (var arcData in arcsCommonData)
@@ -96,9 +97,9 @@ namespace Beatmap.V4
                 var chainsData = new JSONArray();
                 var chainsCommonData = difficulty.Chains.Select(V4CommonData.Chain.FromBaseChain).Distinct().ToList();
                 
-                foreach (var chain in difficulty.Chains)
+                foreach (var chain in BaseObject.InFileOrder(difficulty.Chains))
                 {
-                    chains.Add(V4Chain.ToJson(chain, colorNotesCommonData, chainsCommonData));   
+                    chains.Add(V4Chain.ToJson(chain, colorNotesCommonData, chainsCommonData));
                 }
 
                 foreach (var chainData in chainsCommonData)
@@ -114,9 +115,9 @@ namespace Beatmap.V4
                 var obstaclesData = new JSONArray();
                 var obstaclesCommonData = difficulty.Obstacles.Select(V4CommonData.Obstacle.FromBaseObstacle).Distinct().ToList();
                 
-                foreach (var obstacle in difficulty.Obstacles)
+                foreach (var obstacle in BaseObject.InFileOrder(difficulty.Obstacles))
                 {
-                    obstacles.Add(V4Obstacle.ToJson(obstacle, obstaclesCommonData));   
+                    obstacles.Add(V4Obstacle.ToJson(obstacle, obstaclesCommonData));
                 }
 
                 foreach (var obstacleData in obstaclesCommonData)
@@ -132,7 +133,7 @@ namespace Beatmap.V4
                 var njsEventsData = new JSONArray();
                 var njsEventsCommonData = difficulty.NJSEvents.Select(V4CommonData.NJSEvent.FromBaseNJSEvent).Distinct().ToList();
 
-                foreach (var njsEvent in difficulty.NJSEvents)
+                foreach (var njsEvent in BaseObject.InFileOrder(difficulty.NJSEvents))
                 {
                     njsEvents.Add(V4NJSEvent.ToJson(njsEvent, njsEventsCommonData));
                 }
@@ -173,7 +174,7 @@ namespace Beatmap.V4
                 // Basic events
                 var basicEvents = new JSONArray();
                 var basicEventsData = new JSONArray();
-                var mapBasicEvents = difficulty.Events.Where(x => !x.IsColorBoostEvent()).ToList();
+                var mapBasicEvents = BaseObject.InFileOrder(difficulty.Events.Where(x => !x.IsColorBoostEvent())).ToList();
                 var basicEventsCommonData = mapBasicEvents.Select(V4CommonData.BasicEvent.FromBaseEvent).Distinct().ToList();
                 
                 foreach (var basicEvent in mapBasicEvents)
@@ -192,7 +193,7 @@ namespace Beatmap.V4
                 // Boost events
                 var colorBoostEvents = new JSONArray();
                 var colorBoostEventsData = new JSONArray();
-                var mapColorBoostEvents = difficulty.Events.Where(x => x.IsColorBoostEvent()).ToList();
+                var mapColorBoostEvents = BaseObject.InFileOrder(difficulty.Events.Where(x => x.IsColorBoostEvent())).ToList();
                 var colorBoostEventsCommonData = mapColorBoostEvents.Select(V4CommonData.ColorBoostEvent.FromBaseEvent).Distinct().ToList();
                 
                 foreach (var colorBoostEvent in mapColorBoostEvents)
@@ -213,7 +214,7 @@ namespace Beatmap.V4
                 var waypointsData = new JSONArray();
                 var waypointsCommonData = difficulty.Waypoints.Select(V4CommonData.Waypoint.FromBaseWayPoint).Distinct().ToList();
                 
-                foreach (var waypoint in difficulty.Waypoints)
+                foreach (var waypoint in BaseObject.InFileOrder(difficulty.Waypoints))
                 {
                     waypoints.Add(V4Waypoint.ToJson(waypoint, waypointsCommonData));
                 }
@@ -279,7 +280,7 @@ namespace Beatmap.V4
                     lightColorEvents.Add(lightColorEventData.ToJson());
                 }
 
-                foreach (var groupEvent in difficulty.LightColorEventBoxGroups)
+                foreach (var groupEvent in BaseObject.InFileOrder(difficulty.LightColorEventBoxGroups))
                 {
                     eventBoxGroups.Add(V4LightColorEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
                         lightColorEventBoxesCommonData, lightColorEventsCommonData));
@@ -312,7 +313,7 @@ namespace Beatmap.V4
                     lightRotationEvents.Add(lightRotationEventData.ToJson());
                 }
 
-                foreach (var groupEvent in difficulty.LightRotationEventBoxGroups)
+                foreach (var groupEvent in BaseObject.InFileOrder(difficulty.LightRotationEventBoxGroups))
                 {
                     eventBoxGroups.Add(V4LightRotationEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
                         lightRotationEventBoxesCommonData, lightRotationEventsCommonData));
@@ -345,7 +346,7 @@ namespace Beatmap.V4
                     lightTranslationEvents.Add(lightTranslationEventData.ToJson());
                 }
 
-                foreach (var groupEvent in difficulty.LightTranslationEventBoxGroups)
+                foreach (var groupEvent in BaseObject.InFileOrder(difficulty.LightTranslationEventBoxGroups))
                 {
                     eventBoxGroups.Add(V4LightTranslationEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
                         lightTranslationEventBoxesCommonData, lightTranslationEventsCommonData));
@@ -378,7 +379,7 @@ namespace Beatmap.V4
                     floatFxEvents.Add(floatFxEvent.ToJson());
                 }
 
-                foreach (var groupEvent in difficulty.VfxEventBoxGroups)
+                foreach (var groupEvent in BaseObject.InFileOrder(difficulty.VfxEventBoxGroups))
                 {
                     eventBoxGroups.Add(V4VfxEventEventBoxGroup.ToJson(groupEvent, indexFiltersCommonData,
                         fxEventBoxesCommonData, floatFxEventsCommonData));
@@ -513,50 +514,50 @@ namespace Beatmap.V4
                         case "colorNotes":
                             foreach (JSONNode n in node)
                             {
-                                map.Notes.Add(V4ColorNote.GetFromJson(n, notesCommonData));
+                                map.Notes.Add(map.WithFileOrder(V4ColorNote.GetFromJson(n, notesCommonData)));
                             }
                             break;
                         case "bombNotes":
                             foreach (JSONNode n in node)
                             {
-                                map.Notes.Add(V4BombNote.GetFromJson(n, bombsCommonData));
+                                map.Notes.Add(map.WithFileOrder(V4BombNote.GetFromJson(n, bombsCommonData)));
                             }
 
                             break;
                         case "obstacles":
                             foreach (JSONNode n in node)
                             {
-                                map.Obstacles.Add(V4Obstacle.GetFromJson(n, obstaclesCommonData));
+                                map.Obstacles.Add(map.WithFileOrder(V4Obstacle.GetFromJson(n, obstaclesCommonData)));
                             }
 
                             break;
                         case "arcs":
                             foreach (JSONNode n in node)
                             {
-                                map.Arcs.Add(V4Arc.GetFromJson(n, notesCommonData, arcsCommonData));
+                                map.Arcs.Add(map.WithFileOrder(V4Arc.GetFromJson(n, notesCommonData, arcsCommonData)));
                             }
 
                             break;
                         case "chains":
                             foreach (JSONNode n in node)
                             {
-                                map.Chains.Add(V4Chain.GetFromJson(n, notesCommonData, chainsCommonData));
+                                map.Chains.Add(map.WithFileOrder(V4Chain.GetFromJson(n, notesCommonData, chainsCommonData)));
                             }
 
                             break;
                         case "njsEvents":
                             foreach (JSONNode n in node)
                             {
-                                map.NJSEvents.Add(V4NJSEvent.GetFromJson(n, njsEventsCommonData));
+                                map.NJSEvents.Add(map.WithFileOrder(V4NJSEvent.GetFromJson(n, njsEventsCommonData)));
                             }
 
                             break;
-                        
+
                         // Deprecated
                         case "spawnRotations":
                             foreach (JSONNode n in node)
                             {
-                                map.RotationEvents.Add(V4RotationEvent.GetFromJson(n, rotationsCommonData));
+                                map.RotationEvents.Add(map.WithFileOrder(V4RotationEvent.GetFromJson(n, rotationsCommonData)));
                             }
 
                             break;
@@ -565,7 +566,7 @@ namespace Beatmap.V4
 
                 // Important!
                 map.Notes.Sort();
-                map.Events.Sort();
+                map.Events.Sort(EventOrderComparer.Instance);
                 map.Obstacles.Sort();
                 map.Chains.Sort();
                 map.Arcs.Sort();
@@ -780,19 +781,19 @@ namespace Beatmap.V4
                     case "basicEvents":
                         foreach (JSONNode n in node)
                         {
-                            events.Add(V4BasicEvent.GetFromJson(n, basicEventsCommonData));
+                            events.Add(map.WithFileOrder(V4BasicEvent.GetFromJson(n, basicEventsCommonData)));
                         }
 
                         break;
-                    
+
                     case "colorBoostEvents":
                         foreach (JSONNode n in node)
                         {
-                            events.Add(V4ColorBoostEvent.GetFromJson(n, colorBoostEventsCommonData));
+                            events.Add(map.WithFileOrder(V4ColorBoostEvent.GetFromJson(n, colorBoostEventsCommonData)));
                         }
 
                         break;
-                    
+
                     // Pain
                     case "eventBoxGroups":
                         foreach (JSONNode n in node)
@@ -801,32 +802,32 @@ namespace Beatmap.V4
                             switch (type)
                             {
                                 case 1: // Light Color
-                                    lightColorEventBoxGroups.Add(V4LightColorEventBoxGroup.GetFromJson(n,
-                                        indexFilters, lightColorEventBoxesCommonData, lightColorEventsCommonData));
+                                    lightColorEventBoxGroups.Add(map.WithFileOrder(V4LightColorEventBoxGroup.GetFromJson(n,
+                                        indexFilters, lightColorEventBoxesCommonData, lightColorEventsCommonData)));
                                     break;
                                 case 2: // Light Rotation
-                                    lightRotationEventBoxGroups.Add(V4LightRotationEventBoxGroup.GetFromJson(n,
+                                    lightRotationEventBoxGroups.Add(map.WithFileOrder(V4LightRotationEventBoxGroup.GetFromJson(n,
                                         indexFilters, lightRotationEventBoxesCommonData,
-                                        lightRotationEventsCommonData));
+                                        lightRotationEventsCommonData)));
                                     break;
                                 case 3: // Light Translation
-                                    lightTranslationEventBoxGroups.Add(V4LightTranslationEventBoxGroup.GetFromJson(
+                                    lightTranslationEventBoxGroups.Add(map.WithFileOrder(V4LightTranslationEventBoxGroup.GetFromJson(
                                         n, indexFilters, lightTranslationEventBoxesCommonData,
-                                        lightTranslationEventsCommonData));
+                                        lightTranslationEventsCommonData)));
                                     break;
                                 case 4: // FX Events
-                                    vfxEventBoxGroups.Add(V4VfxEventEventBoxGroup.GetFromJson(n, indexFilters,
-                                        fxEventBoxesCommonData, floatFxEventsCommonData));
+                                    vfxEventBoxGroups.Add(map.WithFileOrder(V4VfxEventEventBoxGroup.GetFromJson(n, indexFilters,
+                                        fxEventBoxesCommonData, floatFxEventsCommonData)));
                                     break;
                             }
                         }
-                    
+
                         break;
-                    
+
                     case "waypoints":
                         foreach (JSONNode n in node)
                         {
-                            waypoints.Add(V4Waypoint.GetFromJson(n, waypointsCommonData)); 
+                            waypoints.Add(map.WithFileOrder(V4Waypoint.GetFromJson(n, waypointsCommonData)));
                         }
                         break;
                     
@@ -850,8 +851,8 @@ namespace Beatmap.V4
             map.EventTypesWithKeywords = eventTypesWithKeywords;
             map.UseNormalEventsAsCompatibleEvents = useNormalEventsAsCompatibleEvents;
             
-            // Important!
-            map.Events.Sort();
+            // Re-sort after merging lightshow arrays so callbacks at the same beat retain their source order.
+            map.Events.Sort(EventOrderComparer.Instance);
         }
     }
 }

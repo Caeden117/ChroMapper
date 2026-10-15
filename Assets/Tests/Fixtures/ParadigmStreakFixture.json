@@ -1,0 +1,202 @@
+{
+  "version": "3.3.0",
+  "customData": {
+    "customEvents": [
+      {
+        "b": -1,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "s_boss39"
+          ],
+          "parentTrack": "p_s_boss",
+          "worldPositionStays": true
+        }
+      },
+      {
+        "b": 659,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "p_s_boss",
+          "duration": 0,
+          "position": [
+            0,
+            0,
+            10000
+          ]
+        }
+      },
+      {
+        "b": 719.5,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "p_s_boss",
+          "duration": 75.5,
+          "position": [
+            [
+              0,
+              0,
+              10000,
+              0
+            ],
+            [
+              0,
+              0,
+              9463.58,
+              0.894
+            ],
+            [
+              0,
+              0,
+              9400,
+              1,
+              "easeOutSine"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 796,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "p_s_boss",
+          "duration": 8,
+          "position": [
+            [
+              0,
+              0,
+              9400,
+              0
+            ],
+            [
+              0,
+              0,
+              10000,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 804,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "p_s_boss",
+          "duration": 0,
+          "position": [
+            0,
+            -1000000,
+            -1000000
+          ]
+        }
+      },
+      {
+        "b": 804,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "s_boss39",
+          "duration": 2,
+          "position": [
+            [
+              -1.7343488609767708,
+              -2.131998712950129,
+              -1,
+              0
+            ],
+            [
+              -1.7343488609767708,
+              -2.131998712950129,
+              100,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 804,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "s_boss39",
+          "duration": 2,
+          "scale": [
+            [
+              0.1,
+              0.1,
+              1,
+              0
+            ],
+            [
+              0.1,
+              0.1,
+              5,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 158,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "s_boss39",
+          "duration": 0,
+          "position": [
+            -7.7,
+            0,
+            -9953.52
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            0.16,
+            0.16,
+            10
+          ]
+        }
+      }
+    ],
+    "environment": [
+      {
+        "components": {
+          "TubeBloomPrePassLight": {
+            "colorAlphaMultiplier": 1,
+            "bloomFogIntensityMultiplier": 2
+          },
+          "ILightWithId": {
+            "type": 0,
+            "lightID": 15000
+          }
+        },
+        "geometry": {
+          "type": "Cube",
+          "material": "lightcube_material"
+        },
+        "track": "s_boss39",
+        "position": [
+          -7.7,
+          0,
+          -9953.52
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          0.16,
+          0.16,
+          10
+        ]
+      }
+    ],
+    "materials": {
+      "lightcube_material": {
+        "shader": "TransparentLight"
+      }
+    }
+  },
+  "basicBeatmapEvents": []
+}

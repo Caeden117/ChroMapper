@@ -8,9 +8,16 @@ public class TrackLaneRingsPositionEffect : BasicMovementEffect<TrackLaneRingsPo
     // Paste and undo re-evaluate this state chain immediately, so record the missing
     // snapshot dependency at construction instead of leaving only a later hot-path null.
     private bool reportedUnavailableRingSnapshot;
-    // GreenDayGrenadeInactiveRingRotationEffectInitializes covers its inactive Event 9 spawner, whose Awake cannot establish the serialized reverse binding.
     private bool isDormantTemplate;
     private TrackLaneRingsManager ringManager;
+    // Vagueness And Journey spendt most ring-zoom time replaying old fixed ticks for
+    // every ring on every render. Retain the last fixed pair while playback moves forward.
+    private float[] evaluationPositions;
+    private float[] evaluationPreviousPositions;
+    private TrackLaneRingsPositionStateData evaluationState;
+    private int evaluationFrame;
+    private bool evaluationValid;
+    private bool isPlaying;
 
     private void Awake()
     {
@@ -36,11 +43,22 @@ public class TrackLaneRingsPositionEffect : BasicMovementEffect<TrackLaneRingsPo
         // GreenDayGrenadeInactiveRingRotationEffectInitializes distinguishes its inactive empty template from a wired live effect whose rings disappeared.
         isDormantTemplate = !Visual.gameObject.activeInHierarchy && ringManager.Rings.Count == 0;
 
+        evaluationState = null;
+        evaluationValid = false;
         base.Initialize();
+    }
+
+    public override void UpdateTime(bool isPlaying, float currentTime)
+    {
+        this.isPlaying = isPlaying;
+        base.UpdateTime(isPlaying, currentTime);
     }
 
     protected override void ComputeSnapshot(TrackLaneRingsPositionStateData previous, TrackLaneRingsPositionStateData current)
     {
+        if (evaluationState == current)
+            evaluationValid = false;
+
         var rings = ringManager.Rings;
         var ringCount = rings.Count;
         if (ringCount == 0)
@@ -85,7 +103,10 @@ public class TrackLaneRingsPositionEffect : BasicMovementEffect<TrackLaneRingsPo
             // Frame -1 is the captured pre-song state; frame zero is the first fixed pair
             // shared with rotation once the audio controller begins rendering.
             current.SnapshotFrame = -1;
-            current.SameTypeIndex = -1;
+            // Beat Saber numbers sameTypeIndex from 1 (BasicBeatmapEventData.SetFirstSameTypeIndex),
+            // so seeding zero makes the first real event odd and take _minPositionStep, matching the
+            // game. Fixes As The World Caves In and more.
+            current.SameTypeIndex = 0;
             current.Step = 0f;
             current.Speed = 0f;
             current.PreviousStep = 0f;
@@ -104,16 +125,21 @@ public class TrackLaneRingsPositionEffect : BasicMovementEffect<TrackLaneRingsPo
             current.SnapshotSeconds,
             TrackLaneRingsRotationEffect.EmulatedFixedDeltaTime);
         current.SameTypeIndex = previous.SameTypeIndex + 1;
-        var frames = current.SnapshotFrame - previous.SnapshotFrame;
         for (var i = 0; i < ringCount; i++)
         {
             // Replay the prior event's delayed LateUpdate assignment while carrying the snapshot chain forward.
-            EvaluateDiscretePair(
+            var previousPosition = previous.PreviousRingPositions[i];
+            var currentPosition = previous.RingPositions[i];
+            AdvanceDiscretePair(
                 previous,
                 i,
-                frames,
-                out current.PreviousRingPositions[i],
-                out current.RingPositions[i]);
+                rings[i].PositionOffset.z,
+                previous.SnapshotFrame,
+                current.SnapshotFrame,
+                ref previousPosition,
+                ref currentPosition);
+            current.PreviousRingPositions[i] = previousPosition;
+            current.RingPositions[i] = currentPosition;
         }
 
         current.PreviousStep = previous.Step;
@@ -135,41 +161,77 @@ public class TrackLaneRingsPositionEffect : BasicMovementEffect<TrackLaneRingsPo
             out _,
             out var fixedFrame,
             out var interpolation);
-        var frames = fixedFrame - current.SnapshotFrame;
         var rings = ringManager.Rings;
-        for (var i = 0; i < rings.Count; i++)
+        var ringCount = rings.Count;
+        // A changed ring count invalidates the retained pair before any ring reads it.
+        if (evaluationPositions == null || evaluationPositions.Length != ringCount)
+        {
+            evaluationPositions = new float[ringCount];
+            evaluationPreviousPositions = new float[ringCount];
+            evaluationValid = false;
+        }
+
+        // Rebuild from the immutable event snapshot for seeks, edits, and state changes;
+        // otherwise advance only the fixed ticks crossed since the preceding playback frame.
+        var canAdvanceIncrementally = isPlaying
+            && evaluationValid
+            && evaluationState == current
+            && fixedFrame >= evaluationFrame;
+        var startFrame = canAdvanceIncrementally
+            ? evaluationFrame
+            : current.SnapshotFrame;
+        for (var i = 0; i < ringCount; i++)
         {
             var ring = rings[i];
-            // Replay both sides of the modeled LateUpdate assignment on the render hot path.
-            EvaluateDiscretePair(
-                current,
-                i,
-                frames,
-                out var previousPosition,
-                out var currentPosition);
+            if (!canAdvanceIncrementally)
+            {
+                evaluationPreviousPositions[i] = current.PreviousRingPositions[i];
+                evaluationPositions[i] = current.RingPositions[i];
+            }
+
+            var previousPosition = evaluationPreviousPositions[i];
+            var currentPosition = evaluationPositions[i];
+            if (fixedFrame > startFrame)
+            {
+                AdvanceDiscretePair(
+                    current,
+                    i,
+                    ring.PositionOffset.z,
+                    startFrame,
+                    fixedFrame,
+                    ref previousPosition,
+                    ref currentPosition);
+                evaluationPreviousPositions[i] = previousPosition;
+                evaluationPositions[i] = currentPosition;
+            }
+
             var position = previousPosition + ((currentPosition - previousPosition) * interpolation);
             ring.CachedTransform.localPosition = new Vector3(
                 ring.PositionOffset.x,
                 ring.PositionOffset.y,
                 position);
         }
+
+        evaluationState = current;
+        evaluationFrame = fixedFrame;
+        evaluationValid = true;
     }
 
-    // Replay Unity's float recurrence exactly and retain both render endpoints in one pass.
-    private void EvaluateDiscretePair(
+    // The snapshot builder and retained playback evaluator must perform identical fixed ticks
+    // so moving forward incrementally gives the same endpoints as replaying from the event.
+    private static void AdvanceDiscretePair(
         TrackLaneRingsPositionStateData state,
         int ringIndex,
-        int frames,
-        out float previous,
-        out float current)
+        float positionOffset,
+        int fromFrame,
+        int toFrame,
+        ref float previous,
+        ref float current)
     {
-        var value = state.RingPositions[ringIndex];
-        previous = state.PreviousRingPositions[ringIndex];
-        var positionOffset = ringManager.Rings[ringIndex].PositionOffset.z;
-        for (var i = 0; i < frames; i++)
+        var value = current;
+        for (var tickFrame = fromFrame + 1; tickFrame <= toFrame; tickFrame++)
         {
             previous = value;
-            var tickFrame = state.SnapshotFrame + i + 1;
             var assigned = tickFrame >= state.AssignmentFrame;
             var step = assigned ? state.Step : state.PreviousStep;
             var speed = assigned ? state.Speed : state.PreviousSpeed;

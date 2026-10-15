@@ -111,7 +111,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
         var replacementLookup = new GLSEventReplacementLookup(MapObjects);
         foreach (var sourceEvent in sourceEvents)
         {
-            if (sourceEvent.EventBoxGroupData?.CompareTo(group) != 0)
+            if (sourceEvent.EventBoxGroupData?.HasSameContent(group) != true)
             {
                 continue;
             }
@@ -250,7 +250,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
             || liveGroup.GetType() != originalGroup.GetType())
         {
             // A rejected drag must never publish an invalid transient group merely because its original snapshot cannot be applied.
-            Debug.LogError("Could not restore a rejected GLS drag because its group context was unavailable.");
+            Debug.LogError($"Could not restore a rejected GLS drag because its group context was unavailable. {Beatmap.BeatmapLogContext.Describe(originalGroup ?? liveGroup)}");
             return;
         }
 
@@ -420,7 +420,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
         foreach (var selectedEvent in selectedEvents)
         {
             SelectionController.Deselect(selectedEvent, false);
-            if (selectedEvent.EventBoxGroupData?.CompareTo(group) != 0)
+            if (selectedEvent.EventBoxGroupData?.HasSameContent(group) != true)
                 continue;
 
             if (!replacementLookup.TryTake(selectedEvent, out var replacement))
@@ -521,7 +521,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
         bool deselect = true,
         bool triggerHandle = true)
     {
-        if (!TryBinarySearch(obj, out var search)) return;
+        if (!TryBinarySearchForObjectIndexLogged(obj, out var search)) return;
 
         DeleteObjectAt(
             search,

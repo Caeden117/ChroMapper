@@ -11,6 +11,15 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
     public int SwitchEventType = -1;
     public LightPairRotation Visual;
 
+    private System.Func<float, float> positionSampler;
+
+    public void BindPositionSampler(System.Func<float, float> sampler)
+    {
+        positionSampler = sampler;
+    }
+
+    private float GetUnanimatedPositionZ(float jsonTime) => Visual.transform.position.z;
+
     private void Awake()
     {
         if (Visual == null)
@@ -25,6 +34,7 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
                 $"LightPairRotationEffect on '{name}' has no LightPairRotation visual.");
 
         Visual.Initialize();
+        positionSampler ??= GetUnanimatedPositionZ;
         base.Initialize();
     }
 
@@ -45,7 +55,9 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
             current.LeftEnabled = false;
             current.RightEnabled = false;
             current.OverrideRandomValues = Visual.OverrideRandomValues;
-            current.SwitchEventIndex = 0;
+            // Beat Saber numbers sameTypeIndex from 1 (BasicBeatmapEventData.SetFirstSameTypeIndex),
+            // so the first switch event must evaluate the parity as odd
+            current.SwitchEventIndex = 1;
             current.RandomStartRotation = 0f;
             current.RandomDirection = 1f;
             current.HasRandom = false;
@@ -81,8 +93,6 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
 
         if (current.Base.Type == SwitchEventType)
         {
-            // Match sameTypeIndex parity: the first callback has index zero, then the
-            // retained count advances for the next switch event.
             current.OverrideRandomValues = current.SwitchEventIndex % 2 == 1;
             current.SwitchEventIndex++;
         }
@@ -155,17 +165,22 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
             return;
         }
 
-        if (current.HasRandom)
+        if (current.HasRandom && !current.OverrideRandomValues)
             return;
 
         if (current.OverrideRandomValues)
         {
-            // Retain the callback-frame-derived OEM override once; regenerating it during a
-            // dirty-chain recompute would make an unchanged event jump after every edit.
+            // The deterministic override must follow edited track poses when the chain is rebuilt.
+            // TODO this is better but still not quite right, need to use these diag logs compared to in game positions to figure out why we still slightly desync (if its even possible not to desync at all)
             current.RandomDirection = 1f;
             current.RandomStartRotation = callbackFrame % 360;
             if (Visual.UseZPositionForAngleOffset)
-                current.RandomStartRotation += Visual.transform.position.z * Visual.ZPositionAngleOffsetScale;
+            {
+                var callbackBeat = Atsc.GetBeatFromSeconds(current.CallbackSeconds);
+                var jsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(callbackBeat);
+                var positionZ = positionSampler(jsonTime);
+                current.RandomStartRotation += positionZ * Visual.ZPositionAngleOffsetScale;
+            }
         }
         else
         {

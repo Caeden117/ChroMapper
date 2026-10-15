@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Appearances;
 using Beatmap.Base;
+using Beatmap.Comparers;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
                                   CMInput.IEventGridActions,
                                   IEditorStateProvider
 {
+    public override IComparer<BaseEvent> SortComparer => EventOrderComparer.Instance;
+
     public enum PropMode
     {
         Off, Prop, Light
@@ -924,7 +927,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
             return;
         }
 
-        if (!TryBinarySearch(evt, out _))
+        if (!TryBinarySearchForObjectIndexLogged(evt, out _))
         {
             return;
         }

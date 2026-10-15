@@ -19,17 +19,30 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     [SerializeField] private CountersPlusController countersPlus;
 
     private readonly List<ObjectContainer> objectsAtSameTime = new();
+    private readonly NoteJumpDurationIndex jumpDurations = new();
     private bool isPlaying;
 
     public static bool ShowArcVisualizer { get; private set; }
 
     public override ObjectType ContainerType => ObjectType.Note;
 
+    protected override void OnMapObjectsAssigned() => jumpDurations.Reset(MapObjects);
+
+    public override void SilentRemoveObject(BaseObject obj)
+    {
+        base.SilentRemoveObject(obj);
+        if (obj is BaseNote note && !ContainsObject(note)) jumpDurations.Remove(note);
+    }
+
     internal override void SubscribeToCallbacks()
     {
         SpawnCallbackController.OnNotePassedThreshold += SpawnCallback;
         SpawnCallbackController.OnRecursiveNoteCheckFinished += OnRecursiveCheckFinished;
         DespawnCallbackController.OnNotePassedThreshold += DespawnCallback;
+        // Refresh the paused spawn window before track values are pushed for a stopped seek. New note
+        // animators must exist before OnTimeChangedEarly applies the held values, even when the seek stays
+        // inside one chunk.
+        BeatmapContext.Atsc.OnTimeFlushPending += PrepareStoppedSeek;
         BeatmapContext.Atsc.OnPlayToggled += OnPlayToggle;
         UIMode.OnPreviewModeSwitched += OnUIPreviewModeSwitch;
 
@@ -41,9 +54,11 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     internal override void UnsubscribeToCallbacks()
     {
+        jumpDurations.Clear();
         SpawnCallbackController.OnNotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.OnRecursiveNoteCheckFinished -= OnRecursiveCheckFinished;
         DespawnCallbackController.OnNotePassedThreshold -= DespawnCallback;
+        BeatmapContext.Atsc.OnTimeFlushPending -= PrepareStoppedSeek;
         BeatmapContext.Atsc.OnPlayToggled -= OnPlayToggle;
         UIMode.OnPreviewModeSwitched -= OnUIPreviewModeSwitch;
 
@@ -51,6 +66,12 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorMultiplier));
         Settings.ClearSettingNotifications(nameof(Settings.ArrowColorWhiteBlend));
         Settings.ClearSettingNotifications(nameof(Settings.AccurateNoteSize));
+    }
+
+    private void PrepareStoppedSeek()
+    {
+        if (UIMode.PreviewMode)
+            RefreshPool();
     }
 
     private void OnPlayToggle(bool isPlaying)
@@ -85,6 +106,80 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
 
     private void OnRecursiveCheckFinished(bool natural, int lastPassedIndex) => RefreshPool();
 
+    public override void RefreshPool(bool forceRefresh = false)
+    {
+        if (UIMode.PreviewMode && !BeatmapContext.Atsc.IsPlaying)
+        {
+            var time = BeatmapContext.Atsc.CurrentSongBpmTime;
+            var spawnOffset = SpawnCallbackController.Offset;
+            var span = MapObjects.AsSpan();
+            var walkStart = span.LowerBoundBy(time + spawnOffset, obj => obj.SongBpmTime);
+            var spawnFloor = walkStart < span.Length ? span[walkStart].JsonTime : float.PositiveInfinity;
+
+            // Hit-time order differs from jump-in order. Bound the query by the longest current jump,
+            // then check each candidate so a short-jump note cannot hide a later long-jump note.
+            var upperBound = UIMode.AnimationMode
+                ? Mathf.Max(time + spawnOffset, time + Mathf.Max(jumpDurations.Maximum, spawnOffset) + Track.JUMP_TIME)
+                : time + spawnOffset;
+            RefreshPool(
+                Mathf.Min(time + DespawnCallbackController.Offset, time + spawnOffset),
+                upperBound,
+                forceRefresh,
+                new PausedGameplayNoteFilter(
+                    time + DespawnCallbackController.Offset,
+                    time + spawnOffset,
+                    spawnFloor,
+                    time,
+                    spawnOffset,
+                    UIMode.AnimationMode));
+            return;
+        }
+
+        base.RefreshPool(forceRefresh);
+    }
+
+    // TODO(EklipZ) we should do the same thing for obstacles. Their jump-in isn't being rendered in the Playing / Preview pause view still. 
+    // TODO(EklipZ) what about chains / arcs / bombs as well?
+    private readonly struct PausedGameplayNoteFilter : IContainerPoolFilter
+    {
+        private readonly float despawnFloor;
+        private readonly float spawnCap;
+        private readonly float spawnFloor;
+        private readonly float time;
+        private readonly float spawnOffset;
+        private readonly bool animationLookahead;
+
+        public PausedGameplayNoteFilter(
+            float despawnFloor,
+            float spawnCap,
+            float spawnFloor,
+            float time,
+            float spawnOffset,
+            bool animationLookahead)
+        {
+            this.despawnFloor = despawnFloor;
+            this.spawnCap = spawnCap;
+            this.spawnFloor = spawnFloor;
+            this.time = time;
+            this.spawnOffset = spawnOffset;
+            this.animationLookahead = animationLookahead;
+        }
+
+        // Use each note's HalfJumpDuration in animation preview so paused preview matches playback. Ordinary
+        // editing uses the shared spawn offset.
+        public bool Includes(BaseNote note)
+        {
+            if (note.SongBpmTime >= despawnFloor && note.SongBpmTime <= spawnCap)
+                return true;
+            if (note.JsonTime < spawnFloor)
+                return false;
+            var lookahead = animationLookahead
+                ? Mathf.Max(note.HalfJumpDuration, spawnOffset) + Track.JUMP_TIME
+                : spawnOffset;
+            return note.SongBpmTime <= time + lookahead;
+        }
+    }
+
     public void UpdateColor(Color red, Color blue) => noteAppearanceSo.UpdateColor(red, blue);
 
     public override ObjectContainer CreateContainer()
@@ -110,13 +205,25 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
             var track = tracksManager.GetTrackAtTime(obj.SongBpmTime, note.NoteData.Rotation);
             track.AttachContainer(con);
         }
+
+        if (UIMode.AnimationMode && obj.CustomTrack != null && note.Animator.enabled)
+        {
+            tracksManager.PushHeldValuesToChild(obj.CustomTrack, note.Animator);
+            note.Animator.LateUpdate();
+        }
     }
 
-    protected override void HandleObjectSpawned(BaseObject _, bool __ = false) =>
+    protected override void HandleObjectSpawned(BaseObject obj, bool inCollection = false)
+    {
+        jumpDurations.Add((BaseNote)obj);
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+    }
 
-    protected override void HandleObjectDelete(BaseObject _, bool __ = false) =>
+    protected override void HandleObjectDelete(BaseObject obj, bool inCollection = false)
+    {
+        jumpDurations.Remove((BaseNote)obj);
         countersPlus.UpdateStatistic(CountersPlusStatistic.Notes);
+    }
 
     // Here we check to see if any special angled notes are required.
     protected override void HandleContainerSpawn(ObjectContainer container, BaseObject obj) =>

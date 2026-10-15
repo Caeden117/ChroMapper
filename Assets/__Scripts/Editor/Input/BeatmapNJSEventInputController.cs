@@ -49,7 +49,8 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
                 - BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
         }
 
-        if (containerToEdit.NJSData.CompareTo(original) == 0) return;
+        if (containerToEdit.NJSData.HasSameContent(original))
+            return;
 
         containerToEdit.UpdateNJSText();
 

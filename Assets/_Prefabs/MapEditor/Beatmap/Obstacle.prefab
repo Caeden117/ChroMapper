@@ -59,6 +59,7 @@ MonoBehaviour:
   distortObstacle: {fileID: 2100000, guid: c33b80c70e257e07aad443f4ed6b716f, type: 2}
   CoreTransform: {fileID: 5721831432656677478}
   OutlineTransform: {fileID: 2116131923093648968}
+  outlineRenderer: {fileID: 5097922881444473704}
   text: {fileID: 8421857483080135491}
   manager: {fileID: 0}
   ObstacleScale: {x: 0, y: 0, z: 0}

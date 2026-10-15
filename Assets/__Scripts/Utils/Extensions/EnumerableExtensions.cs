@@ -151,16 +151,18 @@ public static class IEnumerableExtensions
     public static int UpperBoundBy<TValue, TComparison>(
         this Span<TValue> span,
         TComparison value,
-        Func<TValue, TComparison> getter)
+        Func<TValue, TComparison> getter,
+        IComparer<TComparison> comparer = null)
         where TComparison : IComparable<TComparison>
     {
+        comparer ??= Comparer<TComparison>.Default;
         var min = 0;
         var max = span.Length;
 
         while (min < max)
         {
             var mid = min + ((max - min) / 2);
-            if (getter(span[mid]).CompareTo(value) <= 0)
+            if (comparer.Compare(getter(span[mid]), value) <= 0)
             {
                 min = mid + 1;
             }

@@ -1,0 +1,122 @@
+{
+  "_version": "2.2.0",
+  "_notes": [],
+  "_obstacles": [],
+  "_events": [
+    {
+      "_time": 6.266,
+      "_type": 10,
+      "_value": 5,
+      "_customData": {
+        "_lightID": 1,
+        "_color": [
+          0,
+          0.716,
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "_time": 6.266,
+      "_type": 10,
+      "_value": 5,
+      "_customData": {
+        "_lightID": 1,
+        "_color": [
+          0,
+          0.716,
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "_time": 6.266,
+      "_type": 11,
+      "_value": 5,
+      "_customData": {
+        "_lightID": 1,
+        "_color": [
+          0,
+          0.716,
+          1,
+          4
+        ]
+      }
+    }
+  ],
+  "_customData": {
+    "_environment": [
+      {
+        "_id": "^.*\\[\\d\\].*(PillarR)$",
+        "_lookupMethod": "Regex",
+        "_scale": [
+          5,
+          5,
+          5
+        ],
+        "_localPosition": [
+          30.42,
+          -20,
+          30
+        ],
+        "_rotation": [
+          90,
+          60,
+          0
+        ]
+      },
+      {
+        "_id": "^.*\\[\\d\\].*(PillarL)$",
+        "_lookupMethod": "Regex",
+        "_scale": [
+          5,
+          5,
+          5
+        ],
+        "_localPosition": [
+          -30.42,
+          -20,
+          30
+        ],
+        "_rotation": [
+          90,
+          -60,
+          0
+        ]
+      }
+    ],
+    "_customEvents": [
+      {
+        "_time": 0,
+        "_type": "AssignPlayerToTrack",
+        "_data": {
+          "_track": "PlayerTrack"
+        }
+      },
+      {
+        "_time": 0,
+        "_type": "AnimateTrack",
+        "_data": {
+          "_track": "PlayerTrack",
+          "_duration": 1,
+          "_position": [
+            [
+              0,
+              15,
+              0,
+              0
+            ],
+            [
+              0,
+              15,
+              0,
+              1
+            ]
+          ]
+        }
+      }
+    ]
+  }
+}

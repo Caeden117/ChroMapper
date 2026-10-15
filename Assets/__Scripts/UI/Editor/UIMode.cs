@@ -15,6 +15,9 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public static bool AnimationMode { get; private set; }
     private Vector3 savedCamPosition = Vector3.zero;
     private Quaternion savedCamRotation = Quaternion.identity;
+    private UIModeType modeBeforePreview = UIModeType.Normal;
+    private EditingMode editingModeBeforePlaying = EditingMode.Gameplay;
+    private float visualBeatOriginBeforePlaying;
 
     public static event Action<UIModeType> OnUIModeSwitched;
     public static event Action OnPreviewModeSwitched;
@@ -22,6 +25,7 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     [SerializeField] private GameObject modesGameObject;
     [SerializeField] private RectTransform selected;
     [SerializeField] private CameraManager cameraManager;
+    [SerializeField] private EditModeContext editModeContext;
     [SerializeField] private GameObject[] gameObjectsWithRenderersToToggle;
     [SerializeField] private Transform[] thingsThatRequireAMoveForPreview;
     [SerializeField] private AudioTimeSyncController atsc;
@@ -148,7 +152,8 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
 
         if (currentOption == (int)UIModeType.Playing && ((int)mode) != currentOption)
         {
-            // restore cam position/rotation
+            // Must release the cursor before any later pause.
+            cameraManager.SelectedCameraController.SetLockState(false);
             cameraManager.SelectCamera(CameraType.Editing);
             cameraManager.SelectedCameraController.transform.SetPositionAndRotation(
                 savedCamPosition,
@@ -173,7 +178,10 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
                     mapEditorUi.ToggleUIVisible(!playing, group);
         }
 
-        if (SelectedMode == UIModeType.Playing) cameraManager.SelectedCameraController.SetLockState(playing);
+        // The historical lock here was immediately undone by a permanently firing unlock. That permanently firing unlock
+        // has been fixed, suddenly resulting in locked cursor during playback for the first time. If that was ever
+        // intended, users are not expecting it now and it is a horrible user experience sooooooooo gonna go
+        // ahead and preserve dev/stable behavior here :)
     }
 
     public void SetUIMode(UIModeType mode, bool showUIChange = true) => SetUIMode((int)mode, showUIChange);
@@ -181,8 +189,25 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
     public void SetUIMode(int modeID, bool showUIChange = true)
     {
         var previousPreviewMode = PreviewMode;
+        var nextMode = (UIModeType)modeID;
+        var nextPreviewMode = nextMode is UIModeType.Playing or UIModeType.Preview;
+        if (!previousPreviewMode && nextPreviewMode)
+            modeBeforePreview = SelectedMode;
+        // Track last non-Playing/Preview mode that was used to revert to on escape press (instead of bugged out pause menu).
+        if (nextMode == UIModeType.Playing && SelectedMode != UIModeType.Playing)
+        {
+            editingModeBeforePlaying = editModeContext.EditingMode;
+            visualBeatOriginBeforePlaying = atsc.VisualBeatOrigin;
+            editModeContext.SetTemporaryEditingMode(EditingMode.Gameplay);
+        }
+        else if (SelectedMode == UIModeType.Playing && nextMode != UIModeType.Playing)
+        {
+            editModeContext.SetTemporaryEditingMode(editingModeBeforePlaying);
+            // Switching through Gameplay clears the node grid origin. Restore it after the workspace callbacks finish.
+            atsc.VisualBeatOrigin = visualBeatOriginBeforePlaying;
+        }
 
-        SelectedMode = (UIModeType)modeID;
+        SelectedMode = nextMode;
         PreviewMode = SelectedMode is UIModeType.Playing or UIModeType.Preview;
         AnimationMode = PreviewMode && Settings.Instance.Animations;
 
@@ -212,6 +237,16 @@ public class UIMode : MonoBehaviour, CMInput.IUIModeActions
         }
 
         foreach (var boy in actions) boy?.Invoke(SelectedMode);
+    }
+
+    public bool TryExitPreviewMode()
+    {
+        if (!PreviewMode)
+            return false;
+
+        UpdateCameraOnUIModeToggle(modeBeforePreview);
+        SetUIMode(modeBeforePreview);
+        return true;
     }
 
     private void HideStuff(bool showUI, bool showExtras, bool showMainGrid, bool showCanvases, bool showPlacement)

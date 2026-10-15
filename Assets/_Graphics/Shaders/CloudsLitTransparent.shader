@@ -236,7 +236,8 @@ Shader "ChroMapper/Clouds Lit Transparent"
                     defined(FADE_BOTTOM) && defined(FADE_RUNWAY)
                 // Runway attenuation changes alpha after ACES processes the cloud color.
                 {
-                    float gate = i.world.z > 0.0 ? 1.0 : 0.0;
+                    // The compiled 1.44.1 shader gates on negative world Z, not positive.
+                    float gate = i.world.z < 0.0 ? 1.0 : 0.0;
                     float3 distanceVector = float3(
                         i.world.x, i.world.y - 1.0, gate);
                     albedo.a *= 1.0 - saturate(

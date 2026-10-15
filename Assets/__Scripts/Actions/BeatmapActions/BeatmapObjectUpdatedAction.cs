@@ -79,7 +79,8 @@ public class BeatmapObjectUpdatedAction : BeatmapAction, IMergeableAction
             // Don't merge if the new edit restores the previous action's pre-edit state (e.g. a toggle back to the original value).
             // Without this check, toggle operations (A→B then B→A) would merge into A→A, causing undo to appear broken
             // since the intermediate state B would be lost and undoing would leave the object at A instead of B.
-            && EditedObject.CompareTo(previousAction.OriginalObject) != 0;
+            // Compare payloads independently of chronology: clones lack file ordinals and custom events can edit only Data.
+            && !EditedObject.HasSameContent(previousAction.OriginalObject);
     }
 
     public IMergeableAction DoMerge(IMergeableAction previous)

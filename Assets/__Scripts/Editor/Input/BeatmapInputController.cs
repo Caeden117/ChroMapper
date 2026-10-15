@@ -54,6 +54,17 @@ public class BeatmapInputController<TContainer> : MonoBehaviour, CMInput.IBeatma
     // Update is called once per frame
     private void Update()
     {
+        if (PlaybackHoverSuppressed)
+        {
+            if (IsHovering)
+            {
+                HoveredObject.Highlighted = false;
+                IsHovering = false;
+                HandleHoverChanged(null);
+            }
+            return;
+        }
+
         if ((EditContext.EditingMode & editMode) == 0)
         {
             if (IsHovering) HoveredObject.Highlighted = false;
@@ -110,6 +121,11 @@ public class BeatmapInputController<TContainer> : MonoBehaviour, CMInput.IBeatma
     // because abstract object container can be used to handle multitype,
     // we do want to only handle specific type and ignore already existing input
     protected virtual bool SpecialCaseContainer(ObjectContainer con) => true;
+
+    internal static bool PlaybackHoverSuppressed =>
+        UIMode.PreviewMode
+        && AudioTimeSyncController.Instance != null
+        && AudioTimeSyncController.Instance.IsPlaying;
 
     // Notify specialized controllers when their hover target changes without adding per-frame polling.
     protected virtual void HandleHoverChanged(TContainer container) { }

@@ -390,6 +390,10 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     private void BeatmapOnActionContainerOnActionCreated(BeatmapAction obj)
     {
+        // Received actions also notify local caches through OnActionCreated. Do not send them back to peers.
+        if (obj.Networked)
+            return;
+
         obj.Identity = Settings.Instance.MultiSettings.LocalIdentity;
 
         var writer = new NetDataWriter();
@@ -403,6 +407,9 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     private void BeatmapOnActionContainerOnActionUndo(BeatmapAction obj)
     {
+        if (obj.Networked)
+            return;
+
         var writer = new NetDataWriter();
 
         writer.Put(0);
@@ -414,6 +421,9 @@ public class MultiNetListener : INetEventListener, IDisposable
 
     private void BeatmapOnActionContainerOnActionRedo(BeatmapAction obj)
     {
+        if (obj.Networked)
+            return;
+
         var writer = new NetDataWriter();
 
         writer.Put(0);

@@ -527,11 +527,14 @@ public class Settings
     /// </summary>
     public static void NotifyBySettingName(string name, Action<object> callback)
     {
-        if (nameToActions.ContainsKey(name) && callback != null)
+        if (callback == null)
+            return;
+
+        if (nameToActions.ContainsKey(name))
         {
             nameToActions[name] += callback;
         }
-        else if (!nameToActions.ContainsKey(name) && callback != null)
+        else
         {
             nameToActions.Add(name, callback);
         }

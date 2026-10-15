@@ -208,7 +208,9 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
         if (!current.HasRandom)
         {
             current.Clockwise = Random.value >= 0.5f;
-            current.CounterSpin = current.Base.CustomData != null
+            // Heck does not read counterSpin for v3 maps. If you're reading this, use ring name filters instead in V3
+            current.CounterSpin = Settings.Instance.MapVersion == 2
+                && current.Base.CustomData != null
                 && (current.Base.CustomData.GetValueOrDefault("_counterSpin", null)?.AsBool ?? false);
             current.HasRandom = true;
         }
@@ -297,14 +299,10 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
 
         var previousFrame = frame - 1;
 
-        // Only continuous playback may reuse mutable evaluator cursors. Paused stepping,
-        // rewind, and seeks always rebuild from the immutable snapshot so the result cannot
-        // depend on which direction or sequence of editor navigation reached this time.
         var canAdvanceIncrementally = isPlaying
             && evaluationValid
             && evaluationState == current
-            && frame >= evaluationFrame
-            && frame <= evaluationFrame + 1;
+            && frame >= evaluationFrame;
         if (!canAdvanceIncrementally)
         {
             evaluationValid = false;
@@ -339,6 +337,17 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
         }
         else if (frame > evaluationFrame)
         {
+            if (evaluationFrame < previousFrame)
+            {
+                AdvanceState(
+                    evaluationRingStates,
+                    evaluationWaves,
+                    ref evaluationWaveCount,
+                    evaluationFrame,
+                    previousFrame,
+                    ringCount);
+            }
+
             // The prior current state is exactly the next render frame's previous state.
             for (var i = 0; i < ringCount; i++)
                 evaluationPreviousRotations[i] = evaluationRingStates[i].Rotation;
@@ -347,7 +356,7 @@ public class TrackLaneRingsRotationEffect : BasicMovementEffect<TrackLaneRingsRo
                 evaluationRingStates,
                 evaluationWaves,
                 ref evaluationWaveCount,
-                evaluationFrame,
+                previousFrame,
                 frame,
                 ringCount);
             evaluationFrame = frame;

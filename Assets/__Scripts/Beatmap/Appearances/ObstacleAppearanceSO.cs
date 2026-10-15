@@ -16,7 +16,10 @@ namespace Beatmap.Appearances
             bool canyounot = false)
         {
             obj.SetText(obj.ObstacleData.Rotation != 0 ? $"{obj.ObstacleData.Rotation}°" : null);
-            if (obj.ObstacleData.Duration < 0 && Settings.Instance.ColorFakeWalls)
+            // Fake wall color shouldn't override custom colors in preview / playing mode (or else all the chroma+ effects done with walls are just orange or whatever)
+            if (UIMode.PreviewMode && obj.ObstacleData.CustomColor != null)
+                obj.SetColor(obj.ObstacleData.CustomColor.Value);
+            else if (obj.ObstacleData.Duration < 0 && Settings.Instance.ColorFakeWalls)
                 obj.SetColor(negativeDurationColor);
             else
             {
