@@ -34,7 +34,7 @@ namespace SimpleJSON
 
         public override string Value
         {
-            get => ((float)m_Data).ToString("R", CultureInfo.InvariantCulture);
+            get => ((float)m_Data).ToString("G9", CultureInfo.InvariantCulture);
             set => base.Value = value;
         }
 

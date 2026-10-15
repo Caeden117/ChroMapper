@@ -16,7 +16,7 @@ namespace Tests.Editor
         private enum Scenario
         {
             SeekBeforePlaying, PlayingSeek, BackwardSeek, Playback, RestoredFirstFlash,
-            RefreshPlayback, AuthoredMap, BasicEventWorkspace, ContinuousPlayback,
+            RefreshPlayback, BasicEventWorkspace, ContinuousPlayback,
             PreviewCycle, InPlaceReload, StoppedInPlaceReload, RestoredAuthoredCursor
         }
 
@@ -85,13 +85,6 @@ namespace Tests.Editor
         }
 
         [UnityTest]
-        [Explicit]
-        public IEnumerator AuthoredMapFirstFlashKeepsTextOnBacking()
-        {
-            yield return CheckFirstFlash(Scenario.AuthoredMap);
-        }
-
-        [UnityTest]
         public IEnumerator FirstFlashFromBasicEventWorkspaceKeepsTextOnBacking()
         {
             yield return CheckFirstFlash(Scenario.BasicEventWorkspace);
@@ -134,7 +127,6 @@ namespace Tests.Editor
             var rewind = scenario == Scenario.BackwardSeek;
             var playback = scenario is Scenario.Playback or Scenario.RefreshPlayback or Scenario.ContinuousPlayback;
             var refresh = scenario == Scenario.RefreshPlayback;
-            var originalMap = scenario == Scenario.AuthoredMap;
             var workspace = scenario == Scenario.BasicEventWorkspace;
             var continuous = scenario == Scenario.ContinuousPlayback;
             var cyclePreview = scenario == Scenario.PreviewCycle;
@@ -149,9 +141,6 @@ namespace Tests.Editor
             Settings.Instance.PlayerCameraFOV = 90;
             Settings.Instance.PlayerCameraOffsetZ = 0;
             var fixture = PathUtils.Combine(Application.dataPath, "Tests", "Fixtures", "CensoredFullMapFixture.json");
-            if (originalMap)
-                fixture = "C:/Users/tdrak/BSManager/BSInstances/1.44.1/Beat Saber_Data/CustomLevels/" +
-                    "4b3da (CENSORED!! - Saltyfish)/ExpertPlusStandard.dat";
 
             var difficulty = new InfoDifficulty(new InfoDifficultySet { Characteristic = "Standard" })
             {
@@ -171,14 +160,6 @@ namespace Tests.Editor
                         }
                     }
                 };
-            }
-
-            if (originalMap)
-            {
-                var infoPath = PathUtils.Combine(Path.GetDirectoryName(fixture), "Info.dat");
-                var info = JSON.Parse(File.ReadAllText(infoPath));
-                editorState = info["_customData"]["_editors"]["ChroMapper"]["editorState"].AsObject;
-                restoredCursor = editorState["components"]["currentJsonTime"]["value"].AsFloat;
             }
 
             yield return TestUtils.ReloadMap(3, JSON.Parse(File.ReadAllText(fixture)),
@@ -273,16 +254,10 @@ namespace Tests.Editor
             var camera = cameraManager.CameraControllers[1].Camera;
             var textCenter = camera.WorldToViewportPoint(bounds.center);
             var backingCenter = camera.WorldToViewportPoint(backing.bounds.center);
-            Debug.Log($"[CensoredAlignment] scenario={scenario} cursor={restoredCursor} " +
-                $"textWorld={bounds.center} backingWorld={backing.bounds.center} " +
-                $"textViewport={textCenter} backingViewport={backingCenter}");
             var tracks = Object.FindAnyObjectByType<TracksManager>();
             foreach (var name in new[] { "redcen", "back", "censson", "redcen_10_9" })
             {
                 var track = tracks.GetAnimationTrack(name);
-                Debug.Log($"[CensoredAlignment] {name} selfLocal={track.Track.SelfTransform.localPosition} " +
-                    $"parentLocal={track.Track.ObjectParentTransform.localPosition} " +
-                    $"parentWorld={track.Track.ObjectParentTransform.position}");
             }
 
             var target = new RenderTexture(1024, 512, 24, RenderTextureFormat.ARGB32);
@@ -300,7 +275,6 @@ namespace Tests.Editor
                 Directory.CreateDirectory(directory);
                 var capture = PathUtils.Combine(directory, NUnit.Framework.TestContext.CurrentContext.Test.Name + ".png");
                 File.WriteAllBytes(capture, frame.EncodeToPNG());
-                Debug.Log($"[CensoredAlignment] capture={capture}");
             }
             finally
             {

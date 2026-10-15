@@ -61,8 +61,7 @@ namespace Tests.Editor
 
         // Synthetic aggregator reproduction of "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
         // Salty wall regressions (SaltyBeat219PlacementParityTest
-        // .Beat221WallsStayAtAuthoredDepthOnImmediateReverseSeek /
-        // SaltyFullMapPlacementParityTest.Beat221WallsSeekSynchronouslyToStableGameDepth): models how a
+        // .Beat221WallsStayAtAuthoredDepthOnImmediateReverseSeek): models how a
         // held track contribution must persist across repeated reads while stopped, until the next
         // seek's flush drops it. Current Get() drains transient values to Keep on the first read, so
         // the second read returns preload — the post-frame decay the wall tests observe.

@@ -69,8 +69,6 @@ namespace Tests.Editor
         public IEnumerator EarlyFakePairsUseNoodleLaneDistance()
         {
             yield return EnterPlayingFromBasicEventWorkspace();
-            if (!UIMode.AnimationMode)
-                Debug.LogWarning("[SaltyDiag] fake-pair UIMode.AnimationMode=false");
 
             var failures = new List<string>();
             foreach (var beat in new[] { 219.5f, 220.25f, 219.5f })
@@ -239,27 +237,11 @@ namespace Tests.Editor
             Settings.Instance.CameraFOV = 90f;
             yield return EnterPlayingFromBasicEventWorkspace();
             var camera = cameraManager.CameraControllers[1].Camera;
-            DumpB221Diag("post-mode-switch");
 
             var failures = new List<string>();
             foreach (var beat in new[] { 222.25f, 223.25f, 221.5f })
             {
-                if (Mathf.Approximately(beat, 222.25f))
-                {
-                    // Stopped-seek staging for the order-dependent +2.0z probe: same shape as
-                    // SeekTo but with a dump before MoveToJsonTime, right after the seek, and
-                    // after the settling frame.
-                    DumpB221Diag("pre-seek@222.25");
-                    Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(beat);
-                    yield return null;
-                    DumpB221Diag("post-seek-f0@222.25");
-                    yield return null;
-                    DumpB221Diag("post-seek-f1@222.25");
-                }
-                else
-                {
-                    yield return SeekTo(beat);
-                }
+                yield return SeekTo(beat);
                 var walls = Object.FindAnyObjectByType<ObstacleGridContainer>()
                     .LoadedContainers.Values
                     .OfType<Beatmap.Containers.ObstacleContainer>()
@@ -320,8 +302,7 @@ namespace Tests.Editor
         // animators double-subscribed OnTimeChanged, so a second handler rewrote the preload pose
         // over the pushed track value, and drained aggregators decayed it again on later frames.
         // The fix refreshes the pool on OnTimeFlushPending, subscribes each animator once, and lets
-        // gameplay OffsetPosition hold until the next flush. Full-map counterpart:
-        // SaltyFullMapPlacementParityTest.Beat221WallsSeekSynchronouslyToStableGameDepth.
+        // gameplay OffsetPosition hold until the next flush.
         [UnityTest]
         public IEnumerator Beat221WallsStayAtAuthoredDepthOnImmediateReverseSeek()
         {
@@ -438,129 +419,6 @@ namespace Tests.Editor
             cameraManager.SelectCamera(CameraType.Playing);
             yield return null; // one frame for the playing camera to apply settings
             var playingCamera = cameraManager.CameraControllers[1].Camera;
-            Debug.Log($"[SaltyDiag] enter-playing settings Animations={Settings.Instance.Animations} " +
-                $"PlayerCameraFOV={Settings.Instance.PlayerCameraFOV} " +
-                $"PlayerCameraOffsetZ={Settings.Instance.PlayerCameraOffsetZ} " +
-                $"CameraFOV={Settings.Instance.CameraFOV} " +
-                $"cameraPos={playingCamera.transform.position} cameraFov={playingCamera.fieldOfView}");
-        }
-
-        // Data-only probe for the order-dependent +2.0z on the b221 walls: dumps the first loaded
-        // b221 wall's OffsetPosition aggregator bookkeeping, transform/animator parents, and the
-        // bruh/beatN TrackAnimator bookkeeping (children, versions, property keys) at each phase.
-        // Never calls Aggregator.Get() (it mutates Count/held state).
-        private void DumpB221Diag(string phase)
-        {
-            var obstacleGrid = Object.FindAnyObjectByType<ObstacleGridContainer>();
-            var tracks = Object.FindAnyObjectByType<TracksManager>();
-            var sb = new System.Text.StringBuilder(
-                $"[WallDiag2] {phase} gridEnabled={(obstacleGrid != null && obstacleGrid.enabled)}");
-            if (obstacleGrid != null && obstacleGrid.SpawnCallbackController != null)
-                sb.Append($" spawnOffset={obstacleGrid.SpawnCallbackController.Offset}");
-            var wall = obstacleGrid == null ? null : obstacleGrid.LoadedContainers.Values
-                .OfType<Beatmap.Containers.ObstacleContainer>()
-                .Where(c => c.ObstacleData != null && Mathf.Approximately(c.ObstacleData.JsonTime, 221f))
-                .OrderBy(c => c.ObstacleData.CustomTrack?.ToString())
-                .FirstOrDefault();
-            var atsc2 = Object.FindAnyObjectByType<AudioTimeSyncController>();
-            if (atsc2 != null) sb.Append($" songBpm={atsc2.CurrentSongBpmTime:F3}");
-            if (wall == null)
-            {
-                sb.Append(" wall=<none>");
-            }
-            else
-            {
-                var an = wall.Animator;
-                sb.Append($" wall={wall.name} track={wall.ObstacleData.CustomTrack} " +
-                    $"readPos={wall.ReadPosition()} hjd={wall.ObstacleData.HalfJumpDuration:F3} " +
-                    $"hjd2={wall.ObstacleData.HalfJumpDistance:F3}");
-                if (wall.CoreRenderer != null)
-                    sb.Append($" coreBounds={wall.CoreRenderer.bounds}");
-                if (an != null)
-                {
-                    sb.Append($" animEnabled={an.isActiveAndEnabled} " +
-                        $"offN={an.OffsetPosition.Count}/{an.OffsetPosition.Keep} " +
-                        $"lpN={an.LocalPosition.Count}/{an.LocalPosition.Keep} " +
-                        $"wpN={an.WorldPosition.Count}/{an.WorldPosition.Keep}");
-                    var animTrack = an.AnimationTrack;
-                    sb.Append($" animTrack={(animTrack == null ? "<null>" : animTrack.name)}");
-                    if (animTrack != null)
-                    {
-                        sb.Append($" optLocal={animTrack.ObjectParentTransform.localPosition} " +
-                            $"optWorld={animTrack.ObjectParentTransform.position} " +
-                            $"trackRefs={TrackFieldDump(animTrack, wall.ObstacleData, wall)}");
-                    }
-                }
-                var chain = new System.Text.StringBuilder();
-                for (var t = wall.transform; t != null; t = t.parent)
-                    chain.Append($"{t.name}:l{t.localPosition}/w{t.position}>");
-                sb.Append($" chain={chain}");
-            }
-            foreach (var tn in new[] { "bruh", "beat7", "1/4" })
-            {
-                if (tracks != null && tracks.TryGetAnimationTrack(tn, out var ta) && ta != null)
-                {
-                    sb.Append($" | {tn}#{ta.GetInstanceID()} en={ta.enabled} " +
-                        $"children={ta.Children.Count} cached={ta.CachedChildren.Count} " +
-                        $"ver={ta.UpdateVersion} props=[{string.Join(",", ta.AnimatedProperties.Keys)}] " +
-                        $"optLocal={ta.Track.ObjectParentTransform.localPosition} " +
-                        $"trackRefs={TrackFieldDump(ta.Track, null, null)}");
-                    if (ta.Animator != null)
-                    {
-                        var a = ta.Animator;
-                        sb.Append($" animT={a.TargetType} animEn={a.isActiveAndEnabled} " +
-                            $"lpN={a.LocalPosition.Count}/{a.LocalPosition.Keep} " +
-                            $"wpN={a.WorldPosition.Count}/{a.WorldPosition.Keep}{AggregatorItems(a.WorldPosition)} " +
-                            $"opN={a.OffsetPosition.Count}/{a.OffsetPosition.Keep} " +
-                            $"lt={(a.LocalTarget == null ? "<null>" : $"{a.LocalTarget.name}@{a.LocalTarget.localPosition}")} " +
-                            $"wt={(a.WorldTarget == null ? "<null>" : $"{a.WorldTarget.name}@l{a.WorldTarget.localPosition}/w{a.WorldTarget.position}")}");
-                    }
-                    // Non-mutating evaluation of the authored `position` push: discriminates a
-                    // doubled source value from a doubled destination compose.
-                    if (ta.AnimatedProperties.TryGetValue("position", out var posProp)
-                        && posProp is Beatmap.Animations.AnimateProperty<Vector3> p
-                        && atsc2 != null)
-                    {
-                        sb.Append($" posEval={p.GetLerpedValue(atsc2.CurrentJsonTime)}");
-                    }
-                }
-                else
-                {
-                    sb.Append($" | {tn}=<none>");
-                }
-            }
-            Debug.Log(sb.ToString());
-        }
-
-        // Reads the private Aggregator<T>.items backing array WITHOUT calling Get() (which would
-        // mutate Count/held state), to see the actual pushed values composing Count.
-        private static string AggregatorItems<T>(Beatmap.Animations.ObjectAnimator.Aggregator<T> agg)
-            where T : struct
-        {
-            var items = (T[])typeof(Beatmap.Animations.ObjectAnimator.Aggregator<T>)
-                .GetField("items", BindingFlags.NonPublic | BindingFlags.Instance)
-                ?.GetValue(agg);
-            return items == null ? " items=<n/a>"
-                : $" items=[{string.Join(",", items.Take(agg.Count))}]";
-        }
-
-        // Reflect Track's private cached jump fields without touching aggregators: determines
-        // whether ObjectParentTransform z comes from UpdateTime's cached spawn/despawn params
-        // (and which gridObject/gridContainer they were cached from) rather than a value push.
-        private static string TrackFieldDump(Track track, Beatmap.Base.BaseObject expectedObj,
-            Beatmap.Containers.ObjectContainer expectedContainer)
-        {
-            const BindingFlags f = BindingFlags.NonPublic | BindingFlags.Instance;
-            object Get(string n) => typeof(Track).GetField(n, f)?.GetValue(track);
-            var gridObject = Get("gridObject");
-            var gridContainer = Get("gridContainer");
-            return $"gridObj#{(gridObject == null ? "null" : gridObject.GetHashCode().ToString())}" +
-                (expectedObj == null ? "" : $" eqObj={ReferenceEquals(gridObject, expectedObj)}") +
-                $" gridCtr#{(gridContainer == null ? "null" : gridContainer.GetHashCode().ToString())}" +
-                (expectedContainer == null ? "" : $" eqCtr={ReferenceEquals(gridContainer, expectedContainer)}") +
-                $" spawnT={Get("spawnTime"):F3} spawnP={Get("spawnPosition"):F3} " +
-                $"despawnT={Get("despawnTime"):F3} despawnP={Get("despawnPosition"):F3} " +
-                $"useCustom={Get("useCustom")} zScale={Get("zScale"):F2} v2={Get("v2")}";
         }
 
         private static IEnumerator SeekTo(float beat)

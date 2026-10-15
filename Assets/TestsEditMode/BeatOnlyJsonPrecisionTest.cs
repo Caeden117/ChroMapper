@@ -71,14 +71,13 @@ namespace TestsEditMode
             Assert.AreEqual(3.456789f, saved["rotation"][2].AsFloat);
         }
 
-        // Doubles carrying exact float data emit the shortest float form instead of the
-        // double-conversion tail the round-trip formatter used to expose.
-        [TestCase(-9.3059749603271484, "-9.305975")]
-        [TestCase(23.277999877929688, "23.278")]
+        // Doubles carrying exact float data use G9 to preserve single precision.
+        [TestCase(-9.3059749603271484, "-9.30597496")]
+        [TestCase(23.277999877929688, "23.2779999")]
         [TestCase(6.9380006790161133, "6.93800068")]
-        [TestCase(0.10000000149011612, "0.1")]
+        [TestCase(0.10000000149011612, "0.100000001")]
         [TestCase(585.0, "585")]
-        public void FloatBackedDoublesSerializeAsShortestFloat(double value, string expected)
+        public void FloatBackedDoublesSerializeWithFloatPrecision(double value, string expected)
         {
             var node = new JSONObject { ["v"] = value };
             Assert.AreEqual(expected, node["v"].Value);

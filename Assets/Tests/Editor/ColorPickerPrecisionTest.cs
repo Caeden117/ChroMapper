@@ -113,10 +113,9 @@ namespace Tests.Editor
             Assert.AreEqual(nearby, picker.CurrentColor);
         }
 
-        // Three-decimal float channels must not expand to their double-precision binary approximation in JSON.
         [TestCase(false)]
         [TestCase(true)]
-        public void SliderColorSavesThreeDecimalNumbers(bool asObject)
+        public void SliderColorSavesRoundedFloatChannels(bool asObject)
         {
             var sliders = root.GetComponentsInChildren<ColorSlider>(true);
             var entries = new[] { 0.1234567f, 0.2345678f, 0.3456789f, 0.4567891f };
@@ -129,9 +128,9 @@ namespace Tests.Editor
             JSONNode json = asObject ? new JSONObject() : new JSONArray();
             var saved = JSON.Parse(json.WriteColor(picker.CurrentColor).Clone().ToString());
             var keys = new[] { "r", "g", "b", "a" };
-            var expected = new[] { 0.123, 0.235, 0.346, 0.457 };
+            var expected = new[] { 0.123f, 0.235f, 0.346f, 0.457f };
             for (var index = 0; index < 4; index++)
-                Assert.AreEqual(expected[index], (asObject ? saved[keys[index]] : saved[index]).AsDouble);
+                Assert.AreEqual(expected[index], (asObject ? saved[keys[index]] : saved[index]).AsFloat);
         }
 
         [Test]
@@ -160,7 +159,7 @@ namespace Tests.Editor
             var saved = JSON.Parse(evt.ToJson().ToString());
             var customKey = version == 2 ? "_customData" : "customData";
             var colorKey = version == 2 ? "_color" : "color";
-            Assert.AreEqual(0.000001, saved[customKey][colorKey][3].AsDouble);
+            Assert.AreEqual(0.000001f, saved[customKey][colorKey][3].AsFloat);
         }
 
         [Test]

@@ -146,8 +146,7 @@ namespace Tests.Editor
             Assert.That(failures, Is.Empty, string.Join("\n", failures));
         }
 
-        // Portable version of SaltyFullMapPlacementParityTest.LeavingPlayingAtBeat541UnbindsHeadCamera
-        // WithoutSeek: leaving Playing must detach the Head track synchronously, not only on a rewind
+        // Leaving Playing must detach the Head track synchronously, not only on a rewind
         // seek — SyncPlayerTrack's UI-mode guard used to run after the AnimationMode early return, so
         // Playing→Normal at a bound beat left the rig under asdkm at its animated pose.
         [UnityTest]

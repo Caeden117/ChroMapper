@@ -11,16 +11,8 @@ using UnityEngine.TestTools;
 namespace Tests.Editor
 {
     // Fixture source: "The 15 Sublimit", mapped by Mawntee (ft. Lonely) (BeatSaver ID: 1c8c0).
-    // User report: The 15 Sublimit ExpertPlusStandard.dat shows missing/wrong notes after
-    // scrubbing b320-b370 in Preview/Playing. Unlike The15SublimitMapParityTest (which must stay
-    // on the portable <=b156 fixture), this class loads the complete installed map: b1
-    // AssignTrackParent puts "note"/"fakenote" under "notes+player", and AnimateTrack writes
-    // stepped x positions in the millions to that shared parent every few beats across the
-    // window (316.05, 319, 320.05, 322.05, 324.05, 348.05, 352.05, 354.05, 356.05, 360.05,
-    // 363.05, 370.05, 372.05). AssignPlayerToTrack carries the camera, so track-relative pose
-    // is the strict comparison while world x is compared at >=1m (float precision in millions).
-    [Explicit]
-    public class The15SublimitFullMapScrubParityTest : BasicEventChunkingTestBase
+    // The fixture retains the sampled objects, their track parents, and all referenced custom data.
+    public class The15SublimitScrubParityTest : BasicEventChunkingTestBase
     {
         private bool animationsBeforeTest;
         private UIMode uiMode;
@@ -43,9 +35,11 @@ namespace Tests.Editor
             typeof(AudioTimeSyncController).GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
         private static readonly int cutoutId = Shader.PropertyToID("_Cutout");
 
-        private const string SourceMapPath =
-            "C:/Users/tdrak/BSManager/BSInstances/1.44.1/Beat Saber_Data/CustomLevels/" +
-            "1c8c0 (The 15 Sublimit - Mawntee (ft. Lonely))/ExpertPlusStandard.dat";
+        private static string FixturePath => PathUtils.Combine(
+            Application.dataPath,
+            "Tests",
+            "Fixtures",
+            "The15SublimitScrubFixture.json");
 
         // Authored real notes inside the scrub window (beat, x, y, color, cutDirection) from
         // ExpertPlusStandard.dat; used to prove each checkpoint samples non-vacuous authored data.
@@ -76,13 +70,19 @@ namespace Tests.Editor
             Settings.Instance.CameraFOV = 90f;
             yield return TestUtils.ReloadMap(
                 2,
-                JSON.Parse(File.ReadAllText(SourceMapPath)),
+                JSON.Parse(File.ReadAllText(FixturePath)),
                 beatsPerMinute: 120,
                 environmentName: "BTSEnvironment",
                 songLengthSeconds: 320);
             TestUtils.CaptureCurrentMapAsSharedBaseline();
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
+        }
+
+        [SetUp]
+        public void EnablePreviewAnimations()
+        {
+            Settings.Instance.Animations = true;
         }
 
         protected override void CleanupTestObjects()
@@ -103,7 +103,7 @@ namespace Tests.Editor
             Assert.That(noteGrid, Is.Not.Null, "NoteGridContainer missing.");
             Assert.That(currentSecondsProperty, Is.Not.Null, "CurrentSeconds property not found.");
 
-            InitializeVirtualInput(includeKeyboard: false);
+            InitializeVirtualInput(includeKeyboard: true);
 
             var failures = new List<string>();
             // 371.75 not 372.25: real notes despawn at their hit beat, so a checkpoint 0.25b
@@ -187,10 +187,6 @@ namespace Tests.Editor
                         var nearKeys = playback.Keys
                             .Where(k => Mathf.Abs(k.JsonTime - sampled) <= 4f).ToList();
                         var visiblePlayback = playback.Count(p => p.Value.visible);
-                        Debug.Log($"[S15Parity] {modeName} section {section}: sampled={sampled:F3} " +
-                            $"camPos={cam.transform.position} camRot={cam.transform.eulerAngles} " +
-                            $"loaded={playback.Count} visible={visiblePlayback} " +
-                            $"nearIds=[{string.Join("; ", nearKeys.Take(8).Select(Describe))}]");
 
                         // Positive authored identity check: at least one authored real note from this
                         // window must be loaded with an active body during playback, else the section
@@ -206,8 +202,6 @@ namespace Tests.Editor
                                 Mathf.Abs(k.JsonTime - n.b) < 0.01f && k.PosX == n.x && k.PosY == n.y
                                 && k.Type == n.c && k.CutDirection == n.d
                                 && playback.TryGetValue(k, out var s) && s.rendered));
-                        Debug.Log($"[S15Parity] {modeName} section {section}: authored window notes " +
-                            $"{loadedAuthored}/{expectedAuthored.Count} loaded+rendered.");
                         if (expectedAuthored.Count > 0 && loadedAuthored == 0)
                         {
                             failures.Add($"{modeName} section {section}: none of the " +
@@ -215,18 +209,11 @@ namespace Tests.Editor
                                 "playback - section is vacuous.");
                         }
 
-                        // DIAGNOSTIC ONLY (b372 missing-after-seek probe): fired only on a real
-                        // mismatch so the log volume doesn't shift frame timing.
-                        var diagB372 = playing && Mathf.Approximately(section, 371.75f);
 
                         atsc.TogglePlaying();
                         yield return null;
                         if (visiblePlayback == 0)
-                        {
-                            Debug.Log($"[S15Parity] {modeName} section {section}: no visually " +
-                                "contributing note during playback - informational only.");
                             yield break;
-                        }
                         visibleSections++;
 
                         var wideExcursion = wideExcursionSections.Any(w => Mathf.Approximately(w, section));
@@ -256,9 +243,6 @@ namespace Tests.Editor
                             var failMark = failures.Count;
                             CompareNoteSnapshots(playback, scrubbed,
                                 $"{modeName} scrub-cycle{cycle}@{sampled:F3}", failures);
-                            if (diagB372 && failures.Count > failMark)
-                                DumpB372Diag(noteGrid, atsc, cam,
-                                    $"scrub-cycle{cycle}-return onMismatch");
 
                             // A/B pixel proof on the Playing camera at the frozen seek state: an
                             // authored b352 note's body renderers must rasterize into the view.
@@ -282,15 +266,10 @@ namespace Tests.Editor
                                     ? target.MpbController.Mpb.GetFloat(cutoutId) : float.NaN;
                                 if (group.Count == 0 || !(cutout < 0.98f))
                                 {
-                                    Debug.Log($"[S15Parity] Playing A/B @{sampled:F3}: b352 note body " +
-                                        $"renderers unavailable for pixel proof (group={group.Count} " +
-                                        $"cutout={cutout:F6}).");
                                 }
                                 else
                                 {
                                     var delta = CaptureGroupDelta(cam, group);
-                                    Debug.Log($"=== A/B pixel proof: {modeName} b{sampled:F3} b352note " +
-                                        $"maxDiff={delta.MaxDiff} pixels={delta.Count} ===");
                                     if (delta.Count < 10)
                                         failures.Add($"{modeName} A/B @{sampled:F3}: b352 note changed " +
                                             $"{delta.Count} pixels (maxDiff={delta.MaxDiff}), expected >=10.");
@@ -315,8 +294,6 @@ namespace Tests.Editor
                         var failMarkResumed = failures.Count;
                         CompareNoteSnapshots(seekRef, resumed,
                             $"{modeName} resumed@{resumedBeat:F3} vs seek", failures);
-                        if (diagB372 && failures.Count > failMarkResumed)
-                            DumpB372Diag(noteGrid, atsc, cam, "resumed-vs-seek onMismatch");
                     }
 
                     foreach (var section in sections)
@@ -373,7 +350,7 @@ namespace Tests.Editor
             Assert.That(noteGrid, Is.Not.Null, "NoteGridContainer missing.");
             Assert.That(currentSecondsProperty, Is.Not.Null, "CurrentSeconds property not found.");
 
-            InitializeVirtualInput(includeKeyboard: false);
+            InitializeVirtualInput(includeKeyboard: true);
             var failures = new List<string>();
             const float expectedParentX = 580197.6f;   // b370.05 step raw 966996 -> world
             const float staleParentX = 4165241.4f;     // b372.05 step raw 6942069 -> world
@@ -462,8 +439,6 @@ namespace Tests.Editor
                             else
                             {
                                 var delta = CaptureGroupDelta(cam, group);
-                                Debug.Log($"=== A/B pixel proof: Playing b371.75 b372note " +
-                                    $"maxDiff={delta.MaxDiff} pixels={delta.Count} ===");
                                 if (delta.Count < 10)
                                     failures.Add($"Playing A/B @371.75: b372 note changed " +
                                         $"{delta.Count} pixels (maxDiff={delta.MaxDiff}), " +
@@ -578,7 +553,7 @@ namespace Tests.Editor
             Assert.That(noteGrid, Is.Not.Null, "NoteGridContainer missing.");
             Assert.That(currentSecondsProperty, Is.Not.Null, "CurrentSeconds property not found.");
 
-            InitializeVirtualInput(includeKeyboard: false);
+            InitializeVirtualInput(includeKeyboard: true);
             var failures = new List<string>();
             const float expectedParentX = 580197.6f;
             const float staleParentX = 4165241.4f;
@@ -665,7 +640,7 @@ namespace Tests.Editor
             Assert.That(atsc, Is.Not.Null, "AudioTimeSyncController missing.");
             Assert.That(noteGrid, Is.Not.Null, "NoteGridContainer missing.");
 
-            InitializeVirtualInput(includeKeyboard: false);
+            InitializeVirtualInput(includeKeyboard: true);
             var snappingBefore = atsc.GridMeasureSnapping;
             var failures = new List<string>();
             const float expectedParentX = 580197.6f;
@@ -784,96 +759,6 @@ namespace Tests.Editor
             public bool visible;
         }
 
-        // DIAGNOSTIC ONLY (b372 missing-after-seek probe): dumps paused-filter inputs, b372 note
-        // membership, and the notes+player/note/fakenote animator state. Data-only - never calls
-        // Aggregator.Get() or any production writer.
-        private static void DumpB372Diag(
-            NoteGridContainer grid, AudioTimeSyncController atsc, Camera cam, string phase)
-        {
-            var time = atsc.CurrentSongBpmTime;
-            var spawnOffset = grid.SpawnCallbackController.Offset;
-            var despawnOffset = grid.DespawnCallbackController.Offset;
-            var despawnFloor = time + despawnOffset;
-            var spawnCap = time + spawnOffset;
-            var walkStart = grid.MapObjects.FindIndex(o => o.SongBpmTime >= spawnCap);
-            var spawnFloor = walkStart >= 0 && walkStart < grid.MapObjects.Count
-                ? grid.MapObjects[walkStart].JsonTime
-                : float.PositiveInfinity;
-
-            var noteLines = new List<string>();
-            foreach (var n in BeatSaberSongContainer.Instance.Map.Notes
-                .OfType<Beatmap.Base.BaseNote>()
-                .Where(n => Mathf.Abs(n.JsonTime - 372f) < 0.01f))
-            {
-                var idx = grid.MapObjects.IndexOf(n);
-                var loaded = grid.LoadedContainers.TryGetValue(n, out var con);
-                var active = loaded && con.gameObject.activeInHierarchy;
-                var renderers = loaded && con is Beatmap.Containers.NoteContainer nc
-                    ? nc.ModelController.MpbController.Renderers?.Count(r => r != null && r.enabled) ?? 0
-                    : -1;
-                var inCap = n.SongBpmTime >= despawnFloor && n.SongBpmTime <= spawnCap;
-                var pastFloor = n.JsonTime < spawnFloor;
-                var lookahead = UIMode.AnimationMode
-                    ? Mathf.Max(n.HalfJumpDuration, spawnOffset) + Track.JUMP_TIME
-                    : spawnOffset;
-                var inLookahead = n.SongBpmTime <= time + lookahead;
-                noteLines.Add($"  {Describe(n)} idx={idx} bpm={n.SongBpmTime:F3} hjd={n.HalfJumpDuration:F3} " +
-                    $"loaded={loaded} active={active} rend={renderers} inCap={inCap} " +
-                    $"pastFloor={pastFloor} look={lookahead:F2} inLook={inLookahead} " +
-                    $"=> eligible={inCap || (!pastFloor && inLookahead)}");
-            }
-
-            var trackLines = new List<string>();
-            var tracksManager = Object.FindAnyObjectByType<TracksManager>();
-            foreach (var name in new[] { "notes+player", "note", "fakenote" })
-            {
-                if (tracksManager == null
-                    || !tracksManager.TryGetAnimationTrack(name, out var ta) || ta == null)
-                {
-                    trackLines.Add($"  track={name}: <missing>");
-                    continue;
-                }
-                var posVal = "<none>";
-                if (ta.AnimatedProperties.TryGetValue("_position", out var prop)
-                    && prop is Beatmap.Animations.AnimateProperty<Vector3> vp)
-                {
-                    posVal = $"raw={vp.GetLerpedValue(atsc.CurrentJsonTime):F3} " +
-                        $"points={vp.PointDefinitions.Sum(pd => pd.Points.Length)}";
-                }
-                var anim = ta.Animator;
-                trackLines.Add($"  track={name} ver={ta.UpdateVersion} props=[{string.Join(",", ta.AnimatedProperties.Keys)}] " +
-                    $"posEval={posVal} en={ta.isActiveAndEnabled} " +
-                    $"selfL={(ta.Track.SelfTransform != null ? ta.Track.SelfTransform.localPosition.ToString("F2") : "<null>")} " +
-                    $"selfW={(ta.Track.SelfTransform != null ? ta.Track.SelfTransform.position.ToString("F2") : "<null>")} " +
-                    $"optL={(ta.Track.ObjectParentTransform != null ? ta.Track.ObjectParentTransform.localPosition.ToString("F2") : "<null>")} " +
-                    $"optW={(ta.Track.ObjectParentTransform != null ? ta.Track.ObjectParentTransform.position.ToString("F2") : "<null>")} " +
-                    $"animEn={(anim != null ? anim.isActiveAndEnabled.ToString() : "<null>")} " +
-                    $"wpN={(anim != null ? anim.WorldPosition.Count : -1)}/{(anim != null ? anim.WorldPosition.Keep : -1)} " +
-                    $"opN={(anim != null ? anim.OffsetPosition.Count : -1)}/{(anim != null ? anim.OffsetPosition.Keep : -1)} " +
-                    $"lpN={(anim != null ? anim.LocalPosition.Count : -1)}/{(anim != null ? anim.LocalPosition.Keep : -1)}");
-            }
-
-            var lastSteps = BeatSaberSongContainer.Instance.Map.CustomEvents
-                .Where(e => e.Type == "AnimateTrack"
-                    && e.Data != null
-                    && e.Data.HasKey("_track")
-                    && e.Data["_track"].Value == "notes+player"
-                    && e.JsonTime <= atsc.CurrentJsonTime + 0.5f)
-                .OrderByDescending(e => e.JsonTime)
-                .Take(3)
-                .OrderBy(e => e.JsonTime)
-                .Select(e => $"b{e.JsonTime:F2}->{e.Data["_position"].ToString()}")
-                .ToList();
-
-            Debug.Log($"[B372Diag] {phase}: json={atsc.CurrentJsonTime:F3} bpm={time:F3} " +
-                $"playing={atsc.IsPlaying} animMode={UIMode.AnimationMode} gridEn={grid.enabled} " +
-                $"spawnOff={spawnOffset:F3} despawnOff={despawnOffset:F3} spawnCap={spawnCap:F3} " +
-                $"despawnFloor={despawnFloor:F3} walkStart={walkStart} spawnFloor={spawnFloor:F3} " +
-                $"camPos={cam.transform.position} loaded={grid.LoadedContainers.Count} " +
-                $"lastParentSteps=[{string.Join("; ", lastSteps)}]\n" +
-                string.Join("\n", noteLines) + "\n" + string.Join("\n", trackLines));
-        }
-
         private static void CompareNoteSnapshots(
             Dictionary<Beatmap.Base.BaseObject, NoteSnapshot> expected,
             Dictionary<Beatmap.Base.BaseObject, NoteSnapshot> actual,
@@ -903,10 +788,6 @@ namespace Tests.Editor
                     && a.cutout >= 0.95f && a.cutout <= 1.01f
                     && Mathf.Abs(e.cutout - a.cutout) <= 0.01f)
                 {
-                    if (matteredE != matteredA)
-                        Debug.Log($"[S15Parity] {phase}: '{Describe(key)}' visibility-threshold edge " +
-                            $"(visible {matteredE}->{matteredA} cutout {e.cutout:F6}->{a.cutout:F6}) " +
-                            "- informational, identical body state within tolerances.");
                     continue;
                 }
                 if (matteredE != matteredA)
@@ -978,8 +859,6 @@ namespace Tests.Editor
                         $"cutout={cutout:F6} inFrustum={bodyInFrustum} visible={visible}");
                 }
             }
-            Debug.Log($"[S15Diag] {phase}: loadedNotes={snapshot.Count} rendered=" +
-                $"{snapshot.Values.Count(s => s.rendered)}\n  " + string.Join("\n  ", interesting));
             return snapshot;
         }
 
