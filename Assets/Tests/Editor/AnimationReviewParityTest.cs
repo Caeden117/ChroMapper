@@ -1,11 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Beatmap.Containers;
-using Beatmap.Info;
 using NUnit.Framework;
 using SimpleJSON;
 using Tests.Infrastructure;
@@ -90,52 +85,26 @@ namespace Tests.Editor
                         ""track"":""reviewChild""}]
                 }
             }"), environmentName: "BillieEnvironment");
-            var song = BeatSaberSongContainer.Instance;
             var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
             var outgoingDescriptor = context.Descriptor;
             var geometry = Object.FindAnyObjectByType<GeometryGridContainer>();
             var outgoingTarget = geometry.LoadedContainers.Values.Cast<GeometryContainer>()
                 .Single().GetComponent<Beatmap.Animations.ObjectAnimator>().LocalTarget;
-            var selector = Object.FindAnyObjectByType<LoadedDifficultySelectController>(FindObjectsInactive.Include);
-            var field = typeof(LoadedDifficultySelectController)
-                .GetField("setDifficulties", BindingFlags.Instance | BindingFlags.NonPublic);
-            var previousDifficulties = field.GetValue(selector);
-            var previousDirectory = song.Info.Directory;
-            var previousDifficulty = song.MapDifficultyInfo;
-            var directory = PathUtils.Combine(Application.temporaryCachePath, $"cm-review-switch-{Guid.NewGuid():N}");
-            Directory.CreateDirectory(directory);
-            try
-            {
-                File.WriteAllText(PathUtils.Combine(directory, "Review.dat"), "{\"version\":\"3.2.0\"}");
-                song.Info.Directory = directory;
-                var incoming = new InfoDifficulty(previousDifficulty.ParentSet)
-                {
-                    BeatmapFileName = "Review.dat",
-                    Difficulty = "Expert",
-                    EnvironmentNameIndex = previousDifficulty.EnvironmentNameIndex,
-                    ColorSchemeIndex = previousDifficulty.ColorSchemeIndex
-                };
-                field.SetValue(selector, new List<InfoDifficulty> { incoming });
-                var switchRoutine = (IEnumerator)typeof(LoadedDifficultySelectController)
-                    .GetMethod("SelectDifficulty", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .Invoke(selector, new object[] { 0 });
-                yield return switchRoutine;
-                Assert.That(outgoingTarget == null, Is.True,
-                    "The real difficulty switch retained a target reparented out of the environment scene.");
-                Assert.That(outgoingDescriptor == null, Is.True,
-                    "Reusing an enhanced environment retained the outgoing difficulty's native-object changes.");
-                Assert.That(context.Descriptor, Is.Not.Null);
-                Assert.That(geometry.LoadedContainers, Is.Empty);
-                Assert.That(Object.FindAnyObjectByType<TracksManager>()
-                    .GetAnimationTrack("reviewChild").Children, Is.Empty);
-            }
-            finally
-            {
-                field.SetValue(selector, previousDifficulties);
-                song.Info.Directory = previousDirectory;
-                song.MapDifficultyInfo = previousDifficulty;
-                Directory.Delete(directory, true);
-            }
+            yield return TestUtils.SwitchToEmptyDifficulty();
+
+            Assert.That(
+                outgoingTarget == null,
+                Is.True,
+                "The real difficulty switch retained a target reparented out of the environment scene.");
+            Assert.That(
+                outgoingDescriptor == null,
+                Is.True,
+                "Reusing an enhanced environment retained the outgoing difficulty's native-object changes.");
+            Assert.That(context.Descriptor, Is.Not.Null);
+            Assert.That(geometry.LoadedContainers, Is.Empty);
+            Assert.That(
+                Object.FindAnyObjectByType<TracksManager>().GetAnimationTrack("reviewChild").Children,
+                Is.Empty);
         }
 
         [UnityTearDown]

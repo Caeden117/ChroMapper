@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using Tests.Infrastructure;
 using TMPro;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -14,7 +15,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.Editor
 {
-    public class OptionsKeybindRebindTest : InputTestFixture
+    public class OptionsKeybindRebindTest : IsolatedInputTestFixture
     {
         private GameObject root;
         private EventSystem eventSystem;
@@ -25,7 +26,6 @@ namespace Tests.Editor
         private Keyboard keyboard;
         private TMP_InputField[] fields;
         private OptionsInputActionController controller;
-        private readonly List<InputActionMap> previouslyEnabledMaps = new();
         private readonly List<EventSystem> previouslyEnabledEventSystems = new();
         private static readonly string[] CameraModes =
         {
@@ -39,20 +39,7 @@ namespace Tests.Editor
         public override void Setup()
         {
             previousInput = CMInputCallbackInstaller.InputInstance;
-            previouslyEnabledMaps.Clear();
             previouslyEnabledEventSystems.Clear();
-            if (previousInput != null)
-            {
-                foreach (var map in previousInput.asset.actionMaps)
-                {
-                    if (!map.enabled)
-                        continue;
-
-                    previouslyEnabledMaps.Add(map);
-                    map.Disable();
-                }
-            }
-
             foreach (var existing in Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None))
             {
                 if (!existing.enabled)
@@ -102,11 +89,6 @@ namespace Tests.Editor
             CMInputCallbackInstaller.InputInstance = previousInput;
             LoadKeybindsController.AllOverrides = previousOverrides;
             base.TearDown();
-            foreach (var map in previouslyEnabledMaps)
-            {
-                map.Enable();
-            }
-
             foreach (var existing in previouslyEnabledEventSystems)
             {
                 existing.enabled = true;

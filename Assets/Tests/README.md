@@ -26,7 +26,7 @@ For mapper tests that send input, inherit [InputTestBase](Infrastructure/InputTe
 
 For several input reports in one Unity frame, use `queueEventOnly: true` and call `InputSystem.Update()` while the isolated runtime is active. Process modifier presses before sending the mouse or key event that uses them. Assert the effect of the production callback, such as a changed selection or a new undoable action.
 
-If you manage `InputTestFixture` directly, create dedicated virtual devices and disable shared action maps before `Setup()`. Dispose your actions before `TearDown()`, then restore the shared maps afterward.
+For tests without a mapper scene, [IsolatedInputTestFixture](Infrastructure/IsolatedInputTestFixture.cs) handles the same suspension and restoration. Dispose test actions before `base.TearDown()`. A custom fixture must suspend all enabled actions before swapping runtimes, including UI actions outside `CMInput`.
 
 Use the virtual device references instead of `Mouse.current` or `Keyboard.current`. `InputTestPolicyTest` checks for those accesses. See the [input architecture guide](../Input/README.md) for action maps, bindings, and composites.
 

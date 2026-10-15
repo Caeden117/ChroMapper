@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +11,6 @@ namespace Tests.Infrastructure
         private InputTestFixture inputTestFixture;
         private Mouse virtualMouse;
         private Keyboard virtualKeyboard;
-        private readonly List<InputActionMap> sharedEnabledActionMaps = new();
 
         protected Mouse VirtualMouse => virtualMouse;
 
@@ -21,21 +19,7 @@ namespace Tests.Infrastructure
         protected void InitializeVirtualInput(bool includeKeyboard)
         {
             Assert.That(inputTestFixture, Is.Null, "Virtual input was initialized twice in one test.");
-            // InputTestFixture replaces the global runtime, so disable every shared map before its controls
-            // bind to temporary devices; restore exactly these maps after the original runtime returns.
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            sharedEnabledActionMaps.Clear();
-            foreach (var actionMap in sharedInput.asset.actionMaps)
-            {
-                if (!actionMap.enabled)
-                    continue;
-
-                sharedEnabledActionMaps.Add(actionMap);
-                actionMap.Disable();
-            }
-
-            inputTestFixture = new InputTestFixture();
+            inputTestFixture = new IsolatedInputTestFixture();
             inputTestFixture.Setup();
             virtualMouse = InputSystem.AddDevice<Mouse>();
             if (includeKeyboard)
@@ -101,12 +85,6 @@ namespace Tests.Infrastructure
 
             inputTestFixture.TearDown();
             inputTestFixture = null;
-
-            // Re-enabling after TearDown forces control resolution against the restored application runtime.
-            foreach (var actionMap in sharedEnabledActionMaps)
-                actionMap.Enable();
-
-            sharedEnabledActionMaps.Clear();
         }
     }
 }
