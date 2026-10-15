@@ -226,7 +226,7 @@ namespace ManualTests
             return reportPath;
         }
 
-        // Unity tests can permanently cache Settings.TestRunnerSettings at /root/bs, so this manual local-corpus test
+        // Unity tests can leave Settings.Instance pointing at temporary test folders, so this manual local-corpus test
         // must recover the persisted GUI installation instead of accepting the harness's valid-but-empty directories.
         private static string[] ResolveDefaultSongLocations()
         {
