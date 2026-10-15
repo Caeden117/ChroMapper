@@ -17,7 +17,6 @@ namespace Tests.Editor
     // Fixture keeps the authored customEvents/environment relative order, no flattening.
     // Explicit because the HDR screenshot path is machine/GPU-specific; run on demand with
     // -TestFilter 'Tests.Editor.SaltyOpeningLaserParityTest'.
-    [Explicit]
     public class SaltyOpeningLaserParityTest : TestBase
     {
         private bool animationsBeforeTest;
@@ -55,10 +54,7 @@ namespace Tests.Editor
         {
         }
 
-        // Runtime light-routing check: identical red-pixel windows to the full-map diagnostic
-        // (left x260..460, right x564..764, top-down y350..575, r>=140 && r>=2g && r>=2b) are
-        // still captured, but the batch camera cannot assert live screen orientation - it only
-        // proves the remapped ID6 controller is lit and ID7 stays dark.
+        // The authored lightID remap must light controller 6 and leave controller 7 dark.
         [UnityTest]
         public IEnumerator Beat2625LightIdOneRegistersActiveController()
         {
@@ -66,8 +62,6 @@ namespace Tests.Editor
             uiMode.SetUIMode(UIModeType.Playing, false);
             cameraManager.SelectCamera(CameraType.Playing);
             var camera = cameraManager.CameraControllers[1].Camera;
-            var shotDir = "C:/Users/tdrak/AppData/Local/Temp/devin-salty-diag";
-            Directory.CreateDirectory(shotDir);
             yield return SeekTo(2.625f);
 
             var pair = Object.FindObjectsByType<ParametricBloomFogLightController>(
@@ -79,13 +73,6 @@ namespace Tests.Editor
             var id7 = pair.SingleOrDefault(c => c.ID == 7);
             Assert.That(id6, Is.Not.Null, "Type0 ID6 controller missing; fixture lost the remap target.");
             Assert.That(id7, Is.Not.Null, "Type0 ID7 controller missing; fixture lost the remap target.");
-            foreach (var controller in pair)
-            {
-                var marker = controller.GetComponent<ChromaIDMarker>();
-                Debug.Log($"[SaltyDiag] fixture type0 id={controller.ID} chromaID=" +
-                    $"{(marker == null ? "<none>" : marker.ChromaID)} " +
-                    $"pos={controller.transform.position} color={controller.Color}");
-            }
             Assert.That(id6.Type, Is.EqualTo(0));
             Assert.That(id6.Color.a, Is.GreaterThan(0.01f),
                 "Type0 ID6 carried no color at beat 2.625; fixture lost the lightID[1] routing.");
@@ -93,12 +80,10 @@ namespace Tests.Editor
             Assert.That(id7.Color.a, Is.LessThanOrEqualTo(0.01f),
                 "Type0 ID7 lit at beat 2.625; lightID[1] should only drive ID6.");
 
-            var pixels = RenderPixelsAndSave(camera,
-                PathUtils.Combine(shotDir, "salty-fixture-laser2625.png"));
+            var pixels = RenderPixels(camera);
             var left = CountRedLaserPixels(pixels, 260, 460);
             var right = CountRedLaserPixels(pixels, 564, 764);
             Object.DestroyImmediate(pixels);
-            Debug.Log($"[SaltyDiag] fixture laser2625 red-px L={left} R={right}");
             Assert.That(left + right, Is.GreaterThan(0),
                 $"No visible red laser pixels at beat 2.625; left={left} right={right}.");
         }
@@ -113,13 +98,14 @@ namespace Tests.Editor
                 for (var x = xMin; x <= xMax && x < 1024; x++)
                 {
                     var p = pixels[row * 1024 + x];
-                    if (p.r >= 140 && p.r >= 2 * p.g && p.r >= 2 * p.b) count++;
+                    if (p.r >= 140 && p.r >= 2 * p.g && p.r >= 2 * p.b)
+                        count++;
                 }
             }
             return count;
         }
 
-        private Texture2D RenderPixelsAndSave(Camera camera, string path)
+        private Texture2D RenderPixels(Camera camera)
         {
             var rt = new RenderTexture(1024, 576, 24, RenderTextureFormat.DefaultHDR);
             var previousTarget = camera.targetTexture;
@@ -132,7 +118,6 @@ namespace Tests.Editor
                 var texture = new Texture2D(1024, 576, TextureFormat.RGB24, false);
                 texture.ReadPixels(new Rect(0, 0, 1024, 576), 0, 0);
                 texture.Apply();
-                File.WriteAllBytes(path, texture.EncodeToPNG());
                 return texture;
             }
             finally

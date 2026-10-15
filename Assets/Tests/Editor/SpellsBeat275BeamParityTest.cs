@@ -16,7 +16,6 @@ namespace Tests.Editor
     // Portable reduction of the Spells b275 left-quad regression: the fixture already
     // retains the exact `light` material ({shader:TransparentLight}), the authored
     // modelScene0_solid1_0 Quad/lightID-2000 enhancement, and the b275 white event.
-    // Same assertions as the full-map Beat275LeftSolidQuadRendersPhysicalSurfaceAndFog.
     public class SpellsBeat275BeamParityTest : TestBase
     {
         private static string OutputDir => PathUtils.Combine(
@@ -51,6 +50,12 @@ namespace Tests.Editor
             TestUtils.CaptureCurrentMapAsSharedBaseline();
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
+        }
+
+        [SetUp]
+        public void EnablePreviewAnimations()
+        {
+            Settings.Instance.Animations = true;
         }
 
         protected override void CleanupTestObjects()
@@ -253,6 +258,36 @@ namespace Tests.Editor
             finally
             {
                 RenderTexture.active = previousActive;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator GeneratedQuadKeepsAuthoredRotation()
+        {
+            uiMode.SetUIMode(UIModeType.Playing, false);
+            cameraManager.SelectCamera(CameraType.Playing);
+            var clock = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var camera = cameraManager.CameraControllers[1].Camera;
+            var target = Object.FindAnyObjectByType<GeometryGridContainer>()
+                .LoadedContainers.Values
+                .OfType<GeometryContainer>()
+                .Single(container => container.EnvironmentEnhancement.Track == "modelScene0_solid1_0");
+            var controller = target.GetComponentsInChildren<ParametricBloomFogLightController>(true).Single();
+            var renderer = controller.BoxLight.Renderer;
+            var mesh = renderer.GetComponent<MeshFilter>().sharedMesh;
+            var authoredRotation = Quaternion.Euler(target.EnvironmentEnhancement.Rotation.Value);
+
+            foreach (var beat in new[] { 274.75f, 275.05f, 275.4f, 274.75f })
+            {
+                clock.MoveToJsonTime(beat);
+                yield return null;
+                yield return null;
+
+                Assert.That(Quaternion.Angle(renderer.transform.rotation, authoredRotation), Is.LessThanOrEqualTo(0.2f));
+                var facing = Vector3.Dot(
+                    renderer.transform.TransformDirection(mesh.normals[0]),
+                    camera.transform.position - renderer.bounds.center);
+                Assert.That(facing, Is.LessThan(0f), "The authored Quad must remain back-facing across seeks.");
             }
         }
 

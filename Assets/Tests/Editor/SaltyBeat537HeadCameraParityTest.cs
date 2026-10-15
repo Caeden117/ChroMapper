@@ -16,9 +16,7 @@ namespace Tests.Editor
     // authored customEvents (original indices 440-446, 463, 467) in source order: b537 assigns
     // LeftSaber/RightSaber/asdkm to LeftHand/RightHand/Head and starts the asdkm AnimateTrack
     // position z0 -> -3 over 8 beats with easeOutSine; b573/b577 are the authored follow-ups. No
-    // authored Head event exists near b532. These cases were RED before the shared track-parent
-    // bind seam (full-map SaltyFullMapPlacementParityTest equivalents demonstrate the same
-    // failures); they are green on fixed source and run in the default suite.
+    // authored Head event exists near b532, so rewinding there must detach the camera.
     public class SaltyBeat537HeadCameraParityTest : TestBase
     {
         private bool animationsBeforeTest;

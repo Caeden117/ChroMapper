@@ -262,7 +262,7 @@ namespace Tests.Editor
                 if (preview)
                 {
                     // Gameplay workspace must be applied AFTER SetUIMode restores the pre-play
-                    // mode (see SaltyFullMapPlacementParityTest scrub parity test).
+                    // mode (see SaltyWallPlaybackParityTest scrub parity test).
                     uiMode.SetUIMode(UIModeType.Preview, false);
                     editMode.EditingMode = EditingMode.Gameplay;
                     editingModeChanged = true;

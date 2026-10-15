@@ -62,8 +62,6 @@ namespace Tests.Editor
             uiMode.SetUIMode(UIModeType.Playing, false);
             cameraManager.SelectCamera(CameraType.Playing);
             var camera = cameraManager.CameraControllers[1].Camera;
-            var shotDir = "C:/Users/tdrak/AppData/Local/Temp/devin-salty-diag";
-            Directory.CreateDirectory(shotDir);
 
             var walls = Object.FindAnyObjectByType<ObstacleGridContainer>();
             Assert.That(walls, Is.Not.Null, "No ObstacleGridContainer in the loaded scene.");
@@ -81,8 +79,7 @@ namespace Tests.Editor
                         && c.ObstacleData.CustomTrack.Value.StartsWith("beat"))
                     .ToList();
                 var wall = FindWhiteFakeWall(walls);
-                var normalPixels = RenderPixelsAndSave(camera,
-                    PathUtils.Combine(shotDir, $"salty-fixture-beat{beat}-white-normal.png"));
+                var normalPixels = RenderPixels(camera);
 
                 var disabled = new List<Renderer>();
                 Texture2D offPixels = null;
@@ -94,8 +91,7 @@ namespace Tests.Editor
                         renderer.enabled = false;
                         disabled.Add(renderer);
                     }
-                    offPixels = RenderPixelsAndSave(camera,
-                        PathUtils.Combine(shotDir, $"salty-fixture-beat{beat}-white-off.png"));
+                    offPixels = RenderPixels(camera);
                 }
                 finally
                 {
@@ -115,8 +111,7 @@ namespace Tests.Editor
 
             // The fixture only means something if the red bars still render next to the white wall.
             yield return SeekTo(222.25f);
-            var redNormal = RenderPixelsAndSave(camera,
-                PathUtils.Combine(shotDir, "salty-fixture-beat222.25-red-normal.png"));
+            var redNormal = RenderPixels(camera);
             var redDisabled = new List<Renderer>();
             Texture2D redOff = null;
             try
@@ -128,8 +123,7 @@ namespace Tests.Editor
                     renderer.enabled = false;
                     redDisabled.Add(renderer);
                 }
-                redOff = RenderPixelsAndSave(camera,
-                    PathUtils.Combine(shotDir, "salty-fixture-beat222.25-red-off.png"));
+                redOff = RenderPixels(camera);
             }
             finally
             {
@@ -175,7 +169,7 @@ namespace Tests.Editor
             return count;
         }
 
-        private Texture2D RenderPixelsAndSave(Camera camera, string path)
+        private Texture2D RenderPixels(Camera camera)
         {
             var rt = new RenderTexture(1024, 576, 24, RenderTextureFormat.DefaultHDR);
             var previousTarget = camera.targetTexture;
@@ -188,7 +182,6 @@ namespace Tests.Editor
                 var texture = new Texture2D(1024, 576, TextureFormat.RGB24, false);
                 texture.ReadPixels(new Rect(0, 0, 1024, 576), 0, 0);
                 texture.Apply();
-                File.WriteAllBytes(path, texture.EncodeToPNG());
                 return texture;
             }
             finally

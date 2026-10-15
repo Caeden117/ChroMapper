@@ -1221,15 +1221,7 @@ namespace SimpleJSON
 
         public override string Value
         {
-            get
-            {
-                // Doubles holding exact float values came from float properties; the shortest float
-                // form drops the widening tail, so -9.3059749603271484 serializes as -9.305975.
-                var asFloat = (float)m_Data;
-                return asFloat == m_Data
-                    ? asFloat.ToString("R", CultureInfo.InvariantCulture)
-                    : m_Data.ToString("R", CultureInfo.InvariantCulture);
-            }
+            get => FormatNumber(m_Data);
             set
             {
                 if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double v))
@@ -1237,6 +1229,23 @@ namespace SimpleJSON
                     m_Data = v;
                 }
             }
+        }
+
+        protected static string FormatNumber(double value)
+        {
+            // The upper limit is exclusive because converting long.MaxValue to double rounds it up.
+            if (value >= long.MinValue && value < -(double)long.MinValue)
+            {
+                var asInteger = (long)value;
+                if (asInteger == value)
+                    return asInteger.ToString(CultureInfo.InvariantCulture);
+
+                var asFloat = (float)value;
+                if (asFloat == value)
+                    return asFloat.ToString("G9", CultureInfo.InvariantCulture);
+            }
+
+            return value.ToString("G17", CultureInfo.InvariantCulture);
         }
 
         public override double AsDouble

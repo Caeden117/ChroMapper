@@ -17,7 +17,6 @@ namespace Tests.Editor
     public class SpellsFinalBeamParityTest : TestBase
     {
         private static readonly int ColorId = Shader.PropertyToID("_Color");
-        private static readonly int AlphaWidthId = Shader.PropertyToID("_AlphaWidth");
 
         private bool animationsBeforeTest;
         private UIMode uiMode;
@@ -40,6 +39,12 @@ namespace Tests.Editor
             TestUtils.CaptureCurrentMapAsSharedBaseline();
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
+        }
+
+        [SetUp]
+        public void EnablePreviewAnimations()
+        {
+            Settings.Instance.Animations = true;
         }
 
         protected override void CleanupTestObjects()
@@ -71,34 +76,9 @@ namespace Tests.Editor
             playingAspectBeforeTest = camera.aspect;
             camera.transform.rotation = Quaternion.identity;
             camera.aspect = 1f;
-            Debug.Log($"[Spells527] beat={atsc.CurrentJsonTime} camera={camera.transform.position} " +
-                $"rotation={camera.transform.rotation} aspect={camera.aspect}");
-            var previousTarget = camera.targetTexture;
-            // FinalBurstPhysicalLaserSurfaceHasWhiteCore: capture the Playing
-            // camera's actual target format so the post-bloom path is representative.
             var cameraFormat = camera.allowHDR
                 ? RenderTextureFormat.DefaultHDR
                 : RenderTextureFormat.ARGB32;
-            var capture = new RenderTexture(1024, 1024, 24, cameraFormat);
-            var image = new Texture2D(1024, 1024, TextureFormat.RGBA32, false);
-            try
-            {
-                camera.targetTexture = capture;
-                camera.Render();
-                ReadRenderTexture(capture, image);
-                var output = Path.Combine(Application.dataPath, "..", "TestResults", "spells-beat527-cm.png");
-                File.WriteAllBytes(output, image.EncodeToPNG());
-                Debug.Log($"[Spells527] capture={output} fov={camera.fieldOfView} " +
-                    $"postBloom={Shader.IsKeywordEnabled("POST_BLOOM")} " +
-                    $"boost={Shader.GetGlobalFloat("_BaseColorBoost")} " +
-                    $"threshold={Shader.GetGlobalFloat("_BaseColorBoostThreshold")}");
-            }
-            finally
-            {
-                camera.targetTexture = previousTarget;
-                Object.Destroy(capture);
-                Object.Destroy(image);
-            }
             var targets = Object.FindObjectsByType<GeometryContainer>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .Where(container => container.EnvironmentEnhancement?.Track?.StartsWith("rotating_") == true)
                 .SelectMany(container => container.GetComponents<ObjectAnimator>()
@@ -106,35 +86,6 @@ namespace Tests.Editor
                     .Select(animator => (container.EnvironmentEnhancement.Track, animator.LocalTarget)))
                 .ToArray();
             Assert.That(targets.Length, Is.GreaterThanOrEqualTo(18));
-            foreach (var (track, target) in targets)
-            {
-                var lights = target.GetComponentsInChildren<ParametricBloomFogLightController>(true);
-                foreach (var light in lights)
-                {
-                    var box = light.BoxLight;
-                    if (box == null)
-                        continue;
-                    var viewport = cameraManager.CameraControllers[1].Camera.WorldToViewportPoint(box.Renderer.bounds.center);
-                    // CompleteMapFinalBurstPhysicalLaserSurfaceHasWhiteCore: also pin the resolved
-                    // shader, full transform ancestry, controller multipliers, and the renderer's
-                    // MPB state so fixture-vs-complete diffs localize to a concrete stage.
-                    var mpb = new MaterialPropertyBlock();
-                    box.Renderer.GetPropertyBlock(mpb);
-                    Debug.Log($"[Spells527] track={track} type={light.Type} id={light.ID} color={light.Color} " +
-                        $"parentScale={target.localScale} boxScale={box.transform.localScale} " +
-                        $"boxWidth={box.Width} widthStart={box.WidthStart} widthEnd={box.WidthEnd} " +
-                        $"alpha={box.AlphaMultiplier} alphaStart={box.AlphaStart} alphaEnd={box.AlphaEnd} " +
-                        $"colorAlphaMul={light.ColorAlphaMultiplier} bloomFogMul={light.BloomFogIntensityMultiplier} " +
-                        $"material={box.Renderer.sharedMaterial.name} " +
-                        $"shader={box.Renderer.sharedMaterial.shader.name} " +
-                        $"keywords={string.Join(",", box.Renderer.sharedMaterial.shaderKeywords)} " +
-                        $"hierarchy={TransformHierarchy(box.Renderer.transform)} " +
-                        $"mpbColor={mpb.GetColor(ColorId)} mpbAlphaWidth={mpb.GetVector(AlphaWidthId)} " +
-                        $"visible={box.Renderer.enabled} viewport={viewport} " +
-                        $"meshBounds={box.Renderer.GetComponent<MeshFilter>().sharedMesh.bounds}");
-                }
-            }
-
             // FinalBurstPhysicalLaserSurfaceHasWhiteCore: isolate the authored box meshes from
             // the unchanged fog and measure the surface's blue/white contribution at beat 527.
             var beamRenderers = targets
@@ -160,100 +111,8 @@ namespace Tests.Editor
                 camera.Render();
                 ReadRenderTexture(sampleTarget, withoutBeams);
 
-                var (litPixels, maxRed, redTotal, blueTotal) = MeasureSurface(withBeams, withoutBeams);
+                var (litPixels, redTotal, blueTotal) = MeasureSurface(withBeams, withoutBeams);
 
-                Debug.Log($"[Spells527] surfacePixels={litPixels} maxRed={maxRed} " +
-                    $"blueRedRatio={blueTotal / redTotal} redTotal={redTotal} blueTotal={blueTotal}");
-
-                // FinalBurstPhysicalLaserSurfaceHasWhiteCore: hold the rest of the
-                // scene fixed while measuring how much distance fog removes from the beam.
-                var authoredAttenuation = Shader.GetGlobalFloat("_CustomFogAttenuation");
-                var authoredOffset = Shader.GetGlobalFloat("_CustomFogOffset");
-                var authoredHeight = Shader.GetGlobalFloat("_CustomFogHeightFogHeight");
-                var authoredStartY = Shader.GetGlobalFloat("_CustomFogHeightFogStartY");
-                Debug.Log($"[Spells527] fogAttenuation={authoredAttenuation} " +
-                    $"fogOffset={authoredOffset} fogHeight={authoredHeight} fogStartY={authoredStartY}");
-                try
-                {
-                    Shader.SetGlobalFloat("_CustomFogAttenuation", 0f);
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = true;
-                    camera.Render();
-                    ReadRenderTexture(sampleTarget, withBeams);
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = false;
-                    camera.Render();
-                    ReadRenderTexture(sampleTarget, withoutBeams);
-                    var (noFogPixels, noFogMaxRed, noFogRed, noFogBlue) =
-                        MeasureSurface(withBeams, withoutBeams);
-                    Debug.Log($"[Spells527] noDistanceFogSurfacePixels={noFogPixels} " +
-                        $"maxRed={noFogMaxRed} blueRedRatio={noFogBlue / noFogRed} " +
-                        $"redTotal={noFogRed} blueTotal={noFogBlue}");
-                }
-                finally
-                {
-                    Shader.SetGlobalFloat("_CustomFogAttenuation", authoredAttenuation);
-                }
-
-                // FinalBurstPhysicalLaserSurfaceHasWhiteCore: keep an opposite-format
-                // diagnostic render to expose any future camera-format regression.
-                var alternateFormat = camera.allowHDR
-                    ? RenderTextureFormat.ARGB32
-                    : RenderTextureFormat.DefaultHDR;
-                var alternateTarget = new RenderTexture(1024, 1024, 24, alternateFormat);
-                try
-                {
-                    camera.targetTexture = alternateTarget;
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = true;
-                    camera.Render();
-                    ReadRenderTexture(alternateTarget, withBeams);
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = false;
-                    camera.Render();
-                    ReadRenderTexture(alternateTarget, withoutBeams);
-                    var (alternatePixels, alternateMaxRed, alternateRed, alternateBlue) =
-                        MeasureSurface(withBeams, withoutBeams);
-                    Debug.Log($"[Spells527] alternateFormat={alternateFormat} " +
-                        $"surfacePixels={alternatePixels} maxRed={alternateMaxRed} " +
-                        $"blueRedRatio={alternateBlue / alternateRed} " +
-                        $"redTotal={alternateRed} blueTotal={alternateBlue}");
-                }
-                finally
-                {
-                    camera.targetTexture = sampleTarget;
-                    Object.Destroy(alternateTarget);
-                }
-                // FinalBurstPhysicalLaserSurfaceHasWhiteCore: the player's game setting is 4x MSAA,
-                // while CM's quality profile disables it; isolate sample coverage before changing it.
-                var msaaTarget = new RenderTexture(1024, 1024, 24, cameraFormat)
-                {
-                    antiAliasing = 4
-                };
-                try
-                {
-                    camera.targetTexture = msaaTarget;
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = true;
-                    camera.Render();
-                    Graphics.Blit(msaaTarget, sampleTarget);
-                    ReadRenderTexture(sampleTarget, withBeams);
-                    foreach (var renderer in beamRenderers)
-                        renderer.enabled = false;
-                    camera.Render();
-                    Graphics.Blit(msaaTarget, sampleTarget);
-                    ReadRenderTexture(sampleTarget, withoutBeams);
-                    var (msaaPixels, msaaMaxRed, msaaRed, msaaBlue) =
-                        MeasureSurface(withBeams, withoutBeams);
-                    Debug.Log($"[Spells527] msaa4SurfacePixels={msaaPixels} " +
-                        $"maxRed={msaaMaxRed} blueRedRatio={msaaBlue / msaaRed} " +
-                        $"redTotal={msaaRed} blueTotal={msaaBlue}");
-                }
-                finally
-                {
-                    camera.targetTexture = sampleTarget;
-                    Object.Destroy(msaaTarget);
-                }
                 // FinalBurstPhysicalLaserSurfaceHasWhiteCore: Beat Saber 1.44.1's
                 // exported gameplay camera has m_HDR=0; CM's HDR target loses the
                 // pale core while the same beam and fog render paler in LDR.
@@ -281,24 +140,13 @@ namespace Tests.Editor
             }
         }
 
-        // The complete shipped map answers whether the fixture-based result holds on identical
-        // authored environment/material/event data; Explicit because it reloads the full map.
-        [UnityTest, Explicit]
-        public IEnumerator CompleteMapFinalBurstPhysicalLaserSurfaceHasWhiteCore()
+        // Controller alpha multipliers must reach the cached BoxLight and its material property block.
+        [UnityTest]
+        public IEnumerator FinalBurstBoxesUseAuthoredAlphaMultiplier()
         {
-            const string fullMapPath = "C:/Users/tdrak/BSManager/BSInstances/1.44.1/" +
-                "Beat Saber_Data/CustomLevels/35a0b (Spells - Joetastic & Swifter)/ExpertPlusStandard.dat";
-            yield return TestUtils.ReloadMap(
-                3,
-                JSON.Parse(File.ReadAllText(fullMapPath)),
-                beatsPerMinute: 150,
-                environmentName: "BillieEnvironment",
-                songLengthSeconds: 215);
-            uiMode = Object.FindAnyObjectByType<UIMode>();
-            cameraManager = Object.FindAnyObjectByType<CameraManager>();
             yield return FinalBurstPhysicalLaserSurfaceHasWhiteCore();
 
-            // CompleteMapFinalBurstPhysicalLaserSurfaceHasWhiteCore: the scene controller's
+            // FinalBurstBoxesUseAuthoredAlphaMultiplier: the scene controller's
             // authored default ColorAlphaMultiplier only reaches BoxLight once at init;
             // CM pushes the enhancement's multiplier onto the controller without refreshing
             // the cached Box.AlphaMultiplier, so the authored x3 never lands on the rendered box.
@@ -354,15 +202,6 @@ namespace Tests.Editor
             Assert.That(failures, Is.Empty, string.Join("\n", failures));
         }
 
-        private static string TransformHierarchy(Transform transform)
-        {
-            var parts = new List<string>();
-            for (var node = transform; node != null; node = node.parent)
-                parts.Add(node.name);
-            parts.Reverse();
-            return string.Join("/", parts);
-        }
-
         private static void ReadRenderTexture(RenderTexture source, Texture2D destination)
         {
             var previousActive = RenderTexture.active;
@@ -378,13 +217,12 @@ namespace Tests.Editor
             }
         }
 
-        private static (int LitPixels, float MaxRed, float RedTotal, float BlueTotal)
+        private static (int LitPixels, float RedTotal, float BlueTotal)
             MeasureSurface(Texture2D withBeams, Texture2D withoutBeams)
         {
             var redTotal = 0f;
             var blueTotal = 0f;
             var litPixels = 0;
-            var maxRed = 0f;
             // FinalBurstPhysicalLaserSurfaceHasWhiteCore: renderer subtraction
             // identifies beam pixels across the whole view despite distant placement.
             for (var y = 100; y < 900; y++)
@@ -398,10 +236,9 @@ namespace Tests.Editor
                     redTotal += red;
                     blueTotal += physical.b * 255f;
                     litPixels++;
-                    maxRed = Mathf.Max(maxRed, red);
                 }
             }
-            return (litPixels, maxRed, redTotal, blueTotal);
+            return (litPixels, redTotal, blueTotal);
         }
 
         [UnityTearDown]
