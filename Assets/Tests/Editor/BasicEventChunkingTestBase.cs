@@ -7,12 +7,11 @@ using Beatmap.Enums;
 using NUnit.Framework;
 using Tests.Infrastructure;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Tests.Editor
 {
     // Shared production visual-pool helpers for node and ribbon chunking tests.
-    public abstract class BasicEventChunkingTestBase : TestBase
+    public abstract class BasicEventChunkingTestBase : InputTestBase
     {
         // Missing nodes can be active geometry rendered fully transparent, so inspect the shader value applied to them.
         private static readonly int mainAlphaId = Shader.PropertyToID("_MainAlpha");
@@ -20,116 +19,7 @@ namespace Tests.Editor
         // Avoid test-induced GC while inspecting thousands of nodes per scrub matrix.
         private static readonly MaterialPropertyBlock nodeRendererProperties = new();
 
-        // Linux Jenkins has no reliable native audio clock, so playback time is driven directly.
-        private static readonly System.Reflection.PropertyInfo currentSecondsProperty =
-            typeof(AudioTimeSyncController).GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
-
-        // Virtual devices isolate input tests from editor focus and Jenkins host state.
-        private InputTestFixture inputTestFixture;
-        private Mouse virtualMouse;
-        private Keyboard virtualKeyboard;
-        private readonly List<InputActionMap> sharedEnabledActionMaps = new();
-
         protected override EditingMode InitialEditingMode => EditingMode.BasicEvent;
-
-        protected static void StartDeterministicPlaybackAtSongBpmTime(
-            AudioTimeSyncController atsc,
-            float songBpmTime)
-        {
-            Assert.That(atsc.IsPlaying, Is.False, "Deterministic playback did not start from a paused controller.");
-            Assert.That(currentSecondsProperty, Is.Not.Null, "AudioTimeSyncController.CurrentSeconds was not found.");
-
-            atsc.TogglePlaying();
-            atsc.SongAudioSource.Stop();
-            atsc.StopScheduled = true;
-            currentSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(songBpmTime));
-
-            Assert.That(atsc.IsPlaying, Is.True, "Deterministic playback did not enter the production playing state.");
-            Assert.That(
-                atsc.SongAudioSource.isPlaying,
-                Is.False,
-                "Deterministic playback unexpectedly retained a native audio backend.");
-        }
-
-        protected static void PauseDeterministicPlayback(AudioTimeSyncController atsc)
-        {
-            Assert.That(atsc.IsPlaying, Is.True, "Deterministic playback was already paused.");
-            atsc.TogglePlaying();
-            Assert.That(atsc.IsPlaying, Is.False, "Deterministic playback did not pause.");
-            Assert.That(atsc.StopScheduled, Is.False, "Deterministic playback left an automatic stop scheduled.");
-        }
-
-        protected void InitializeVirtualInput(bool includeKeyboard)
-        {
-            Assert.That(inputTestFixture, Is.Null, "Virtual input was initialized twice in one test.");
-            // InputTestFixture replaces the global runtime, so disable every shared map before its controls
-            // bind to temporary devices; restore exactly these maps after the original runtime returns.
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            sharedEnabledActionMaps.Clear();
-            foreach (var actionMap in sharedInput.asset.actionMaps)
-            {
-                if (!actionMap.enabled) continue;
-                sharedEnabledActionMaps.Add(actionMap);
-                actionMap.Disable();
-            }
-
-            inputTestFixture = new InputTestFixture();
-            inputTestFixture.Setup();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
-            if (includeKeyboard)
-            {
-                virtualKeyboard = InputSystem.AddDevice<Keyboard>();
-            }
-        }
-
-        protected void SetVirtualMouseState(Vector2 position, Vector2 scroll)
-        {
-            Assert.That(inputTestFixture, Is.Not.Null, "Virtual input was not initialized before setting mouse state.");
-            inputTestFixture.Set(virtualMouse.position, position, queueEventOnly: true);
-            inputTestFixture.Set(virtualMouse.scroll, scroll, queueEventOnly: true);
-            InputSystem.Update();
-        }
-
-        // Apply each key event before constructing the next chord state.
-        protected void PressVirtualKeys(params Key[] keys)
-        {
-            Assert.That(virtualKeyboard, Is.Not.Null, "Virtual keyboard input was not initialized.");
-            foreach (var key in keys)
-            {
-                inputTestFixture.Press(virtualKeyboard[key], queueEventOnly: true);
-                InputSystem.Update();
-                Assert.That(virtualKeyboard[key].isPressed, Is.True, $"Virtual modifier {key} was not pressed.");
-            }
-        }
-
-        protected void ReleaseVirtualKeys(params Key[] keys)
-        {
-            Assert.That(virtualKeyboard, Is.Not.Null, "Virtual keyboard input was not initialized.");
-            foreach (var key in keys)
-            {
-                inputTestFixture.Release(virtualKeyboard[key], queueEventOnly: true);
-                InputSystem.Update();
-                Assert.That(virtualKeyboard[key].isPressed, Is.False, $"Virtual modifier {key} was not released.");
-            }
-        }
-
-        protected void TearDownVirtualInput()
-        {
-            virtualMouse = null;
-            virtualKeyboard = null;
-            if (inputTestFixture == null)
-            {
-                return;
-            }
-
-            inputTestFixture.TearDown();
-            inputTestFixture = null;
-
-            // Re-enabling after TearDown forces control resolution against the restored application runtime.
-            foreach (var actionMap in sharedEnabledActionMaps) actionMap.Enable();
-            sharedEnabledActionMaps.Clear();
-        }
 
         // Chunk regressions must use real EventPlacement-backed placement so insertion callbacks and ribbon indexes run.
         protected static BaseEvent PlaceLightEvent(

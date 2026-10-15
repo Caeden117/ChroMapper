@@ -12,7 +12,7 @@ namespace Tests.Editor
 {
     // Source: Array by VoltageO and CMT (50222), from the Kamikazi ending-cube repro.
     // Keep one enclosing cube, its three bars, their original animations, and the inherited light events.
-    public class KamikaziEndingCubeParityTest : BasicEventChunkingTestBase
+    public class KamikaziEndingCubeParityTest : InputTestBase
     {
         private static readonly int ColorId = Shader.PropertyToID("_Color");
         private static readonly System.Reflection.PropertyInfo CurrentSecondsProperty =

@@ -51,7 +51,6 @@ namespace Tests.Editor
         {
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var pauseManager = Object.FindAnyObjectByType<PauseManager>();
-            var inputFixture = new InputTestFixture();
             InputAction escapeAction = null;
 
             try
@@ -59,21 +58,21 @@ namespace Tests.Editor
                 uiMode.SetUIMode(previousMode, false);
                 uiMode.SetUIMode(UIModeType.Preview, false);
 
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 escapeAction = new InputAction(binding: "<Keyboard>/escape");
                 escapeAction.performed += pauseManager.OnPauseEditor;
                 escapeAction.Enable();
 
-                inputFixture.Press(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(previousMode));
                 Assert.That(PauseManager.IsPaused, Is.False, "Escape opened the pause menu instead of exiting Preview.");
 
                 // EscapeFromPreviewRestoresThePreviousUIMode must consume only the Preview exit; a fresh second
                 // press should retain Escape's normal pause behavior after Preview has ended.
-                inputFixture.Release(keyboard.escapeKey);
-                inputFixture.Press(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(PauseManager.IsPaused, Is.True, "A second Escape did not open the pause menu normally.");
                 Assert.That(
@@ -84,7 +83,7 @@ namespace Tests.Editor
             finally
             {
                 escapeAction?.Dispose();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 if (PauseManager.IsPaused)
                     pauseManager.TogglePause();
                 uiMode.SetUIMode(UIModeType.Normal, false);
@@ -99,15 +98,14 @@ namespace Tests.Editor
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var pauseManager = Object.FindAnyObjectByType<PauseManager>();
             var cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            var inputFixture = new InputTestFixture();
             InputAction playingAction = null;
             InputAction escapeAction = null;
 
             try
             {
                 uiMode.SetUIMode(UIModeType.HideGrids, false);
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 playingAction = new InputAction(binding: "<Keyboard>/5");
                 playingAction.performed +=
                     ((CMInput.IUIModeActions)uiMode).OnToggleUIModePlaying;
@@ -116,31 +114,31 @@ namespace Tests.Editor
                 playingAction.Enable();
                 escapeAction.Enable();
 
-                inputFixture.Press(keyboard.digit5Key);
-                inputFixture.Press(keyboard.escapeKey);
+                PressVirtualButton(keyboard.digit5Key);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(UIModeType.HideGrids));
                 Assert.That(PauseManager.IsPaused, Is.False, "The first Escape opened pause while exiting Playing.");
 
-                inputFixture.Release(keyboard.escapeKey);
-                inputFixture.Press(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
                 Assert.That(PauseManager.IsPaused, Is.True, "The second Escape did not open pause normally.");
                 Assert.That(
                     UIMode.SelectedMode,
                     Is.EqualTo(UIModeType.HideGrids),
                     "Opening pause changed Hide Grids instead of pausing it in place.");
-                inputFixture.Release(keyboard.escapeKey);
-                inputFixture.Press(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
                 Assert.That(PauseManager.IsPaused, Is.False, "Escape did not close the pause menu.");
                 Assert.That(
                     UIMode.SelectedMode,
                     Is.EqualTo(UIModeType.HideGrids),
                     "Closing pause re-entered Playing instead of restoring the exited mode.");
 
-                inputFixture.Release(keyboard.escapeKey);
-                inputFixture.Release(keyboard.digit5Key);
-                inputFixture.Press(keyboard.digit5Key);
-                inputFixture.Press(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.digit5Key);
+                PressVirtualButton(keyboard.digit5Key);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(UIModeType.HideGrids));
                 Assert.That(PauseManager.IsPaused, Is.False, "Playing stopped consuming its first Escape after re-entry.");
@@ -151,7 +149,7 @@ namespace Tests.Editor
                 escapeAction?.Dispose();
                 if (PauseManager.IsPaused)
                     pauseManager.TogglePause();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 cameraManager.SelectCamera(CameraType.Editing);
                 uiMode.SetUIMode(UIModeType.Normal, false);
             }

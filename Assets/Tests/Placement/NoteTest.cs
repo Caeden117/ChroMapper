@@ -11,14 +11,9 @@ using UnityEngine.InputSystem;
 
 namespace Tests.Placement
 {
-    public class NoteTest : TestBase
+    public class NoteTest : InputTestBase
     {
-        // The Alt-wheel regressions own an isolated input runtime and restore the shared Note Objects map afterward.
-        private InputTestFixture inputFixture;
         private CMInput isolatedInput;
-        private Mouse virtualMouse;
-        private Keyboard virtualKeyboard;
-        private bool? sharedNoteInputWasEnabled;
 
         [Test]
         public void InvertNote()
@@ -504,18 +499,9 @@ namespace Tests.Placement
             }
         }
 
-        // Disable the shared map before InputTestFixture replaces the runtime, then bind only the production note callback under test.
         private BeatmapNoteInputController InitializeIsolatedNoteInput(NoteContainer hoveredNote)
         {
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            sharedNoteInputWasEnabled = sharedInput.NoteObjects.enabled;
-            sharedInput.NoteObjects.Disable();
-
-            inputFixture = new InputTestFixture();
-            inputFixture.Setup();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
-            virtualKeyboard = InputSystem.AddDevice<Keyboard>();
+            InitializeVirtualInput(includeKeyboard: true);
 
             var controller = Object.FindAnyObjectByType<BeatmapNoteInputController>();
             Assert.That(controller, Is.Not.Null, "The production note input controller was not available.");
@@ -537,29 +523,29 @@ namespace Tests.Placement
         // Process each synthetic device edge independently so the requested modifiers remain held when the wheel chord dispatches.
         private void ScrollWithAltModifiers(float direction, bool includeShift)
         {
-            inputFixture.Press(virtualKeyboard.leftAltKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftAltKey, queueEventOnly: true);
             InputSystem.Update();
             if (includeShift)
             {
-                inputFixture.Press(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+                PressVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
                 InputSystem.Update();
             }
 
-            inputFixture.Set(virtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Set(virtualMouse.scroll, Vector2.zero, queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, Vector2.zero, queueEventOnly: true);
             InputSystem.Update();
 
             if (includeShift)
             {
-                inputFixture.Release(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+                ReleaseVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
                 InputSystem.Update();
             }
-            inputFixture.Release(virtualKeyboard.leftAltKey, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.leftAltKey, queueEventOnly: true);
             InputSystem.Update();
         }
 
-        // Dispose the isolated asset before restoring the application Input System and its original Note Objects map state.
+        // Dispose the isolated asset before restoring the application Input System.
         protected override void AfterCleanup()
         {
             if (isolatedInput != null)
@@ -569,20 +555,7 @@ namespace Tests.Placement
                 isolatedInput = null;
             }
 
-            virtualMouse = null;
-            virtualKeyboard = null;
-            if (inputFixture != null)
-            {
-                inputFixture.TearDown();
-                inputFixture = null;
-            }
-
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            if (sharedInput != null && sharedNoteInputWasEnabled == true)
-            {
-                sharedInput.NoteObjects.Enable();
-            }
-            sharedNoteInputWasEnabled = null;
+            TearDownVirtualInput();
         }
     }
 }

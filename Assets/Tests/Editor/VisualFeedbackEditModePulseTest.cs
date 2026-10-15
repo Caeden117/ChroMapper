@@ -16,7 +16,7 @@ namespace Tests.Editor
     public class VisualFeedbackEditModePulseTest : PreviewWorkflowTestBase
     {
         // Linux Jenkins has no reliable native audio clock, so playback time is driven directly through the
-        // same private setter BasicEventChunkingTestBase uses.
+        // same private setter TestUtils uses for deterministic playback.
         private static readonly PropertyInfo currentSecondsProperty =
             typeof(AudioTimeSyncController).GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
 

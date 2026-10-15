@@ -11,16 +11,9 @@ using UnityEngine.TestTools;
 namespace Tests.Placement
 {
     // VNJS hover-wheel input needs an isolated device runtime because host focus and modifier state are nondeterministic in batchmode.
-    public class VNJSEventInputTest : TestBase
+    public class VNJSEventInputTest : InputTestBase
     {
-        private InputTestFixture inputFixture;
         private CMInput isolatedInput;
-        private Mouse virtualMouse;
-        private Keyboard virtualKeyboard;
-        private bool? sharedVNJSInputWasEnabled;
-        // CtrlShiftScrollHoveredVNJSDoesNotChangeCursorInterval restores every shared map and Timeline value it isolates.
-        private bool? sharedTimelineInputWasEnabled;
-        private bool? sharedUtilsInputWasEnabled;
         private AudioTimeSyncController audioTimeSyncController;
         private int? gridMeasureSnappingBeforeTest;
 
@@ -143,7 +136,7 @@ namespace Tests.Placement
                 "Plain scrolling stopped moving the Timeline while hovering a VNJS event.");
         }
 
-        // Dispose the isolated asset before restoring the application Input System, then re-enable its original action map.
+        // Dispose the isolated asset before restoring the application Input System and shared action maps.
         protected override void AfterCleanup()
         {
             BeatmapRaycastCache.Invalidate();
@@ -160,53 +153,12 @@ namespace Tests.Placement
                 isolatedInput = null;
             }
 
-            virtualMouse = null;
-            virtualKeyboard = null;
-            if (inputFixture != null)
-            {
-                inputFixture.TearDown();
-                inputFixture = null;
-            }
-
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            if (sharedInput != null && sharedVNJSInputWasEnabled == true)
-            {
-                sharedInput.NJSEventObjects.Enable();
-            }
-            sharedVNJSInputWasEnabled = null;
-
-            if (sharedInput != null && sharedTimelineInputWasEnabled == true)
-            {
-                sharedInput.Timeline.Enable();
-            }
-            sharedTimelineInputWasEnabled = null;
-
-            if (sharedInput != null && sharedUtilsInputWasEnabled == true)
-            {
-                sharedInput.Utils.Enable();
-            }
-            sharedUtilsInputWasEnabled = null;
+            TearDownVirtualInput();
         }
 
-        // Capture and disable every shared map before InputTestFixture resets the runtime so teardown restores its real state.
         private void InitializeIsolatedInput(bool includeTimeline = false)
         {
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            sharedVNJSInputWasEnabled = sharedInput.NJSEventObjects.enabled;
-            sharedInput.NJSEventObjects.Disable();
-            if (includeTimeline)
-            {
-                sharedTimelineInputWasEnabled = sharedInput.Timeline.enabled;
-                sharedUtilsInputWasEnabled = sharedInput.Utils.enabled;
-                sharedInput.Timeline.Disable();
-                sharedInput.Utils.Disable();
-            }
-
-            inputFixture = new InputTestFixture();
-            inputFixture.Setup();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
-            virtualKeyboard = InputSystem.AddDevice<Keyboard>();
+            InitializeVirtualInput(includeKeyboard: true);
 
             isolatedInput = new CMInput();
             isolatedInput.NJSEventObjects.SetCallbacks(Object.FindAnyObjectByType<BeatmapNJSEventInputController>());
@@ -243,14 +195,6 @@ namespace Tests.Placement
             Assert.That(KeybindsController.IsMouseInWindow, Is.True, "The virtual Timeline pointer did not enter the editor window.");
         }
 
-        // Queue position and scroll in one synthetic mouse report so production pointer routing sees each transition.
-        private void SetVirtualMouseState(Vector2 position, Vector2 scroll)
-        {
-            inputFixture.Set(virtualMouse.position, position, queueEventOnly: true);
-            inputFixture.Set(virtualMouse.scroll, scroll, queueEventOnly: true);
-            InputSystem.Update();
-        }
-
         // All hover-input cases use one rendered VNJS fixture so only input context varies between regressions.
         private static BaseNJSEvent PlaceVNJSEvent() => PlaceUtils.Place(new BaseNJSEvent
         {
@@ -278,29 +222,29 @@ namespace Tests.Placement
         // Process packed keyboard deltas separately so neither modifier can overwrite the other's queued release state.
         private void ScrollWithCtrlShift(float direction)
         {
-            inputFixture.Press(virtualKeyboard.leftCtrlKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftCtrlKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Press(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Set(virtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
             InputSystem.Update();
 
-            inputFixture.Set(virtualMouse.scroll, Vector2.zero, queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, Vector2.zero, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Release(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
             InputSystem.Update();
-            Assert.That(virtualKeyboard.leftShiftKey.isPressed, Is.False, "Virtual Shift remained pressed after release.");
-            inputFixture.Release(virtualKeyboard.leftCtrlKey, queueEventOnly: true);
+            Assert.That(VirtualKeyboard.leftShiftKey.isPressed, Is.False, "Virtual Shift remained pressed after release.");
+            ReleaseVirtualButton(VirtualKeyboard.leftCtrlKey, queueEventOnly: true);
             InputSystem.Update();
-            Assert.That(virtualKeyboard.leftCtrlKey.isPressed, Is.False, "Virtual Ctrl remained pressed after release.");
+            Assert.That(VirtualKeyboard.leftCtrlKey.isPressed, Is.False, "Virtual Ctrl remained pressed after release.");
         }
 
         // Plain-scroll overlap coverage emits the same virtual wheel edge without either easing modifier.
         private void ScrollWithoutModifiers(float direction)
         {
-            inputFixture.Set(virtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, new Vector2(0f, direction), queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Set(virtualMouse.scroll, Vector2.zero, queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, Vector2.zero, queueEventOnly: true);
             InputSystem.Update();
         }
     }
