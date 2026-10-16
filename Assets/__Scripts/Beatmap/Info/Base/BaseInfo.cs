@@ -23,6 +23,7 @@ namespace Beatmap.Info
                 LastWriteTime = File.GetLastWriteTime(PathUtils.Combine(value, "Info.dat"));
 
                 isFavourite = File.Exists(PathUtils.Combine(value, ".favourite"));
+                CustomEditorsData.SetStateDirectory(value);
                 directory = value;
             }
         }
@@ -154,37 +155,93 @@ namespace Beatmap.Info
 
         public class CustomEditorsMetadata
         {
+            private const string VersionKey = "_version";
+            private const string StateFileKey = "_state";
+            private const string LegacyVersionKey = "version";
+            private const string EditorStateKey = "editorState";
+            private static readonly char[] invalidStateFileNameCharacters = "/\\:<>\"|?*".ToCharArray();
+
             // This is so we preserve existing data that might be located in this object
             private readonly JSONNode editorsNode;
+            private JSONNode metadataNode = new JSONObject();
+            private string sourceDirectory;
+            private bool stateLoaded = true;
+
+            public string StateFileName { get; private set; } = "CmState.dat";
 
             /// <summary>
             ///     Editor Metadata for this editor.
             /// </summary>
-            public JSONNode MetadataNode = new JSONObject();
-
-            public CustomEditorsMetadata(JSONNode obj)
+            public JSONNode MetadataNode
             {
-                if (obj is null || !obj.Children.Any())
+                get
                 {
-                    editorsNode = new JSONObject();
+                    LoadState();
+                    return metadataNode;
                 }
-                else
+                set
                 {
-                    editorsNode = obj;
-                    if (editorsNode.HasKey(editorName)) MetadataNode = editorsNode[editorName];
+                    metadataNode = value;
+                    stateLoaded = true;
                 }
             }
 
-            // Keep editor-owned state namespaced beneath this editor's existing metadata object.
+            public CustomEditorsMetadata(JSONNode obj)
+            {
+                editorsNode = obj ?? new JSONObject();
+                if (editorsNode.Count == 0 || !editorsNode.HasKey(editorName))
+                    return;
+
+                metadataNode = editorsNode[editorName].Clone();
+                metadataNode.Remove(LegacyVersionKey);
+                metadataNode.Remove(VersionKey);
+                if (!metadataNode.HasKey(StateFileKey))
+                    return;
+
+                StateFileName = metadataNode[StateFileKey].Value;
+                if (string.IsNullOrWhiteSpace(StateFileName)
+                    || StateFileName.IndexOfAny(invalidStateFileNameCharacters) >= 0
+                    || StateFileName.Any(char.IsControl)
+                    || StateFileName.EndsWith(" ", StringComparison.Ordinal)
+                    || StateFileName.EndsWith(".", StringComparison.Ordinal)
+                    || ReservedNamesWindows.Contains(Path.GetFileNameWithoutExtension(StateFileName))
+                    || string.Equals(StateFileName, "Info.dat", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidDataException("Editor state requires a filename in the song folder, not a path: " + StateFileName);
+                }
+
+                metadataNode.Remove(StateFileKey);
+                metadataNode.Remove(EditorStateKey);
+                stateLoaded = false;
+            }
+
+            // Keep the original folder for a deferred read if the map is moved before its state is opened.
+            internal void SetStateDirectory(string value) => sourceDirectory ??= value;
+
+            private void LoadState()
+            {
+                if (stateLoaded || sourceDirectory == null)
+                    return;
+
+                var data = BeatSaberSongUtils.GetNodeFromFile(PathUtils.Combine(sourceDirectory, StateFileName));
+                metadataNode[EditorStateKey] = data?.AsObject ?? new JSONObject();
+                stateLoaded = true;
+            }
+
+            // Keep editor data available through the same API for embedded legacy maps and separate state files.
             public JSONNode GetEditorData(string key) => MetadataNode[key];
 
-            // Update editor-owned state in memory so the normal Info.dat save flow persists it atomically.
             public void SetEditorData(string key, JSONNode data) => MetadataNode[key] = data;
+
+            internal void Save(string directory)
+            {
+                LoadState();
+                var editorState = metadataNode[EditorStateKey].AsObject ?? new JSONObject();
+                File.WriteAllText(PathUtils.Combine(directory, StateFileName), editorState.ToString(2));
+            }
 
             public JSONNode ToJson()
             {
-                MetadataNode["version"] = editorVersion;
-
                 // Unity song containers need explicit null checks before selecting the metadata key version.
                 var songContainer = BeatSaberSongContainer.Instance;
                 var info = songContainer != null ? songContainer.Info : null;
@@ -198,7 +255,12 @@ namespace Beatmap.Info
                     : "lastEditedBy";
 
                 editorsNode[lastEditedByKey] = editorName;
-                editorsNode[editorName] = MetadataNode;
+                // Only editorState moves to the state file. Keep any other editor metadata in Info.dat.
+                var editorMetadata = metadataNode.Clone();
+                editorMetadata.Remove(EditorStateKey);
+                editorMetadata[VersionKey] = editorVersion;
+                editorMetadata[StateFileKey] = StateFileName;
+                editorsNode[editorName] = editorMetadata;
 
                 return editorsNode;
             }
@@ -224,6 +286,8 @@ namespace Beatmap.Info
             };
 
             if (outputJson == null) return false;
+
+            CustomEditorsData.Save(Directory);
 
             // Write info file - Previous behaviour always indented file
             File.WriteAllText(PathUtils.Combine(Directory, "Info.dat"), outputJson.ToString(2));

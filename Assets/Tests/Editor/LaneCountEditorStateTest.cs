@@ -28,6 +28,34 @@ namespace Tests.Editor
             yield return SaveAndReloadLaneCount(V4Info.Version, 7);
         }
 
+        [UnityTest]
+        public IEnumerator LoadedGridEdgesMatchGridAfterChangingLaneCount([Values(12, 13)] int laneCount)
+        {
+            yield return SaveAndReloadLaneCount(V2Info.Version, laneCount);
+            var laneController = Object.FindAnyObjectByType<PlacementLaneController>();
+            var laneField = typeof(PlacementLaneController).GetField("lane", BindingFlags.Instance | BindingFlags.NonPublic);
+            var gridLane = (GridLane)laneField.GetValue(laneController);
+            var loadedXY = RenderGrid(gridLane.XY.Grid);
+            var loadedXZ = RenderGrid(gridLane.XZ.Grid);
+
+            var laneCountInput = GetLaneCountInput();
+            laneCountInput.Value = laneCount + 1;
+            laneCountInput.Value = laneCount;
+            yield return null;
+
+            var editedXY = RenderGrid(gridLane.XY.Grid);
+            var editedXZ = RenderGrid(gridLane.XZ.Grid);
+            var changedPixels = new[]
+            {
+                CountChangedPixels(loadedXY, editedXY),
+                CountChangedPixels(loadedXZ, editedXZ)
+            };
+            Assert.That(
+                changedPixels,
+                Is.All.EqualTo(0),
+                "Reloading must render the same XY and XZ grid edges as editing the lane count and changing it back.");
+        }
+
         [UnityTearDown]
         public IEnumerator RestoreSharedMap()
         {
@@ -110,6 +138,73 @@ namespace Tests.Editor
             var inputField = typeof(GameplayViewController).GetField("laneCountInput", BindingFlags.Instance | BindingFlags.NonPublic);
             Assert.That(inputField, Is.Not.Null);
             return (TextBoxIntComponent)inputField.GetValue(view);
+        }
+
+        private static Color32[] RenderGrid(Renderer renderer)
+        {
+            const int width = 512;
+            const int height = 256;
+            const int renderLayer = 31;
+            var previousLayer = renderer.gameObject.layer;
+            var previousTarget = RenderTexture.active;
+            var cameraObject = new GameObject("Lane grid regression camera");
+            var target = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
+            var texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            try
+            {
+                renderer.gameObject.layer = renderLayer;
+                var camera = cameraObject.AddComponent<Camera>();
+                camera.enabled = false;
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = Color.black;
+                camera.cullingMask = 1 << renderLayer;
+                camera.orthographic = true;
+                camera.aspect = (float)width / height;
+                camera.orthographicSize = renderer.transform.TransformVector(Vector3.right).magnitude
+                    / (2f * camera.aspect) * 1.1f;
+                camera.transform.SetPositionAndRotation(
+                    renderer.bounds.center - renderer.transform.forward * 10f,
+                    renderer.transform.rotation);
+                camera.targetTexture = target;
+                camera.Render();
+                RenderTexture.active = target;
+                texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+                texture.Apply();
+                var pixels = texture.GetPixels32();
+                var visiblePixels = 0;
+                foreach (var pixel in pixels)
+                {
+                    if (Mathf.Max(pixel.r, Mathf.Max(pixel.g, pixel.b)) > 8)
+                        visiblePixels++;
+                }
+
+                Assert.That(visiblePixels, Is.GreaterThan(100), "The comparison must render visible grid lines.");
+                return pixels;
+            }
+            finally
+            {
+                renderer.gameObject.layer = previousLayer;
+                RenderTexture.active = previousTarget;
+                Object.DestroyImmediate(cameraObject);
+                Object.DestroyImmediate(texture);
+                Object.DestroyImmediate(target);
+            }
+        }
+
+        private static int CountChangedPixels(Color32[] loaded, Color32[] edited)
+        {
+            var changed = 0;
+            for (var i = 0; i < loaded.Length; i++)
+            {
+                if (Mathf.Abs(loaded[i].r - edited[i].r) > 2
+                    || Mathf.Abs(loaded[i].g - edited[i].g) > 2
+                    || Mathf.Abs(loaded[i].b - edited[i].b) > 2)
+                {
+                    changed++;
+                }
+            }
+
+            return changed;
         }
     }
 }

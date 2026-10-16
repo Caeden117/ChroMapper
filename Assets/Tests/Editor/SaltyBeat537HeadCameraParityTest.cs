@@ -27,6 +27,13 @@ namespace Tests.Editor
         private EditModeContext editMode;
         private EditingMode previousEditingMode;
         private bool editingModeChanged;
+        private float previousCaptureDeltaTime;
+
+        [SetUp]
+        public void CaptureFrameTiming()
+        {
+            previousCaptureDeltaTime = Time.captureDeltaTime;
+        }
 
         private static string FixturePath => Path.Combine(
             Application.dataPath,
@@ -102,16 +109,13 @@ namespace Tests.Editor
             Assert.That(failures, Is.Empty, string.Join("\n", failures));
         }
 
-        // Deterministic PLAYBACK coverage for the same authored ease: the stopped-seek cases above
-        // prove the pose is synchronous, but the user's report was motion during play. Jenkins'
-        // native AudioSource clock is unreliable, so this drives the production IsPlaying state on a
-        // virtual input fixture (CameraController.SetLockState reads Mouse.current on toggle) and
-        // steps CurrentSeconds directly — each yielded frame still lets production
-        // AudioTimeSyncController.Update/TrackAnimator.Update/CameraController.Update run, then the
-        // camera's own ObjectAnimator.LateUpdate is invoked once for an end-of-frame sample.
+        // Keep real track and camera updates running at both normal and slow frame rates while the
+        // test owns playback time. A frame must not move the clock across the b537 Head binding.
         [UnityTest]
-        public IEnumerator Beat537HeadCameraEasesAcrossDeterministicPlaybackFrames()
+        public IEnumerator Beat537HeadCameraEasesAcrossDeterministicPlaybackFrames(
+            [Values(0f, 0.1f)] float frameDuration)
         {
+            Time.captureDeltaTime = frameDuration;
             Settings.Instance.Animations = true;
             Settings.Instance.PlayerCameraFOV = 90f;
             Settings.Instance.PlayerCameraOffsetZ = 0f;
@@ -131,19 +135,12 @@ namespace Tests.Editor
             var cameraAnimator = animatorField?.GetValue(cameraController) as ObjectAnimator;
             Assert.That(cameraAnimator, Is.Not.Null, "cameraAnimator field missing on CameraController.");
 
-            var currentSecondsProperty = typeof(AudioTimeSyncController)
-                .GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
-            Assert.That(currentSecondsProperty, Is.Not.Null,
-                "AudioTimeSyncController.CurrentSeconds property missing.");
-
             try
             {
                 InitializeVirtualInput(includeKeyboard: false);
 
-                atsc.MoveToJsonTime(536.875f);
-                atsc.TogglePlaying();
-                atsc.SongAudioSource.Stop();
-                atsc.StopScheduled = true;
+                using var playbackClock = new DeterministicPlaybackClock(atsc);
+                playbackClock.StartAtJsonTime(536.875f);
                 if (!atsc.IsPlaying)
                     failures.Add("setup: TogglePlaying did not enter IsPlaying.");
                 if (atsc.SongAudioSource.isPlaying)
@@ -152,9 +149,12 @@ namespace Tests.Editor
                 float? previousZ = null;
                 foreach (var beat in new[] { 536.875f, 537f, 537.25f, 538f, 539f, 541f, 543f, 545f })
                 {
-                    var songBeat = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(beat);
-                    currentSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(songBeat));
-                    yield return null; // production Update ran once on the stepped clock
+                    playbackClock.AdvanceToJsonTime(beat);
+                    yield return null;
+                    Assert.That(
+                        atsc.CurrentJsonTime,
+                        Is.EqualTo(beat).Within(0.0001f),
+                        "A rendered frame advanced beyond the test-owned playback sample.");
                     cameraAnimator.LateUpdate(); // sample the real render-phase pose
 
                     var pos = camera.transform.position;
@@ -183,11 +183,6 @@ namespace Tests.Editor
             }
             finally
             {
-                if (atsc != null)
-                {
-                    atsc.StopScheduled = false;
-                    if (atsc.IsPlaying) atsc.CancelPlaying();
-                }
                 TearDownVirtualInput();
             }
 
@@ -209,6 +204,7 @@ namespace Tests.Editor
         [UnityTearDown]
         public IEnumerator RestoreEditingMode()
         {
+            Time.captureDeltaTime = previousCaptureDeltaTime;
             if (uiMode != null)
                 uiMode.SetUIMode(UIModeType.Normal, false);
             if (cameraManager != null)

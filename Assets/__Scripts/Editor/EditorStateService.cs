@@ -12,12 +12,9 @@ public interface IEditorStateProvider
     void LoadEditorState(JSONNode data);
 }
 
-// Keep only the shared metadata cache and save-time provider dispatch outside UI owners.
 public static class EditorStateService
 {
-    // Reserve one ChroMapper-owned metadata property so unrelated editor metadata remains untouched.
     private const string EditorStateKey = "editorState";
-    // Isolate component schemas from one another.
     private const string ComponentStatesKey = "components";
 
     private static JSONObject loadedData;
@@ -57,12 +54,18 @@ public static class EditorStateService
     }
 
 
-    // Snapshot registered component state on the main thread before the existing Info.dat save flow.
+    // Snapshot registered component state on the main thread before the map save writes its state file.
     public static void CaptureMapData(BaseInfo info)
     {
         try
         {
-            var componentStates = new JSONObject();
+            // Unopened controls have not registered yet, so retain their loaded state and any unknown fields.
+            // (Prevent us from overwriting editor state with blank values if someone saves while the map is still loading in).
+            var mapData = info.CustomEditorsData.GetEditorData(EditorStateKey).AsObject;
+            mapData = mapData != null
+                ? mapData.Clone().AsObject
+                : new JSONObject();
+            var componentStates = mapData[ComponentStatesKey].AsObject ?? new JSONObject();
             foreach (var provider in stateProviders)
             {
                 if (provider == null || string.IsNullOrEmpty(provider.StateKey))
@@ -70,19 +73,17 @@ public static class EditorStateService
                     continue;
                 }
 
-                var componentState = new JSONObject();
+                var componentState = componentStates[provider.StateKey].AsObject ?? new JSONObject();
                 provider.CaptureEditorState(componentState);
                 componentStates[provider.StateKey] = componentState;
             }
 
-            info.CustomEditorsData.SetEditorData(EditorStateKey, new JSONObject
-            {
-                [ComponentStatesKey] = componentStates,
-            });
+            mapData[ComponentStatesKey] = componentStates;
+            info.CustomEditorsData.SetEditorData(EditorStateKey, mapData);
         }
         catch (Exception exception)
         {
-            Debug.LogError($"[EditorState] Failed to capture editor metadata for Info.dat: {exception}");
+            Debug.LogError($"[EditorState] Failed to capture editor state: {exception}");
         }
     }
 

@@ -26,6 +26,7 @@ namespace Tests.Editor
         private EditModeContext editMode;
         private EditingMode previousEditingMode;
         private bool editingModeChanged;
+        private float previousCaptureDeltaTime;
 
         private static string FixturePath => PathUtils.Combine(
             Application.dataPath,
@@ -57,6 +58,7 @@ namespace Tests.Editor
         [SetUp]
         public void EnablePreviewAnimations()
         {
+            previousCaptureDeltaTime = Time.captureDeltaTime;
             Settings.Instance.Animations = true;
         }
 
@@ -149,6 +151,7 @@ namespace Tests.Editor
         [UnityTearDown]
         public IEnumerator RestoreEditingMode()
         {
+            Time.captureDeltaTime = previousCaptureDeltaTime;
             TearDownVirtualInput();
             if (uiMode != null)
                 uiMode.SetUIMode(UIModeType.Normal, false);
@@ -174,13 +177,13 @@ namespace Tests.Editor
         // then compare against stopped seeks to that exact beat approached repeatedly from behind
         // and ahead, and against the first frame after resume. Runs in Playing and Preview so the
         // editing-camera path is covered with runtime renderer geometry, not UI affordances.
-        private static readonly System.Reflection.PropertyInfo currentSecondsProperty =
-            typeof(AudioTimeSyncController).GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
         private static readonly int cutoutPropertyId = Shader.PropertyToID("_Cutout");
 
         [UnityTest]
-        public IEnumerator Beat221FakeWallsMatchPlaybackPoseAfterRepeatedScrubs()
+        public IEnumerator Beat221FakeWallsMatchPlaybackPoseAfterRepeatedScrubs(
+            [Values(0f, 0.1f)] float frameDuration)
         {
+            Time.captureDeltaTime = frameDuration;
             // Batchmode has no input devices; UIMode.OnPlayToggle -> SetLockState reads
             // Mouse.current when toggling playback in Playing mode. A virtual mouse keeps the
             // production toggle path intact without touching production code.
@@ -191,7 +194,6 @@ namespace Tests.Editor
             var obstacleGrid = Object.FindAnyObjectByType<ObstacleGridContainer>();
             Assert.That(atsc, Is.Not.Null, "AudioTimeSyncController missing.");
             Assert.That(obstacleGrid, Is.Not.Null, "ObstacleGridContainer missing.");
-            Assert.That(currentSecondsProperty, Is.Not.Null, "CurrentSeconds property not found.");
 
             var authoredWalls = BeatSaberSongContainer.Instance.Map.Obstacles
                 .Where(o => o.CustomFake && Mathf.Approximately(o.JsonTime, 221f))
@@ -204,6 +206,7 @@ namespace Tests.Editor
             var sampleTargets = new[] { 219.5f, 221.25f, 223.25f };
             try
             {
+                using var playbackClock = new DeterministicPlaybackClock(atsc);
                 foreach (var preview in new[] { false, true })
                 {
                     var modeName = preview ? "Preview" : "Playing";
@@ -230,10 +233,7 @@ namespace Tests.Editor
                     yield return null;
 
                     // Deterministic production playback from b216 in <=0.5-beat rendered steps.
-                    atsc.MoveToJsonTime(216f);
-                    atsc.TogglePlaying();
-                    atsc.SongAudioSource.Stop();
-                    atsc.StopScheduled = true;
+                    playbackClock.StartAtJsonTime(216f);
                     yield return null; yield return null;
                     if (!atsc.IsPlaying)
                     {
@@ -247,8 +247,12 @@ namespace Tests.Editor
                     for (var t = 216.5f; t <= 223.5f && nextSample < sampleTargets.Length; t += 0.5f)
                     {
                         var target = Mathf.Min(t, sampleTargets[nextSample]);
-                        SetCurrentSeconds(atsc, target);
+                        playbackClock.AdvanceToJsonTime(target);
                         yield return null; yield return null;
+                        Assert.That(
+                            atsc.CurrentJsonTime,
+                            Is.EqualTo(target).Within(0.0001f),
+                            "Rendered frames advanced beyond the test-owned playback sample.");
                         if (atsc.CurrentJsonTime < sampleTargets[nextSample] - 0.001f) continue;
                         var sampled = atsc.CurrentJsonTime;
                         var snap = CaptureWalls(obstacleGrid, authoredWalls);
@@ -272,7 +276,7 @@ namespace Tests.Editor
                                 "due b221 walls active+enabled+animated during continuous playback.");
                         nextSample++;
                     }
-                    atsc.TogglePlaying();
+                    playbackClock.Pause();
                     yield return null;
                     Assert.That(nextSample, Is.EqualTo(sampleTargets.Length),
                         $"{modeName}: playback stepping missed sample targets.");
@@ -295,26 +299,26 @@ namespace Tests.Editor
                                 $"{modeName} seek-cycle{cycle}@{sampled:F3}", failures);
                         }
 
-                        // First frame after resume: the toggle applies an audio-latency offset
-                        // to CurrentSeconds, so compare the resumed frame against a stopped seek
-                        // to the ACTUAL resumed beat rather than the older sampled snapshot.
-                        atsc.TogglePlaying();
+                        playbackClock.Resume();
                         yield return null; yield return null;
+                        Assert.That(atsc.CurrentJsonTime, Is.EqualTo(sampled).Within(0.0001f));
+                        Assert.That(atsc.SongAudioSource.isPlaying, Is.False);
                         var resumedBeat = atsc.CurrentJsonTime;
                         var resumedSnap = CaptureWalls(obstacleGrid, authoredWalls);
-                        atsc.TogglePlaying();
+                        playbackClock.Pause();
                         yield return null;
                         atsc.MoveToJsonTime(resumedBeat);
                         yield return null; yield return null;
-                        CompareWallSnapshots(CaptureWalls(obstacleGrid, authoredWalls), resumedSnap,
-                            $"{modeName} resumed@{resumedBeat:F3} vs seek", failures);
+                        CompareWallSnapshots(
+                            CaptureWalls(obstacleGrid, authoredWalls),
+                            resumedSnap,
+                            $"{modeName} resumed@{resumedBeat:F3} vs seek",
+                            failures);
                     }
                 }
             }
             finally
             {
-                atsc.StopScheduled = false;
-                if (atsc.IsPlaying) atsc.CancelPlaying();
                 TearDownVirtualInput();
             }
 
@@ -341,8 +345,10 @@ namespace Tests.Editor
         // b337 event (dissolve 0->1 d1), hidden by the b448 event (dissolve 1->0 d2); uh/uh2 also
         // ride a repeating offsetPosition +-5 over d16.
         [UnityTest]
-        public IEnumerator Beat337FakeWallsMatchPlaybackShowHideAfterScrubs()
+        public IEnumerator Beat337FakeWallsMatchPlaybackShowHideAfterScrubs(
+            [Values(0f, 0.1f)] float frameDuration)
         {
+            Time.captureDeltaTime = frameDuration;
             var authored = BeatSaberSongContainer.Instance.Map.Obstacles
                 .Where(o => o.CustomFake && Mathf.Approximately(o.JsonTime, 337f))
                 .ToList();
@@ -413,6 +419,7 @@ namespace Tests.Editor
             var failures = new List<string>();
             try
             {
+                using var playbackClock = new DeterministicPlaybackClock(atsc);
                 foreach (var preview in new[] { false, true })
                 {
                     var modeName = preview ? "Preview" : "Playing";
@@ -434,10 +441,7 @@ namespace Tests.Editor
                     }
                     yield return null;
 
-                    atsc.MoveToJsonTime(playbackStart);
-                    atsc.TogglePlaying();
-                    atsc.SongAudioSource.Stop();
-                    atsc.StopScheduled = true;
+                    playbackClock.StartAtJsonTime(playbackStart);
                     yield return null; yield return null;
                     if (!atsc.IsPlaying)
                     {
@@ -452,8 +456,12 @@ namespace Tests.Editor
                     for (var t = playbackStart + 0.5f; t <= lastTarget + 0.5f && nextSample < sampleTargets.Length; t += 0.5f)
                     {
                         var target = Mathf.Min(t, sampleTargets[nextSample]);
-                        SetCurrentSeconds(atsc, target);
+                        playbackClock.AdvanceToJsonTime(target);
                         yield return null; yield return null;
+                        Assert.That(
+                            atsc.CurrentJsonTime,
+                            Is.EqualTo(target).Within(0.0001f),
+                            "Rendered frames advanced beyond the test-owned playback sample.");
                         if (atsc.CurrentJsonTime < sampleTargets[nextSample] - 0.001f) continue;
                         var sampled = atsc.CurrentJsonTime;
                         var snap = CaptureWalls(obstacleGrid, authored);
@@ -469,7 +477,7 @@ namespace Tests.Editor
                         }
                         nextSample++;
                     }
-                    atsc.TogglePlaying();
+                    playbackClock.Pause();
                     yield return null;
                     Assert.That(nextSample, Is.EqualTo(sampleTargets.Length),
                         $"{label} {modeName}: playback stepping missed sample targets.");
@@ -536,30 +544,26 @@ namespace Tests.Editor
                             }
                         }
 
-                        // Resume applies an audio-latency offset to CurrentSeconds; compare the
-                        // resumed frame against a stopped seek to the ACTUAL resumed beat.
-                        atsc.TogglePlaying();
+                        playbackClock.Resume();
                         yield return null; yield return null;
+                        Assert.That(atsc.CurrentJsonTime, Is.EqualTo(sampled).Within(0.0001f));
+                        Assert.That(atsc.SongAudioSource.isPlaying, Is.False);
                         var resumedBeat = atsc.CurrentJsonTime;
                         var resumedSnap = CaptureWalls(obstacleGrid, authored);
-                        atsc.TogglePlaying();
+                        playbackClock.Pause();
                         yield return null;
                         atsc.MoveToJsonTime(resumedBeat);
                         yield return null; yield return null;
-                        // The resumed frame's animated cutout is evaluated at the post-latency
-                        // audio clock, which can sit a few tenths of a beat off the read
-                        // CurrentJsonTime on a steep dissolve fade; presence and pose stay strict,
-                        // cutout gets a clock-adjusted tolerance.
-                        CompareWallSnapshots(CaptureWalls(obstacleGrid, authored), resumedSnap,
-                            $"{label} {modeName} resumed@{resumedBeat:F3} vs seek", failures,
-                            cutoutTolerance: 0.2f);
+                        CompareWallSnapshots(
+                            CaptureWalls(obstacleGrid, authored),
+                            resumedSnap,
+                            $"{label} {modeName} resumed@{resumedBeat:F3} vs seek",
+                            failures);
                     }
                 }
             }
             finally
             {
-                atsc.StopScheduled = false;
-                if (atsc.IsPlaying) atsc.CancelPlaying();
                 TearDownVirtualInput();
             }
 
@@ -644,12 +648,6 @@ namespace Tests.Editor
             public Vector3 center;
             public Vector3 size;
             public float cutout;
-        }
-
-        private static void SetCurrentSeconds(AudioTimeSyncController atsc, float jsonBeat)
-        {
-            var songBeat = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonBeat);
-            currentSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(songBeat));
         }
 
         private static string DescribeObstacle(Beatmap.Base.BaseObstacle o) =>
