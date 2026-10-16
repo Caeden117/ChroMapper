@@ -12,6 +12,100 @@ namespace Tests.Editor
     public class MapReloadLifetimeTest : TestBase
     {
         [UnityTest]
+        public IEnumerator ReloadStopsMirrorsBeforeDestroyingTrackParentedPlanes()
+        {
+            yield return CheckMirrorDestruction(false);
+        }
+
+        [UnityTest]
+        public IEnumerator DifficultySwitchStopsMirrorsBeforeDestroyingTrackParentedPlanes()
+        {
+            yield return CheckMirrorDestruction(true);
+        }
+
+        [UnityTest]
+        public IEnumerator DifficultySwitchKeepsUnchangedEnvironmentMirrorsActive()
+        {
+            yield return TestUtils.ReloadMap(
+                3,
+                new JSONObject { ["version"] = "3.2.0" },
+                environmentName: "FitBeatEnvironment");
+            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            var descriptor = context.Descriptor;
+            var mirrors = descriptor.GetComponentsInChildren<PlanarReflection>();
+            Assert.That(mirrors, Is.Not.Empty);
+
+            yield return TestUtils.SwitchToEmptyDifficulty();
+
+            Assert.That(context.Descriptor, Is.SameAs(descriptor));
+            foreach (var mirror in mirrors)
+                Assert.That(
+                    mirror.isActiveAndEnabled,
+                    Is.True,
+                    "A difficulty switch that reuses the environment must leave its mirrors running.");
+        }
+
+        private static IEnumerator CheckMirrorDestruction(bool switchDifficulty)
+        {
+            yield return TestUtils.ReloadMap(
+                3,
+                JSON.Parse(@"{
+                ""version"":""3.2.0"",
+                ""customData"":{
+                    ""customEvents"":[{
+                        ""b"":0,""t"":""AssignTrackParent"",
+                        ""d"":{""parentTrack"":""mirrorParent"",""childrenTracks"":[""mirrorPlane""]}
+                    }],
+                    ""environment"":[{
+                        ""id"":""FitBeatEnvironment.[0]Environment.[4]TrackMirror"",
+                        ""lookupMethod"":""Exact"",""track"":""mirrorPlane""
+                    }]
+                }
+            }"),
+                environmentName: "FitBeatEnvironment");
+
+            var descriptor = Object.FindAnyObjectByType<BeatmapRuntimeContext>().Descriptor;
+            var mirror = Object.FindObjectsByType<PlanarReflection>(FindObjectsSortMode.None)
+                .Single(
+                    reflection => reflection.gameObject.scene == descriptor.gameObject.scene
+                        && reflection.PlaneTransform != reflection.transform);
+            var plane = mirror.PlaneTransform;
+            Assert.That(
+                plane.GetComponentInParent<Track>(),
+                Is.Not.Null,
+                "The mirror plane must be reparented out of the environment by AssignTrackParent.");
+            Assert.That(mirror.isActiveAndEnabled, Is.True);
+
+            var observedDestruction = false;
+            var mirrorWasActive = false;
+            var probe = plane.gameObject.AddComponent<EnvironmentTargetDestructionProbe>();
+            probe.OnTargetDestroyed = () =>
+            {
+                observedDestruction = true;
+                mirrorWasActive = mirror != null && mirror.isActiveAndEnabled && mirror.Renderer.enabled;
+            };
+
+            if (switchDifficulty)
+                yield return TestUtils.SwitchToEmptyDifficulty();
+            else
+                yield return TestUtils.ReloadMap(
+                    3,
+                    new JSONObject { ["version"] = "3.2.0" },
+                    environmentName: "FitBeatEnvironment");
+
+            Assert.That(observedDestruction, Is.True);
+            Assert.That(
+                mirrorWasActive,
+                Is.False,
+                "The outgoing mirror could render after track cleanup destroyed its plane.");
+            var incoming = Object.FindAnyObjectByType<BeatmapRuntimeContext>().Descriptor;
+            Assert.That(
+                incoming.GetComponentsInChildren<PlanarReflection>().Any(reflection => reflection.isActiveAndEnabled),
+                Is.True,
+                "The replacement environment must still have active mirrors.");
+        }
+
+        [UnityTest]
         public IEnumerator EnvironmentCleanupReleasesRegisteredGeometryBeforeSceneUnload()
         {
             yield return TestUtils.ReloadMap(3, JSON.Parse(@"{
@@ -118,5 +212,12 @@ namespace Tests.Editor
             yield return TestUtils.ReloadMap(3,
                 new JSONObject { ["version"] = "3.2.0" }, forceSceneReload: true);
         }
+    }
+
+    public class EnvironmentTargetDestructionProbe : MonoBehaviour
+    {
+        public System.Action OnTargetDestroyed;
+
+        private void OnDestroy() => OnTargetDestroyed?.Invoke();
     }
 }

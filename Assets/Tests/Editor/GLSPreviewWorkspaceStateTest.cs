@@ -25,10 +25,7 @@ namespace Tests.Editor
             ObjectType.GLSColor, ObjectType.GLSRotation, ObjectType.GLSTranslation, ObjectType.GLSFloatFx
         };
 
-        private InputTestFixture input;
         private CMInput shortcuts;
-        private Keyboard keyboard;
-        private InputActionMap[] enabledSharedMaps;
         private AudioTimeSyncController atsc;
         private EditModeContext editMode;
         private GLSEventGridProvider provider;
@@ -66,9 +63,7 @@ namespace Tests.Editor
         public IEnumerator RestoreWorkspaceInput()
         {
             shortcuts.Dispose();
-            input.TearDown();
-            foreach (var map in enabledSharedMaps)
-                map.Enable();
+            TearDownVirtualInput();
             TestUtils.ResetSharedInputState();
             yield break;
         }
@@ -205,14 +200,7 @@ namespace Tests.Editor
 
         private void InitializeIsolatedInput()
         {
-            enabledSharedMaps = CMInputCallbackInstaller.InputInstance.asset.actionMaps.Where(map => map.enabled).ToArray();
-            foreach (var map in enabledSharedMaps)
-                map.Disable();
-
-            input = new InputTestFixture();
-            input.Setup();
-            InputSystem.AddDevice<Mouse>();
-            keyboard = InputSystem.AddDevice<Keyboard>();
+            InitializeVirtualInput(includeKeyboard: true);
             shortcuts = new CMInput();
             shortcuts.UIMode.AddCallbacks(Object.FindAnyObjectByType<UIMode>());
             shortcuts.UIMode.Enable();
@@ -303,18 +291,18 @@ namespace Tests.Editor
         private void ToggleMode(UIModeType mode)
         {
             var key = mode == UIModeType.Normal
-                ? keyboard.digit1Key
+                ? VirtualKeyboard.digit1Key
                 : mode == UIModeType.Playing
-                    ? keyboard.digit5Key
-                    : keyboard.digit4Key;
+                    ? VirtualKeyboard.digit5Key
+                    : VirtualKeyboard.digit4Key;
             // UnityTest queues input without processing it, and packed keyboard deltas need each edge applied before the next.
-            input.Press(keyboard.leftCtrlKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftCtrlKey, queueEventOnly: true);
             InputSystem.Update();
-            input.Press(key, queueEventOnly: true);
+            PressVirtualButton(key, queueEventOnly: true);
             InputSystem.Update();
-            input.Release(key, queueEventOnly: true);
+            ReleaseVirtualButton(key, queueEventOnly: true);
             InputSystem.Update();
-            input.Release(keyboard.leftCtrlKey, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.leftCtrlKey, queueEventOnly: true);
             InputSystem.Update();
             Assert.That(UIMode.SelectedMode, Is.EqualTo(mode), "The production Ctrl+number shortcut did not switch UI mode.");
         }

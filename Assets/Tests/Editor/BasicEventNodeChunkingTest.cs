@@ -419,11 +419,11 @@ namespace Tests.Editor
             yield return null;
 
             var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
-            StartDeterministicPlaybackAtSongBpmTime(atsc, 48f);
+            TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, 48f);
             yield return null;
             yield return null;
             Assert.That(atsc.CurrentJsonTime, Is.GreaterThanOrEqualTo(47.5f), "Playback did not reach the unload region.");
-            PauseDeterministicPlayback(atsc);
+            TestUtils.PauseDeterministicPlayback(atsc);
             yield return null;
             Assert.That(atsc.IsPlaying, Is.False, "Playback did not stop before the backward scrub.");
             AssertNodeVisualUnloaded(ribbonSource, "after playback stopped ahead of the cluster");

@@ -79,7 +79,6 @@ namespace Tests.Editor
         {
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var editMode = Object.FindAnyObjectByType<EditModeContext>();
-            var inputFixture = new InputTestFixture();
             InputAction glsShortcut = null;
 
             try
@@ -87,13 +86,13 @@ namespace Tests.Editor
                 uiMode.SetUIMode(UIModeType.Playing, false);
                 editMode.EditingMode = EditingMode.Gameplay;
 
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 glsShortcut = new InputAction(binding: "<Keyboard>/f2");
                 glsShortcut.performed += editMode.OnGLSEdit;
                 glsShortcut.Enable();
 
-                inputFixture.Press(keyboard.f2Key);
+                PressVirtualButton(keyboard.f2Key);
 
                 Assert.That(
                     editMode.EditingMode,
@@ -103,7 +102,7 @@ namespace Tests.Editor
             finally
             {
                 glsShortcut?.Dispose();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 uiMode.SetUIMode(UIModeType.Normal, false);
                 editMode.EditingMode = EditingMode.Gameplay;
             }
@@ -115,7 +114,6 @@ namespace Tests.Editor
         {
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var editMode = Object.FindAnyObjectByType<EditModeContext>();
-            var inputFixture = new InputTestFixture();
             InputAction basicEventShortcut = null;
 
             try
@@ -123,13 +121,13 @@ namespace Tests.Editor
                 uiMode.SetUIMode(UIModeType.Playing, false);
                 editMode.EditingMode = EditingMode.Gameplay;
 
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 basicEventShortcut = new InputAction(binding: "<Keyboard>/f3");
                 basicEventShortcut.performed += editMode.OnBasicEventEdit;
                 basicEventShortcut.Enable();
 
-                inputFixture.Press(keyboard.f3Key);
+                PressVirtualButton(keyboard.f3Key);
 
                 Assert.That(
                     editMode.EditingMode,
@@ -139,7 +137,7 @@ namespace Tests.Editor
             finally
             {
                 basicEventShortcut?.Dispose();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 uiMode.SetUIMode(UIModeType.Normal, false);
                 editMode.EditingMode = EditingMode.Gameplay;
             }
@@ -155,7 +153,6 @@ namespace Tests.Editor
             var editMode = Object.FindAnyObjectByType<EditModeContext>();
             var cameraManager = Object.FindAnyObjectByType<CameraManager>();
             var gameplayTracks = FindGameplayTracks();
-            var inputFixture = new InputTestFixture();
             InputAction playingShortcut = null;
 
             try
@@ -163,14 +160,14 @@ namespace Tests.Editor
                 uiMode.SetUIMode(UIModeType.Normal, false);
                 editMode.EditingMode = initialMode;
 
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 playingShortcut = new InputAction(binding: "<Keyboard>/5");
                 playingShortcut.performed +=
                     ((CMInput.IUIModeActions)uiMode).OnToggleUIModePlaying;
                 playingShortcut.Enable();
 
-                inputFixture.Press(keyboard.digit5Key);
+                PressVirtualButton(keyboard.digit5Key);
 
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(UIModeType.Playing));
                 Assert.That(
@@ -190,7 +187,7 @@ namespace Tests.Editor
             finally
             {
                 playingShortcut?.Dispose();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 cameraManager.SelectCamera(CameraType.Editing);
                 uiMode.SetUIMode(UIModeType.Normal, false);
                 editMode.EditingMode = EditingMode.Gameplay;
@@ -205,14 +202,13 @@ namespace Tests.Editor
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var pauseManager = Object.FindAnyObjectByType<PauseManager>();
             var cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            var inputFixture = new InputTestFixture();
             InputAction playingAction = null;
             InputAction escapeAction = null;
 
             try
             {
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 playingAction = new InputAction(binding: "<Keyboard>/5");
                 playingAction.performed +=
                     ((CMInput.IUIModeActions)uiMode).OnToggleUIModePlaying;
@@ -221,9 +217,9 @@ namespace Tests.Editor
                 playingAction.Enable();
                 escapeAction.Enable();
 
-                inputFixture.Press(keyboard.digit5Key);
+                PressVirtualButton(keyboard.digit5Key);
                 Assert.That(cameraManager.SelectedCameraController, Is.SameAs(cameraManager.CameraControllers[1]));
-                inputFixture.Press(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(PauseManager.IsPaused, Is.False, "The first Escape opened pause instead of exiting Playing.");
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(UIModeType.Normal));
@@ -232,8 +228,8 @@ namespace Tests.Editor
                     Is.SameAs(cameraManager.CameraControllers[0]),
                     "Exiting Playing restored the Normal enum without restoring its editing camera.");
 
-                inputFixture.Release(keyboard.escapeKey);
-                inputFixture.Press(keyboard.escapeKey);
+                ReleaseVirtualButton(keyboard.escapeKey);
+                PressVirtualButton(keyboard.escapeKey);
                 Assert.That(PauseManager.IsPaused, Is.True, "A fresh second Escape did not open pause normally.");
             }
             finally
@@ -242,7 +238,7 @@ namespace Tests.Editor
                 escapeAction?.Dispose();
                 if (PauseManager.IsPaused)
                     pauseManager.TogglePause();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 cameraManager.SelectCamera(CameraType.Editing);
                 uiMode.SetUIMode(UIModeType.Normal, false);
             }
@@ -259,7 +255,6 @@ namespace Tests.Editor
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var pauseManager = Object.FindAnyObjectByType<PauseManager>();
             var cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            var inputFixture = new InputTestFixture();
             InputAction playingAction = null;
             InputAction previewAction = null;
             InputAction escapeAction = null;
@@ -267,8 +262,8 @@ namespace Tests.Editor
             try
             {
                 uiMode.SetUIMode(UIModeType.HideGrids, false);
-                inputFixture.Setup();
-                var keyboard = InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
+                var keyboard = VirtualKeyboard;
                 playingAction = new InputAction(binding: "<Keyboard>/5");
                 playingAction.performed +=
                     ((CMInput.IUIModeActions)uiMode).OnToggleUIModePlaying;
@@ -287,10 +282,10 @@ namespace Tests.Editor
                 var secondKey = secondPreviewMode == UIModeType.Playing
                     ? keyboard.digit5Key
                     : keyboard.digit4Key;
-                inputFixture.Press(firstKey);
-                inputFixture.Release(firstKey);
-                inputFixture.Press(secondKey);
-                inputFixture.Press(keyboard.escapeKey);
+                PressVirtualButton(firstKey);
+                ReleaseVirtualButton(firstKey);
+                PressVirtualButton(secondKey);
+                PressVirtualButton(keyboard.escapeKey);
 
                 Assert.That(UIMode.SelectedMode, Is.EqualTo(UIModeType.HideGrids));
                 Assert.That(PauseManager.IsPaused, Is.False, "Escape opened pause instead of restoring Hide Grids.");
@@ -306,7 +301,7 @@ namespace Tests.Editor
                 escapeAction?.Dispose();
                 if (PauseManager.IsPaused)
                     pauseManager.TogglePause();
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 cameraManager.SelectCamera(CameraType.Editing);
                 uiMode.SetUIMode(UIModeType.Normal, false);
             }
@@ -323,13 +318,10 @@ namespace Tests.Editor
         {
             var uiMode = Object.FindAnyObjectByType<UIMode>();
             var cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            var inputFixture = new InputTestFixture();
 
             try
             {
-                inputFixture.Setup();
-                InputSystem.AddDevice<Mouse>();
-                InputSystem.AddDevice<Keyboard>();
+                InitializeVirtualInput(includeKeyboard: true);
 
                 uiMode.SetUIMode(UIModeType.Preview, false);
                 cameraManager.SelectCamera(CameraType.Editing);
@@ -370,7 +362,7 @@ namespace Tests.Editor
             }
             finally
             {
-                inputFixture.TearDown();
+                TearDownVirtualInput();
                 cameraManager.SelectCamera(CameraType.Editing);
                 uiMode.SetUIMode(UIModeType.Normal, false);
             }
@@ -391,10 +383,8 @@ namespace Tests.Editor
     // The cursor calls are recorded through the CameraController.CursorState seam because batch mode owns
     // no OS cursor, and the test invokes the real OnPlayToggle subscriber instead of starting native
     // audio, so the case has no audio-backend or window-focus dependency.
-    public class CameraCursorLockTest : TestBase
+    public class CameraCursorLockTest : InputTestBase
     {
-        private InputTestFixture input;
-        private Mouse mouse;
         private CameraManager cameras;
         private UIMode uiMode;
         private CameraController.ICursorState previousCursor;
@@ -410,10 +400,7 @@ namespace Tests.Editor
             previousCursor = CameraController.CursorState;
             cursor = new RecordingCursor();
             CameraController.CursorState = cursor;
-            input = new InputTestFixture();
-            input.Setup();
-            mouse = InputSystem.AddDevice<Mouse>();
-            InputSystem.AddDevice<Keyboard>();
+            InitializeVirtualInput(includeKeyboard: true);
         }
 
         // Entering Playing via SetUIMode plus a mid-test failure can leave preview mode and the playing
@@ -428,7 +415,7 @@ namespace Tests.Editor
             cameras.CameraControllers[1].SetLockState(false);
             Settings.Instance.Animations = previousAnimations;
             CameraController.CursorState = previousCursor;
-            input.TearDown();
+            TearDownVirtualInput();
             TestUtils.ResetSharedInputState();
             yield break;
         }
@@ -440,7 +427,7 @@ namespace Tests.Editor
             var editingPosition = new Vector2(123, 234);
             var resumePosition = new Vector2(456, 345);
 
-            input.Set(mouse.position, editingPosition);
+            SetVirtualControl(VirtualMouse.position, editingPosition);
             editing.SetLockState(true);
             editing.SetLockState(false);
             Assert.That(cursor.Warps, Is.EqualTo(new[] { editingPosition }));
@@ -450,7 +437,7 @@ namespace Tests.Editor
             Assert.That(editing.enabled, Is.True);
             Assert.That(editing.Camera.enabled, Is.False);
 
-            input.Set(mouse.position, resumePosition);
+            SetVirtualControl(VirtualMouse.position, resumePosition);
             cursor.Warps.Clear();
             TogglePlayingCursor(true);
             // Playing deliberately leaves the cursor free: playback never reliably held a lock anyway,
@@ -483,9 +470,9 @@ namespace Tests.Editor
             var playing = cameras.CameraControllers[1];
             var original = new Vector2(123, 234);
 
-            input.Set(mouse.position, original);
+            SetVirtualControl(VirtualMouse.position, original);
             playing.SetLockState(true);
-            input.Set(mouse.position, new Vector2(456, 345));
+            SetVirtualControl(VirtualMouse.position, new Vector2(456, 345));
             playing.SetLockState(true);
             editing.SetLockState(true);
             playing.SetLockState(false);
@@ -506,7 +493,7 @@ namespace Tests.Editor
             var playing = cameras.CameraControllers[1];
             var position = new Vector2(456, 345);
 
-            input.Set(mouse.position, position);
+            SetVirtualControl(VirtualMouse.position, position);
             playing.SetLockState(true);
 
             var disabled = disableOwner ? playing : editing;
@@ -539,7 +526,7 @@ namespace Tests.Editor
         }
     }
 
-    public abstract class PreviewWorkflowTestBase : TestBase
+    public abstract class PreviewWorkflowTestBase : InputTestBase
     {
         private bool previousAnimations;
 

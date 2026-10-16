@@ -359,7 +359,7 @@ namespace Tests.Editor
 
             var atsc = UnityEngine.Object.FindAnyObjectByType<AudioTimeSyncController>();
             Assert.That(atsc.IsPlaying, Is.False, $"Playback route {route.Name} did not start stopped.");
-            StartDeterministicPlaybackAtSongBpmTime(atsc, route.PlayToSongBpmTime);
+            TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, route.PlayToSongBpmTime);
 
             // Run both production lifecycle frames without relying on AudioSource.time.
             yield return null;
@@ -370,18 +370,18 @@ namespace Tests.Editor
                 Is.GreaterThanOrEqualTo(route.PlayToSongBpmTime - 0.75f),
                 $"Playback route {route.Name} did not reach its requested callback-unload region.");
 
-            PauseDeterministicPlayback(atsc);
+            TestUtils.PauseDeterministicPlayback(atsc);
             Assert.That(atsc.IsPlaying, Is.False, $"Playback route {route.Name} did not pause.");
 
             if (route.ReplayToSongBpmTime.HasValue)
             {
                 // Replaying before a frame elapses stresses the pause RefreshPool followed immediately by another
                 // callback-driven unload, matching rapid Play/Pause input interspersed with scrub reversals.
-                StartDeterministicPlaybackAtSongBpmTime(atsc, route.ReplayToSongBpmTime.Value);
+                TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, route.ReplayToSongBpmTime.Value);
                 yield return null;
                 yield return null;
                 Assert.That(atsc.IsPlaying, Is.True, $"Replay route {route.Name} stopped unexpectedly.");
-                PauseDeterministicPlayback(atsc);
+                TestUtils.PauseDeterministicPlayback(atsc);
                 Assert.That(atsc.IsPlaying, Is.False, $"Replay route {route.Name} did not pause.");
             }
 

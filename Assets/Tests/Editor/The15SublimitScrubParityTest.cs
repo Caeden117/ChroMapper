@@ -12,7 +12,7 @@ namespace Tests.Editor
 {
     // Fixture source: "The 15 Sublimit", mapped by Mawntee (ft. Lonely) (BeatSaver ID: 1c8c0).
     // The fixture retains the sampled objects, their track parents, and all referenced custom data.
-    public class The15SublimitScrubParityTest : BasicEventChunkingTestBase
+    public class The15SublimitScrubParityTest : InputTestBase
     {
         private bool animationsBeforeTest;
         private UIMode uiMode;

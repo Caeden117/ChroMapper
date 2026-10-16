@@ -6,7 +6,6 @@ using NUnit.Framework;
 using SimpleJSON;
 using Tests.Infrastructure;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 
 namespace Tests.Editor
@@ -17,7 +16,7 @@ namespace Tests.Editor
     // LeftSaber/RightSaber/asdkm to LeftHand/RightHand/Head and starts the asdkm AnimateTrack
     // position z0 -> -3 over 8 beats with easeOutSine; b573/b577 are the authored follow-ups. No
     // authored Head event exists near b532, so rewinding there must detach the camera.
-    public class SaltyBeat537HeadCameraParityTest : TestBase
+    public class SaltyBeat537HeadCameraParityTest : InputTestBase
     {
         private bool animationsBeforeTest;
         private UIMode uiMode;
@@ -137,13 +136,9 @@ namespace Tests.Editor
             Assert.That(currentSecondsProperty, Is.Not.Null,
                 "AudioTimeSyncController.CurrentSeconds property missing.");
 
-            InputTestFixture inputFixture = null;
-            Mouse virtualMouse = null;
             try
             {
-                inputFixture = new InputTestFixture();
-                inputFixture.Setup();
-                virtualMouse = InputSystem.AddDevice<Mouse>();
+                InitializeVirtualInput(includeKeyboard: false);
 
                 atsc.MoveToJsonTime(536.875f);
                 atsc.TogglePlaying();
@@ -193,11 +188,7 @@ namespace Tests.Editor
                     atsc.StopScheduled = false;
                     if (atsc.IsPlaying) atsc.CancelPlaying();
                 }
-                if (inputFixture != null)
-                {
-                    virtualMouse = null;
-                    inputFixture.TearDown();
-                }
+                TearDownVirtualInput();
             }
 
             Assert.That(failures, Is.Empty, string.Join("\n", failures));

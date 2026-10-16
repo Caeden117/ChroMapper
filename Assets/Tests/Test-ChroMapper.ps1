@@ -48,10 +48,10 @@ $RunTimestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $OutputDirectory = Join-Path $ProjectPath "TestResults/cli/$RunTimestamp"
 
 $TestAssemblies = if ($IncludeManual) {
-    "Tests;ManualTests"
+    "Tests;TestsEditMode;ManualTests"
 }
 else {
-    "Tests"
+    "Tests;TestsEditMode"
 }
 
 if (-not (Test-Path -LiteralPath $ProjectPath -PathType Container)) {

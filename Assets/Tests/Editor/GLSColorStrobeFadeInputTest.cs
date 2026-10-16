@@ -13,7 +13,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace Tests.Editor
 {
-    public class GLSColorStrobeFadeInputTest : TestBase
+    public class GLSColorStrobeFadeInputTest : InputTestBase
     {
         // InnerGlsColorNodeShiftScrollTogglesStrobeFade protects the EventBox controller's physical hover resolution and parent replacement.
         [Test]
@@ -121,28 +121,19 @@ namespace Tests.Editor
             }
         }
 
-        // Isolate the authored composite from host focus and physical devices so the raycast refactor retains deterministic input coverage.
-        private static void SendShiftScroll(CMInput.IGLSColorObjectsActions controller)
+        private void SendShiftScroll(CMInput.IGLSColorObjectsActions controller)
         {
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.NotNull(sharedInput);
-            var sharedMapWasEnabled = sharedInput.GLSColorObjects.enabled;
-            sharedInput.GLSColorObjects.Disable();
-            // The fixture owns device state while these tests drive same-frame Shift+scroll callbacks.
-            var inputFixture = new InputTestFixture();
-            inputFixture.Setup();
+            InitializeVirtualInput(includeKeyboard: true);
             var input = new CMInput();
-            var keyboard = InputSystem.AddDevice<Keyboard>();
-            var mouse = InputSystem.AddDevice<Mouse>();
 
             try
             {
                 input.GLSColorObjects.SetCallbacks(controller);
                 input.GLSColorObjects.Enable();
-                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.LeftShift));
+                InputSystem.QueueStateEvent(VirtualKeyboard, new KeyboardState(Key.LeftShift));
                 InputSystem.Update();
                 InputSystem.QueueStateEvent(
-                    mouse,
+                    VirtualMouse,
                     new MouseState { scroll = new Vector2(0f, 1f) });
                 InputSystem.Update();
             }
@@ -151,11 +142,7 @@ namespace Tests.Editor
                 // Dispose the isolated actions before restoring the original runtime and shared application map.
                 input.GLSColorObjects.Disable();
                 input.Dispose();
-                inputFixture.TearDown();
-                if (sharedMapWasEnabled)
-                {
-                    sharedInput.GLSColorObjects.Enable();
-                }
+                TearDownVirtualInput();
             }
         }
 

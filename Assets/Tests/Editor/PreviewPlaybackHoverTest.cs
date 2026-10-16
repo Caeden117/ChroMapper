@@ -6,7 +6,6 @@ using Beatmap.Enums;
 using NUnit.Framework;
 using Tests.Infrastructure;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
 
 namespace Tests.Editor
@@ -25,8 +24,6 @@ namespace Tests.Editor
         private CameraManager cameraManager;
         private BeatmapNoteInputController noteInput;
         private NoteContainer container;
-        private InputTestFixture inputFixture;
-        private Mouse virtualMouse;
 
         [UnityTest]
         public IEnumerator PlayingPreviewClearsHoveredNoteOnUnpause(
@@ -120,9 +117,7 @@ namespace Tests.Editor
 
             // CameraController.SetLockState reads Mouse.current when Playing mode toggles playback, so the
             // isolated runtime owns a dedicated virtual device rather than the absent host mouse.
-            inputFixture = new InputTestFixture();
-            inputFixture.Setup();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
+            InitializeVirtualInput(includeKeyboard: false);
         }
 
         private void HoldHover()
@@ -133,7 +128,7 @@ namespace Tests.Editor
             noteInput.HoveredObject = container;
         }
 
-        // BasicEventChunkingTestBase.StartDeterministicPlaybackAtSongBpmTime established this Jenkins-safe pattern:
+        // TestUtils.StartDeterministicPlaybackAtSongBpmTime established this Jenkins-safe pattern:
         // enter the production playing state, then detach the native audio backend and block its delayed stop.
         private void StartDeterministicPlayback()
         {
@@ -177,12 +172,7 @@ namespace Tests.Editor
                 container = null;
             }
 
-            if (inputFixture != null)
-            {
-                virtualMouse = null;
-                inputFixture.TearDown();
-                inputFixture = null;
-            }
+            TearDownVirtualInput();
 
             if (cameraManager != null) cameraManager.SelectCamera(CameraType.Editing);
             if (uiMode != null) uiMode.SetUIMode(UIModeType.Normal, false);

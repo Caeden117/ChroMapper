@@ -6,14 +6,17 @@ using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.Shared;
 using NUnit.Framework;
+using Tests.Editor;
 using Tests.Infrastructure;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Tests.Placement
 {
-    public class EventNextPrevTest : TestBase
+    public class EventNextPrevTest : BasicEventChunkingTestBase
     {
+        protected override EditingMode InitialEditingMode => EditingMode.Gameplay;
+
         // Basic movement cache regressions need samples before, during, and after every edited interval in both scrub directions.
         private static readonly float[] MovementPreviewSampleJsonTimes =
         {
@@ -50,9 +53,7 @@ namespace Tests.Placement
         private CMInput basicEventInteractionInput;
         private SelectionController basicEventInputSelectionController;
         private BeatmapActionContainer basicEventInputActionContainer;
-        private bool? sharedModifyingSelectionInputWasEnabled;
-        private bool? sharedActionsInputWasEnabled;
-        // Retain action/device evidence when a physical shortcut fails before creating its expected beatmap action.
+        // Retain action evidence when a shortcut fails before creating its expected beatmap action.
         private string lastPhysicalShortcutDiagnostics;
 
         protected override void AfterCleanup()
@@ -159,22 +160,7 @@ namespace Tests.Placement
                 basicEventInputActionContainer = null;
             }
 
-            if (CMInputCallbackInstaller.InputInstance != null)
-            {
-                // Restore only the installer-owned maps that the isolated test input temporarily replaced.
-                if (sharedModifyingSelectionInputWasEnabled == true)
-                {
-                    CMInputCallbackInstaller.InputInstance.ModifyingSelection.Enable();
-                }
-
-                if (sharedActionsInputWasEnabled == true)
-                {
-                    CMInputCallbackInstaller.InputInstance.Actions.Enable();
-                }
-            }
-
-            sharedModifyingSelectionInputWasEnabled = null;
-            sharedActionsInputWasEnabled = null;
+            TearDownVirtualInput();
         }
 
         [Test]
@@ -2034,9 +2020,6 @@ namespace Tests.Placement
             Assert.AreEqual(labels.EventTypeToLaneId(ring.Type), labels.EventToLaneId(ring));
         }
 
-        private static EventGridContainer GetEventsContainer() =>
-            BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
-
         // Shared paste, multi-selection, and cross-track matrices cover both ring effects and both laser-speed sides.
         private static IEnumerable<TestCaseData> AllMovementPreviewKinds
         {
@@ -2607,13 +2590,8 @@ namespace Tests.Placement
             gridMeasureSnappingBeforePreviewTest ??= atsc.GridMeasureSnapping;
             atsc.GridMeasureSnapping = 4;
 
-            // Isolate the same generated bindings and production callbacks from installer blockers left by unrelated tests.
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            sharedModifyingSelectionInputWasEnabled = sharedInput.ModifyingSelection.enabled;
-            sharedActionsInputWasEnabled = sharedInput.Actions.enabled;
-            sharedInput.ModifyingSelection.Disable();
-            sharedInput.Actions.Disable();
+            // Disable all shared maps before replacing the runtime so native devices and stale controls cannot participate.
+            InitializeVirtualInput(includeKeyboard: true);
 
             basicEventInteractionInput = new CMInput();
             basicEventInputSelectionController = Object.FindAnyObjectByType<SelectionController>();
@@ -2867,14 +2845,6 @@ namespace Tests.Placement
             UnityEngine.InputSystem.Key modifier,
             UnityEngine.InputSystem.Key key)
         {
-            // Queue physical keyboard states through InputSystem so CMInput invokes the same production callbacks as the user gesture.
-            var keyboard = UnityEngine.InputSystem.Keyboard.current;
-            var addedKeyboard = keyboard == null;
-            if (addedKeyboard)
-            {
-                keyboard = UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Keyboard>();
-            }
-
             // Record whether generated bindings performed even when their production callback did not create an action.
             var performedActions = new List<string>();
             void HandlePerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) =>
@@ -2886,15 +2856,10 @@ namespace Tests.Placement
                 action.performed += HandlePerformed;
             }
 
-            var keyboardAddedBefore = keyboard.added;
-            var keyboardEnabledBefore = keyboard.enabled;
-
             try
             {
-                QueueKeyboardState(keyboard, modifier);
-                QueueKeyboardState(keyboard, modifier, key);
-                QueueKeyboardState(keyboard, modifier);
-                QueueKeyboardState(keyboard);
+                PressVirtualKeys(modifier, key);
+                ReleaseVirtualKeys(key, modifier);
             }
             finally
             {
@@ -2905,28 +2870,8 @@ namespace Tests.Placement
 
                 lastPhysicalShortcutDiagnostics =
                     $"Input diagnostics: applicationFocused={Application.isFocused}, "
-                    + $"keyboardAddedBefore={keyboardAddedBefore}, keyboardEnabledBefore={keyboardEnabledBefore}, "
-                    + $"keyboardAddedAfter={keyboard.added}, keyboardEnabledAfter={keyboard.enabled}, "
-                    + $"backgroundBehavior={UnityEngine.InputSystem.InputSystem.settings.backgroundBehavior}, "
-                    + $"editorInputBehavior={UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode}, "
                     + $"performed=[{string.Join(", ", performedActions)}].";
-
-                if (addedKeyboard)
-                {
-                    UnityEngine.InputSystem.InputSystem.RemoveDevice(keyboard);
-                }
             }
-        }
-
-        private static void QueueKeyboardState(
-            UnityEngine.InputSystem.Keyboard keyboard,
-            params UnityEngine.InputSystem.Key[] keys)
-        {
-            // Process each key edge immediately so modifier activation precedes the shortcut's performed callback.
-            UnityEngine.InputSystem.InputSystem.QueueStateEvent(
-                keyboard,
-                new UnityEngine.InputSystem.LowLevel.KeyboardState(keys));
-            UnityEngine.InputSystem.InputSystem.Update();
         }
 
         private IEnumerator TimeShiftWithVisualChunkStateMatchesFullPreviewRebuild(

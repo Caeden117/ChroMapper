@@ -93,6 +93,7 @@ public class LoadInitialMap : MonoBehaviour
             : default;
         if (previousEnvironment.IsValid())
         {
+            context.Descriptor.PrepareForUnload();
             // Track parenting moves environment objects into the mapper scene, where environment unload
             // cannot destroy them. Destroy them before resetting the animators that hold their references.
             loader.DestroyTrackBoundEnvironmentObjects();
