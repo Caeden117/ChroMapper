@@ -95,6 +95,8 @@ public class GridLane : GridChild
             lane / 2f,
             XZ.transform.localPosition.y,
             XZ.transform.localPosition.z);
+        XY.RefreshVisual();
+        XZ.RefreshVisual();
     }
 
     private void SetHeightNoNotify(int height)
@@ -110,6 +112,7 @@ public class GridLane : GridChild
             XY.transform.localPosition.x,
             (height / 2f) + (XYOffset.y / Scale) + (XYExpand.y / 2f),
             XY.transform.localPosition.z);
+        XY.RefreshVisual();
     }
 
     // This applies to both front and back side by 4:1
@@ -127,6 +130,7 @@ public class GridLane : GridChild
             XZ.transform.localPosition.x,
             XZ.transform.localPosition.y,
             calc * 0.3f);
+        XZ.RefreshVisual();
     }
 
     protected override void SetScaleNoNotify(float s)

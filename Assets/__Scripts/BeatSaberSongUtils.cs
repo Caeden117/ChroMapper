@@ -51,6 +51,11 @@ public static class BeatSaberSongUtils
 
             return info;
         }
+        catch (InvalidDataException e)
+        {
+            Debug.LogWarning($"Skipping song in {directory}: {e.Message}");
+            return null;
+        }
         catch (Exception e)
         {
             Debug.LogError(e);

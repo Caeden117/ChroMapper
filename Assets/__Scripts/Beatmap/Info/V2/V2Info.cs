@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SimpleJSON;
+using UnityEngine;
 
 namespace Beatmap.Info
 {
@@ -88,8 +90,17 @@ namespace Beatmap.Info
                 foreach (var beatmapNode in beatmapsNode.Children)
                 {
                     var infoDifficulty = new InfoDifficulty(beatmapSet);
-                    infoDifficulty.BeatmapFileName = beatmapNode["_beatmapFilename"].Value;
-                    infoDifficulty.Difficulty = beatmapNode["_difficulty"].Value;
+                    try
+                    {
+                        infoDifficulty.BeatmapFileName = beatmapNode["_beatmapFilename"].Value;
+                        infoDifficulty.Difficulty = beatmapNode["_difficulty"].Value;
+                    }
+                    catch (InvalidDataException e)
+                    {
+                        Debug.LogWarning($"Skipping difficulty '{beatmapNode["_difficulty"].Value}' in '{beatmapSet.Characteristic}': {e.Message}");
+                        continue;
+                    }
+
                     infoDifficulty.EnvironmentNameIndex = beatmapNode["_environmentNameIdx"].AsInt;
                     infoDifficulty.ColorSchemeIndex = beatmapNode["_beatmapColorSchemeIdx"].AsInt;
                     infoDifficulty.NoteJumpSpeed = beatmapNode["_noteJumpMovementSpeed"].AsFloat;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SimpleJSON;
 using UnityEngine;
@@ -89,14 +90,22 @@ namespace Beatmap.Info
                 foreach (var beatmap in beatmapCharacteristicSet)
                 {
                     var infoDifficulty = new InfoDifficulty(beatmapSet);
-                    infoDifficulty.Difficulty = beatmap["difficulty"].Value;
+                    try
+                    {
+                        infoDifficulty.Difficulty = beatmap["difficulty"].Value;
+                        infoDifficulty.BeatmapFileName = beatmap["beatmapDataFilename"].Value;
+                        infoDifficulty.LightshowFileName = beatmap["lightshowDataFilename"].Value;
+                    }
+                    catch (InvalidDataException e)
+                    {
+                        Debug.LogWarning($"Skipping difficulty '{beatmap["difficulty"].Value}' in '{beatmapSet.Characteristic}': {e.Message}");
+                        continue;
+                    }
+
                     infoDifficulty.EnvironmentNameIndex = beatmap["environmentNameIdx"].AsInt;
                     infoDifficulty.ColorSchemeIndex = beatmap["beatmapColorSchemeIdx"].AsInt;
                     infoDifficulty.NoteJumpSpeed = beatmap["noteJumpMovementSpeed"].AsFloat;
                     infoDifficulty.NoteStartBeatOffset = beatmap["noteJumpStartBeatOffset"].AsFloat;
-
-                    infoDifficulty.BeatmapFileName = beatmap["beatmapDataFilename"].Value;
-                    infoDifficulty.LightshowFileName = beatmap["lightshowDataFilename"].Value;
 
                     var authorsNode = beatmap["beatmapAuthors"].AsObject;
                     infoDifficulty.Mappers = authorsNode["mappers"].AsArray.Children.Select(x => x.Value).ToList();

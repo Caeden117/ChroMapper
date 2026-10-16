@@ -13,10 +13,28 @@ namespace Beatmap.Info
         public string CustomCharacteristicLabel => ParentSet.CustomCharacteristicLabel;
         public string CustomCharacteristicIconImageFileName => ParentSet.CustomCharacteristicIconImageFileName;
 
-        public string BeatmapFileName { get; set; }
-        public string LightshowFileName { get; set; }
+        private string beatmapFileName;
+        private string lightshowFileName;
+        private string difficulty;
 
-        public string Difficulty { get; set; }
+        public string BeatmapFileName
+        {
+            get => beatmapFileName;
+            set => beatmapFileName = PathUtils.RequireFileName(value);
+        }
+
+        public string LightshowFileName
+        {
+            get => lightshowFileName;
+            set => lightshowFileName = PathUtils.RequireFileName(value);
+        }
+
+        // Difficulty names also form the generated beatmap and bookmark filenames.
+        public string Difficulty
+        {
+            get => difficulty;
+            set => difficulty = PathUtils.RequireFileName(value);
+        }
 
         public int DifficultyRank => Difficulty switch
         {

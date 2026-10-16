@@ -34,7 +34,7 @@ Use the virtual device references instead of `Mouse.current` or `Keyboard.curren
 
 Jenkins runs Linux Unity under Xvfb without a dependable native audio clock. A test that waits for `AudioSource.time` to advance can pass on Windows and hang on Jenkins.
 
-Use `TestUtils.StartDeterministicPlaybackAtSongBpmTime` and `TestUtils.PauseDeterministicPlayback` to enter and leave the production playing state with native audio stopped. Those helpers do not freeze the clock: `AudioTimeSyncController.Update` still advances it each frame. When stepping time explicitly, keep that update from advancing the clock between your steps and assertions, while letting the playback callbacks and animation updates run. [AuroraMapParityTest](Editor/AuroraMapParityTest.cs) shows this setup and restores the controller afterward.
+When stepping playback time, use [DeterministicPlaybackClock](Infrastructure/DeterministicPlaybackClock.cs) in a `using` scope. Call `StartAtJsonTime`, `AdvanceToJsonTime`, `Pause`, and `Resume` as needed. It freezes automatic clock advancement and stops native audio after every start or resume, while keeping the production playing state, callbacks, and animation updates active. Disposing it stops playback and restores the controller's enabled state. See [SaltyWallPlaybackParityTest](Editor/SaltyWallPlaybackParityTest.cs) for an example.
 
 ## Map fixtures
 

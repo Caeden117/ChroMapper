@@ -121,6 +121,7 @@ public static class BeatSaberSongExtensions
         }
 
         exportedFiles.Add(infoFileLocation, "Info.dat");
+        TryAddToFileDictionary(exportedFiles, info.Directory, info.CustomEditorsData.StateFileName);
         TryAddToFileDictionary(exportedFiles, info.Directory, info.CoverImageFilename);
         TryAddToFileDictionary(exportedFiles, info.Directory, info.SongFilename);
         TryAddToFileDictionary(exportedFiles, info.Directory, info.SongPreviewFilename);
