@@ -125,15 +125,37 @@ namespace Beatmap.Info
         public float PreviewStartTime { get; set; } = 12;
         public float PreviewDuration { get; set; } = 10;
 
-        public string SongFilename { get; set; } =
-            "song.ogg"; // .egg file extension is a problem solely beat saver deals with, work with .ogg for the mapper
+        private string songFilename = "song.ogg";
+        private string songPreviewFilename = "song.ogg";
+        private string audioDataFilename = "AudioData.dat";
+        private string coverImageFilename = "cover.png";
 
-        public string SongPreviewFilename { get; set; } = "song.ogg"; // Default same as SongFilename
-        public string AudioDataFilename { get; set; } = "AudioData.dat";
+        public string SongFilename
+        {
+            get => songFilename;
+            set => songFilename = PathUtils.RequireFileName(value);
+        }
+
+        public string SongPreviewFilename
+        {
+            get => songPreviewFilename;
+            set => songPreviewFilename = PathUtils.RequireFileName(value);
+        }
+
+        public string AudioDataFilename
+        {
+            get => audioDataFilename;
+            set => audioDataFilename = PathUtils.RequireFileName(value);
+        }
+
         public float SongDurationMetadata { get; set; }
         public float Lufs { get; set; } // Some normalisation thing 
 
-        public string CoverImageFilename { get; set; } = "cover.png";
+        public string CoverImageFilename
+        {
+            get => coverImageFilename;
+            set => coverImageFilename = PathUtils.RequireFileName(value);
+        }
 
         public string EnvironmentName { get; set; } = "DefaultEnvironment";
         public string AllDirectionsEnvironmentName { get; set; } = "GlassDesertEnvironment";
@@ -159,7 +181,7 @@ namespace Beatmap.Info
             private const string StateFileKey = "_state";
             private const string LegacyVersionKey = "version";
             private const string EditorStateKey = "editorState";
-            private static readonly char[] invalidStateFileNameCharacters = "/\\:<>\"|?*".ToCharArray();
+            private static readonly char[] invalidStateFileNameCharacters = "<>\"|?*".ToCharArray();
 
             // This is so we preserve existing data that might be located in this object
             private readonly JSONNode editorsNode;
@@ -198,7 +220,7 @@ namespace Beatmap.Info
                 if (!metadataNode.HasKey(StateFileKey))
                     return;
 
-                StateFileName = metadataNode[StateFileKey].Value;
+                StateFileName = PathUtils.RequireFileName(metadataNode[StateFileKey].Value);
                 if (string.IsNullOrWhiteSpace(StateFileName)
                     || StateFileName.IndexOfAny(invalidStateFileNameCharacters) >= 0
                     || StateFileName.Any(char.IsControl)
