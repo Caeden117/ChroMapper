@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Beatmap.Base;
 using Beatmap.Helper;
 using Beatmap.Info;
@@ -165,6 +168,43 @@ namespace Tests.Infrastructure
             {
                 selectionController.OnActivateShiftinPlace(default);
                 selectionController.OnActivateShiftinTime(default);
+            }
+        }
+
+        public static IEnumerator SwitchToEmptyDifficulty()
+        {
+            var song = BeatSaberSongContainer.Instance;
+            var selector = Object.FindAnyObjectByType<LoadedDifficultySelectController>(FindObjectsInactive.Include);
+            var field = typeof(LoadedDifficultySelectController)
+                .GetField("setDifficulties", BindingFlags.Instance | BindingFlags.NonPublic);
+            var previousDifficulties = field.GetValue(selector);
+            var previousDirectory = song.Info.Directory;
+            var previousDifficulty = song.MapDifficultyInfo;
+            var directory = PathUtils.Combine(Settings.TestRunnerInstallationDirectory, $"difficulty-switch-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(directory);
+            try
+            {
+                File.WriteAllText(PathUtils.Combine(directory, "Next.dat"), "{\"version\":\"3.2.0\"}");
+                song.Info.Directory = directory;
+                var incoming = new InfoDifficulty(previousDifficulty.ParentSet)
+                {
+                    BeatmapFileName = "Next.dat",
+                    Difficulty = "Expert",
+                    EnvironmentNameIndex = previousDifficulty.EnvironmentNameIndex,
+                    ColorSchemeIndex = previousDifficulty.ColorSchemeIndex
+                };
+                field.SetValue(selector, new List<InfoDifficulty> { incoming });
+                var switchRoutine = (IEnumerator)typeof(LoadedDifficultySelectController)
+                    .GetMethod("SelectDifficulty", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Invoke(selector, new object[] { 0 });
+                yield return switchRoutine;
+            }
+            finally
+            {
+                field.SetValue(selector, previousDifficulties);
+                song.Info.Directory = previousDirectory;
+                song.MapDifficultyInfo = previousDifficulty;
+                Directory.Delete(directory, true);
             }
         }
 

@@ -247,13 +247,8 @@ namespace Tests.Editor
                 "instead of the expected 1098.");
         }
 
-        // BackFacingTransparentTriangleRendersLitSurface: the fixture's first wave contains lit
-        // TransparentLight Triangles whose single face points away from the camera (s934 at b20).
-        // The shared transparent-light material's back-face culling dropped them entirely, so a
-        // lit, in-frustum beam drew nothing; fixed by GeometryAppearanceSO's cached cull-off
-        // variant for TransparentLight Quad/Triangle, matching the game's single-sided planar
-        // light surfaces. Same mechanism as
-        // SpellsBeat275BeamParityTest.Beat275LeftSolidQuadRendersPhysicalSurfaceAndFog.
+        // The s934 triangle faces away from the player at beat 20. Compare it with a back-culled
+        // copy of its material because its thin surface covers different pixel counts on different GPUs.
         [UnityTest]
         public IEnumerator BackFacingTransparentTriangleRendersLitSurface()
         {
@@ -330,40 +325,62 @@ namespace Tests.Editor
             var rt = new RenderTexture(1024, 576, 24, format);
             var previousTarget = camera.targetTexture;
             var previousEnabled = renderer.enabled;
-            Texture2D on = null, off = null;
+            var previousMaterial = renderer.sharedMaterial;
+            Assert.That(previousMaterial.HasProperty("_CullMode"), Is.True);
+            var culledMaterial = new Material(previousMaterial);
+            culledMaterial.SetFloat("_CullMode", (float)UnityEngine.Rendering.CullMode.Back);
+            Texture2D on = null, off = null, culled = null;
             var failures = new List<string>();
             try
             {
                 camera.targetTexture = rt;
                 on = new Texture2D(1024, 576, TextureFormat.RGBA32, false);
                 off = new Texture2D(1024, 576, TextureFormat.RGBA32, false);
+                culled = new Texture2D(1024, 576, TextureFormat.RGBA32, false);
 
                 camera.Render();
                 ReadTexture(rt, on);
                 File.WriteAllBytes(
-                    Path.Combine(outDir, $"kamikazi-s934-{run}-on.png"), on.EncodeToPNG());
+                    PathUtils.Combine(outDir, $"kamikazi-s934-{run}-on.png"),
+                    on.EncodeToPNG());
+                renderer.sharedMaterial = culledMaterial;
+                camera.Render();
+                ReadTexture(rt, culled);
+                File.WriteAllBytes(
+                    PathUtils.Combine(outDir, $"kamikazi-s934-{run}-culled.png"),
+                    culled.EncodeToPNG());
                 renderer.enabled = false;
                 camera.Render();
                 ReadTexture(rt, off);
                 File.WriteAllBytes(
-                    Path.Combine(outDir, $"kamikazi-s934-{run}-off.png"), off.EncodeToPNG());
+                    PathUtils.Combine(outDir, $"kamikazi-s934-{run}-off.png"),
+                    off.EncodeToPNG());
 
                 var changed = CountDelta(report, "renderer on vs off", on, off, 0, 1024, 0, 576, "full");
-                if (changed < 40)
+                var culledChanged = CountDelta(report, "back-culled vs off", culled, off, 0, 1024, 0, 576, "full");
+                if (changed <= culledChanged)
                     failures.Add(
-                        $"lit back-facing Triangle s934 rendered {changed} pixels (expected >=40); " +
-                        "the shared TransparentLight material culls its only face.");
+                        $"Lit back-facing Triangle s934 changed {changed} pixels, compared with " +
+                        $"{culledChanged} for the back-culled control. Its material must render the visible face.");
             }
             finally
             {
+                renderer.sharedMaterial = previousMaterial;
                 renderer.enabled = previousEnabled;
                 camera.targetTexture = previousTarget;
+                Object.Destroy(culledMaterial);
                 Object.Destroy(rt);
-                if (on != null) Object.Destroy(on);
-                if (off != null) Object.Destroy(off);
+                if (on != null)
+                    Object.Destroy(on);
+
+                if (off != null)
+                    Object.Destroy(off);
+
+                if (culled != null)
+                    Object.Destroy(culled);
             }
 
-            var reportPath = Path.Combine(outDir, $"kamikazi-s934-{run}-report.txt");
+            var reportPath = PathUtils.Combine(outDir, $"kamikazi-s934-{run}-report.txt");
             File.WriteAllText(reportPath, report.ToString());
             Debug.Log($"[KamikaziPlanar] report: {reportPath}");
             Assert.That(failures, Is.Empty, string.Join("\n", failures));

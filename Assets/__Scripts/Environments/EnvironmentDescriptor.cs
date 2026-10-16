@@ -27,6 +27,17 @@ public class EnvironmentDescriptor : MonoBehaviour
     private bool hasInitialized;
     private IEnvironmentComponentUpdate[] componentUpdates;
 
+    public void PrepareForUnload()
+    {
+        // Mirrors can reference planes on other environment objects. Stop their callbacks before track
+        // cleanup destroys those planes, while leaving animators registered until cleanup releases them.
+        foreach (var root in gameObject.scene.GetRootGameObjects())
+        {
+            foreach (var mirror in root.GetComponentsInChildren<PlanarReflection>(true))
+                mirror.enabled = false;
+        }
+    }
+
     public void Initialize(BeatmapRuntimeContext context)
     {
         // TODO: do proper batch update

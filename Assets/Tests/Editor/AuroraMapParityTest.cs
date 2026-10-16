@@ -13,7 +13,7 @@ using UnityEngine.TestTools;
 namespace Tests.Editor
 {
     // Fixture source: "Aurora", mapped by HypersonicSharkz & Bitz (BeatSaver ID: 1e56a).
-    public class AuroraMapParityTest : BasicEventChunkingTestBase
+    public class AuroraMapParityTest : TestBase
     {
         private bool previousAnimations;
         private UIMode uiMode;
@@ -353,7 +353,7 @@ namespace Tests.Editor
             yield return Seek(478f);
             playbackClock = Object.FindAnyObjectByType<AudioTimeSyncController>();
             previousClockEnabled = playbackClock.enabled;
-            StartDeterministicPlaybackAtSongBpmTime(playbackClock, 478f);
+            TestUtils.StartDeterministicPlaybackAtSongBpmTime(playbackClock, 478f);
             playbackClock.enabled = false;
             var cliff = Object.FindObjectsByType<ObstacleContainer>(FindObjectsInactive.Include, FindObjectsSortMode.None)
                 .First(wall => wall.ObstacleData != null && wall.ObstacleData.JsonTime == 363f
@@ -642,7 +642,7 @@ namespace Tests.Editor
             {
                 if (playbackClock.IsPlaying)
                 {
-                    PauseDeterministicPlayback(playbackClock);
+                    TestUtils.PauseDeterministicPlayback(playbackClock);
                 }
 
                 playbackClock.enabled = previousClockEnabled;

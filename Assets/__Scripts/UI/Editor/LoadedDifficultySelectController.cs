@@ -109,8 +109,12 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // Enhancements mutate native objects and can reparent them out of their scene. Release those targets
         // before track reset, and reload an enhanced environment even when both difficulties select the same one.
         var reloadEnhancedEnvironment = BeatSaberSongContainer.Instance.Map.EnvironmentEnhancements.Count > 0;
+        var reloadEnvironment = currentPlatform != nextPlatform || customPlat || reloadEnhancedEnvironment;
+        if (reloadEnvironment)
+            context.Descriptor.PrepareForUnload();
+
         mapLoader.DestroyTrackBoundEnvironmentObjects();
-        if (currentPlatform != nextPlatform || customPlat || reloadEnhancedEnvironment)
+        if (reloadEnvironment)
         {
             context.SetEnvironment(null);
             var sceneUnload = SceneManager.UnloadSceneAsync(currentPlatform);

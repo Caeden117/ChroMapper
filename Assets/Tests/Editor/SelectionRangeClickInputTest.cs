@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -15,13 +14,9 @@ namespace Tests.Editor
     // Ctrl+Shift+click range selection regressed on dev: the second clicked endpoint was left out of
     // the selection. These tests drive the authored chord through the shared input asset so the real
     // scene-installed callbacks, modifier actions, and the InputSystemPatch overlap rules all apply.
-    public class SelectionRangeClickInputTest : TestBase
+    public class SelectionRangeClickInputTest : InputTestBase
     {
-        private InputTestFixture inputFixture;
         private CMInput isolatedInput;
-        private Mouse virtualMouse;
-        private Keyboard virtualKeyboard;
-        private readonly List<InputActionMap> sharedEnabledActionMaps = new();
         private bool selectionChanged;
 
         // CtrlShiftClickSelectsInclusiveNoteRange reproduces the reported regression exactly: one
@@ -59,13 +54,13 @@ namespace Tests.Editor
                 "The Mass Select Modifier latch did not follow the virtual Ctrl press.");
             SeedFirstHit<NoteContainer>(noteB, ObjectType.Note);
 
-            inputFixture.Press(virtualMouse.leftButton, queueEventOnly: true);
+            PressVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
             Assert.That(
                 noteInput.IsSelecting,
                 Is.True,
                 "The Select Objects action never reached BeatmapInputController.OnSelectObjects.");
-            inputFixture.Release(virtualMouse.leftButton, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
             SelectionController.OnSelectionChanged -= FlagSelectionChanged;
 
@@ -121,17 +116,17 @@ namespace Tests.Editor
                     && screenPoint.y >= 0 && screenPoint.y <= Screen.height,
                 Is.True,
                 $"Endpoint off-screen at {screenPoint} ({Screen.width}x{Screen.height}); the real raycast cannot reach it.");
-            inputFixture.Set(virtualMouse.position, new Vector2(screenPoint.x, screenPoint.y), queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.position, new Vector2(screenPoint.x, screenPoint.y), queueEventOnly: true);
             InputSystem.Update();
 
             PressCtrlShift();
-            inputFixture.Press(virtualMouse.leftButton, queueEventOnly: true);
+            PressVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
             Assert.That(
                 noteInput.IsSelecting,
                 Is.True,
                 "The Select Objects action never reached BeatmapInputController.OnSelectObjects.");
-            inputFixture.Release(virtualMouse.leftButton, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
 
             Assert.That(
@@ -279,13 +274,13 @@ namespace Tests.Editor
 
             PressCtrlShift();
             SeedFirstHit<EventContainer>(eventB, ObjectType.Event);
-            inputFixture.Press(virtualMouse.leftButton, queueEventOnly: true);
+            PressVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
             Assert.That(
                 eventInput.IsSelecting,
                 Is.True,
                 "The Select Objects action never reached the event controller.");
-            inputFixture.Release(virtualMouse.leftButton, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
 
             Assert.That(
@@ -421,40 +416,14 @@ namespace Tests.Editor
                 isolatedInput.Dispose();
                 isolatedInput = null;
             }
-            if (inputFixture != null)
-            {
-                inputFixture.TearDown();
-                inputFixture = null;
-            }
 
-            virtualMouse = null;
-            virtualKeyboard = null;
-
-            // Restore only maps that were enabled before this fixture, now against the original runtime.
-            foreach (var actionMap in sharedEnabledActionMaps) actionMap.Enable();
-            sharedEnabledActionMaps.Clear();
+            TearDownVirtualInput();
         }
 
-        // Re-enable the shared action maps on the isolated device runtime so every production
-        // callback installed by the scene still resolves the authored chord.
+        // Bind the scene selection handlers to one test-owned asset so shared maps cannot dispatch the gesture twice.
         private void InitializeIsolatedInput()
         {
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null, "The application's shared input asset was not initialized.");
-            // InputTestFixture replaces the global runtime; keep shared maps disabled until they can
-            // re-resolve against either this fixture's devices or the restored application runtime.
-            sharedEnabledActionMaps.Clear();
-            foreach (var actionMap in sharedInput.asset.actionMaps)
-            {
-                if (!actionMap.enabled) continue;
-                sharedEnabledActionMaps.Add(actionMap);
-                actionMap.Disable();
-            }
-
-            inputFixture = new InputTestFixture();
-            inputFixture.Setup();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
-            virtualKeyboard = InputSystem.AddDevice<Keyboard>();
+            InitializeVirtualInput(includeKeyboard: true);
 
             // The editor's paranoid read-value check logs a false-positive error when a queued event
             // mutates a control whose cached value was already evaluated in the same manual update;
@@ -485,7 +454,7 @@ namespace Tests.Editor
 #else
             var gameViewSize = new Vector2(Screen.width, Screen.height);
 #endif
-            inputFixture.Set(virtualMouse.position, gameViewSize * 0.5f, queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.position, gameViewSize * 0.5f, queueEventOnly: true);
             InputSystem.Update();
         }
 
@@ -510,18 +479,18 @@ namespace Tests.Editor
         // Queue Ctrl then Shift so the Mass Select Modifier latch is owned by the production callback.
         private void PressCtrlShift()
         {
-            inputFixture.Press(virtualKeyboard.leftCtrlKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftCtrlKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Press(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
             InputSystem.Update();
         }
 
         // Drive the authored Select Objects chord (Shift+leftButton) with release events included.
         private void ClickLeftButton()
         {
-            inputFixture.Press(virtualMouse.leftButton, queueEventOnly: true);
+            PressVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Release(virtualMouse.leftButton, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
         }
 

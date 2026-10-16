@@ -1,11 +1,12 @@
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using NUnit.Framework;
+using Tests.Infrastructure;
 using UnityEngine.InputSystem;
 
 namespace Tests.Editor
 {
-    public class InputSystemPatchTest : InputTestFixture
+    public class InputSystemPatchTest : IsolatedInputTestFixture
     {
         [Test]
         public void CheckEqualPathsWithoutMatchingDevicesUsesSafePathFallback()

@@ -11,16 +11,12 @@ using UnityEngine.InputSystem;
 
 namespace Tests.Editor
 {
-    public class GLSTranslationYeetTest : TestBase
+    public class GLSTranslationYeetTest : InputTestBase
     {
         private const float YeetOffset = 10_000f;
         private const float YeetCutoff = -5_000f;
 
-        private InputTestFixture inputFixture;
         private CMInput isolatedInput;
-        private Keyboard virtualKeyboard;
-        private Mouse virtualMouse;
-        private bool? sharedTranslationMapWasEnabled;
         private ScrollPrecisionController precision;
         private ScrollPrecision originalPrecision;
 
@@ -223,19 +219,9 @@ namespace Tests.Editor
             }
         }
 
-        // Capture and disable the shared map before InputTestFixture owns an isolated runtime and dedicated virtual devices.
         private void InitializeIsolatedInput(CMInput.IGLSTranslationObjectsActions controller)
         {
-            Assert.That(inputFixture, Is.Null, "Virtual input was initialized twice in one test.");
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            Assert.That(sharedInput, Is.Not.Null);
-            sharedTranslationMapWasEnabled = sharedInput.GLSTranslationObjects.enabled;
-            sharedInput.GLSTranslationObjects.Disable();
-
-            inputFixture = new InputTestFixture();
-            inputFixture.Setup();
-            virtualKeyboard = InputSystem.AddDevice<Keyboard>();
-            virtualMouse = InputSystem.AddDevice<Mouse>();
+            InitializeVirtualInput(includeKeyboard: true);
             isolatedInput = new CMInput();
             if (controller != null)
             {
@@ -256,24 +242,24 @@ namespace Tests.Editor
         // Press both composite parts through the isolated keyboard, then release them for deterministic repeatability.
         private void SendShiftZ()
         {
-            inputFixture.Press(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Press(virtualKeyboard.zKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.zKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Release(virtualKeyboard.zKey, queueEventOnly: true);
-            inputFixture.Release(virtualKeyboard.leftShiftKey, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.zKey, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.leftShiftKey, queueEventOnly: true);
             InputSystem.Update();
         }
 
         // Queue a fresh Alt+scroll pulse and reset the scroll axis so a second call performs a second action.
         private void SendAltScroll(float delta)
         {
-            inputFixture.Press(virtualKeyboard.altKey, queueEventOnly: true);
+            PressVirtualButton(VirtualKeyboard.altKey, queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Set(virtualMouse.scroll, new Vector2(0f, delta), queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, new Vector2(0f, delta), queueEventOnly: true);
             InputSystem.Update();
-            inputFixture.Set(virtualMouse.scroll, Vector2.zero, queueEventOnly: true);
-            inputFixture.Release(virtualKeyboard.altKey, queueEventOnly: true);
+            SetVirtualControl(VirtualMouse.scroll, Vector2.zero, queueEventOnly: true);
+            ReleaseVirtualButton(VirtualKeyboard.altKey, queueEventOnly: true);
             InputSystem.Update();
         }
 
@@ -335,26 +321,13 @@ namespace Tests.Editor
                 isolatedInput = null;
             }
 
-            virtualMouse = null;
-            virtualKeyboard = null;
-            if (inputFixture != null)
-            {
-                inputFixture.TearDown();
-                inputFixture = null;
-            }
-
             if (precision != null)
             {
                 precision.CurrentPrecision = originalPrecision;
                 precision = null;
             }
 
-            var sharedInput = CMInputCallbackInstaller.InputInstance;
-            if (sharedInput != null && sharedTranslationMapWasEnabled == true)
-            {
-                sharedInput.GLSTranslationObjects.Enable();
-            }
-            sharedTranslationMapWasEnabled = null;
+            TearDownVirtualInput();
         }
 
         private class TestGLSEventTranslationInputController : BeatmapGLSEventTranslationInputController

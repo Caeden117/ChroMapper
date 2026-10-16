@@ -13,7 +13,7 @@ namespace Tests.Editor
 {
     // Fixture source: "G1ll35 d3 R415", mapped by Salty (BeatSaver ID: 4b476).
     // The fixture retains the sampled objects, their track parents, and all referenced custom data.
-    public class SaltyWallPlaybackParityTest : BasicEventChunkingTestBase
+    public class SaltyWallPlaybackParityTest : InputTestBase
     {
         protected override EditingMode InitialEditingMode => EditingMode.Gameplay;
 
