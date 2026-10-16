@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,8 @@ namespace Tests.Editor
     public class CensoredRingShakeParityTest : PreviewWorkflowTestBase
     {
         private static readonly bool[] PlaybackCases = { false, true };
+        private const float PositionTolerance = 0.002f;
+        private const float ClockTolerance = 0.00002f;
         private static readonly PropertyInfo PlaybackSeconds = typeof(AudioTimeSyncController)
             .GetProperty(nameof(AudioTimeSyncController.CurrentSeconds));
         private AudioTimeSyncController clock;
@@ -30,7 +33,13 @@ namespace Tests.Editor
             yield return CheckShake("CensoredFullMapFixture.json", playback);
         }
 
-        private IEnumerator CheckShake(string fixture, bool playback)
+        [UnityTest]
+        public IEnumerator PlaybackShakeToleratesAdjacentClockFloats([Values(-1, 1)] int clockFloatSteps)
+        {
+            yield return CheckShake("CensoredFullMapFixture.json", true, clockFloatSteps);
+        }
+
+        private IEnumerator CheckShake(string fixture, bool playback, int clockFloatSteps = 0)
         {
             Settings.Instance.Animations = true;
             var data = JSON.Parse(File.ReadAllText(PathUtils.Combine(Application.dataPath, "Tests", "Fixtures", fixture)));
@@ -46,34 +55,54 @@ namespace Tests.Editor
             Object.FindAnyObjectByType<CameraManager>().SelectCamera(CameraType.Playing);
             var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
             clock = atsc;
+            previousClockEnabled = atsc.enabled;
+            clockFrozen = true;
+            atsc.enabled = false;
             var rings = Object.FindObjectsByType<TrackLaneRing>(FindObjectsSortMode.None)
                 .Where(ring => ring.name is "PanelLightTrackLaneRing(Clone)" or "BigCenterLightTrackLaneRing(Clone)")
                 .ToArray();
             Assert.That(rings.Length, Is.EqualTo(30));
             var runway = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None)
                 .Single(item => item.name == "TrackConstruction");
-            atsc.MoveToJsonTime(67f);
+            const float baselineBeat = 68f;
+            // The first shake keyframe is zero. Freeze the clock before capturing it so setup and
+            // playback use the same authored pose, including round trips through seconds.
+            atsc.MoveToJsonTime(baselineBeat);
             yield return null;
             yield return null;
+            var pausedRunwayX = runway.position.x;
+            var pausedRingX = rings.Select(ring => ring.transform.position.x).ToArray();
+            if (playback)
+            {
+                TestUtils.StartDeterministicPlaybackAtSongBpmTime(
+                    atsc,
+                    (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(baselineBeat));
+                PlaybackSeconds.SetValue(atsc, GetSampleSeconds(atsc, baselineBeat, clockFloatSteps));
+            }
+            yield return null;
+            yield return null;
+            var baselineTime = atsc.CurrentJsonTime;
+            Assert.That(baselineTime, Is.EqualTo(baselineBeat).Within(ClockTolerance));
+            var baselineShake = GetShakeX(oracle, baselineTime);
             var initialX = rings.Select(ring => ring.transform.position.x).ToArray();
             var attachedLasers = rings.Select(ring => ring.GetComponentsInChildren<ParametricBoxLight>(true)).ToArray();
             Assert.That(attachedLasers.All(lasers => lasers.Length == 2), Is.True);
             var runwayX = runway.position.x;
-            if (playback)
-            {
-                atsc.TogglePlaying();
-                atsc.SongAudioSource.Stop();
-                atsc.StopScheduled = true;
-                previousClockEnabled = atsc.enabled;
-                clockFrozen = true;
-                atsc.enabled = false;
-            }
+            Assert.That(
+                runwayX,
+                Is.EqualTo(pausedRunwayX).Within(PositionTolerance),
+                "Entering playback at the same beat must not move the control runway.");
+            for (var i = 0; i < rings.Length; ++i)
+                Assert.That(
+                    initialX[i],
+                    Is.EqualTo(pausedRingX[i]).Within(PositionTolerance),
+                    $"Entering playback at the same beat moved {rings[i].name}.");
 
             foreach (var beat in new[] { 68.1f, 68.2f, 68.5f, 69.1f, 70.2f, 72.9f, 73.1f, 74.5f, 75.1f,
                 84.1f, 85.2f, 89.1f, 91.1f, 68.1f })
             {
                 if (playback)
-                    PlaybackSeconds.SetValue(atsc, atsc.GetSecondsFromBeat(beat));
+                    PlaybackSeconds.SetValue(atsc, GetSampleSeconds(atsc, beat, clockFloatSteps));
                 else
                     atsc.MoveToJsonTime(beat);
 
@@ -85,9 +114,14 @@ namespace Tests.Editor
                     Assert.That(atsc.SongAudioSource.isPlaying, Is.False);
                 }
 
-                var shake = GetShakeX(oracle, atsc.CurrentJsonTime);
-                Assert.That(runway.position.x - runwayX, Is.EqualTo(shake).Within(0.002f),
-                    "The control runway must reproduce the authored shake before comparing the rings.");
+                Assert.That(atsc.CurrentJsonTime, Is.EqualTo(beat).Within(ClockTolerance));
+                var shake = GetShakeX(oracle, atsc.CurrentJsonTime) - baselineShake;
+                Assert.That(
+                    runway.position.x - runwayX,
+                    Is.EqualTo(shake).Within(PositionTolerance),
+                    $"The runway must reproduce the shake before comparing rings. Baseline beat={baselineTime:R}, "
+                        + $"X={runwayX:R}, shake={baselineShake:R}. Sample beat={atsc.CurrentJsonTime:R}, "
+                        + $"X={runway.position.x:R}, expected delta={shake:R}.");
                 var failures = new List<string>();
                 for (var i = 0; i < rings.Length; ++i)
                 {
@@ -99,7 +133,7 @@ namespace Tests.Editor
                     Debug.Log($"[CensoredRingShake] beat={atsc.CurrentJsonTime} ring={ring.name} "
                         + $"parent={parentName} x={ring.transform.position.x} expected={expectedX} "
                         + $"animator={ring.GetComponent<Beatmap.Animations.ObjectAnimator>() != null} lasers={lasers.Length}");
-                    if (Mathf.Abs(error) > 0.002f)
+                    if (Mathf.Abs(error) > PositionTolerance)
                         failures.Add($"{ring.name} and its {lasers.Length} lasers missed shake X={shake}: "
                             + $"expected {expectedX}, actual {ring.transform.position.x}.");
 
@@ -109,13 +143,21 @@ namespace Tests.Editor
                         var expectedCenter = Matrix4x4.TRS(new Vector3(expectedX, ring.transform.position.y,
                             ring.transform.position.z), ring.transform.rotation, ring.transform.lossyScale)
                             .MultiplyPoint3x4(localCenter);
-                        if (Mathf.Abs(expectedCenter.x - laser.Renderer.bounds.center.x) > 0.002f)
+                        if (Mathf.Abs(expectedCenter.x - laser.Renderer.bounds.center.x) > PositionTolerance)
                             failures.Add($"{ring.name}/{laser.name}: laser bounds X={laser.Renderer.bounds.center.x}, "
                                 + $"expected {expectedCenter.x} after the authored shake.");
                     }
                 }
                 Assert.That(failures, Is.Empty, string.Join("\n", failures));
             }
+        }
+
+        private static float GetSampleSeconds(AudioTimeSyncController atsc, float jsonTime, int floatSteps)
+        {
+            var songBpmTime = (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(jsonTime);
+            var seconds = atsc.GetSecondsFromBeat(songBpmTime);
+            // Adjacent positive floats exercise the clock rounding that can differ across CPU architectures.
+            return BitConverter.Int32BitsToSingle(BitConverter.SingleToInt32Bits(seconds) + floatSteps);
         }
 
         private static float GetShakeX(JSONNode source, float beat)

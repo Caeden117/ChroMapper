@@ -1,13 +1,56 @@
 using System.Collections;
+using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
+using Tests.Editor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.TestTools;
 
 namespace Tests.Infrastructure
 {
     public class InputRuntimeIsolationTest : InputTestBase
     {
+        [Test]
+        public void KeybindFixtureDoesNotReuseCachedUIDevicesFromAnotherRuntime()
+        {
+            InitializeVirtualInput(includeKeyboard: true);
+            InputSystem.AddDevice<Gamepad>();
+            var savedMouse = InputSystem.AddDevice<Mouse>();
+            var defaultsField = typeof(InputSystemUIInputModule)
+                .GetField("defaultActions", BindingFlags.Static | BindingFlags.NonPublic);
+            var previousDefaults = defaultsField.GetValue(null);
+            var cachedDefaults = new DefaultInputActions();
+            cachedDefaults.asset.devices = new InputDevice[] { savedMouse };
+            cachedDefaults.UI.Enable();
+            defaultsField.SetValue(null, cachedDefaults);
+            var fixture = new OptionsKeybindRebindTest();
+            try
+            {
+                try
+                {
+                    fixture.Setup();
+                    var module = GameObject.Find("Keybind test").GetComponentInChildren<InputSystemUIInputModule>();
+                    Assert.That(module.actionsAsset, Is.Not.SameAs(cachedDefaults.asset));
+                    Assert.That(
+                        module.point.action.controls.All(control => InputSystem.devices.Contains(control.device)),
+                        Is.True,
+                        "The keybind UI must use devices from its own isolated runtime.");
+                }
+                finally
+                {
+                    fixture.TearDown();
+                }
+            }
+            finally
+            {
+                defaultsField.SetValue(null, previousDefaults);
+                cachedDefaults.Dispose();
+                TearDownVirtualInput();
+            }
+        }
+
         [UnityTest]
         public IEnumerator RuntimeSwapSuspendsAndRestoresActionsOutsideTheSharedAsset()
         {

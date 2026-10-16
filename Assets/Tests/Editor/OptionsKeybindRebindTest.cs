@@ -20,6 +20,7 @@ namespace Tests.Editor
         private GameObject root;
         private EventSystem eventSystem;
         private InputSystemUIInputModule inputModule;
+        private DefaultInputActions uiInput;
         private CMInput previousInput;
         private CMInput isolatedInput;
         private List<LoadKeybindsController.KeybindOverride> previousOverrides;
@@ -59,11 +60,26 @@ namespace Tests.Editor
             LoadKeybindsController.AllOverrides = new List<LoadKeybindsController.KeybindOverride>();
 
             root = new GameObject("Keybind test", typeof(RectTransform), typeof(Canvas), typeof(OptionsKeybindsLoader));
-            var events = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+            // Unity caches AssignDefaultActions across fixture runtimes, including their old devices.
+            // Configure owned actions while inactive so OnEnable cannot attach that cached asset.
+            var events = new GameObject("EventSystem");
+            events.SetActive(false);
             events.transform.SetParent(root.transform);
-            eventSystem = events.GetComponent<EventSystem>();
-            inputModule = events.GetComponent<InputSystemUIInputModule>();
-            inputModule.AssignDefaultActions();
+            eventSystem = events.AddComponent<EventSystem>();
+            inputModule = events.AddComponent<InputSystemUIInputModule>();
+            uiInput = new DefaultInputActions();
+            inputModule.actionsAsset = uiInput.asset;
+            inputModule.point = InputActionReference.Create(uiInput.UI.Point);
+            inputModule.move = InputActionReference.Create(uiInput.UI.Navigate);
+            inputModule.submit = InputActionReference.Create(uiInput.UI.Submit);
+            inputModule.cancel = InputActionReference.Create(uiInput.UI.Cancel);
+            inputModule.leftClick = InputActionReference.Create(uiInput.UI.Click);
+            inputModule.rightClick = InputActionReference.Create(uiInput.UI.RightClick);
+            inputModule.middleClick = InputActionReference.Create(uiInput.UI.MiddleClick);
+            inputModule.scrollWheel = InputActionReference.Create(uiInput.UI.ScrollWheel);
+            inputModule.trackedDevicePosition = InputActionReference.Create(uiInput.UI.TrackedDevicePosition);
+            inputModule.trackedDeviceOrientation = InputActionReference.Create(uiInput.UI.TrackedDeviceOrientation);
+            events.SetActive(true);
 
             var scene = EditorSceneManager.OpenPreviewScene("Assets/__Scenes/04_Options.unity");
             try
@@ -83,8 +99,8 @@ namespace Tests.Editor
 
         public override void TearDown()
         {
-            inputModule.UnassignActions();
             Object.DestroyImmediate(root);
+            uiInput.Dispose();
             isolatedInput.Dispose();
             CMInputCallbackInstaller.InputInstance = previousInput;
             LoadKeybindsController.AllOverrides = previousOverrides;
