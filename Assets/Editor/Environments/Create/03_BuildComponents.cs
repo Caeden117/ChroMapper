@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Enums;
@@ -78,6 +79,21 @@ public partial class EnvironmentSceneCreator
             }
         }
 
+        var fireRoutes = container.Data.Objects.SelectMany(obj =>
+            (obj.Components.BurstFireEffect ?? Array.Empty<BurstFireEffectData>())
+                .Select(data => (data.GroupId, data.ElementId, data.Id, Effect: (FireEffect)data.Instance))
+                .Concat((obj.Components.ContinuousFireEffect ?? Array.Empty<ContinuousFireEffectData>())
+                    .Select(data => (data.GroupId, data.ElementId, data.Id, Effect: (FireEffect)data.Instance))))
+            .ToArray();
+
+        // Fire groups are defined by the fire components, not the ordinary color group manager.
+        foreach (var group in fireRoutes.GroupBy(route => route.GroupId))
+        {
+            var effect = container.Descriptor.LightColorGroupEffectManager.Register<FireGroupEffect>(
+                group.Key, group.Max(route => route.ElementId) + 1);
+            effect.EffectManager = container.Descriptor.LightColorGroupEffectManager;
+            foreach (var route in group) effect.Register(route.ElementId, route.Effect);
+        }
 
         foreach (var lightColorGroupEffect in container.Descriptor.LightColorGroupEffectManager.IdToEffect.Values)
         {
@@ -384,12 +400,6 @@ public partial class EnvironmentSceneCreator
                 case TubeBloomPrePassLightWithIdData k:
                     RegisterLight(k.Instance as LightController, k.Id, order, force);
                     break;
-                case BurstFireEffectData l:
-                    RegisterLight(l.Instance as LightController, l.Id, order, force);
-                    break;
-                case ContinuousFireEffectData m:
-                    RegisterLight(m.Instance as LightController, m.Id, order, force);
-                    break;
             }
         }
 
@@ -412,6 +422,16 @@ public partial class EnvironmentSceneCreator
                     controller.Kind = LightController.LightKind.Group;
                     controller.Type = lg.GroupId;
                     controller.ID = lightId - lg.StartLightId;
+                    if (force || !SkipThisShit(controller.transform)) container.Descriptor.Register(controller);
+                    continue;
+                }
+
+                var fireRoute = fireRoutes.FirstOrDefault(route => route.Id == lightId);
+                if (fireRoute.Effect != null)
+                {
+                    controller.Kind = LightController.LightKind.Group;
+                    controller.Type = fireRoute.GroupId;
+                    controller.ID = fireRoute.ElementId;
                     if (force || !SkipThisShit(controller.transform)) container.Descriptor.Register(controller);
                     continue;
                 }

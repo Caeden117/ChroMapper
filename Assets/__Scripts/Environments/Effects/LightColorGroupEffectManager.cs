@@ -72,10 +72,12 @@ public class LightColorGroupEffectManager : MonoBehaviour
         return true;
     }
 
-    public LightColorGroupEffect Register(int group, int count)
+    public LightColorGroupEffect Register(int group, int count) => Register<LightColorGroupEffect>(group, count);
+
+    public T Register<T>(int group, int count) where T : LightColorGroupEffect
     {
-        if (effectEntries.Any(x => x.Group == group)) return effectEntries.First(x => x.Group == group).Effect;
-        var effect = gameObject.AddComponent<LightColorGroupEffect>();
+        if (effectEntries.Any(x => x.Group == group)) return (T)effectEntries.First(x => x.Group == group).Effect;
+        var effect = gameObject.AddComponent<T>();
         effect.ID = group;
         effect.Count = count;
         effectEntries.Add(new LightColorGroupEffectEntry { Group = group, Effect = effect });

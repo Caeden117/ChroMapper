@@ -511,7 +511,7 @@ Material:
     - _UseMotionVectors: 0
     - _UseSpectrogram: 0
     - _UseSphericalNormalOffset: 0
-    - _UseTextureFlipbook: 0
+    - _SpecialSamplingMode: 0
     - _UsesParticleVertexStream: 0
     - _UvSegmentsIgnoreRim: 0
     - _VertexChannels: 0

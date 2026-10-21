@@ -147,7 +147,7 @@ Material:
     - _UseColorGradient: 0
     - _UseMainTex: 1
     - _UseSpectrogram: 0
-    - _UseTextureFlipbook: 0
+    - _SpecialSamplingMode: 0
     - _VertexChannels: 0
     - _VertexDisplacement: 0
     - _ViewAlignFactor: 1.5

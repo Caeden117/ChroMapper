@@ -79,7 +79,7 @@ Shader "ChroMapper/Particles"
         _UvPanning ("UV Panning", Vector) = (0,0,0,0)
         [Space(12)] [Toggle(CUSTOM_WRAPPING)] _EnableCustomPadding ("Custom Repeat Wrapping", Float) = 0
         [InfoBox(Texture must have Clamp wrapping mode, CUSTOM_WRAPPING)] [VectorShowIfAny(2, CUSTOM_WRAPPING)] _CustomPadding ("Custom Padding", Vector) = (0,0,0,0)
-        [Space(12)] [Toggle(TEXTURE_FLIPBOOK)] _UseTextureFlipbook ("Use Texture Flipbook", Float) = 0
+        [Space(12)] [Toggle(TEXTURE_FLIPBOOK)] _SpecialSamplingMode ("Special Sampling Mode", Float) = 0
         [InfoBox(Keep in sRGB or alpha will have different intensity, TEXTURE_FLIPBOOK)] [InfoBox(Frame 1 contains frames 1234 in RGBA channels Frame 2 contains 4567 (5678 if blending is disabled), TEXTURE_FLIPBOOK)] [ShowIfAny(TEXTURE_FLIPBOOK)] _FlipbookColumns ("Flipbook Columns", Float) = 8
         [ShowIfAny(TEXTURE_FLIPBOOK)] _FlipbookRows ("Flipbook Rows", Float) = 8
         [ShowIfAny(TEXTURE_FLIPBOOK)] _FlipbookNonloopableFrames ("Full Non-loopable frames", Float) = 0
@@ -1085,7 +1085,9 @@ Shader "ChroMapper/Particles"
                 float flipbookCell = floor(flipbookFrame);
                 float flipbookFraction = frac(flipbookFrame);
                 float flipbookColumn = fmod(flipbookCell, _FlipbookColumns);
-                float flipbookRow = floor(flipbookCell / _FlipbookColumns);
+                // Keep the fraction until row selection. Dividing a floored frame can
+                // round an exact row boundary down when the GPU uses a reciprocal.
+                float flipbookRow = floor(flipbookFrame / _FlipbookColumns);
                 // Packed-flipbook vertices bypass _MainTex_ST and
                 // panning. Build the atlas coordinates from the raw input UV.
                 o.uv.xy = float2(
