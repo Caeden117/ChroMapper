@@ -106,11 +106,15 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private List<TrackAnimator> playerTracks = new();
     private TrackAnimator currentTrack;
 
-    private bool cameraHomeCaptured;
-    private Transform cameraHomeParent;
-    private Vector3 cameraHomeLocalPosition;
-    private Quaternion cameraHomeLocalRotation;
-    private Vector3 cameraHomeLocalScale;
+    private Transform playerTrackHomeParent;
+    private Vector3 playerTrackHomePosition;
+    private Quaternion playerTrackHomeRotation;
+    private Vector3 playerTrackHomeScale;
+    private Vector3 playerTrackHomeInnerPosition;
+    private Quaternion playerTrackHomeInnerRotation;
+    private Vector3 playerTrackHomeInnerScale;
+    private bool hasPlayerTrackHome;
+
 
     private bool ignoreInitialMouseMovement = false;
     private int framesAfterRightClick = 0;
@@ -166,13 +170,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         else
         {
             laneRotationProvider.OnSmoothedPlaybackChanged += HandleRotationChanged;
-            // Salty camera regression (SaltyBeat537HeadCameraParityTest /
-            // Beat532CameraStaysHomeBeforeAndAfterHeadTrackVisit): binding only ran from Update, one
-            // frame after a stopped seek, so the camera lagged a beat and mode switches/rewinds left
-            // it on a stale track. Subscribe to seek and mode events so the bind/detach is
-            // synchronous with the time/mode change.
-            atsc.OnTimeChanged += SyncPlayerTrack;
-            UIMode.OnUIModeSwitched += OnPlayerCameraModeSwitched;
         }
     }
 
@@ -181,8 +178,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         if (playerCamera)
         {
             laneRotationProvider.OnSmoothedPlaybackChanged -= HandleRotationChanged;
-            atsc.OnTimeChanged -= SyncPlayerTrack;
-            UIMode.OnUIModeSwitched -= OnPlayerCameraModeSwitched;
         }
         LoadInitialMap.OnLevelLoaded -= HandleMapLoaded;
         LoadedDifficultySelectController.OnLoadedDifficultyChanged -= HandleMapLoaded;
@@ -203,7 +198,11 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
         Camera.fieldOfView = playerCamera ? Settings.Instance.PlayerCameraFOV : Settings.Instance.CameraFOV;
 
-        if (!playerCamera && canMoveCamera)
+        if (playerCamera)
+        {
+            RefreshPlayerTrack();
+        }
+        else if (canMoveCamera)
         {
             if (CMInputCallbackInstaller.IsActionMapDisabled(typeof(CMInput.ICameraActions)))
             {
@@ -239,67 +238,6 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
         {
             z = x = 0;
             SetLockState(false);
-        }
-    }
-
-    // Handles the mode switch after UIMode.SelectedMode has already been updated.
-    private void OnPlayerCameraModeSwitched(UIModeType mode) => SyncPlayerTrack();
-
-    private void SyncPlayerTrack()
-    {
-        if (UIMode.SelectedMode != UIModeType.Playing || !UIMode.AnimationMode || playerTrackTimes.Count == 0)
-        {
-            DisconnectPlayerTrack();
-            return;
-        }
-
-        // 1 after last point, inverted (probably)
-        var later = playerTrackTimes.BinarySearch(atsc.CurrentJsonTime);
-
-        var current = (later < 0)
-            ? (~later) - 1
-            : later;
-
-        if (current < 0)
-        {
-            DisconnectPlayerTrack();
-            return;
-        }
-
-        if (playerTracks[current] != currentTrack)
-        {
-            DisconnectPlayerTrack();
-            currentTrack = playerTracks[current];
-            if (!cameraHomeCaptured)
-            {
-                cameraHomeCaptured = true;
-                var rigTransform = cameraAnimator.transform;
-                cameraHomeParent = rigTransform.parent;
-                cameraHomeLocalPosition = rigTransform.localPosition;
-                cameraHomeLocalRotation = rigTransform.localRotation;
-                cameraHomeLocalScale = rigTransform.localScale;
-            }
-
-            var isV2Map = BeatSaberSongContainer.Instance.Map.MajorVersion == 2;
-            var rig = cameraAnimator.transform;
-            rig.SetParent(currentTrack.Track.ObjectParentTransform, false);
-            rig.localPosition = cameraHomeLocalPosition;
-            rig.localRotation = cameraHomeLocalRotation;
-            rig.localScale = cameraHomeLocalScale;
-            cameraAnimator.ResetData();
-            cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
-            cameraAnimator.WorldTarget = rig;
-            cameraAnimator.TargetType = ObjectAnimator.TargetTypes.Transform;
-            if (!isV2Map)
-            {
-                cameraAnimator.WorldPosition.Preload(cameraHomeLocalPosition);
-                cameraAnimator.WorldPosition.HoldUntilFlush = true;
-            }
-
-            cameraAnimator.enabled = true;
-            currentTrack.AddChild(cameraAnimator);
-            currentTrack.PushToChild(cameraAnimator);
-            cameraAnimator.LateUpdate();
         }
     }
 
@@ -518,26 +456,72 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
     private void HandleRotationChanged(float rotation) =>
         cameraAnimator.LocalTarget.localEulerAngles = new Vector3(0, rotation, 0);
 
+    /// <summary>Applies the player assignment at the cursor synchronously, including paused seeks.</summary>
+    public void RefreshPlayerTrack(float? jsonTime = null)
+    {
+        if (!playerCamera || cameraAnimator == null) return;
+        if (!UIMode.AnimationMode || playerTrackTimes.Count == 0)
+        {
+            DisconnectPlayerTrack();
+            return;
+        }
+        var left = 0;
+        var right = playerTrackTimes.Count;
+        while (left < right)
+        {
+            var middle = left + ((right - left) / 2);
+            if (playerTrackTimes[middle] <= (jsonTime ?? atsc.CurrentJsonTime)) left = middle + 1;
+            else right = middle;
+        }
+        var current = left - 1;
+        if (current < 0)
+        {
+            DisconnectPlayerTrack();
+            return;
+        }
+        if (playerTracks[current] == currentTrack) return;
+        DisconnectPlayerTrack();
+        if (!hasPlayerTrackHome)
+        {
+            var target = cameraAnimator.transform;
+            playerTrackHomeParent = target.parent;
+            playerTrackHomePosition = target.localPosition;
+            playerTrackHomeRotation = target.localRotation;
+            playerTrackHomeScale = target.localScale;
+            var inner = cameraAnimator.AnimationThis.transform;
+            playerTrackHomeInnerPosition = inner.localPosition;
+            playerTrackHomeInnerRotation = inner.localRotation;
+            playerTrackHomeInnerScale = inner.localScale;
+            hasPlayerTrackHome = true;
+        }
+        cameraAnimator.ResetData();
+        currentTrack = playerTracks[current];
+        cameraAnimator.transform.SetParent(currentTrack.Track.ObjectParentTransform, false);
+        cameraAnimator.LocalTarget = cameraAnimator.AnimationThis.transform;
+        cameraAnimator.WorldTarget = cameraAnimator.transform;
+        cameraAnimator.TargetType = ObjectAnimator.TargetTypes.Transform;
+        if (BeatSaberSongContainer.Instance.Map.MajorVersion != 2)
+        {
+            cameraAnimator.WorldPosition.Preload(playerTrackHomePosition);
+            cameraAnimator.WorldPosition.HoldUntilFlush = true;
+        }
+        cameraAnimator.enabled = true;
+        currentTrack.AddChild(cameraAnimator);
+    }
+
     private void DisconnectPlayerTrack()
     {
-        if (currentTrack == null) return;
-
+        if (currentTrack == null || cameraAnimator == null) return;
         currentTrack.RemoveChild(cameraAnimator);
         currentTrack = null;
-
         cameraAnimator.ResetData();
         cameraAnimator.enabled = false;
-
-        // The rig transform was reparented under the track's ObjectParentTransform on bind and nothing
-        // else moves it back, so without this restore it stays under the (possibly already
-        // scene-unloaded) track at its last animated spot
-        if (cameraHomeCaptured)
-        {
-            var rigTransform = cameraAnimator.transform;
-            rigTransform.SetParent(cameraHomeParent);
-            rigTransform.localPosition = cameraHomeLocalPosition;
-            rigTransform.localRotation = cameraHomeLocalRotation;
-            rigTransform.localScale = cameraHomeLocalScale;
-        }
+        if (!hasPlayerTrackHome) return;
+        cameraAnimator.transform.SetParent(playerTrackHomeParent, false);
+        cameraAnimator.transform.SetLocalPositionAndRotation(playerTrackHomePosition, playerTrackHomeRotation);
+        cameraAnimator.transform.localScale = playerTrackHomeScale;
+        var inner = cameraAnimator.AnimationThis.transform;
+        inner.SetLocalPositionAndRotation(playerTrackHomeInnerPosition, playerTrackHomeInnerRotation);
+        inner.localScale = playerTrackHomeInnerScale;
     }
 }

@@ -76,7 +76,7 @@ public class AudioTimeSyncController : MonoBehaviour,
 
     private void Awake() => Instance = this;
 
-    private float songSpeed = 10f;
+    public float SongSpeed = 10f;
 
     public int GridMeasureSnapping
     {
@@ -221,7 +221,7 @@ public class AudioTimeSyncController : MonoBehaviour,
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                var time = currentSeconds + (audioLatencyCompensationSeconds * (songSpeed / 10f));
+                var time = currentSeconds + (audioLatencyCompensationSeconds * (SongSpeed / 10f));
 
                 // Slightly more accurate than songAudioSource.time
                 var trackTime = CurrentAudioSeconds;
@@ -233,7 +233,7 @@ public class AudioTimeSyncController : MonoBehaviour,
                 {
                     // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
                     var frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
-                    if (Mathf.Abs(trackTime - time) >= frameTime * (songSpeed / 10f))
+                    if (Mathf.Abs(trackTime - time) >= frameTime * (SongSpeed / 10f))
                     {
                         time = trackTime;
                         correction = 1;
@@ -248,8 +248,8 @@ public class AudioTimeSyncController : MonoBehaviour,
                 // Add frame time to current time
                 CurrentSeconds =
                     time
-                    + (correction * (Time.deltaTime * (songSpeed / 10f)))
-                    - (audioLatencyCompensationSeconds * (songSpeed / 10f));
+                    + (correction * (Time.deltaTime * (SongSpeed / 10f)))
+                    - (audioLatencyCompensationSeconds * (SongSpeed / 10f));
             }
         }
         catch (Exception e)
@@ -375,8 +375,7 @@ public class AudioTimeSyncController : MonoBehaviour,
                 var targetJsonTime = Mathf.Max(minimumJsonTime, CurrentJsonTime + beatShiftRaw);
                 if (Mathf.Approximately(targetJsonTime, CurrentJsonTime)) return;
 
-                MoveToJsonTime(targetJsonTime);
-                if (snapped) SnapToGrid(true);
+                MoveToJsonTime(GetCursorIntervalTargetJsonTime(targetJsonTime, snapped));
             }
         }
     }
@@ -458,8 +457,8 @@ public class AudioTimeSyncController : MonoBehaviour,
         if (!context.performed) return;
 
         var snapped = IsSnapped;
-        CurrentJsonTime += (1f / gridMeasureSnapping);
-        if (snapped) SnapToGrid(true);
+        var targetJsonTime = CurrentJsonTime + (1f / gridMeasureSnapping);
+        CurrentJsonTime = GetCursorIntervalTargetJsonTime(targetJsonTime, snapped);
     }
 
     public void OnMoveCursorBackward(InputAction.CallbackContext context)
@@ -473,13 +472,17 @@ public class AudioTimeSyncController : MonoBehaviour,
         var targetJsonTime = Mathf.Max(minimumJsonTime, CurrentJsonTime - (1f / gridMeasureSnapping));
         if (Mathf.Approximately(targetJsonTime, CurrentJsonTime)) return;
 
-        CurrentJsonTime = targetJsonTime;
-        if (snapped) SnapToGrid(true);
+        CurrentJsonTime = GetCursorIntervalTargetJsonTime(targetJsonTime, snapped);
     }
+
+    // Resolve snapping before publishing the new time. Moving and then snapping refreshed the entire
+    // preview twice for one wheel or cursor nudge, including exact 1/64-beat steps.
+    private float GetCursorIntervalTargetJsonTime(float targetJsonTime, bool snapped) =>
+        snapped && !IsPlaying ? GetNearestGridLineJsonTime(targetJsonTime) : targetJsonTime;
 
     private void UpdateSongVolume(object obj) => SongAudioSource.volume = (float)obj;
 
-    private void UpdateSongSpeed(object obj) => songSpeed = (float)obj;
+    private void UpdateSongSpeed(object obj) => SongSpeed = (float)obj;
 
     private void UpdateTrackLength(object _) => UpdateMovables();
 
@@ -550,7 +553,7 @@ public class AudioTimeSyncController : MonoBehaviour,
             SongAudioSource.Play();
 
             audioLatencyCompensationSeconds = Settings.Instance.AudioLatencyCompensation / 1000f;
-            CurrentSeconds -= audioLatencyCompensationSeconds * (songSpeed / 10f);
+            CurrentSeconds -= audioLatencyCompensationSeconds * (SongSpeed / 10f);
         }
         else
         {

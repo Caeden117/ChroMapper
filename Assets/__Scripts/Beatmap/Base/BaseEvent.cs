@@ -61,8 +61,10 @@ namespace Beatmap.Base
         protected float? customSpeed;
 
 
+        // Beat Saber retains -1 as the first-color fixed fade in both map formats.
         public bool IsBlue =>
-            Value == (int)LightValue.BlueOn
+            Value == -1
+            || Value == (int)LightValue.BlueOn
             || Value == (int)LightValue.BlueFlash
             || Value == (int)LightValue.BlueFade
             || Value == (int)LightValue.BlueTransition;
@@ -93,7 +95,10 @@ namespace Beatmap.Base
             || Value == (int)LightValue.WhiteFlash;
 
         public bool IsFade =>
-            Value == (int)LightValue.BlueFade || Value == (int)LightValue.RedFade || Value == (int)LightValue.WhiteFade;
+            Value == -1
+            || Value == (int)LightValue.BlueFade
+            || Value == (int)LightValue.RedFade
+            || Value == (int)LightValue.WhiteFade;
 
         public bool IsTransition =>
             Value == (int)LightValue.BlueTransition
@@ -105,24 +110,29 @@ namespace Beatmap.Base
 
         public virtual int CustomPropID { get; set; } = -1;
 
+        // PropID is a native V2 selector, while CustomPropID is derived from the editor's sorted lanes.
+        public int? CustomLegacyPropID { get; private set; }
+
         public virtual int[] CustomLightID
         {
             get => customLightID;
-            set
-            {
-                if (value == null || value.Length == 0)
-                {
-                    customLightID = null;
-                    return;
-                }
-
-                customLightID = value;
-            }
+            set => customLightID = value;
         }
 
-        public virtual string CustomLerpType { get; set; }
+        private SerializedChromaEnumName customLerpType;
+        private SerializedChromaEnumName customEasing;
 
-        public virtual string CustomEasing { get; set; }
+        public virtual string CustomLerpType
+        {
+            get => customLerpType.RuntimeName;
+            set => customLerpType.SetLerpName(value);
+        }
+
+        public virtual string CustomEasing
+        {
+            get => customEasing.RuntimeName;
+            set => customEasing.SetEasingName(value);
+        }
 
         public virtual string CustomNameFilter { get; set; }
 
@@ -357,6 +367,12 @@ namespace Beatmap.Base
         {
             base.ParseCustom();
 
+            CustomLegacyPropID = Settings.Instance.MapVersion == 2
+                && (CustomData?.HasKey(CustomKeyPropID) ?? false)
+                && CustomData[CustomKeyPropID].IsNumber
+                ? CustomData[CustomKeyPropID].AsInt
+                : null;
+
             if (CustomData?.HasKey(CustomKeyLightID) ?? false)
             {
                 var temp = CustomData[CustomKeyLightID];
@@ -375,21 +391,19 @@ namespace Beatmap.Base
                 CustomLightGradient = new ChromaLightGradient(
                     gradient["_startColor"],
                     gradient["_endColor"],
-                    gradient["_duration"],
-                    gradient["_easing"]);
+                    gradient["_duration"]);
+                CustomLightGradient.SetSerializedEasing(gradient["_easing"]);
             }
             else
             {
                 CustomLightGradient = null;
             }
 
-            CustomLerpType = (CustomData?.HasKey(CustomKeyLerpType) ?? false)
-                ? CustomData?[CustomKeyLerpType].Value
-                : null;
+            customLerpType.SetSerializedLerp(CustomData?[CustomKeyLerpType]);
             CustomNameFilter = (CustomData?.HasKey(CustomKeyNameFilter) ?? false)
                 ? CustomData?[CustomKeyNameFilter].Value
                 : null;
-            CustomEasing = (CustomData?.HasKey(CustomKeyEasing) ?? false) ? CustomData?[CustomKeyEasing].Value : null;
+            customEasing.SetSerializedEasing(CustomData?[CustomKeyEasing]);
             CustomStep = (CustomData?.HasKey(CustomKeyStep) ?? false) ? CustomData?[CustomKeyStep].AsFloat : null;
             CustomProp = (CustomData?.HasKey(CustomKeyProp) ?? false) ? CustomData?[CustomKeyProp].AsFloat : null;
             CustomSpeed = (CustomData?.HasKey(CustomKeySpeed) ?? false) ? CustomData?[CustomKeySpeed].AsFloat : null;
@@ -441,18 +455,12 @@ namespace Beatmap.Base
                 node.Remove(CustomKeyLightGradient);
             }
 
-            if (CustomLerpType != null)
-                node[CustomKeyLerpType] = CustomLerpType;
-            else
-                node.Remove(CustomKeyLerpType);
+            customLerpType.WriteTo(node, CustomKeyLerpType);
             if (CustomNameFilter != null)
                 node[CustomKeyNameFilter] = CustomNameFilter;
             else
                 node.Remove(CustomKeyNameFilter);
-            if (CustomEasing != null)
-                node[CustomKeyEasing] = CustomEasing;
-            else
-                node.Remove(CustomKeyEasing);
+            customEasing.WriteTo(node, CustomKeyEasing);
             if (CustomStep != null)
                 node[CustomKeyStep] = CustomStep;
             else

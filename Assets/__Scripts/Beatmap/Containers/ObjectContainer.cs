@@ -135,5 +135,7 @@ namespace Beatmap.Containers
                         : currentOutlineColor);
             SelectionMpbController.ApplyChanges();
         }
+
+        public virtual void HandleModelChanged() { }
     }
 }

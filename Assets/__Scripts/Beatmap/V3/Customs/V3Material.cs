@@ -18,7 +18,10 @@ namespace Beatmap.V3.Customs
             var node = new JSONObject();
             if (material.Color != null) node[KeyColor] = material.Color;
             node[KeyShader] = material.Shader;
-            if (material.Track != null) node[KeyTrack] = material.Track;
+            if (material.TrackData != null)
+            {
+                node[KeyTrack] = material.TrackData.Clone();
+            }
             // An empty keyword array explicitly clears shader keywords, so it must be exported.
             if (material.ShaderKeywords != null)
             {

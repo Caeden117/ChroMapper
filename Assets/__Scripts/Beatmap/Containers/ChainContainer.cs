@@ -21,6 +21,7 @@ namespace Beatmap.Containers
         [Header("Indicator")] [SerializeField] private List<ChainIndicatorContainer> indicators;
         public List<ChainComponentsFetcher> Nodes = new();
 
+        public AssignObjectPrefabManager AssignObjectPrefabManager;
         public BaseChain ChainData;
 
         public GameObject TailObject;
@@ -41,15 +42,59 @@ namespace Beatmap.Containers
         protected override void RegisterCallback() => VisualSettings.OnChainLinkModelChanged += HandleModelChanged;
         protected override void UnregisterCallback() => VisualSettings.OnChainLinkModelChanged -= HandleModelChanged;
 
-        private void HandleModelChanged()
+        public override void HandleModelChanged()
         {
+            if (ChainData == null) return;
+
             var vm = ChainData is { Color: (int)NoteColor.Blue }
                 ? VisualSettings.GetBurstSliderRightModel()
                 : VisualSettings.GetBurstSliderLeftModel();
-            foreach (var cpf in Nodes)
+            var defaultModel = vm;
+
+            if (ChainData.CustomTrack != null && AssignObjectPrefabManager != null)
             {
-                cpf.ModelController.Set(vm);
-                cpf.DotMpbController.gameObject.SetActive(!vm.DisableAux);
+                if (ChainData.CustomTrack.IsString)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(
+                        TrackModelState.Kind.BurstSliderElement,
+                        ChainData.CustomTrack);
+                    if (result.HasOverride && result.OverrideModel != null) vm = result.OverrideModel;
+                    foreach (var cpf in Nodes)
+                    {
+                        cpf.ModelController.Set(vm);
+                        cpf.DotMpbController.gameObject.SetActive(
+                            !(result.AdditiveModels.Contains(null) ? defaultModel : vm).DisableAux);
+                    }
+
+                    foreach (var model in result.AdditiveModels)
+                    foreach (var cpf in Nodes)
+                        cpf.ModelController.Add(model != null ? model : defaultModel);
+                }
+                else if (ChainData.CustomTrack.IsArray)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(
+                        TrackModelState.Kind.BurstSliderElement,
+                        ChainData.CustomTrack.Children.Select(x => (string)x).ToArray());
+                    if (result.HasOverride && result.OverrideModel != null) vm = result.OverrideModel;
+                    foreach (var cpf in Nodes)
+                    {
+                        cpf.ModelController.Set(vm);
+                        cpf.DotMpbController.gameObject.SetActive(
+                            !(result.AdditiveModels.Contains(null) ? defaultModel : vm).DisableAux);
+                    }
+
+                    foreach (var model in result.AdditiveModels)
+                    foreach (var cpf in Nodes)
+                        cpf.ModelController.Add(model != null ? model : defaultModel);
+                }
+            }
+            else
+            {
+                foreach (var cpf in Nodes)
+                {
+                    cpf.ModelController.Set(vm);
+                    cpf.DotMpbController.gameObject.SetActive(!vm.DisableAux);
+                }
             }
         }
 
@@ -215,23 +260,23 @@ namespace Beatmap.Containers
 
         public void SetColor(Color c)
         {
-            var arrowColor = Color.Lerp(c, Color.white, Settings.Instance.ArrowColorWhiteBlend);
-
             MpbController.Mpb.SetColor(ColorId, c);
             MpbController.Mpb.SetFloat(colorMultiplierId, Settings.Instance.NoteColorMultiplier);
-
-            foreach (var cpf in Nodes)
+            for (var i = 0; i < Nodes.Count; i++)
             {
-                cpf.ModelController.MpbController.Mpb.SetColor(ColorId, c);
-                cpf.ModelController.MpbController.Mpb.SetFloat(
-                    colorMultiplierId,
-                    Settings.Instance.NoteColorMultiplier);
-
-                cpf.DotMpbController.Mpb.SetColor(ColorId, arrowColor);
-                cpf.DotMpbController.Mpb.SetFloat(colorMultiplierId, Settings.Instance.ArrowColorMultiplier);
+                SetNodeColor(i, c);
             }
-
             UpdateMaterials();
+        }
+
+        internal void SetNodeColor(int index, Color color)
+        {
+            var node = Nodes[index];
+            var arrowColor = Color.Lerp(color, Color.white, Settings.Instance.ArrowColorWhiteBlend);
+            node.ModelController.MpbController.Mpb.SetColor(ColorId, color);
+            node.ModelController.MpbController.Mpb.SetFloat(colorMultiplierId, Settings.Instance.NoteColorMultiplier);
+            node.DotMpbController.Mpb.SetColor(ColorId, arrowColor);
+            node.DotMpbController.Mpb.SetFloat(colorMultiplierId, Settings.Instance.ArrowColorMultiplier);
         }
 
         internal override void UpdateMaterials()

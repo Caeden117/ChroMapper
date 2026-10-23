@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BloomfogRenderingController : MonoBehaviour
@@ -66,6 +67,10 @@ public class BloomfogRenderingController : MonoBehaviour
         Shader.PropertyToID("_CustomFogTextureToScreenRatio");
     private static readonly int stereoCameraEyeOffsetsId =
         Shader.PropertyToID("_StereoCameraEyeOffsets");
+    private static readonly int customFogOffsetId = Shader.PropertyToID("_CustomFogOffset");
+    private static readonly int customFogStartYId = Shader.PropertyToID("_CustomFogHeightFogStartY");
+    private static readonly int customFogHeightId = Shader.PropertyToID("_CustomFogHeightFogHeight");
+    private static readonly int customFogAttenuationId = Shader.PropertyToID("_CustomFogAttenuation");
 
     [SerializeField] private Shader blurShader;
     [SerializeField] private BeatmapRuntimeContext context;
@@ -83,6 +88,10 @@ public class BloomfogRenderingController : MonoBehaviour
     [SerializeField] private float finalUpscaleBrightness = 0.25f;
 
     private Camera activeCamera;
+    public VivifyCameraManager VivifyCameras { get; set; }
+    /// <summary>Lets an authored map skybox replace the generated fog skybox during camera draws.</summary>
+    public bool MapSkyboxOverride { get; set; }
+    private readonly Dictionary<Camera, CameraRenderState> cameraRenderStates = new();
     private Material blurMaterial;
     private CameraClearFlags previousClearFlags;
     private int previousSkyboxLayerMask;
@@ -195,6 +204,7 @@ public class BloomfogRenderingController : MonoBehaviour
         RegenerateRenderTexture();
 
         active = true;
+        Camera.onPreCull += OnCameraPreCull;
         Camera.onPreRender += OnCameraPreRender;
         Camera.onPostRender += OnCameraPostRender;
         if (context != null)
@@ -210,10 +220,13 @@ public class BloomfogRenderingController : MonoBehaviour
 
     private void Deactivate()
     {
+        foreach (var entry in cameraRenderStates) RestoreCameraState(entry.Key, entry.Value);
+        cameraRenderStates.Clear();
         var wasActive = active;
         if (active)
         {
             active = false;
+            Camera.onPreCull -= OnCameraPreCull;
             Camera.onPreRender -= OnCameraPreRender;
             Camera.onPostRender -= OnCameraPostRender;
             if (context != null)
@@ -238,12 +251,38 @@ public class BloomfogRenderingController : MonoBehaviour
         ClearRenderTextures();
     }
 
+    private void OnCameraPreCull(Camera renderingCamera)
+    {
+        var capture = VivifyCameras?.IsCaptureCamera(renderingCamera) == true;
+        if (renderingCamera != activeCamera && !capture) return;
+        if (bloomfogRaw == null || bloomfogTex == null ||
+            !bloomfogRaw.IsCreated() || !bloomfogTex.IsCreated()) return;
+
+        var enabledForCamera = VivifyCameras?.BloomPrePassEnabled(renderingCamera) != false;
+        var restoreGlobals = capture || !enabledForCamera;
+        var changeClearFlags = MapSkyboxOverride && VivifyCameras?.HasClearFlagsOverride(renderingCamera) != true;
+        cameraRenderStates[renderingCamera] = new CameraRenderState(
+            restoreGlobals, restoreGlobals ? CaptureGlobalState() : default,
+            changeClearFlags, renderingCamera.clearFlags,
+            skyboxQuadRenderer != null && skyboxQuadRenderer.enabled);
+        if (changeClearFlags) renderingCamera.clearFlags = CameraClearFlags.Skybox;
+        if (skyboxQuadRenderer != null)
+            skyboxQuadRenderer.enabled = enabledForCamera && !MapSkyboxOverride;
+    }
+
     // Publish the completed fog texture before the camera consumes it.
     private void OnCameraPreRender(Camera renderingCamera)
     {
-        if (renderingCamera != activeCamera) return;
-        if (bloomfogRaw == null || bloomfogTex == null ||
-            !bloomfogRaw.IsCreated() || !bloomfogTex.IsCreated()) return;
+        if (!cameraRenderStates.ContainsKey(renderingCamera)) return;
+        var enabledForCamera = VivifyCameras?.BloomPrePassEnabled(renderingCamera) != false;
+
+        if (!enabledForCamera)
+        {
+            SetKeyword(bloomFogKeyword, false);
+            Shader.SetGlobalTexture(bloomPrePassTextureId, Texture2D.blackTexture);
+            Shader.SetGlobalVector(customFogTextureToScreenRatioId, Vector4.zero);
+            return;
+        }
 
         // This shader consumes clip-space quad vertices, so a skybox-cube draw would duplicate the fog.
         SuppressRenderSettingsSkybox();
@@ -253,7 +292,7 @@ public class BloomfogRenderingController : MonoBehaviour
 
         // Match the native prepass: generate fog without sampling an earlier fog result.
         Shader.SetGlobalTexture(bloomPrePassTextureId, Texture2D.blackTexture);
-        bloomfogRenderer.RenderToTexture(activeCamera, bloomfogRaw, out _);
+        bloomfogRenderer.RenderToTexture(renderingCamera, bloomfogRaw, out _, VivifyCameras);
         RenderBloomTexture(bloomfogRaw, bloomfogTex, upscalePass);
         Shader.SetGlobalTexture(bloomPrePassTextureId, bloomfogTex);
         bloomfogRenderer.PublishGlobals();
@@ -363,8 +402,23 @@ public class BloomfogRenderingController : MonoBehaviour
 
     private void OnCameraPostRender(Camera renderingCamera)
     {
-        if (renderingCamera != activeCamera || bloomFogKeywordWasEnabled) return;
-        SetKeyword(bloomFogKeyword, false);
+        RestoreCameraState(renderingCamera);
+        if (renderingCamera == activeCamera && !bloomFogKeywordWasEnabled)
+            SetKeyword(bloomFogKeyword, false);
+    }
+
+    /// <summary>Restores globals and temporary camera changes after a render, including a failed capture.</summary>
+    public void RestoreCameraState(Camera camera)
+    {
+        if (ReferenceEquals(camera, null) || !cameraRenderStates.Remove(camera, out var state)) return;
+        RestoreCameraState(camera, state);
+    }
+
+    private void RestoreCameraState(Camera camera, CameraRenderState state)
+    {
+        if (state.RestoreGlobals) RestoreGlobalState(state.Globals);
+        if (state.RestoreClearFlags && camera != null) camera.clearFlags = state.ClearFlags;
+        if (skyboxQuadRenderer != null) skyboxQuadRenderer.enabled = state.SkyboxQuadEnabled;
     }
 
     private void HandleEnvironmentLoaded(EnvironmentDescriptor descriptor)
@@ -376,24 +430,12 @@ public class BloomfogRenderingController : MonoBehaviour
             return;
         }
 
-        UpdateBloomFogParams(
-            descriptor.BloomFogParams.AutoExposureLimit,
-            descriptor.BloomFogParams.Offset,
-            descriptor.BloomFogParams.Height,
-            descriptor.BloomFogParams.StartY,
-            descriptor.BloomFogParams.Attenuation,
-            descriptor.BloomFogParams.LegacyAutoExposure);
+        HandleBloomFogParamsChanged(descriptor.BloomFogParams);
     }
 
-    // Use the normal parameter writer so late component overrides update shader globals as well as descriptor state.
     private void HandleBloomFogParamsChanged(BloomFogParams parameters) =>
-        UpdateBloomFogParams(
-            parameters.AutoExposureLimit,
-            parameters.Offset,
-            parameters.Height,
-            parameters.StartY,
-            parameters.Attenuation,
-            parameters.LegacyAutoExposure);
+        UpdateBloomFogParams(parameters.AutoExposureLimit, parameters.Offset, parameters.Height,
+            parameters.StartY, parameters.Attenuation, parameters.LegacyAutoExposure);
 
     private void HandleEnvironmentUnloaded() =>
         UpdateBloomFogParams(
@@ -488,6 +530,7 @@ public class BloomfogRenderingController : MonoBehaviour
 
     private void SuppressRenderSettingsSkybox()
     {
+        if (MapSkyboxOverride) return;
         if (!renderSettingsSkyboxSuppressed)
         {
             previousRenderSettingsSkybox = RenderSettings.skybox;
@@ -506,6 +549,14 @@ public class BloomfogRenderingController : MonoBehaviour
         renderSettingsSkyboxSuppressed = false;
     }
 
+    /// <summary>Restores animated fog globals for the active owning context after other events write them.</summary>
+    /// <remarks>Only changed native values are written. Parameters are borrowed from the context descriptor.</remarks>
+    public void ReconcileBloomFogParams(BeatmapRuntimeContext owner, BloomFogParams parameters)
+    {
+        if (!active || context != owner || parameters == null) return;
+        HandleBloomFogParamsChanged(parameters);
+    }
+
     private void UpdateBloomFogParams(
         float autoExposureLimit,
         float offset,
@@ -516,10 +567,14 @@ public class BloomfogRenderingController : MonoBehaviour
     {
         bloomFogAutoExposureLimit = autoExposureLimit;
         bloomFogLegacyAutoExposure = legacyAutoExposure;
-        Shader.SetGlobalFloat("_CustomFogOffset", offset);
-        Shader.SetGlobalFloat("_CustomFogHeightFogStartY", startY);
-        Shader.SetGlobalFloat("_CustomFogHeightFogHeight", height);
-        Shader.SetGlobalFloat("_CustomFogAttenuation", attenuation);
+        if (Shader.GetGlobalFloat(customFogOffsetId) != offset)
+            Shader.SetGlobalFloat(customFogOffsetId, offset);
+        if (Shader.GetGlobalFloat(customFogStartYId) != startY)
+            Shader.SetGlobalFloat(customFogStartYId, startY);
+        if (Shader.GetGlobalFloat(customFogHeightId) != height)
+            Shader.SetGlobalFloat(customFogHeightId, height);
+        if (Shader.GetGlobalFloat(customFogAttenuationId) != attenuation)
+            Shader.SetGlobalFloat(customFogAttenuationId, attenuation);
     }
 
     private void ClearRenderTextures()
@@ -637,6 +692,25 @@ public class BloomfogRenderingController : MonoBehaviour
         if (Application.isPlaying) Destroy(texture);
         else DestroyImmediate(texture);
         texture = null;
+    }
+
+    private readonly struct CameraRenderState
+    {
+        public readonly bool RestoreGlobals;
+        public readonly GlobalState Globals;
+        public readonly bool RestoreClearFlags;
+        public readonly CameraClearFlags ClearFlags;
+        public readonly bool SkyboxQuadEnabled;
+
+        public CameraRenderState(bool restoreGlobals, GlobalState globals,
+            bool restoreClearFlags, CameraClearFlags clearFlags, bool skyboxQuadEnabled)
+        {
+            RestoreGlobals = restoreGlobals;
+            Globals = globals;
+            RestoreClearFlags = restoreClearFlags;
+            ClearFlags = clearFlags;
+            SkyboxQuadEnabled = skyboxQuadEnabled;
+        }
     }
 
     private struct Level

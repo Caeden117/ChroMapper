@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 namespace Beatmap.Animations
@@ -19,324 +21,228 @@ namespace Beatmap.Animations
         internal const string BaseEnvironmentColorWBoostKey = "baseEnvironmentColorWBoost";
     }
 
-    // Resolves base* point values from the editor's current camera, colors, song time, and movement settings.
+    // Owns live base values and their shared sampling state for every animation consumer.
     internal static class BaseProviderManager
     {
-        private static readonly Dictionary<string, IPointDefinition.IValueSegment> BaseSegments = BuildSegments();
-        private static readonly Dictionary<string, IPointDefinition.IValueSegment> ResolvedSegments = new();
-        private static readonly List<SmoothedValues> Smoothed = new();
-        private static int lastTickFrame = -1;
-        private static CameraManager boundCameraManager;
+        private static readonly Dictionary<string, ProviderSource> providerSources = new();
+        private static readonly Dictionary<string, ProviderValue> providerValues = new();
+        private static CameraManager cameraManager;
         private static VariableNJSProvider variableNjsProvider;
+        private static AudioTimeSyncController audioTimeSyncController;
+        private static int sampleFrame = -1;
+        private static float sampleTime;
+        private static bool sampleReset;
+        internal static int SampleVersion { get; private set; }
+        internal static bool ResetSmoothing => sampleReset;
 
-        // Advance smoothing once per frame, even when point definitions are reused.
-        internal static void Tick()
+        // Providers share the same clock and smoothing state across typed and untyped curves.
+        internal static void BeginSample(float time, bool seek = false)
         {
-            if (Time.frameCount == lastTickFrame) return;
-            lastTickFrame = Time.frameCount;
-            foreach (var segment in Smoothed)
-            {
-                segment.Tick();
-            }
+            if (!seek && sampleFrame == Time.frameCount && sampleTime == time) return;
+            sampleFrame = Time.frameCount;
+            sampleTime = time;
+            sampleReset = seek;
+            ++SampleVersion;
+            foreach (var source in providerSources.Values) source.Sample();
+            foreach (var value in providerValues.Values) value.Sample(seek);
         }
 
-        // Bind scene references once so evaluating points does not search for objects each frame.
-        internal static void BindSceneReferences(CameraManager cameraManager, VariableNJSProvider njsProvider)
+        internal static void BeginSample()
         {
-            boundCameraManager = cameraManager;
-            variableNjsProvider = njsProvider;
+            if (sampleFrame != Time.frameCount)
+                BeginSample(audioTimeSyncController != null ? audioTimeSyncController.CurrentJsonTime : sampleTime);
         }
 
-        // Discard cached provider chains on map load; camera and movement references belong to the scene.
+        internal static void Tick() => BeginSample();
+
+        internal static void BindSceneReferences(CameraManager cameras, VariableNJSProvider movement,
+            AudioTimeSyncController audioTime = null)
+        {
+            cameraManager = cameras;
+            variableNjsProvider = movement;
+            audioTimeSyncController = audioTime;
+        }
+
+        // New smoothing chains begin at their native default. Explicit seeks still reset held inputs.
         internal static void ResetForMapLoad()
         {
-            ResolvedSegments.Clear();
-            Smoothed.Clear();
-            lastTickFrame = Time.frameCount;
+            providerSources.Clear();
+            providerValues.Clear();
+            sampleFrame = Time.frameCount;
+            sampleTime = audioTimeSyncController != null ? audioTimeSyncController.CurrentJsonTime : 0f;
+            sampleReset = false;
+            ++SampleVersion;
         }
 
-        // Unknown providers are logged and skipped rather than aborting map loading.
-        internal static IPointDefinition.IValueSegment Resolve(
-            string key,
-            AnimationLogContext logContext = default,
-            int pointIndex = -1)
+        internal static IEnumerable<Func<float>> GetBaseGetter(string modifier)
         {
-            if (BaseSegments.TryGetValue(key, out var segment))
-                return segment;
-
-            if (ResolvedSegments.TryGetValue(key, out segment))
-                return segment;
-
-            var dot = key.IndexOf('.');
-            if (dot <= 0 || !BaseSegments.TryGetValue(key[..dot], out var source))
+            var parts = modifier.Split('.');
+            var name = parts[0];
+            if (!providerSources.TryGetValue(name, out var source))
             {
-                Debug.LogError($"Could not find base provider [{key}]; the point was skipped. {logContext.Describe(pointIndex)}");
-                return null;
+                source = new ProviderSource(name);
+                providerSources.Add(name, source);
+                source.Sample();
             }
-
-            IPointDefinition.IValueSegment current = source;
-            var remaining = key[(dot + 1)..];
-            while (remaining.Length > 0)
+            if (!providerValues.TryGetValue(name, out var provider))
+                providerValues.Add(name, provider = new ProviderValue(source));
+            var prefix = name;
+            for (var part = 1; part < parts.Length; part++)
             {
-                var nextDot = remaining.IndexOf('.');
-                var suffix = nextDot < 0 ? remaining : remaining[..nextDot];
-                if (suffix.Length > 1 && suffix[0] == 's'
-                    && float.TryParse(suffix[1..].Replace('_', '.'), out var smoothMult))
+                var suffix = parts[part];
+                // Retain decimal .s0.5 syntax while accepting Heck's .s0_5 form and chained suffixes.
+                if (suffix.Length > 1 && suffix[0] == 's' && part + 1 < parts.Length
+                    && parts[part + 1].Length > 0 && parts[part + 1].All(char.IsDigit))
+                    suffix += "." + parts[++part];
+                prefix += "." + suffix;
+                if (providerValues.TryGetValue(prefix, out var resolved))
                 {
-                    // The .s suffix uses underscores for decimal places. Cache each chain so its points share smoothing state.
-                    var smoothedSegment = new SmoothedValues(current, smoothMult);
-                    Smoothed.Add(smoothedSegment);
-                    current = smoothedSegment;
+                    provider = resolved;
+                    continue;
                 }
+                if (suffix.Length > 1 && suffix[0] == 's'
+                    && float.TryParse(suffix.Substring(1).Replace('_', '.'), NumberStyles.Float,
+                        CultureInfo.InvariantCulture, out var factor))
+                    resolved = new ProviderValue(provider, factor);
                 else
                 {
                     var indices = new int[suffix.Length];
-                    for (var i = 0; i < suffix.Length; ++i)
+                    if (indices.Length == 0) throw new FormatException($"Base provider [{modifier}] has an empty suffix.");
+                    for (var i = 0; i < indices.Length; i++)
                     {
-                        indices[i] = suffix[i] switch
-                        {
-                            'x' => 0,
-                            'y' => 1,
-                            'z' => 2,
-                            'w' => 3,
-                            _ => -1
-                        };
-                        if (indices[i] < 0 || indices[i] >= current.Dimension)
-                        {
-                            Debug.LogError($"Base provider [{key}] has an invalid swizzle [{suffix}]; the point was skipped. {logContext.Describe(pointIndex)}");
-                            return null;
-                        }
+                        indices[i] = "xyzw".IndexOf(suffix[i]);
+                        if (indices[i] < 0 || indices[i] >= provider.Dimension)
+                            throw new FormatException($"Base provider [{modifier}] has an invalid swizzle [{suffix}].");
                     }
-
-                    current = new SwizzledValues(current, indices);
+                    resolved = new ProviderValue(provider, indices);
                 }
-
-                remaining = nextDot < 0 ? string.Empty : remaining[(nextDot + 1)..];
+                providerValues.Add(prefix, resolved);
+                provider = resolved;
             }
-
-            ResolvedSegments[key] = current;
-            return current;
-        }
-
-        private static Transform HeadTransform()
-        {
-            // Head values follow the selected editing or playback camera.
-            var controller = boundCameraManager != null ? boundCameraManager.SelectedCameraController : null;
-            var camera = controller != null ? controller.Camera : null;
-            return camera != null ? camera.transform : null;
-        }
-
-        private static AudioTimeSyncController Atsc => AudioTimeSyncController.Instance;
-
-        private static float SongLength => BeatSaberSongContainer.Instance.LoadedSong.length;
-
-        private static float NoteJumpStartBeatOffset => BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteStartBeatOffset;
-
-        private static float NoteJumpSpeed =>
-            variableNjsProvider != null
-                ? variableNjsProvider.NoteJumpSpeed
-                : BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
-
-        private static float JumpDistance =>
-            variableNjsProvider != null ? variableNjsProvider.JumpDistance : 0f;
-
-        private static IPointDefinition.IValueSegment Live(int dimension, Action<float[], int> append) =>
-            new LiveValues(dimension, append);
-
-        private static Dictionary<string, IPointDefinition.IValueSegment> BuildSegments()
-        {
-            // The editor has no VR controllers, so hand providers return zero.
-            IPointDefinition.IValueSegment zero3 = new StaticValues(new float[3]);
-            IPointDefinition.IValueSegment zero1 = new StaticValues(new float[1]);
-            return new Dictionary<string, IPointDefinition.IValueSegment>
+            for (var component = 0; component < provider.Dimension; component++)
             {
-                ["baseHeadPosition"] = Live(3, WriteHeadPosition),
-                ["baseHeadLocalPosition"] = Live(3, WriteHeadLocalPosition),
-                ["baseHeadRotation"] = Live(3, WriteHeadRotation),
-                ["baseHeadLocalRotation"] = Live(3, WriteHeadLocalRotation),
-                ["baseHeadLocalScale"] = Live(3, WriteHeadLocalScale),
-                ["baseLeftHandPosition"] = zero3,
-                ["baseLeftHandLocalPosition"] = zero3,
-                ["baseLeftHandRotation"] = zero3,
-                ["baseLeftHandLocalRotation"] = zero3,
-                ["baseLeftHandLocalScale"] = zero3,
-                ["baseRightHandPosition"] = zero3,
-                ["baseRightHandLocalPosition"] = zero3,
-                ["baseRightHandRotation"] = zero3,
-                ["baseRightHandLocalRotation"] = zero3,
-                ["baseRightHandLocalScale"] = zero3,
-
-                // Read the original scheme colors, before the editor mirrors note colors for left-handed mode.
-                [BaseColorProviderKeys.BaseNote0ColorKey] = Live(4, (t, o) => WriteSchemeColor(scheme => scheme.LeftNoteColor, t, o)),
-                [BaseColorProviderKeys.BaseNote1ColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
-                [BaseColorProviderKeys.BaseObstaclesColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.ObstacleColor, t, o)),
-                [BaseColorProviderKeys.BaseSaberAColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.LeftNoteColor, t, o)),
-                [BaseColorProviderKeys.BaseSaberBColorKey] = Live(4, (t, o) => WriteSchemeColor(s => s.RightNoteColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColor0Key] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColor1Key] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColorWKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColor0BoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentLeftBoostColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColor1BoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentRightBoostColor, t, o)),
-                [BaseColorProviderKeys.BaseEnvironmentColorWBoostKey] = Live(4, (t, o) => WriteSchemeColor(s => s.EnvironmentWhiteBoostColor, t, o)),
-
-                // The preview has no gameplay score. Keep score values at their initial state while song time stays live.
-                ["baseCombo"] = zero1,
-                ["baseMultipliedScore"] = zero1,
-                ["baseImmediateMaxPossibleMultipliedScore"] = zero1,
-                ["baseModifiedScore"] = zero1,
-                ["baseImmediateMaxPossibleModifiedScore"] = zero1,
-                ["baseRelativeScore"] = zero1,
-                ["baseMultiplier"] = Live(1, (t, o) => t[o] = 1f),
-                ["baseEnergy"] = Live(1, (t, o) => t[o] = 1f),
-                ["baseSongTime"] = Live(1, (t, o) => t[o] = Atsc != null ? Atsc.CurrentSeconds : 0f),
-                ["baseSongLength"] = Live(1, (t, o) => t[o] = SongLength),
-
-                ["baseNoteJumpMovementSpeed"] = Live(1, (t, o) => t[o] = NoteJumpSpeed),
-                ["baseNoteJumpStartBeatOffset"] = Live(1, (t, o) => t[o] = NoteJumpStartBeatOffset),
-                ["baseJumpDistance"] = Live(1, (t, o) => t[o] = JumpDistance),
-                ["basePlayerHeight"] = zero1
-            };
-        }
-
-        private static void WriteHeadPosition(float[] target, int offset)
-        {
-            var head = HeadTransform();
-            if (head != null) Copy(head.position, target, offset);
-        }
-
-        private static void WriteHeadLocalPosition(float[] target, int offset)
-        {
-            var head = HeadTransform();
-            if (head != null) Copy(head.localPosition, target, offset);
-        }
-
-        private static void WriteHeadRotation(float[] target, int offset)
-        {
-            var head = HeadTransform();
-            if (head != null) CopyEuler(head.rotation, target, offset);
-        }
-
-        private static void WriteHeadLocalRotation(float[] target, int offset)
-        {
-            var head = HeadTransform();
-            if (head != null) CopyEuler(head.localRotation, target, offset);
-        }
-
-        private static void WriteHeadLocalScale(float[] target, int offset)
-        {
-            var head = HeadTransform();
-            if (head != null) Copy(head.localScale, target, offset);
-        }
-
-        private static void WriteSchemeColor(Func<ColorSchemeSO, Color> selector, float[] target, int offset)
-        {
-            var scheme = PointDataParsers.ColorScheme;
-            WriteColor(scheme == null ? DefaultColors.White : selector(scheme), target, offset);
-        }
-
-        private static void Copy(Vector3 value, float[] target, int offset)
-        {
-            target[offset] = value.x;
-            target[offset + 1] = value.y;
-            target[offset + 2] = value.z;
-        }
-
-        private static void CopyEuler(Quaternion rotation, float[] target, int offset)
-        {
-            Copy(rotation.eulerAngles, target, offset);
-        }
-
-        private static void WriteColor(Color color, float[] target, int offset)
-        {
-            target[offset] = color.r;
-            target[offset + 1] = color.g;
-            target[offset + 2] = color.b;
-            target[offset + 3] = color.a;
-        }
-
-        private sealed class LiveValues : IPointDefinition.IValueSegment
-        {
-            private readonly int dimension;
-            private readonly Action<float[], int> append;
-
-            internal LiveValues(int dimension, Action<float[], int> append)
-            {
-                this.dimension = dimension;
-                this.append = append;
-            }
-
-            public int Dimension => dimension;
-
-            public void Append(float[] target, ref int offset)
-            {
-                append(target, offset);
-                offset += dimension;
+                var index = component;
+                yield return () =>
+                {
+                    BeginSample();
+                    provider.Sample(sampleReset);
+                    return provider.Value[index];
+                };
             }
         }
 
-        private sealed class SwizzledValues : IPointDefinition.IValueSegment
+        private sealed class ProviderSource
         {
-            private readonly IPointDefinition.IValueSegment source;
-            private readonly int[] parts;
-            private readonly float[] scratch;
+            private readonly string name;
+            public readonly int Dimension;
+            public Vector4 Value;
 
-            internal SwizzledValues(IPointDefinition.IValueSegment source, int[] parts)
+            public ProviderSource(string name)
+            {
+                this.name = name;
+                Dimension = name switch
+                {
+                    "baseHeadPosition" or "baseHeadLocalPosition" or "baseHeadRotation" or "baseHeadLocalRotation"
+                        or "baseHeadLocalScale" or "baseLeftHandPosition" or "baseLeftHandLocalPosition"
+                        or "baseLeftHandRotation" or "baseLeftHandLocalRotation" or "baseLeftHandLocalScale"
+                        or "baseRightHandPosition" or "baseRightHandLocalPosition" or "baseRightHandRotation"
+                        or "baseRightHandLocalRotation" or "baseRightHandLocalScale" => 3,
+                    "baseNote0Color" or "baseNote1Color" or "baseSaberAColor" or "baseSaberBColor"
+                        or "baseObstaclesColor" or "baseEnvironmentColor0" or "baseEnvironmentColor1"
+                        or "baseEnvironmentColorW" or "baseEnvironmentColor0Boost" or "baseEnvironmentColor1Boost"
+                        or "baseEnvironmentColorWBoost" => 4,
+                    "baseCombo" or "baseMultipliedScore" or "baseImmediateMaxPossibleMultipliedScore"
+                        or "baseModifiedScore" or "baseImmediateMaxPossibleModifiedScore" or "baseRelativeScore"
+                        or "baseMultiplier" or "baseEnergy" or "baseSongTime" or "baseSongLength"
+                        or "baseNoteJumpMovementSpeed" or "baseNoteJumpStartBeatOffset" or "baseJumpDistance"
+                        or "basePlayerHeight" => 1,
+                    _ => throw new FormatException($"Could not find base provider [{name}].")
+                };
+            }
+
+            public void Sample()
+            {
+                var controller = cameraManager != null ? cameraManager.SelectedCameraController : null;
+                var camera = controller != null ? controller.Camera : Camera.main;
+                var transform = camera != null ? camera.transform : null;
+                var colorScheme = PointDataParsers.ColorScheme;
+                var song = BeatSaberSongContainer.Instance;
+                var difficulty = song != null ? song.MapDifficultyInfo : null;
+                var seconds = audioTimeSyncController != null ? audioTimeSyncController.CurrentSeconds : 0f;
+                if (song != null && song.Map != null && song.Info != null && song.Info.BeatsPerMinute > 0)
+                    seconds = (song.Map.JsonTimeToSongBpmTime(sampleTime) ?? sampleTime) * 60f / song.Info.BeatsPerMinute;
+                Value = name switch
+                {
+                    "baseHeadPosition" => transform != null ? transform.position : Vector3.zero,
+                    "baseHeadLocalPosition" => transform != null ? transform.localPosition : Vector3.zero,
+                    "baseHeadRotation" => transform != null ? transform.eulerAngles : Vector3.zero,
+                    "baseHeadLocalRotation" => transform != null ? transform.localEulerAngles : Vector3.zero,
+                    "baseHeadLocalScale" => transform != null ? transform.localScale : Vector3.one,
+                    "baseNote0Color" or "baseSaberAColor" => colorScheme != null ? colorScheme.LeftNoteColor : Color.white,
+                    "baseNote1Color" or "baseSaberBColor" => colorScheme != null ? colorScheme.RightNoteColor : Color.white,
+                    "baseObstaclesColor" => colorScheme != null ? colorScheme.ObstacleColor : Color.white,
+                    "baseEnvironmentColor0" => colorScheme != null ? colorScheme.EnvironmentLeftColor : Color.white,
+                    "baseEnvironmentColor1" => colorScheme != null ? colorScheme.EnvironmentRightColor : Color.white,
+                    "baseEnvironmentColorW" => colorScheme != null ? colorScheme.EnvironmentWhiteColor : Color.white,
+                    "baseEnvironmentColor0Boost" => colorScheme != null ? colorScheme.EnvironmentLeftBoostColor : Color.white,
+                    "baseEnvironmentColor1Boost" => colorScheme != null ? colorScheme.EnvironmentRightBoostColor : Color.white,
+                    "baseEnvironmentColorWBoost" => colorScheme != null ? colorScheme.EnvironmentWhiteBoostColor : Color.white,
+                    "baseMultiplier" or "baseEnergy" => new Vector4(1, 0, 0, 0),
+                    "baseSongTime" => new Vector4(seconds, 0, 0, 0),
+                    "baseSongLength" => new Vector4(song != null && song.LoadedSong != null ? song.LoadedSong.length : 0, 0, 0, 0),
+                    "baseNoteJumpMovementSpeed" => new Vector4(variableNjsProvider != null ? variableNjsProvider.NoteJumpSpeed
+                        : difficulty != null ? difficulty.NoteJumpSpeed : 0, 0, 0, 0),
+                    "baseNoteJumpStartBeatOffset" => new Vector4(difficulty != null ? difficulty.NoteStartBeatOffset : 0, 0, 0, 0),
+                    "baseJumpDistance" => new Vector4(variableNjsProvider != null ? variableNjsProvider.JumpDistance : 0, 0, 0, 0),
+                    // The preview has no gameplay hands or score.
+                    _ => Vector4.zero
+                };
+            }
+        }
+
+        private sealed class ProviderValue
+        {
+            private readonly ProviderSource source;
+            private readonly ProviderValue parent;
+            private readonly int[] swizzle;
+            private readonly float? smoothing;
+            private int sampledVersion = -1;
+            public readonly float[] Value;
+            public int Dimension => Value.Length;
+
+            public ProviderValue(ProviderSource source)
             {
                 this.source = source;
-                this.parts = parts;
-                scratch = new float[source.Dimension];
+                Value = new float[source.Dimension];
             }
 
-            public int Dimension => parts.Length;
-
-            public void Append(float[] target, ref int offset)
+            public ProviderValue(ProviderValue parent, int[] swizzle)
             {
-                var innerOffset = 0;
-                source.Append(scratch, ref innerOffset);
-                for (var i = 0; i < parts.Length; ++i)
+                this.parent = parent;
+                this.swizzle = swizzle;
+                Value = new float[swizzle.Length];
+            }
+
+            public ProviderValue(ProviderValue parent, float smoothing)
+            {
+                this.parent = parent;
+                this.smoothing = smoothing;
+                Value = new float[parent.Dimension];
+            }
+
+            public void Sample(bool reset)
+            {
+                if (sampledVersion == SampleVersion) return;
+                sampledVersion = SampleVersion;
+                parent?.Sample(reset);
+                for (var i = 0; i < Value.Length; i++)
                 {
-                    target[offset + i] = scratch[parts[i]];
-                }
-
-                offset += parts.Length;
-            }
-        }
-
-        internal sealed class SmoothedValues : IPointDefinition.IValueSegment
-        {
-            private readonly IPointDefinition.IValueSegment source;
-            private readonly float mult;
-            private readonly float[] state;
-            private readonly float[] scratch;
-
-            internal SmoothedValues(IPointDefinition.IValueSegment source, float mult)
-            {
-                this.source = source;
-                this.mult = mult;
-                state = new float[source.Dimension];
-                scratch = new float[source.Dimension];
-            }
-
-            public int Dimension => state.Length;
-
-            public void Append(float[] target, ref int offset)
-            {
-                for (var i = 0; i < state.Length; ++i)
-                {
-                    target[offset + i] = state[i];
-                }
-
-                offset += state.Length;
-            }
-
-            internal void Tick()
-            {
-                var delta = Time.deltaTime * mult;
-                var offset = 0;
-                source.Append(scratch, ref offset);
-                for (var i = 0; i < state.Length; ++i)
-                {
-                    state[i] = Mathf.Lerp(state[i], scratch[i], delta);
+                    var input = source != null ? source.Value[i] : parent.Value[swizzle != null ? swizzle[i] : i];
+                    // A seek cannot reconstruct the user's prior camera movement. Reset its held input;
+                    // ordinary playback starts new smoothing chains at zero, matching Heck.
+                    Value[i] = smoothing.HasValue && !reset
+                        ? Mathf.Lerp(Value[i], input, smoothing.Value * TimeHelper.DeltaTime)
+                        : input;
                 }
             }
         }

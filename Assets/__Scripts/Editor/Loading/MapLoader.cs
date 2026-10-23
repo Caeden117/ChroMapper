@@ -12,6 +12,11 @@ public class MapLoader : MonoBehaviour
     [Space] [SerializeField] private Transform containerCollectionsContainer;
 
     private BaseDifficulty map;
+    private CustomEventManager customEventManager;
+
+    private CustomEventManager CustomEvents => customEventManager != null
+        ? customEventManager
+        : customEventManager = FindAnyObjectByType<CustomEventManager>();
 
     public void ResetAnimationTracks() => manager.ResetAnimationTracks();
 
@@ -36,8 +41,8 @@ public class MapLoader : MonoBehaviour
 
     public void HardRefresh()
     {
+        CustomEvents.SuspendForMapChange();
         manager.ResetAnimationTracks();
-
         LoadObjects(map.BpmEvents);
 
         if (Settings.Instance.Load_Others)
@@ -70,6 +75,8 @@ public class MapLoader : MonoBehaviour
         }
 
         manager.RefreshTracks();
+        if (!Settings.Instance.Load_Others) CustomEvents.LoadEvents(map, Enumerable.Empty<BaseCustomEvent>());
+        CustomEvents.UpdateTime();
     }
 
     // RestoringEditorCursorAfterCloningRingDoesNotUsePreCloneRotationSnapshot requires movement snapshots to observe
@@ -119,6 +126,7 @@ public class MapLoader : MonoBehaviour
         if (objects is List<BaseCustomEvent> customEventsList)
         {
             var events = collection as CustomEventGridContainer;
+            CustomEvents.LoadEvents(map, customEventsList);
             events.LoadAll();
         }
 
@@ -132,6 +140,7 @@ public class MapLoader : MonoBehaviour
         if (collection == null) return;
 
         collection.MapObjects = instructions;
+        manager.ClearComponentTargets();
         if (beatmapRuntimeContext.Descriptor != null)
             beatmapRuntimeContext.Descriptor.BloomFogParams.ResetToDefaults();
         beatmapRuntimeContext.NotifyEnvironment();

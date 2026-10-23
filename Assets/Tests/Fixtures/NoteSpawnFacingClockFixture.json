@@ -1,0 +1,34 @@
+{
+  "version": "3.3.0",
+  "colorNotes": [
+    {
+      "b": 10, "x": 0, "y": 1, "c": 0, "d": 3, "a": 0,
+      "customData": {
+        "track": "facingClock",
+        "noteJumpMovementSpeed": 14,
+        "noteJumpStartBeatOffset": 8,
+        "spawnEffect": false
+      }
+    }
+  ],
+  "customData": {
+    "fakeColorNotes": [
+      {
+        "b": 10, "x": 0, "y": 1, "c": 1, "d": 3, "a": 0,
+        "customData": {
+          "track": "facingClock",
+          "noteJumpMovementSpeed": 14,
+          "noteJumpStartBeatOffset": 8,
+          "spawnEffect": false,
+          "animation": { "definitePosition": [3, 1, 5] }
+        }
+      }
+    ],
+    "customEvents": [
+      { "b": 0, "t": "AnimateTrack", "d": { "track": "facingClock", "time": [0.001] } },
+      { "b": 0.5, "t": "AnimateTrack", "d": { "track": "facingClock", "time": [0.05] } },
+      { "b": 1, "t": "AnimateTrack", "d": { "track": "facingClock", "time": [0.125] } },
+      { "b": 2, "t": "AnimateTrack", "d": { "track": "facingClock", "time": [0.499] } }
+    ]
+  }
+}

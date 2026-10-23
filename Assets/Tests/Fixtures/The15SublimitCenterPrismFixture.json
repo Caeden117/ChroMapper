@@ -1,0 +1,29 @@
+{
+  "_version": "2.6.0",
+  "_events": [],
+  "_notes": [],
+  "_obstacles": [],
+  "_waypoints": [],
+  "_customData": {
+    "_customEvents": [],
+    "_environment": [
+      {
+        "_id": ".*Environment\\.\\[\\d*\\]SmallPillarPair$",
+        "_lookupMethod": "Regex",
+        "_scale": [2, 2, 2],
+        "_position": [0, 34, 153.600006],
+        "_rotation": [10, 0, 180],
+        "_localPosition": [0, 34, 153.600006]
+      },
+      {
+        "_id": ".*Environment\\.\\[\\d*\\]SmallPillarPair\\.\\[\\d*\\]PillarL$",
+        "_lookupMethod": "Regex",
+        "_scale": [1, 1, 1],
+        "_position": [0, 38.720001, 153.600006],
+        "_rotation": [359.399994, 46.07, 359.200012],
+        "_localPosition": [0, -8.952, 0.624],
+        "_localRotation": [7.52, 313.399994, 171.800003]
+      }
+    ]
+  }
+}

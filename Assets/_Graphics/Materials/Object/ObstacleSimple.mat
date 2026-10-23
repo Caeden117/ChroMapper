@@ -64,9 +64,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AnimationSpawned: 0
-    - _BlendModeDst: 1
+    - _BlendModeDst: 10
     - _BlendModeDstA: 1
-    - _BlendModeSrc: 1
+    - _BlendModeSrc: 5
     - _BlendModeSrcA: 0
     - _BlendOp: 0
     - _BumpScale: 1

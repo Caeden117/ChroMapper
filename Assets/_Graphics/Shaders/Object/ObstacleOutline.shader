@@ -61,6 +61,7 @@ Shader "ChroMapper/Object/Obstacle Outline"
             #pragma multi_compile_instancing
 
             #pragma shader_feature_local_fragment CUTOUT
+            #pragma shader_feature_local_fragment CM_EDITOR_WALL
             #pragma shader_feature_local_fragment _ _WHITEBOOSTTYPE_MAINEFFECT _WHITEBOOSTTYPE_ALWAYS
             #pragma multi_compile _ POST_BLOOM
 
@@ -70,6 +71,7 @@ Shader "ChroMapper/Object/Obstacle Outline"
             #include "UnityCG.cginc"
             #include "../ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "../ShaderLibrary/Common/Bloom.hlsl"
+            #include "../ShaderLibrary/Core/Tonemapping.hlsl"
             #include "../ShaderLibrary/Cutout.hlsl"
 
             sampler3D _CutoutTex;
@@ -79,6 +81,7 @@ Shader "ChroMapper/Object/Obstacle Outline"
             float _FogScale;
             float _FogHeightOffset;
             float _FogHeightScale;
+            float _MainAlpha;
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
@@ -156,7 +159,11 @@ Shader "ChroMapper/Object/Obstacle Outline"
 
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 
-                #if !defined(CM_PREVIEW_MODE)
+                // Editor opacity controls RGB blending. Its material preserves the separate bloom-alpha channel.
+                #if defined(CM_EDITOR_WALL)
+                color.a = _MainAlpha;
+                return ApplyAcesTonemapping(color);
+                #elif !defined(CM_PREVIEW_MODE)
                 color.a = 0;
                 #else
                 // ParametricBoxFrameHD stores bloom intensity in twice the color alpha.

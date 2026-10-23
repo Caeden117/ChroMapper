@@ -25,6 +25,8 @@ public class VariableNJSManager : BeatmapObjectManager<BaseNJSEvent>
     {
         provider.Initialize();
         BeatSaberSongContainer.Instance.Map.NJSEvents.ForEach(provider.InsertData);
+        // Publish the new movement values after its complete source index is ready, including unchanged NJS reloads.
+        provider.Refresh();
 
         Context.Atsc.OnTimeChangedEarly += UpdateTime;
     }

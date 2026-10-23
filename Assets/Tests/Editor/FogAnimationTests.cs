@@ -130,27 +130,20 @@ namespace Tests.Editor
                 beatsPerMinute: 150, environmentName: "BillieEnvironment", songLengthSeconds: 240);
             var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
             var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var animator = Object.FindAnyObjectByType<TracksManager>()
-                .GetAnimationTrack("fog").GetComponent<Beatmap.Animations.FogAnimator>();
             var events = BeatSaberSongContainer.Instance.Map.CustomEvents
                 .FindAll(ev => ev.Type == "AnimateComponent" && ev.Data.HasKey("BloomFogEnvironment"));
             Assert.That(events, Is.Not.Empty);
             atsc.MoveToJsonTime(528f);
             Assert.That(context.Descriptor.BloomFogParams.Attenuation, Is.EqualTo(1e-04f).Within(1e-09f));
 
-            foreach (var ev in events)
-            {
-                animator.RemoveEvent(ev);
-            }
+            var deletion = new BeatmapObjectDeletionAction(events, "Delete fog animations");
+            BeatmapActionContainer.AddAction(deletion, true);
 
             Assert.That(context.Descriptor.BloomFogParams.Attenuation,
                 Is.EqualTo(AuthoredAttenuation).Within(1e-09f), "Deleting the last fog event retained its animated value.");
             Assert.That(Shader.GetGlobalFloat("_CustomFogAttenuation"),
                 Is.EqualTo(AuthoredAttenuation).Within(1e-09f));
-            foreach (var ev in events)
-            {
-                animator.AddEvent(ev);
-            }
+            Object.FindAnyObjectByType<BeatmapActionContainer>().Undo();
 
             atsc.MoveToJsonTime(0f);
             Assert.That(context.Descriptor.BloomFogParams.Attenuation,

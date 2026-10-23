@@ -86,6 +86,23 @@ public class VisualRepositorySO : ScriptableObject
         NoteModelChanged?.Invoke();
     }
 
+    public void Add(GameObject go, string prefabName)
+    {
+        var model = VisualModelSO.Create(go);
+        var n = prefabName;
+        model.name = n;
+        ModelsByName.Add(n, model);
+    }
+
+    public void AddWithFallback(GameObject go, string prefabName)
+    {
+        var model = VisualModelSO.Create(go);
+        var n = prefabName;
+        model.name = n;
+        FillWithFallback(model, defaultModels[0]);
+        ModelsByName.Add(n, model);
+    }
+
     public void Add(VisualModelSO model) => ModelsByName.Add(model.name, model);
 
     private static void FillWithFallback(VisualModelSO vm, VisualModelSO fallback)

@@ -1,4 +1,4 @@
-﻿using Beatmap.Base;
+using Beatmap.Base;
 using Beatmap.Base.Customs;
 using SimpleJSON;
 
@@ -55,8 +55,14 @@ namespace Beatmap.V3.Customs
                 node[KeyLookupMethod] = environment.LookupMethod.ToString();
             }
 
-            if (!string.IsNullOrEmpty(environment.Track)) node[KeyTrack] = environment.Track;
-            if (environment.Duplicate > 0) node[KeyDuplicate] = environment.Duplicate;
+            if (environment.TrackData != null)
+            {
+                node[KeyTrack] = environment.TrackData.Clone();
+            }
+            if (environment.Duplicate.HasValue)
+            {
+                node[KeyDuplicate] = environment.Duplicate.Value;
+            }
             if (environment.Active != null) node[KeyActive] = environment.Active;
             if (environment.Scale != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyScale, environment.Scale);
             if (environment.Position != null) BaseEnvironmentEnhancement.WriteVector3(node, KeyPosition, environment.Position);

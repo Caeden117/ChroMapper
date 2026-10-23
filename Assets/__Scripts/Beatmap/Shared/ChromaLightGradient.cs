@@ -7,10 +7,18 @@ namespace Beatmap.Shared
 {
     public class ChromaLightGradient : BaseItem
     {
+        private const string EasingKey = "_easing";
+        private SerializedChromaEnumName easingType;
+
         public float Duration;
-        public string EasingType;
         public Color EndColor;
         public Color StartColor;
+
+        public string EasingType
+        {
+            get => easingType.RuntimeName ?? "easeLinear";
+            set => easingType.SetEasingName(value);
+        }
 
         public ChromaLightGradient(JSONNode node)
         {
@@ -41,15 +49,24 @@ namespace Beatmap.Shared
             EasingType = easing;
         }
 
-        public override BaseItem Clone() => new ChromaLightGradient(StartColor, EndColor, Duration, EasingType);
+        internal void SetSerializedEasing(JSONNode value) =>
+            easingType.SetSerializedEasing(value);
 
-        public override JSONNode ToJson() =>
-            new JSONObject
+        public override BaseItem Clone() => new ChromaLightGradient(StartColor, EndColor, Duration)
+        {
+            easingType = easingType.Clone()
+        };
+
+        public override JSONNode ToJson()
+        {
+            var output = new JSONObject
             {
                 ["_duration"] = Duration,
                 ["_startColor"] = StartColor,
-                ["_endColor"] = EndColor,
-                ["_easing"] = EasingType
+                ["_endColor"] = EndColor
             };
+            easingType.WriteTo(output, EasingKey);
+            return output;
+        }
     }
 }

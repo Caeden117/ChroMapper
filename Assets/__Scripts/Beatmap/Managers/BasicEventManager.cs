@@ -20,6 +20,66 @@ public class BasicEventManager : BeatmapObjectManager<BaseEvent>
 
     [SerializeField] private LightshowController lightshowController;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        BeatmapObjectContainerCollection.OnBpmTimingChanged += RefreshBpmTiming;
+    }
+
+    protected override void OnDestroy()
+    {
+        BeatmapObjectContainerCollection.OnBpmTimingChanged -= RefreshBpmTiming;
+        base.OnDestroy();
+    }
+
+    private void RefreshBpmTiming(float jsonTime)
+    {
+        var descriptor = Context.Descriptor;
+        // Map loading retimes objects before the environment establishes its state managers.
+        if (descriptor == null || !AllowAction)
+            return;
+
+        var events = BeatSaberSongContainer.Instance.Map.Events.AsSpan();
+        var start = events.LowerBoundBy(jsonTime, data => data.JsonTime);
+        var affectedTypes = new HashSet<int>();
+        for (var index = start; index < events.Length; index++)
+            affectedTypes.Add(events[index].Type);
+
+        var managers = descriptor.BasicEventEffectManager.EventTypeToEffects;
+        var affectedManagers = new HashSet<StateManager<BaseEvent>>();
+        foreach (var type in affectedTypes)
+        {
+            if (!managers.TryGetValue(type, out var effects))
+                continue;
+
+            foreach (var effect in effects)
+            {
+                if (affectedManagers.Add(effect))
+                    effect.Initialize();
+
+            }
+
+        }
+
+        // Each affected manager needs its earlier events to establish colors and transition boundaries.
+        // Shared managers also need the other event types they consume, even when those types did not move.
+        foreach (var data in events)
+        {
+            if (!managers.TryGetValue(data.Type, out var effects))
+                continue;
+
+            foreach (var effect in effects)
+            {
+                if (affectedManagers.Contains(effect))
+                    effect.InsertData(data);
+
+            }
+
+        }
+
+        UpdateTime();
+    }
+
     public override void Refresh()
     {
         // Reserve the O(M * P) rebuild for explicit map/environment refreshes, not ordinary collection actions.

@@ -1,0 +1,1088 @@
+{
+  "gameVersion": "1.44.1",
+  "reader": "UnityPy 1.25.2",
+  "format": "CMR1 gzip RGB24, original face/mip order; BC1/BC7 decoded without mip regeneration",
+  "environments": [
+    {
+      "environment": "BTSEnvironment",
+      "sourceBundle": "btsenvironment_scenes_all_12e1c5779f0797482741ea8f1c7676d5.bundle",
+      "sourceBundleSha256": "2ed97b85b30ef28295a3442a896dd6933d3e1f09ffa3dd1b1fd46b989fd67e58",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 106,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "59cd10a6607c323570876fc6a7c81a9e0b7a203f9c288354c0377517621439b0"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 105,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "614dfcc484943c0a004077158de39b7e5914d2c9a747c8d61cc1461576b41950"
+        }
+      ]
+    },
+    {
+      "environment": "BigMirrorEnvironment",
+      "sourceBundle": "bigmirrorenvironment_scenes_all_1f3840f540e42cde772749703568fabc.bundle",
+      "sourceBundleSha256": "fd28158ba9a5a36c726190bb06ea62cde2919ab81a91eb029b37f673c526ea5f",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 84,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "027f7576f154aa04296939639887d53a9dd7c8d04c9a85087816a0b81b9458aa"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 85,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "5bf443a886961a3cfa6b68b8a09f8f215bcc36f0ada059b52aed208bbc5b367b"
+        }
+      ]
+    },
+    {
+      "environment": "BillieEnvironment",
+      "sourceBundle": "billieenvironment_scenes_all_1c3f75665670aa85c4f1b8920653287c.bundle",
+      "sourceBundleSha256": "282be87225704f1c05aa6ba23015f6c7923b6757a8a0286364b14a51e763ffed",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 78,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "bf3b4cb670c1d91e15c7542954df66964327254bce47c097197f0377e2018ecc"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 79,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "e0acf93bed5a7c95c0386533dfbacae2ef86f77db78ee4a01ea245f9b5ab19eb"
+        }
+      ]
+    },
+    {
+      "environment": "BritneyEnvironment",
+      "sourceBundle": "britneyenvironment_scenes_all_06f151d1c9f4fa7d577243b51991a13c.bundle",
+      "sourceBundleSha256": "151f67ed1b70151acba42950e5e80aea0a9483c737ee5144296ecd1719462289",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 147,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "d1762e33abd5d85f5ea4953c8ac0306731c53b3514f8e261897a7c923f2b361d"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 146,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "9bd6426409cf400ca9091821e3e25a9bdb9ee44775be9ac6b848c2c20e097df1"
+        }
+      ]
+    },
+    {
+      "environment": "ColdplayEnvironment",
+      "sourceBundle": "coldplayenvironment_scenes_all_27e41078b030d54042c2bf3813407155.bundle",
+      "sourceBundleSha256": "f72da0119486d4947c34e453925f37763369ff78290c96e2b20c870143e19ed8",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 127,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "a7ceb271ea67c68cebfd5a89ecd2172aa2be0cdac64bceeabd8a7e23b707362e"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 128,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "d86041a021ff0c4ab5f5013c0b7f65a21a8510893cf8674cecbc19555a9c94aa"
+        }
+      ]
+    },
+    {
+      "environment": "ColliderEnvironment",
+      "sourceBundle": "colliderenvironment_scenes_all_e59dff495e4886ed71fd1d8c7ceb8069.bundle",
+      "sourceBundleSha256": "aed80f8a2b66180c2f7b8d284138cf1eec23c58d024fec502f51cc5aa019182c",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 98,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "135ca9e0fac15b08f70bc8fb07ee05135f127946d9d2c031c0774d120d29a981"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 97,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "cbc1348460dacacc107258fb72e3f35eb20cc22836bd22d404ec34d6e8730f24"
+        }
+      ]
+    },
+    {
+      "environment": "CrabRaveEnvironment",
+      "sourceBundle": "crabraveenvironment_scenes_all_dd3ca804dcab4e4b3b20e5560ff38324.bundle",
+      "sourceBundleSha256": "8d32665809d9a7c984fa56351bf458f9a2146da56a6429fc3d3e598de77f5e8b",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 67,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "c775c9c626f9c47eb77b100dad90b75fb834c1fda1f5c0fef8167fb7c1b4d0ec"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 68,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "4733fdfb522383ddc19572f931e4b6e5661e88b1f30f42e62ee94a15ea751c83"
+        }
+      ]
+    },
+    {
+      "environment": "DaftPunkEnvironment",
+      "sourceBundle": "daftpunkenvironment_scenes_all_70e2a8338fbddb1fd74368a7c7666c46.bundle",
+      "sourceBundleSha256": "21c0f09305ee3968ad5f971775c306d7c537d6302d44d43b73328e74fed99db2",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 193,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "e072d4f9c34b41c8ad529de78303ba5afb2aad1e38f0660952fb24de14bd7e8f"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 192,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "cd5795b48eeabd7e02cc5b7c6fc1a0e536a4a0ef329da127a5e779f8d83923d6"
+        }
+      ]
+    },
+    {
+      "environment": "DefaultEnvironment",
+      "sourceBundle": "thefirstenvironment_scenes_all_01ff9ca302a28f0f9b4b129b44950b9c.bundle",
+      "sourceBundleSha256": "7c63577aed2aaf4560a81895436e7c986af518cb186b12ee7bfa6a580c2b3775",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 88,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "218373cab6f31066d3d1ffb508f49c4b4d6c9df49cb02a12cd2bda67aeb674b3"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 89,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "e2545ffb18a4194a3e394af53fe2005ff8d7998251ec472961d5bf192a5f6159"
+        }
+      ]
+    },
+    {
+      "environment": "Dragons2Environment",
+      "sourceBundle": "dragons2environment_scenes_all_073e52e16e243c26165aa71667530326.bundle",
+      "sourceBundleSha256": "2c242e2d072e73a4876469405b010735e55b883fa9591ba35b56f8df2fef249a",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 173,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "3a7378e60f95c728eaabde7bd062a603faa195b471a6eb8a2f88aa2da462e4fc"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 174,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "d99d09790e41d82bc5a379061b2544934f32efbdee693a533d6b730de9689efc"
+        }
+      ]
+    },
+    {
+      "environment": "DragonsEnvironment",
+      "sourceBundle": "dragonsenvironment_scenes_all_671b295011bdcb583f81438f19fe95c5.bundle",
+      "sourceBundleSha256": "b39fbefec828cd619f7357e30e2669cc33b0cd8076db0f5ecf61e2f0f906b1ab",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 94,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "a7f72da1da07117419237b443769b868e4dac0f52eb9c38f287c9423fb8203b0"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 95,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "590e9224d1f947967caafecdd34ece6388ad2fa2256298c0a11a754a45cb1e35"
+        }
+      ]
+    },
+    {
+      "environment": "EDMEnvironment",
+      "sourceBundle": "edmenvironment_scenes_all_c3b52f26b78c920373b65d04f9dde0c7.bundle",
+      "sourceBundleSha256": "918018df860b835354f1a39e5c20b1e872ae7c6184f0fd76a3a5506b5c9aa859",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 84,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "90d6fe445652eb9ed8e2c754c71a446c4290d262b92a735be14377df635e0022"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 85,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "6ea78dd5d5a41cb71db5336052d44e0c0dc1e84f27b7097c7f22a374de559869"
+        }
+      ]
+    },
+    {
+      "environment": "FitBeatEnvironment",
+      "sourceBundle": "fitbeatenvironment_scenes_all_5674e15c65b35c369bf701a73c65e263.bundle",
+      "sourceBundleSha256": "5897a61da62150a59e06c1db245c138e3c69259abc1c2e13e7f760a1f471bd60",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 87,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "07365dd6e4745db3ae04c794dc2814fa21901cb4e310e9feaf18115edae9fccd"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 86,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "75a962a517e51f35a7a51d470af039901ce9cce1ae459765bd1a18ab9bf7a0e3"
+        }
+      ]
+    },
+    {
+      "environment": "GagaEnvironment",
+      "sourceBundle": "gagaenvironment_scenes_all_064a92004e945bad472b506b980ed709.bundle",
+      "sourceBundleSha256": "243545981131855fae80993a8d2d4ecc438f8d601a95909974139bb10eb9d4e1",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 97,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "d2184a12eb89a29daeada74e4aa9de255e3b7167fae0df12302ac5f711068a88"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 96,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "7fccac2ce2b89901eb2f669dd2ad70ab2cac7d05c1406c4a9142e71de93e9609"
+        }
+      ]
+    },
+    {
+      "environment": "GlassDesertEnvironment",
+      "sourceBundle": "glassdesertenvironment_scenes_all_166e2e2fd2d72c72b7660fd191ff4b19.bundle",
+      "sourceBundleSha256": "bcdb0e7061430e59ba9b86eaf087c82693f2c182ea8ec6c5ac795af956aa1852",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 68,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "a19e1e35ce03ea2470dc3dbd733cb214897ee474913c4d2166dd0a04e3e39e94"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 67,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "35dc4fe3aebe9f577fbb4b2bc3c508b1188d2c9ac46fd940f69586f4c4ed0a98"
+        }
+      ]
+    },
+    {
+      "environment": "GreenDayEnvironment",
+      "sourceBundle": "greendayenvironment_scenes_all_a9a33911c4080bfe9dd0852be35c08f3.bundle",
+      "sourceBundleSha256": "41d64adc2e12021ae22cbd7bfc5f282d08a87b970c8551ab334e53491e0491c2",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 3,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "807cb2c808747547de136c0834769b63a37ae915e35bd45da1dbfa342a17ef1b"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 4,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "4661547811f493180c9f0aa16f83498fba4fddb1132b23b16dc2014d9ae5748a"
+        }
+      ]
+    },
+    {
+      "environment": "GreenDayGrenadeEnvironment",
+      "sourceBundle": "greendayenvironment_scenes_all_a9a33911c4080bfe9dd0852be35c08f3.bundle",
+      "sourceBundleSha256": "41d64adc2e12021ae22cbd7bfc5f282d08a87b970c8551ab334e53491e0491c2",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 3,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "807cb2c808747547de136c0834769b63a37ae915e35bd45da1dbfa342a17ef1b"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 4,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "4661547811f493180c9f0aa16f83498fba4fddb1132b23b16dc2014d9ae5748a"
+        }
+      ]
+    },
+    {
+      "environment": "GridEnvironment",
+      "sourceBundle": "gridenvironment_scenes_all_10589a47e6c276b6f24c74d1c6950f92.bundle",
+      "sourceBundleSha256": "4142c0ed151214daa44a115a3bf4c6aa7d1f8086a9965222143198d43db1bebf",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 150,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "dc58eb00be30532fa997972f8420d5260d33ca19c54aee674d64a0f7da86c9d2"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 149,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "f0acf6b2b5d1ac79b33183721be89eeac3b56f61b9ebe8663202f584c4f87cd5"
+        }
+      ]
+    },
+    {
+      "environment": "Halloween2Environment",
+      "sourceBundle": "halloweenenvironment_scenes_all_cb6c9b32c8f2592ae50957ca7cade9da.bundle",
+      "sourceBundleSha256": "c34c89b83a3abab694952798e5f7809542cfa1a93c63e5a2b9842decf7ead134",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 79,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "acb843337f06b7297f99be4f51355a0dab50d550fc18d1317a14e4e61850045f"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 78,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "12695250648b14877819243a9a7be2132ecb720491e20ef2df63d62df5656f92"
+        }
+      ]
+    },
+    {
+      "environment": "HalloweenEnvironment",
+      "sourceBundle": "halloweenenvironment_scenes_all_cb6c9b32c8f2592ae50957ca7cade9da.bundle",
+      "sourceBundleSha256": "c34c89b83a3abab694952798e5f7809542cfa1a93c63e5a2b9842decf7ead134",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 79,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "acb843337f06b7297f99be4f51355a0dab50d550fc18d1317a14e4e61850045f"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 78,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "12695250648b14877819243a9a7be2132ecb720491e20ef2df63d62df5656f92"
+        }
+      ]
+    },
+    {
+      "environment": "HipHopEnvironment",
+      "sourceBundle": "hiphopenvironment_scenes_all_4bdfa30f235f4a82b714fc854af3655b.bundle",
+      "sourceBundleSha256": "8c0f195638955044ccf071deb3c948f5b8520140fbbe6fd8b814814c86a8ca19",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 136,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "4cc704e346395c6798e80dd9ca29d2458374571248cc90a92796696a7e9407bf"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 137,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "bb74218373d692ee976e0890050929dd42f1d6de0e4ab0df5e0ebfb7ccdf8ad0"
+        }
+      ]
+    },
+    {
+      "environment": "InterscopeEnvironment",
+      "sourceBundle": "interscopeenvironment_scenes_all_639e40733db3a14b54865ecb9c5a8b5e.bundle",
+      "sourceBundleSha256": "6453c30636c2d68f5e7bfb01166f938dda51c67a9b6ec83bcf85964711993ef5",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 64,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "30c2ec6fc790968a642b3264f92e2a772ed3a62acaeb6ed727ea06d204a0ddd0"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 65,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "8b76498eba40780143292135bf9036efc1e2e5f3ddf30ab46d88112afbbe19dc"
+        }
+      ]
+    },
+    {
+      "environment": "KDAEnvironment",
+      "sourceBundle": "kdaenvironment_scenes_all_27611412f73997dcc0e4f97edc31daea.bundle",
+      "sourceBundleSha256": "2b67d1b655cb5fb4e5353de752b64082c604ce0ea9d3fe34c585dd2022f6456e",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 58,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "c01fff796db904cc3efa3f734f20053612f1ce67dba0fa1fb04f90f462c4bfca"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 57,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "8759ff9ffae705688f8b5a8c12e4d1c4281e02b9ff6369188b96ea07a8a6ec84"
+        }
+      ]
+    },
+    {
+      "environment": "KaleidoscopeEnvironment",
+      "sourceBundle": "kaleidoscopeenvironment_scenes_all_03d3b85c48bc396ed4fa744b9f6d32ee.bundle",
+      "sourceBundleSha256": "1407f18cf7aacd5932fe0a337468178a6aab54a67389b3dad57ffe4e484f0103",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 147,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "573e6cd46e0ec2ac1ed970c34b7b4f7fc306cf2c1b127731f1082d976ba14736"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 146,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "da1c2289ebf6f0cc50815c506bb3d6ae09c89dfe2a02fea4be2d44a92cec2375"
+        }
+      ]
+    },
+    {
+      "environment": "LatticeEnvironment",
+      "sourceBundle": "latticeenvironment_scenes_all_2236d2923b94f5c3175f69a6dfac3b72.bundle",
+      "sourceBundleSha256": "383c91b7928a3997314f55999e54b81575d9b776c94ccd996bce087f7d6c17ff",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 99,
+          "width": 128,
+          "mips": 8,
+          "format": 10,
+          "sha256": "4114c7e99e7d3ff907c3b2136963b1f58c9bb635c0f921f59bc089558ccfb686"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 98,
+          "width": 128,
+          "mips": 8,
+          "format": 10,
+          "sha256": "a216ed512c9c2efd77779224b17b47f7e43f6afdbbf55cf88e7157886a593188"
+        }
+      ]
+    },
+    {
+      "environment": "LinkinPark2Environment",
+      "sourceBundle": "linkinpark2environment_scenes_all_bce966881d862dd46f172d8f3e900c3e.bundle",
+      "sourceBundleSha256": "1296ed37e8609817b64f318c9e81db3f5dab3d3475f3884e6afa1624b4143dd5",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 126,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "31630e04ae630ed2a816fa77e8fb905a96413871b935c61e0cee6c5659d2e104"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 127,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "6e8a98df5b19d6d5e08f8be0d0f6af0b4edcc3958cd4150965cc9a3d59afdf4f"
+        }
+      ]
+    },
+    {
+      "environment": "LinkinParkEnvironment",
+      "sourceBundle": "linkinparkenvironment_scenes_all_b841bc56d9edce305c63eff90b1e1966.bundle",
+      "sourceBundleSha256": "bd5c490f6b54ccd9a2b8ae3eefac8e60bc6fcc13e7b023ee2896d6bef00e1f2f",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 63,
+          "width": 512,
+          "mips": 10,
+          "format": 25,
+          "sha256": "8eb6d33a32d0e791b7dbe3db40aa2cd9695061ffbf6483beac6ed8d0c8a9e313"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 62,
+          "width": 512,
+          "mips": 10,
+          "format": 25,
+          "sha256": "6d605399cfc86eaf95f2700d03323d787b42509f3d92b412106b35817db21fa2"
+        }
+      ]
+    },
+    {
+      "environment": "LizzoEnvironment",
+      "sourceBundle": "lizzoenvironment_scenes_all_2d7289aa967171d59e73c89ab2abf1cb.bundle",
+      "sourceBundleSha256": "bba1bce7294ba3909a0fd9413d20ac221b9f68d542f9357efb486550be627d01",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 148,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "c8e00d82198baea37cd8d86271b3739667df886b713e235e7f1c08cf9c65a19a"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 149,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "8319a6cb005264c88691b7b8f25704084c35f8514bd7657021b2fa5421dd644d"
+        }
+      ]
+    },
+    {
+      "environment": "MetallicaEnvironment",
+      "sourceBundle": "metallicaenvironment_scenes_all_82b6f68a86f22cb3623bf2ec56a7e65b.bundle",
+      "sourceBundleSha256": "e0fdaa12813e15b9b8d8b6dfdc1f7a5197474634691eb293e988c9e61c9a5dc7",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 122,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "af7ad470c49e908284ddae957445e49c8da65ffdb0efbd68b55e340845a16375"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 121,
+          "width": 32,
+          "mips": 6,
+          "format": 3,
+          "sha256": "5a9e0a844bd81462ea21133c35ebab7e6d81830e4c4a739edd0588e63245176e"
+        }
+      ]
+    },
+    {
+      "environment": "Monstercat2Environment",
+      "sourceBundle": "monstercat2environment_scenes_all_d4d451c609144319cf04af70c16cdce3.bundle",
+      "sourceBundleSha256": "a6e3dea70c23e00401c63ed5c8aff33d3177f2e2628120f98ac88fea75b475cb",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 109,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "e72fc936961d88c1c3177a30f732ff9d31d6a9cef37167f9bd019fa14ba42887"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 110,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "688ea672bf9904d8337bdd81367548fe3785797f9a1575f0d36d9c0fe857d0fa"
+        }
+      ]
+    },
+    {
+      "environment": "MonstercatEnvironment",
+      "sourceBundle": "monstercatenvironment_scenes_all_df18cb537514f0ec7ccd7f1050192ae5.bundle",
+      "sourceBundleSha256": "df7a79604d6175dcd87b0563d8209bc713056d1061b114c6862a61b3c261e329",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 68,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "701aa1bfb8aaad63781df76e98bd473673bd52a1387394ba99515afb28d9e2dc"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 69,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "5782ecffd5d0454ac85758af8390f50b45e6388a6f313d028074d14e273c6dff"
+        }
+      ]
+    },
+    {
+      "environment": "NiceEnvironment",
+      "sourceBundle": "niceenvironment_scenes_all_22bc9ffea61113fb0dc280f925cd560c.bundle",
+      "sourceBundleSha256": "1484f361c06d702997373df7dcccb4792ad816363d25625c2e94b11392858e3b",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 82,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "57acefdc74d691a1515f68b0884789b1580004aa6b526daffa64f8c371375854"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 83,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "ff5deade05466ac007ee374e6d25c19db9c12c34d50e96da49c9d670ba6f3f55"
+        }
+      ]
+    },
+    {
+      "environment": "OriginsEnvironment",
+      "sourceBundle": "originsenvironment_scenes_all_a57695085ac0c5e1c573151d9f24bbc3.bundle",
+      "sourceBundleSha256": "88bf661712385a1ab141d6a601d78b2daa8eed80db0c0137aa61bb047a0db750",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 81,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "da2d2e780e88db7c73c4031d9611a78dc8832e0c5506ab52751df6d8e6344853"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 82,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "7d8eb937c2dd5352445e62cf41d9f3394493ff17bb3d876705ea5d7fa3392bf5"
+        }
+      ]
+    },
+    {
+      "environment": "Panic2Environment",
+      "sourceBundle": "panic2environment_scenes_all_8e40fa31a7f51ab071d7c55a9c5c7ec9.bundle",
+      "sourceBundleSha256": "e9da556ac4ea594565226f5c7905f6bf7422eee2103b5378a4a54c31c1882497",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 255,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "446d3d393ad922ebddbfa4c1d003b18493c80639eb7042e5524cccbfd51ddbc5"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 254,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "12a2805ca8b97747586e243034eae66cf456b0f53ff5e241919bc7c5c4c6917d"
+        }
+      ]
+    },
+    {
+      "environment": "PanicEnvironment",
+      "sourceBundle": "panicenvironment_scenes_all_6f8da87aab3224b2df207c7a8d50732a.bundle",
+      "sourceBundleSha256": "eed191a9556bd0345ad45daae6183408f3114e926be2fc2673e236379035942c",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 79,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "ec3207696b2abe1f92070284757dfd1c694bf692c41dbcbfa93e7edeef0c7879"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 80,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "84612d6e3b35b0ae4d0384f9f3fa31c139aa0ea351206eeeb57c03c8435ce19f"
+        }
+      ]
+    },
+    {
+      "environment": "ProdigyEnvironment",
+      "sourceBundle": "prodigyenvironment_scenes_all_20ff4b2d46f7a9aa829462ac73574ef1.bundle",
+      "sourceBundleSha256": "37e50b395445a099418299949e3cec8f7a47e3f565fd40a380ce817f0626e626",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 200,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "1ea24749f92a7c64216910b17c820fe6a2fea2f9de806fb8c10bd6adabf96d46"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 201,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "44e5caf190dee07610e56005667e637f3d28d23e885433c0fcf3ae35ac25bc97"
+        }
+      ]
+    },
+    {
+      "environment": "PyroEnvironment",
+      "sourceBundle": "pyroenvironment_scenes_all_b3dfd40b65a40e494149c782387fe067.bundle",
+      "sourceBundleSha256": "8c530d3a6a791e304787014c57062296359cfe0632a79f2b1d890cc251571a04",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 141,
+          "width": 128,
+          "mips": 8,
+          "format": 3,
+          "sha256": "26b69506646f9b4b23c98824c0cf656d62412c785a90b6c5b75292b976a47978"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 140,
+          "width": 128,
+          "mips": 8,
+          "format": 3,
+          "sha256": "23cf90a7144b98f9e8b57c3e8853b299ab94ac0ef141042c0cfe79575bab508b"
+        }
+      ]
+    },
+    {
+      "environment": "QueenEnvironment",
+      "sourceBundle": "queenenvironment_scenes_all_9afab11c89570ccb5c04605b6f023f22.bundle",
+      "sourceBundleSha256": "5c373b8a3add9a35556d12761f4dc89310da6af3c2a5407918f886ca2524c876",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 175,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "1ea24749f92a7c64216910b17c820fe6a2fea2f9de806fb8c10bd6adabf96d46"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 176,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "44e5caf190dee07610e56005667e637f3d28d23e885433c0fcf3ae35ac25bc97"
+        }
+      ]
+    },
+    {
+      "environment": "RockMixtapeEnvironment",
+      "sourceBundle": "rockmixtapeenvironment_scenes_all_102107deb951c0c2ecbd486b01badb53.bundle",
+      "sourceBundleSha256": "9670570bc073078fe6010ee3d273b4896bc2457d30baa2981f93df5a468c2f23",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 518,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "0303af30153dd6481a9db31a74069fa9e74e65950a4ca471a7396dc4b0f21032"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 517,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "af3d8c380a7fbccc7a7b24c899c4b93d64f908ecba842c5d4c18320e0d93d249"
+        }
+      ]
+    },
+    {
+      "environment": "RocketEnvironment",
+      "sourceBundle": "rocketenvironment_scenes_all_d16051d0cc2832803a44993f9624eb99.bundle",
+      "sourceBundleSha256": "366f1b3c6b03eb95d034546b002c8151be281acb633839e528e770752615fb58",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 62,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "0095300c76999f93743600c0dc76192d139c2be4a74015206a28e8776ee081d1"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 61,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "6952e20bf5e3917909946006c03265de08dc3db2d834c0bac3597f331968ed47"
+        }
+      ]
+    },
+    {
+      "environment": "SkrillexEnvironment",
+      "sourceBundle": "skrillexenvironment_scenes_all_b5cd8208ec7d670da15cb1fe4c56952e.bundle",
+      "sourceBundleSha256": "dbe476364cb7e5bfba5c6d9cc0a11289bb0db486072e448bacf93e14e8366a5b",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 180,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "dfd90e0e6a55ad02bf7edc3f40e9d55f66ce75bc1882edec334d609375c0bc5c"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 179,
+          "width": 256,
+          "mips": 9,
+          "format": 3,
+          "sha256": "ab0815daf9307a531d4d7dd2e68bb934eba58b2b68b6cef1a632ba15d9179279"
+        }
+      ]
+    },
+    {
+      "environment": "TheRollingStonesEnvironment",
+      "sourceBundle": "therollingstonesenvironment_scenes_all_981997d98e8ffad68a405e99b20908a5.bundle",
+      "sourceBundleSha256": "0dda5bb6d89d7dcfc7a4b2f0dc255e845c517032f7036e76b6e9bdc8f33e0200",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 92,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "57e1211f2869a7bd8835dfdead9b5768dd3baf80d7cb0b920044497b68555e02"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 91,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "f873c18c32c08e75d4c9dfb03f7542bab8651cb88879b6d7163f89d0a93c4084"
+        }
+      ]
+    },
+    {
+      "environment": "TheSecondEnvironment",
+      "sourceBundle": "thesecondenvironment_scenes_all_d86cf325dc921d4bd04ac87201d1dbee.bundle",
+      "sourceBundleSha256": "2cdefb0cfe1bd580374fc80cb2c60a744f6fe4da6335f5d87a86e10032383a97",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 160,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "643bde6fdb506b142cb20cd81bf9410f654ff491858689579bc905fe30302904"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 159,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "e5428fad6642ac0c002e501ba437e5fbb8c358127665a61b324c770f5ac369d5"
+        }
+      ]
+    },
+    {
+      "environment": "TheWeekndEnvironment",
+      "sourceBundle": "theweekndenvironment_scenes_all_644a766f07b22768c3d296c4243b3202.bundle",
+      "sourceBundleSha256": "76ffe1ed4e3b29816417e4ae938b7245c3cbc533c60d148c6429e414ab66271e",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 154,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "19c3677afb554a382e03a001543bf4e1f01e223914f28b47b86c9fa792cb6e4d"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 155,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "1caf9849f66e260b7f6dcbee1d6daf732b0220872bcd22abdcee579c55215919"
+        }
+      ]
+    },
+    {
+      "environment": "TimbalandEnvironment",
+      "sourceBundle": "timbalandenvironment_scenes_all_883094aa17b48400a7263f6da0b94474.bundle",
+      "sourceBundleSha256": "d3e95ba2e013d2b661cbe58c08e5e87b525ec2c1c32251113214fe6d6908ce4f",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 100,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "c09135f375f6a7b949bb42658688b5b2da62e08dcdb7e40e8bee63e3fb8baeec"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 101,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "95ccfc72dfe0e944d357243df771010e1bd922fd95acbbacb283e25d8d39b86b"
+        }
+      ]
+    },
+    {
+      "environment": "TriangleEnvironment",
+      "sourceBundle": "triangleenvironment_scenes_all_4de9bb31c118fdb86a6c8e1429fffd3f.bundle",
+      "sourceBundleSha256": "220c3aaac0f3705c9af41e5d05c5e6092b33e3247321de60433566931480e7fc",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 91,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "7348eade5b66be9921e7d3a4041d66e0e05dd3e92cf820cc1ed7f2d60dc84906"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 90,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "4f72b1b1310738435a681a957d6a6e60953b2ab6fa15292233dee0f1226c432b"
+        }
+      ]
+    },
+    {
+      "environment": "WeaveEnvironment",
+      "sourceBundle": "weaveenvironment_scenes_all_fe67ce0ca23c2b459957d051761abef1.bundle",
+      "sourceBundleSha256": "4166efeba8804e0735a45c9d0cce3f24dcdf079237731b3539138f946b1c7c5f",
+      "textures": [
+        {
+          "name": "ReflectionProbe_0-0",
+          "pathId": 86,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "dba21e8424416a443b83f4db32298bc9e476467214ab3a09c5bb09194c802e7b"
+        },
+        {
+          "name": "ReflectionProbe_1-0",
+          "pathId": 85,
+          "width": 512,
+          "mips": 10,
+          "format": 3,
+          "sha256": "3ff970e47615c579973d88df95f7dfa8173014430401155042507acb9146f5fa"
+        }
+      ]
+    }
+  ]
+}

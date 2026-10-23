@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 
 public abstract class HeckRequirementCheck : RequirementCheck
 {
@@ -29,14 +30,15 @@ public abstract class HeckRequirementCheck : RequirementCheck
             // Can be Chroma, NE, or both. We check if they belong to the required mod later.
             if (customEvent.Type == "AnimateTrack" || customEvent.Type == "AssignPathAnimation")
             {
-                if (propertiesByHeckTrack.TryGetValue(customEvent.Data[customEvent.CustomKeyTrack], out var tracks))
+                var propertyNames = customEvent.Data.Linq.Select(pair => pair.Key).ToArray();
+                foreach (var name in TrackDataReader.ReadNames(customEvent.CustomTrack))
                 {
-                    tracks.UnionWith(customEvent.Data.Linq.Select(x => x.Key));
-                }
-                else
-                {
-                    propertiesByHeckTrack.Add(customEvent.Data[customEvent.CustomKeyTrack].Value,
-                        new HashSet<string>(customEvent.Data.Linq.Select(x => x.Key)));
+                    if (propertiesByHeckTrack.TryGetValue(name, out var properties))
+                        properties.UnionWith(propertyNames);
+
+                    else
+                        propertiesByHeckTrack.Add(name, new HashSet<string>(propertyNames));
+
                 }
             }
         }

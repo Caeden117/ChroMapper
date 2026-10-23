@@ -10017,7 +10017,7 @@
         "hash": "53cf1acdff5ab941eec4fff8d993fcd07593df6dd3388ae127ccea6f18e24743",
         "boundsSize": [
           3.0,
-          2.38418579E-07,
+          2.38418579e-07,
           2.00000024
         ],
         "boundsCenter": [
@@ -10062,7 +10062,7 @@
         "hash": "e80d45a551968ee7acc64ddb6378fc484e4cdd96c625748614197c97e40b38a0",
         "boundsSize": [
           3.0,
-          2.38418579E-07,
+          2.38418579e-07,
           2.00000024
         ],
         "boundsCenter": [
@@ -10077,12 +10077,12 @@
         "hash": "6950b6a95ad3177130c97ae5adfd0699d3ce5f63e431625681c17236aab3a422",
         "boundsSize": [
           27.0,
-          9.685755E-08,
+          9.685755e-08,
           48.5080948
         ],
         "boundsCenter": [
           0.0,
-          -3.7252903E-09,
+          -3.7252903e-09,
           0.745951653
         ],
         "instanceId": 448390
@@ -10167,12 +10167,12 @@
         "hash": "1e66fcee6045c33f9542cfed0353207026c1b9b683778d222f15e8aba4ef8312",
         "boundsSize": [
           40.0,
-          9.685755E-08,
+          9.685755e-08,
           44.499588
         ],
         "boundsCenter": [
           0.0,
-          -3.7252903E-09,
+          -3.7252903e-09,
           2.750207
         ],
         "instanceId": 448394
@@ -10233,7 +10233,7 @@
         "boundsCenter": [
           -4.48535538,
           2.0,
-          2.98023224E-08
+          2.98023224e-08
         ],
         "instanceId": 448396
       },
@@ -10248,7 +10248,7 @@
         "boundsCenter": [
           -4.961725,
           2.0,
-          -3.27825546E-07
+          -3.27825546e-07
         ],
         "instanceId": 448366
       },
@@ -10323,7 +10323,7 @@
         "boundsCenter": [
           0.0,
           0.0404101759,
-          -7.4505806E-08
+          -7.4505806e-08
         ],
         "instanceId": 448386
       },
@@ -10866,7 +10866,14 @@
               "c8c30aa453da898602cb6f20d6d43de8"
             ],
             "instanceId": 449448,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.011171875521540642,
+              0.011171875521540642,
+              0.45094844698905945,
+              0.2267477810382843
+            ]
           }
         ],
         "Mirror": [
@@ -11452,7 +11459,14 @@
               "1e53fa985b947f42e4b4699cd8682448"
             ],
             "instanceId": 449474,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.0234375,
+              0.0234375,
+              0.5869140625,
+              0.2170773446559906
+            ]
           }
         ]
       }
@@ -11553,7 +11567,14 @@
               "ea7e7da04351abe0c53d0c40a27aaac7"
             ],
             "instanceId": 449420,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.4647369682788849,
+              0.4647369682788849,
+              -0.009076894260942936,
+              -0.009076894260942936
+            ]
           }
         ],
         "MeshFilter": [
@@ -11699,7 +11720,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449432,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10976119339466095,
+              0.10976119339466095,
+              0.6530781984329224,
+              0.4303503930568695
+            ]
           }
         ]
       }
@@ -11753,7 +11781,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449416,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10976119339466095,
+              0.10976119339466095,
+              0.8199742436408997,
+              0.4303503930568695
+            ]
           }
         ]
       }
@@ -11845,7 +11880,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449606,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10977951437234879,
+              0.10977951437234879,
+              0.23529820144176483,
+              0.8701425194740295
+            ]
           }
         ]
       }
@@ -11899,7 +11941,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449486,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.18296585977077484,
+              0.18296585977077484,
+              0.6516999006271362,
+              0.2492845505475998
+            ]
           }
         ]
       }
@@ -12513,7 +12562,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449604,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10977951437234879,
+              0.10977951437234879,
+              0.8795956373214722,
+              -0.0021441311109811068
+            ]
           }
         ]
       }
@@ -12567,7 +12623,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449484,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.18296585977077484,
+              0.18296585977077484,
+              0.7112702131271362,
+              -0.003573552006855607
+            ]
           }
         ]
       }
@@ -13181,7 +13244,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449608,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10977951437234879,
+              0.10977951437234879,
+              0.8795956373214722,
+              0.10723087191581726
+            ]
           }
         ]
       }
@@ -13235,7 +13305,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449488,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.18296585977077484,
+              0.18296585977077484,
+              0.8185959458351135,
+              0.2492845505475998
+            ]
           }
         ]
       }
@@ -13849,7 +13926,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449610,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10977951437234879,
+              0.10977951437234879,
+              0.5847699046134949,
+              0.10555821657180786
+            ]
           }
         ]
       }
@@ -13903,7 +13987,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449490,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.18296585977077484,
+              0.18296585977077484,
+              0.35482487082481384,
+              0.5461593866348267
+            ]
           }
         ]
       }
@@ -14555,7 +14646,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449500,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.10977951437234879,
+              0.10977951437234879,
+              0.13359805941581726,
+              0.8701425194740295
+            ]
           }
         ]
       }
@@ -14609,7 +14707,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449568,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.18296585977077484,
+              0.18296585977077484,
+              0.35482487082481384,
+              0.7258468866348267
+            ]
           }
         ]
       }
@@ -15179,7 +15284,14 @@
               "5d8ba2b2a657c9da7c3249bd344e4b6d"
             ],
             "instanceId": 449400,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1452343761920929,
+              0.1452343761920929,
+              0.3554937541484833,
+              0.9062032103538513
+            ]
           }
         ],
         "MeshFilter": [
@@ -15233,7 +15345,14 @@
               "5d8ba2b2a657c9da7c3249bd344e4b6d"
             ],
             "instanceId": 449406,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.3046875,
+              0.3046875,
+              0.35230469703674316,
+              0.24676434695720673
+            ]
           }
         ],
         "MeshFilter": [
@@ -15287,7 +15406,14 @@
               "545891aa858f66b7c8808b9ec6b2adb6"
             ],
             "instanceId": 449428,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.36833953857421875,
+              0.36833953857421875,
+              -0.00719413161277771,
+              0.24566397070884705
+            ]
           }
         ],
         "MeshFilter": [
@@ -15341,7 +15467,14 @@
               "545891aa858f66b7c8808b9ec6b2adb6"
             ],
             "instanceId": 449396,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.3046875,
+              0.3046875,
+              -0.006093750242143869,
+              0.5693181157112122
+            ]
           }
         ],
         "MeshFilter": [
@@ -15395,7 +15528,14 @@
               "5d8ba2b2a657c9da7c3249bd344e4b6d"
             ],
             "instanceId": 449422,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.27015626430511475,
+              0.27015626430511475,
+              0.4457687437534332,
+              -0.005403125658631325
+            ]
           }
         ],
         "MeshFilter": [
@@ -15449,7 +15589,14 @@
               "5d8ba2b2a657c9da7c3249bd344e4b6d"
             ],
             "instanceId": 449402,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.16453126072883606,
+              0.16453126072883606,
+              0.7115530967712402,
+              0.17639687657356262
+            ]
           }
         ],
         "MeshFilter": [
@@ -15509,7 +15656,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449426,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1371193379163742,
+              0.1371193379163742,
+              0.44842949509620667,
+              0.10495995730161667
+            ]
           }
         ]
       }
@@ -15563,7 +15717,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449436,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1371193379163742,
+              0.1371193379163742,
+              -0.0027423868887126446,
+              0.869544267654419
+            ]
           }
         ]
       }
@@ -15617,7 +15778,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449408,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.08293444663286209,
+              0.08293444663286209,
+              0.9219472408294678,
+              0.4308869242668152
+            ]
           }
         ]
       }
@@ -15709,7 +15877,14 @@
               "32ec62db18e921b86070334aa95b24c1"
             ],
             "instanceId": 449410,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.08293444663286209,
+              0.08293444663286209,
+              0.5236358046531677,
+              0.8887259364128113
+            ]
           }
         ]
       }
@@ -16685,8 +16860,8 @@
             ],
             "localPosition": [
               -59.0000038,
-              1.07288361E-06,
-              -1.43051147E-06
+              1.07288361e-06,
+              -1.43051147e-06
             ],
             "rotation": [
               0.0,
@@ -16723,8 +16898,8 @@
             ],
             "localPosition": [
               57.0,
-              1.07288361E-06,
-              -1.43051147E-06
+              1.07288361e-06,
+              -1.43051147e-06
             ],
             "rotation": [
               0.0,
@@ -16755,12 +16930,12 @@
         "Transform": [
           {
             "position": [
-              1.52587887E-07,
+              1.52587887e-07,
               0.1,
               6.0
             ],
             "localPosition": [
-              7.62939453E-06,
+              7.62939453e-06,
               0.0,
               0.0
             ],
@@ -17606,8 +17781,8 @@
               7.0
             ],
             "localPosition": [
-              3.81469727E-06,
-              3.81469727E-06,
+              3.81469727e-06,
+              3.81469727e-06,
               0.0
             ],
             "rotation": [
@@ -17644,8 +17819,8 @@
               7.0
             ],
             "localPosition": [
-              -3.81469727E-06,
-              4.29153442E-06,
+              -3.81469727e-06,
+              4.29153442e-06,
               0.0
             ],
             "rotation": [
@@ -18292,7 +18467,7 @@
             "localPosition": [
               -13.25,
               0.0005130768,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,
@@ -18444,7 +18619,7 @@
             "localPosition": [
               -0.75,
               -5.757202,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,
@@ -18482,7 +18657,7 @@
             "localPosition": [
               -1.0,
               0.0005130768,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,
@@ -18925,7 +19100,14 @@
               "602c0da4bab63b669e96fa2ca13aac8d"
             ],
             "instanceId": 449566,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.08277485519647598,
+              0.08277485519647598,
+              0.5222066044807434,
+              0.805265486240387
+            ]
           }
         ]
       }
@@ -19452,7 +19634,14 @@
               "602c0da4bab63b669e96fa2ca13aac8d"
             ],
             "instanceId": 449596,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.08670496195554733,
+              0.08670496195554733,
+              0.5222322344779968,
+              0.6335750222206116
+            ]
           }
         ]
       }
@@ -20007,7 +20196,14 @@
               "602c0da4bab63b669e96fa2ca13aac8d"
             ],
             "instanceId": 449414,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.08779837936162949,
+              0.08779837936162949,
+              0.5222069621086121,
+              0.5466454029083252
+            ]
           }
         ]
       }
@@ -20534,7 +20730,14 @@
               "602c0da4bab63b669e96fa2ca13aac8d"
             ],
             "instanceId": 449404,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.0866265520453453,
+              0.0866265520453453,
+              0.5222266316413879,
+              0.7195069193840027
+            ]
           }
         ]
       }
@@ -22824,7 +23027,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               3.99999976,
               7.40000153
             ],
@@ -23085,7 +23288,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               3.99999976,
               17.4000015
             ],
@@ -23346,7 +23549,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               3.99999976,
               27.4000015
             ],
@@ -23607,7 +23810,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               3.99999976,
               37.4
             ],
@@ -23964,7 +24167,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               3.99999976,
               47.4
             ],

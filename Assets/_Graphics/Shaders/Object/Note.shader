@@ -346,22 +346,7 @@
                                         : 1.0;
                 // Dither is a ChroMapper editor adapter, after family-specific
                 // cutout/plane evaluation.
-                if (editorAlpha < 1.0)
-                {
-                    const float thresholds[16] =
-                    {
-                        1.0 / 17.0, 9.0 / 17.0, 3.0 / 17.0, 11.0 / 17.0,
-                        13.0 / 17.0, 5.0 / 17.0, 15.0 / 17.0, 7.0 / 17.0,
-                        4.0 / 17.0, 12.0 / 17.0, 2.0 / 17.0, 10.0 / 17.0,
-                        16.0 / 17.0, 8.0 / 17.0, 14.0 / 17.0, 6.0 / 17.0
-                    };
-
-                    float2 normalizedScreenPosition = i.screenPos.xy / i.screenPos.w;
-                    int2 pixel = int2(normalizedScreenPosition * _ScreenParams.xy);
-                    int index = (pixel.x & 3) * 4 + (pixel.y & 3);
-                    float dither = editorAlpha - thresholds[index];
-                    clip(dither);
-                }
+                ApplyObjectEditorDither(editorAlpha, i.screenPos);
 
                 float4 result = 0.0;
                 float reflectionFactor = 1.0 - i.reflectionData.w * _RimDarkening;

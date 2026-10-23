@@ -90,6 +90,7 @@ public class LoadedDifficultySelectController : MonoBehaviour
         // If saving, wait until it's done
         while (autoSaveController.IsSaving) ;
 
+        FindAnyObjectByType<CustomEventManager>().SuspendForMapChange();
         var currentPlatform = EnvironmentInfoHelper.GetCurrentEnvironment();
         
         var infoDifficulty = setDifficulties[value];

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ZLinq;
@@ -1210,7 +1210,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                                 .Count
                             - 1;
 
-                        var curLane = e.CustomLightID != null
+                        var curLane = e.CustomLightID is { Length: > 0 }
                             ? labels.LightIDToLane(e.Type, e.CustomLightID[0])
                             : -1;
                         var newLane = Math.Min(curLane + leftRight, max);
@@ -1255,13 +1255,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                         e.Type = labels.LaneIdToEventType(modified);
 
-                        if (e.CustomLightID != null)
+                        if (e.CustomLightID is { Length: > 0 })
                         {
                             var editorID = labels.LightIDToLane(oldType, e.CustomLightID[0]);
                             e.CustomLightID = new[] { labels.LaneToLightID(e.Type, editorID) };
                         }
 
-                        if (e.CustomLightID is { Length: 0 }) e.CustomLightID = null;
                     }
 
                     if (original.CustomData?.Count <= 0) original.CustomData = null;

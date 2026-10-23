@@ -13,6 +13,8 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
     private readonly Dictionary<string, float[]> reusableFloatArrays = new();
     private readonly Dictionary<string, Vector4[]> reusableVectorArrays = new();
     private readonly Dictionary<string, Matrix4x4[]> reusableMatrixArrays = new();
+    private readonly List<int> culledInstances = new();
+    private Matrix4x4[] filteredMatrices;
 
     private int reusableArraysSize;
     private CommandBuffer commandBuffer;
@@ -49,6 +51,11 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
     }
 
     public override void Render(RenderTexture dest, Matrix4x4 viewMatrix, Matrix4x4 projectionMatrix)
+        => Render(dest, viewMatrix, projectionMatrix, null, null);
+
+    /// <summary>Renders the group with per-instance track culling without changing shared source matrices.</summary>
+    public void Render(RenderTexture dest, Matrix4x4 viewMatrix, Matrix4x4 projectionMatrix,
+        Camera camera, VivifyCameraManager vivifyCameras)
     {
         var cb = commandBuffer;
         cb.Clear();
@@ -65,6 +72,7 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
 
         if (Renderers.Length == 1)
         {
+            if (vivifyCameras?.IsVisible(camera, Renderers[0].Renderer.gameObject) == false) return;
             Debug.LogWarning(
                 "Using BloomPrePassBackgroundNonLightInstancedRenderingSystem to render single Renderer, this add extra overhead with no benefit");
             cb.DrawRenderer(Renderers[0].Renderer, material, 0, 0);
@@ -72,6 +80,7 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
         else
         {
             var cachedMatrixArray = GetCachedMatrixArray(internalMatricesCachingId);
+            culledInstances.Clear();
             SupportedProperty[] supportedProperties;
             for (var i = 0; i < Renderers.Length; i++)
             {
@@ -80,6 +89,8 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
                     cachedMatrixArray[i] = bloomPrePassBackgroundNonLightRenderer.CachedTransform.localToWorldMatrix;
                 else
                     cachedMatrixArray[i] = Matrix4x4.zero;
+                if (vivifyCameras?.IsVisible(camera, bloomPrePassBackgroundNonLightRenderer.Renderer.gameObject) == false)
+                    culledInstances.Add(i);
 
                 bloomPrePassBackgroundNonLightRenderer.Renderer.GetPropertyBlock(reusableGetMaterialPropertyBlock);
                 supportedProperties = SupportedProperties;
@@ -144,12 +155,22 @@ public class BloomPrePassBackgroundNonLightInstancedGroupRenderer : BloomPrePass
                 }
             }
 
+            var drawMatrices = cachedMatrixArray;
+            if (culledInstances.Count > 0)
+            {
+                if (filteredMatrices == null || filteredMatrices.Length != cachedMatrixArray.Length)
+                    filteredMatrices = new Matrix4x4[cachedMatrixArray.Length];
+                Array.Copy(cachedMatrixArray, filteredMatrices, cachedMatrixArray.Length);
+                foreach (var index in culledInstances) filteredMatrices[index] = Matrix4x4.zero;
+                drawMatrices = filteredMatrices;
+            }
+
             cb.DrawMeshInstanced(
                 sharedMesh,
                 0,
                 material,
                 0,
-                cachedMatrixArray,
+                drawMatrices,
                 Renderers.Length,
                 reusableSetMaterialPropertyBlock);
         }

@@ -1,0 +1,319 @@
+{
+  "colorNotes": [
+    {
+      "b": 92,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 6,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 100,
+      "x": 1,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 6,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 100.75,
+      "x": 3,
+      "y": 2,
+      "a": 0,
+      "c": 1,
+      "d": 5,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 108,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 1,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 116,
+      "x": 2,
+      "y": 0,
+      "a": 0,
+      "c": 1,
+      "d": 6,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 138,
+      "x": 1,
+      "y": 2,
+      "a": 0,
+      "c": 0,
+      "d": 0,
+      "customData": {
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 16,
+        "noteJumpStartBeatOffset": 0,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    }
+  ],
+  "bombNotes": [],
+  "obstacles": [],
+  "sliders": [],
+  "burstSliders": [],
+  "waypoints": [],
+  "basicBeatmapEvents": [],
+  "colorBoostBeatmapEvents": [],
+  "lightColorEventBoxGroups": [],
+  "lightRotationEventBoxGroups": [],
+  "lightTranslationEventBoxGroups": [],
+  "vfxEventBoxGroups": [],
+  "bpmEvents": [
+    {
+      "b": 0,
+      "m": 150
+    }
+  ],
+  "rotationEvents": [],
+  "noteJumpSpeedEvents": [],
+  "version": "3.2.0",
+  "customData": {
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignPlayerToTrack",
+        "d": {
+          "track": "PlayerTrack"
+        }
+      },
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "NoteTrack",
+            "PlayersPlaceTrack"
+          ],
+          "parentTrack": "PlayerTrack",
+          "worldPositionStays": true
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "b": 68,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "duration": 30,
+          "position": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              100,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "b": 98,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "duration": 4,
+          "position": [
+            [
+              0,
+              0,
+              100,
+              0
+            ],
+            [
+              0,
+              0,
+              150,
+              1,
+              "easeInOutExpo"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 99,
+        "t": "AnimateTrack",
+        "d": {
+          "track": [
+            "NoteTrack",
+            "ArcTrack",
+            "ChainTrack"
+          ],
+          "duration": 0.5,
+          "dissolve": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0.5,
+              "easeStep"
+            ],
+            [
+              1,
+              1,
+              "easeStep"
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              0.5,
+              "easeStep"
+            ],
+            [
+              1,
+              1,
+              "easeStep"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 102,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "duration": 14,
+          "position": [
+            [
+              0,
+              0,
+              150,
+              0
+            ],
+            [
+              0,
+              0,
+              200,
+              1,
+              "easeInOutSine"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 116,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "duration": 8,
+          "position": [
+            [
+              0,
+              0,
+              200,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              "easeInExpo"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 132,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "duration": 4,
+          "position": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              50,
+              1,
+              "easeOutCubic"
+            ]
+          ]
+        }
+      }
+    ],
+    "environment": [
+      {
+        "id": "PlayersPlace",
+        "lookupMethod": "EndsWith",
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "track": "PlayersPlaceTrack"
+      }
+    ]
+  }
+}

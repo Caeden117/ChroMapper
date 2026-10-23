@@ -106,7 +106,7 @@
 
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 color.rgb *= 0.25;
-                color.a = 0;
+                color.a = _MainAlpha;
 
                 color = ApplyAcesTonemapping(color);
 

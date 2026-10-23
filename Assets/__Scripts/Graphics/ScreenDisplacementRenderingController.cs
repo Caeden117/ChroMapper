@@ -34,7 +34,10 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
     private static readonly int uvScaleId = Shader.PropertyToID("_UVScale");
 
     private Camera activeCamera;
+    public VivifyCameraManager VivifyCameras { get; set; }
     private CommandBuffer commandBuffer;
+    private readonly Dictionary<Camera, CommandBuffer> captureBuffers = new();
+    private readonly Stack<CommandBuffer> captureBufferPool = new();
     private int previousDisplacementLayerMask;
     private bool active;
     private bool commandBufferAttached;
@@ -54,6 +57,7 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         if (!settingsCallbackSubscribed)
         {
             Settings.NotifyBySettingName(nameof(Settings.ScreenDisplacement), UpdateScreenDisplacement);
+            MapGraphicsSettings.Changed += HandleMapGraphicsChanged;
             settingsCallbackSubscribed = true;
         }
         if (screenDisplacementEnabled) Activate();
@@ -65,6 +69,7 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         {
             Settings.StopNotifyingBySettingName(
                 nameof(Settings.ScreenDisplacement), UpdateScreenDisplacement);
+            MapGraphicsSettings.Changed -= HandleMapGraphicsChanged;
             settingsCallbackSubscribed = false;
         }
         Deactivate();
@@ -88,6 +93,7 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         active = true;
         ScreenDisplacementRenderer.SetEnabled(true);
         Camera.onPreRender += OnCameraPreRender;
+        Camera.onPostRender += ReleaseCaptureBuffer;
         AttachCommandBuffer();
     }
 
@@ -97,7 +103,16 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         {
             active = false;
             Camera.onPreRender -= OnCameraPreRender;
+            Camera.onPostRender -= ReleaseCaptureBuffer;
         }
+        foreach (var entry in captureBuffers)
+        {
+            if (entry.Key != null) entry.Key.RemoveCommandBuffer(displacementCameraEvent, entry.Value);
+            entry.Value.Release();
+        }
+        captureBuffers.Clear();
+        foreach (var buffer in captureBufferPool) buffer.Release();
+        captureBufferPool.Clear();
         DetachCommandBuffer();
         ScreenDisplacementRenderer.SetEnabled(false);
     }
@@ -135,35 +150,58 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
 
     private void OnCameraPreRender(Camera renderingCamera)
     {
-        if (renderingCamera != activeCamera || commandBuffer == null) return;
+        CommandBuffer renderBuffer;
+        if (renderingCamera == activeCamera)
+        {
+            if (commandBuffer == null) return;
+            renderBuffer = commandBuffer;
+        }
+        else
+        {
+            if (VivifyCameras?.IsCaptureCamera(renderingCamera) != true) return;
+            ReleaseCaptureBuffer(renderingCamera);
+            renderBuffer = captureBufferPool.Count > 0 ? captureBufferPool.Pop()
+                : new CommandBuffer { name = "ChroMapper Capture Screen Displacement" };
+            captureBuffers.Add(renderingCamera, renderBuffer);
+            renderingCamera.AddCommandBuffer(displacementCameraEvent, renderBuffer);
+        }
 
-        commandBuffer.Clear();
-        CollectRenderers();
+        renderBuffer.Clear();
+        CollectRenderers(renderingCamera);
         if (sortedRenderers.Count == 0) return;
 
-        var grabDescriptor = GetGrabDescriptor();
+        var grabDescriptor = GetGrabDescriptor(renderingCamera);
         var sourceWidth = grabDescriptor.width;
         var sourceHeight = grabDescriptor.height;
         var cameraTarget = new RenderTargetIdentifier(BuiltinRenderTextureType.CameraTarget);
 
         // These commands execute in order at AfterForwardAlpha: snapshot the target,
         // sample it while drawing back to that target, then retire the temporary source.
-        commandBuffer.GetTemporaryRT(grabTextureId, grabDescriptor, FilterMode.Bilinear);
-        commandBuffer.Blit(cameraTarget, grabTextureId);
-        commandBuffer.SetGlobalTexture(grabTextureId, grabTextureId);
-        commandBuffer.SetGlobalVector(
+        renderBuffer.GetTemporaryRT(grabTextureId, grabDescriptor, FilterMode.Bilinear);
+        renderBuffer.Blit(cameraTarget, grabTextureId);
+        renderBuffer.SetGlobalTexture(grabTextureId, grabTextureId);
+        renderBuffer.SetGlobalVector(
             grabTextureTexelSizeId,
             new Vector4(1f / sourceWidth, 1f / sourceHeight, sourceWidth, sourceHeight));
-        commandBuffer.SetRenderTarget(cameraTarget);
+        renderBuffer.SetRenderTarget(cameraTarget);
 
-        DrawRenderers();
+        DrawRenderers(renderBuffer);
 
-        commandBuffer.SetGlobalTexture(grabTextureId, Texture2D.blackTexture);
-        commandBuffer.SetGlobalVector(grabTextureTexelSizeId, Vector4.zero);
-        commandBuffer.ReleaseTemporaryRT(grabTextureId);
+        renderBuffer.SetGlobalTexture(grabTextureId, Texture2D.blackTexture);
+        renderBuffer.SetGlobalVector(grabTextureTexelSizeId, Vector4.zero);
+        renderBuffer.ReleaseTemporaryRT(grabTextureId);
     }
 
-    private void DrawRenderers()
+    /// <summary>Detaches a capture's draw buffer after rendering, including a failed capture.</summary>
+    public void ReleaseCaptureBuffer(Camera camera)
+    {
+        if (ReferenceEquals(camera, null) || !captureBuffers.Remove(camera, out var buffer)) return;
+        if (camera != null) camera.RemoveCommandBuffer(displacementCameraEvent, buffer);
+        buffer.Clear();
+        captureBufferPool.Push(buffer);
+    }
+
+    private void DrawRenderers(CommandBuffer renderBuffer)
     {
         // A script reload can preserve this component without rerunning field initializers.
         // Recreate native-backed blocks at their use boundary.
@@ -183,8 +221,8 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
             var material = renderer.sharedMaterial;
             if (!TryGetInstancingMesh(renderer, material, out var mesh))
             {
-                FlushInstancedBatch(ref instanceCount, ref batchMesh, ref batchMaterial);
-                commandBuffer.DrawRenderer(renderer, material, 0, -1);
+                FlushInstancedBatch(renderBuffer, ref instanceCount, ref batchMesh, ref batchMaterial);
+                renderBuffer.DrawRenderer(renderer, material, 0, -1);
                 continue;
             }
 
@@ -195,7 +233,7 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
                     && renderer.sortingOrder == batchSortingOrder
                     && material.renderQueue == batchRenderQueue);
             if (!compatible)
-                FlushInstancedBatch(ref instanceCount, ref batchMesh, ref batchMaterial);
+                FlushInstancedBatch(renderBuffer, ref instanceCount, ref batchMesh, ref batchMaterial);
 
             if (instanceCount == 0)
             {
@@ -208,10 +246,10 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
 
             AddInstancedRenderer(renderer, material, instanceCount++);
             if (instanceCount == maxInstancedRenderers)
-                FlushInstancedBatch(ref instanceCount, ref batchMesh, ref batchMaterial);
+                FlushInstancedBatch(renderBuffer, ref instanceCount, ref batchMesh, ref batchMaterial);
         }
 
-        FlushInstancedBatch(ref instanceCount, ref batchMesh, ref batchMaterial);
+        FlushInstancedBatch(renderBuffer, ref instanceCount, ref batchMesh, ref batchMaterial);
     }
 
     private bool TryGetInstancingMesh(Renderer renderer, Material material, out Mesh mesh)
@@ -252,7 +290,7 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
     }
 
     private void FlushInstancedBatch(
-        ref int instanceCount, ref Mesh batchMesh, ref Material batchMaterial)
+        CommandBuffer renderBuffer, ref int instanceCount, ref Mesh batchMesh, ref Material batchMaterial)
     {
         if (instanceCount == 0) return;
         if (instanceCount > maxInstancedRenderers)
@@ -265,23 +303,24 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         instancedPropertyBlock.SetFloatArray(cutoutId, instanceCutouts);
         instancedPropertyBlock.SetVectorArray(cutoutTexOffsetId, instanceCutoutTexOffsets);
         instancedPropertyBlock.SetVectorArray(uvScaleId, instanceUvScales);
-        commandBuffer.DrawMeshInstanced(
+        renderBuffer.DrawMeshInstanced(
             batchMesh, 0, batchMaterial, -1, instanceMatrices, instanceCount, instancedPropertyBlock);
         instanceCount = 0;
         batchMesh = null;
         batchMaterial = null;
     }
 
-    private void CollectRenderers()
+    private void CollectRenderers(Camera renderingCamera)
     {
         sortedRenderers.Clear();
         foreach (var displacementRenderer in ScreenDisplacementRenderer.Renderers)
         {
-            if (displacementRenderer != null && displacementRenderer.IsReady)
+            if (displacementRenderer != null && displacementRenderer.IsReady
+                && VivifyCameras?.IsVisible(renderingCamera, displacementRenderer.gameObject) != false)
                 sortedRenderers.Add(displacementRenderer);
         }
 
-        var cameraTransform = activeCamera.transform;
+        var cameraTransform = renderingCamera.transform;
         sortedRenderers.Sort((left, right) =>
         {
             var leftRenderer = left.TargetRenderer;
@@ -309,9 +348,11 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         });
     }
 
+    private void HandleMapGraphicsChanged() => UpdateScreenDisplacement(Settings.Instance.ScreenDisplacement);
+
     private void UpdateScreenDisplacement(object value)
     {
-        screenDisplacementEnabled = System.Convert.ToBoolean(value);
+        screenDisplacementEnabled = MapGraphicsSettings.ScreenDisplacement ?? System.Convert.ToBoolean(value);
         if (screenDisplacementEnabled)
         {
             ScreenDisplacementRenderer.SetEnabled(true);
@@ -323,9 +364,9 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         }
     }
 
-    private RenderTextureDescriptor GetGrabDescriptor()
+    private RenderTextureDescriptor GetGrabDescriptor(Camera renderingCamera)
     {
-        var descriptor = GetCameraTargetDescriptor();
+        var descriptor = GetCameraTargetDescriptor(renderingCamera);
         descriptor.depthBufferBits = 0;
         descriptor.depthStencilFormat = GraphicsFormat.None;
         descriptor.msaaSamples = 1;
@@ -334,20 +375,20 @@ public sealed class ScreenDisplacementRenderingController : MonoBehaviour
         return descriptor;
     }
 
-    private RenderTextureDescriptor GetCameraTargetDescriptor()
+    private RenderTextureDescriptor GetCameraTargetDescriptor(Camera renderingCamera)
     {
-        if (activeCamera.targetTexture != null)
+        if (renderingCamera.targetTexture != null)
         {
-            var descriptor = activeCamera.targetTexture.descriptor;
-            descriptor.width = Mathf.Max(activeCamera.scaledPixelWidth, 1);
-            descriptor.height = Mathf.Max(activeCamera.scaledPixelHeight, 1);
+            var descriptor = renderingCamera.targetTexture.descriptor;
+            descriptor.width = Mathf.Max(renderingCamera.scaledPixelWidth, 1);
+            descriptor.height = Mathf.Max(renderingCamera.scaledPixelHeight, 1);
             return descriptor;
         }
 
         return new RenderTextureDescriptor(
-            Mathf.Max(activeCamera.scaledPixelWidth, 1),
-            Mathf.Max(activeCamera.scaledPixelHeight, 1),
-            activeCamera.allowHDR ? RenderTextureFormat.DefaultHDR : RenderTextureFormat.Default,
+            Mathf.Max(renderingCamera.scaledPixelWidth, 1),
+            Mathf.Max(renderingCamera.scaledPixelHeight, 1),
+            renderingCamera.allowHDR ? RenderTextureFormat.DefaultHDR : RenderTextureFormat.Default,
             0)
         {
             sRGB = QualitySettings.activeColorSpace == ColorSpace.Linear

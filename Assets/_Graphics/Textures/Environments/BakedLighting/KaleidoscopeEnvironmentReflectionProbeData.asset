@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94c4154dfe24b08a95e36a96521c8cf, type: 3}
+  m_Name: KaleidoscopeEnvironmentReflectionProbeData
+  m_EditorClassIdentifier:
+  ReflectionProbeCubemap1: {fileID: -98131583685500669, guid: ec0208bbb61a41ebbf9d68770efc79c0, type: 3}
+  ReflectionProbeCubemap2: {fileID: -98131583685500669, guid: f5547ecceaf44477b7e9fec2a7a09028, type: 3}

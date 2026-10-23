@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
@@ -31,8 +31,11 @@ public class StrobeGenerator : MonoBehaviour
                     y.CustomLightID != null ? EventGridContainer.PropMode.Light : EventGridContainer.PropMode.Off)
                 .ToDictionary(z => z.Key, modeGroup =>
                     modeGroup.Key == EventGridContainer.PropMode.Off
-                        ? modeGroup.GroupBy(y => 1)
-                        : modeGroup.GroupBy(y => y.CustomLightID[0]));
+                        ? modeGroup.GroupBy(y => (int?)1)
+                        : modeGroup.GroupBy(
+                            y => y.CustomLightID.Length > 0
+                                ? (int?)y.CustomLightID[0]
+                                : null));
 
             foreach (var mode in partitioned)
             {
@@ -55,9 +58,8 @@ public class StrobeGenerator : MonoBehaviour
                         {
                             var oldEvent = windowSpan[i];
 
-                            var isValid = oldEvent.Type == start.Type &&
-                                ((start.CustomLightID is null && oldEvent.CustomLightID is null)
-                                || (start.CustomLightID != null && oldEvent.CustomLightID != null && oldEvent.CustomLightID.Contains(start.CustomLightID[0])));
+                            var isValid = oldEvent.Type == start.Type
+                                && MatchesLightSelection(start.CustomLightID, oldEvent.CustomLightID);
 
                             if (isValid)
                             {
@@ -110,4 +112,17 @@ public class StrobeGenerator : MonoBehaviour
                 new StrobeGeneratorGenerationAction(generatedObjects.ToArray(), oldEvents.ToArray()));
         }
     }
+
+    private static bool MatchesLightSelection(int[] sourceIds, int[] candidateIds)
+    {
+        if (sourceIds == null)
+            return candidateIds == null;
+
+        // Empty IDs are an authored selection of no lights, distinct from an absent broadcast selector.
+        if (sourceIds.Length == 0)
+            return candidateIds is { Length: 0 };
+
+        return candidateIds != null && candidateIds.Contains(sourceIds[0]);
+    }
+
 }

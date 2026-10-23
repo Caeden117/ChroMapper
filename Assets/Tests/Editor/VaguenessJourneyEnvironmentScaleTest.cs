@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Beatmap.V2;
@@ -18,10 +19,10 @@ namespace Tests.Editor
     // Notes, walls, and events after beat four are trimmed; none change initial ring scale.
     public class VaguenessJourneyEnvironmentScaleTest : TestBase
     {
-        private const string LeftRootId =
-            "BTSEnvironment.[0]Environment.[14]PillarTrackLaneRingsR (1)(Clone)";
-        private const string RightRootId =
-            "BTSEnvironment.[0]Environment.[13]PillarTrackLaneRingsR(Clone)";
+        private const string LeftSourceId =
+            "BTSEnvironment.[0]Environment.[14]PillarTrackLaneRingsR (1)";
+        private const string RightSourceId =
+            "BTSEnvironment.[0]Environment.[13]PillarTrackLaneRingsR";
 
         private static string FixturePath => Path.Combine(
             Application.dataPath,
@@ -52,17 +53,27 @@ namespace Tests.Editor
             yield return null;
 
             var descriptor = Object.FindAnyObjectByType<BeatmapRuntimeContext>().Descriptor;
+            var leftSource = descriptor.ChromaIDMarkers.Single(marker => marker.ChromaID == LeftSourceId).transform;
+            var rightSource = descriptor.ChromaIDMarkers.Single(marker => marker.ChromaID == RightSourceId).transform;
+            // Native clones receive their own sibling IDs after parenting and retain their source's clone name.
             var left = descriptor.ChromaIDMarkers
-                .Where(marker => marker.ChromaID == LeftRootId)
+                .Where(marker => marker.name == leftSource.name + "(Clone)" && marker.transform.parent == leftSource.parent)
                 .Select(marker => marker.transform)
                 .ToList();
             var right = descriptor.ChromaIDMarkers
-                .Where(marker => marker.ChromaID == RightRootId)
+                .Where(marker => marker.name == rightSource.name + "(Clone)" && marker.transform.parent == rightSource.parent)
                 .Select(marker => marker.transform)
                 .ToList();
 
             Assert.That(left, Has.Count.EqualTo(52), "The Expert+ fixture did not create every left clone.");
             Assert.That(right, Has.Count.EqualTo(52), "The Expert+ fixture did not create every right clone.");
+            foreach (var clone in left.Concat(right))
+                Assert.That(clone.GetComponent<ChromaIDMarker>().ChromaID, Is.EqualTo(NativeObjectId(clone)));
+
+            Assert.That(
+                left.Concat(right).Select(clone => clone.GetComponent<ChromaIDMarker>().ChromaID).Distinct().Count(),
+                Is.EqualTo(104),
+                "Every native clone must have a distinct sibling ID.");
             Assert.That(right.Count(transform =>
                 Mathf.Abs(transform.localScale.x - 0.25f) > 0.001f
                 || Mathf.Abs(transform.localScale.y - 0.25f) > 0.001f), Is.Zero,
@@ -78,6 +89,23 @@ namespace Tests.Editor
             Assert.That(oversizedLeft.Count, Is.Zero,
                 $"Left ring cubes have a wider/deeper parent scale than right cubes. " +
                 $"{oversizedLeft.Count} of {left.Count} are oversized; examples: {examples}.");
+        }
+
+        // Published Chroma GameObjectInfo builds IDs from the live hierarchy's sibling indices and full names.
+        private static string NativeObjectId(Transform target)
+        {
+            var names = new List<string>();
+            for (var current = target; current != null; current = current.parent)
+            {
+                var index = current.parent != null
+                    ? current.GetSiblingIndex()
+                    : System.Array.IndexOf(current.gameObject.scene.GetRootGameObjects(), current.gameObject);
+                names.Add($"[{index}]{current.name}");
+            }
+
+            names.Add(target.gameObject.scene.name);
+            names.Reverse();
+            return string.Join(".", names);
         }
 
         // The original authored file scaled both source rings before any duplicates; this

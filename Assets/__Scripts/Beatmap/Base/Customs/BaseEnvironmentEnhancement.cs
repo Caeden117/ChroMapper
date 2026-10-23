@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using Beatmap.Enums;
+using Beatmap.Helper;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using SimpleJSON;
@@ -9,6 +11,16 @@ namespace Beatmap.Base.Customs
 {
     public class BaseEnvironmentEnhancement : BaseObject
     {
+        // Chroma accepts quoted enum ordinals. Keep those separate from the editor's serialized enum order.
+        private enum ChromaLookupMethod
+        {
+            Regex,
+            Exact,
+            Contains,
+            StartsWith,
+            EndsWith
+        }
+
         public BaseEnvironmentEnhancement()
         {
         }
@@ -18,7 +30,7 @@ namespace Beatmap.Base.Customs
             ID = other.ID;
             LookupMethod = other.LookupMethod;
             Geometry = other.Geometry?.Clone();
-            Track = other.Track;
+            TrackData = other.TrackData?.Clone();
             Duplicate = other.Duplicate;
             Active = other.Active;
             Scale = other.Scale;
@@ -44,7 +56,27 @@ namespace Beatmap.Base.Customs
         public string ID { get; set; }
         public EnvironmentLookupMethod LookupMethod { get; set; } = EnvironmentLookupMethod.Contains;
         public JSONNode Geometry { get; set; }
-        public string Track { get; set; }
+        private JSONNode trackData;
+        public JSONNode TrackData
+        {
+            get => trackData;
+            set
+            {
+                trackData = value;
+                CustomTrack = value;
+                TrackNames = TrackDataReader.ReadNames(value);
+            }
+        }
+        public IReadOnlyList<string> TrackNames { get; private set; } = Array.Empty<string>();
+        public string Track
+        {
+            get => TrackData is JSONString name
+                ? name.Value
+                : null;
+            set => TrackData = value == null
+                ? null
+                : new JSONString(value);
+        }
         public int? Duplicate { get; set; }
         public JSONNode Active { get; set; }
         public Vector3? Scale { get; set; }
@@ -219,8 +251,7 @@ namespace Beatmap.Base.Customs
 
         #endregion
 
-        public override bool HasMatchingTrack(string filter) =>
-            (filter == null) || filter == Track;
+        public override bool HasMatchingTrack(string filter) => base.HasMatchingTrack(filter);
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) => false;
 
@@ -241,7 +272,7 @@ namespace Beatmap.Base.Customs
             Nullable.Equals(Position, other.Position) && Nullable.Equals(LocalPosition, other.LocalPosition) &&
             Nullable.Equals(Rotation, other.Rotation) &&
             Nullable.Equals(LocalRotation, other.LocalRotation) &&
-            Nullable.Equals(LightID, other.LightID) && Track == other.Track;
+            Nullable.Equals(LightID, other.LightID) && TrackData?.ToString() == other.TrackData?.ToString();
 
         public override bool Equals(object obj)
         {
@@ -266,7 +297,9 @@ namespace Beatmap.Base.Customs
                 hashCode = (hashCode * 397) ^ (LocalRotation != null ? LocalRotation.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Components != null ? Components.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (LightID != null ? LightID.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Track != null ? Track.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TrackData != null
+                    ? TrackData.ToString().GetHashCode()
+                    : 0);
                 return hashCode;
             }
         }
@@ -286,11 +319,26 @@ namespace Beatmap.Base.Customs
             else
             {
                 ID = node[KeyID]?.Value;
-                Enum.TryParse(node[KeyLookupMethod]?.Value, out EnvironmentLookupMethod environmentLookup);
-                LookupMethod = environmentLookup;
+                var lookupData = node.GetValueOrDefault(KeyLookupMethod, null);
+                if (lookupData is JSONString && Enum.TryParse(lookupData.Value, out ChromaLookupMethod nativeLookup))
+                    LookupMethod = nativeLookup switch
+                    {
+                        ChromaLookupMethod.Regex => EnvironmentLookupMethod.Regex,
+                        ChromaLookupMethod.Exact => EnvironmentLookupMethod.Exact,
+                        ChromaLookupMethod.Contains => EnvironmentLookupMethod.Contains,
+                        ChromaLookupMethod.StartsWith => EnvironmentLookupMethod.StartsWith,
+                        ChromaLookupMethod.EndsWith => EnvironmentLookupMethod.EndsWith,
+                        _ => (EnvironmentLookupMethod)(int)nativeLookup
+                    };
+
+                else
+                {
+                    Enum.TryParse(lookupData?.Value, out EnvironmentLookupMethod environmentLookup);
+                    LookupMethod = environmentLookup;
+                }
             }
 
-            if (node[KeyTrack] != null) Track = node[KeyTrack].Value;
+            TrackData = node.GetValueOrDefault(KeyTrack, null);
             if (node[KeyDuplicate] != null) Duplicate = node[KeyDuplicate].AsInt;
             if (node[KeyActive] != null) Active = node[KeyActive].AsBool;
             Scale = ReadVector3OrNull(node, KeyScale);

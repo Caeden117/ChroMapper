@@ -11,8 +11,7 @@ public abstract class LightController : MonoBehaviour, IEnvironmentComponentUpda
 
     protected static readonly int ColorId = Shader.PropertyToID("_Color");
 
-    [NonSerialized]
-    public bool HasInitialized;
+    [NonSerialized] public bool HasInitialized;
     protected MaterialPropertyBlock Mpb;
     [NonSerialized] public Color Color = new(0f, 0f, 0f, 0f);
 

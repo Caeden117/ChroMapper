@@ -29,6 +29,9 @@ public class LightColorTween
 
     public Color Color;
 
+    public static Color LerpHSV(Color start, Color end, float t) =>
+        BasicEventColorLerp.Interpolate(start, end, t, BasicEventColorLerpType.TrueHSV);
+
     public bool UpdateTime(float time)
     {
         var nTimeAlpha = Mathf.InverseLerp(StartTimeAlpha, EndTimeAlpha, time);

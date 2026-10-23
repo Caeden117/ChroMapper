@@ -136,10 +136,13 @@ MonoBehaviour:
     OutlineMesh: {fileID: 5599852862968793868}
     Renderers:
     - {fileID: 7633872559167395194}
+    - {fileID: 761}
     MpbRenderers:
     - {fileID: 7633872559167395194}
+    - {fileID: 761}
   Renderers:
   - {fileID: 7633872559167395194}
+  - {fileID: 761}
   MaxCache: 1
 --- !u!1 &720881814448263661
 GameObject:
@@ -282,6 +285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderers:
   - {fileID: 7633872559167395194}
+  - {fileID: 761}
   - {fileID: 2719117372333501612}
 --- !u!1 &6083661492801522845
 GameObject:
@@ -1111,4 +1115,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3276050044057382517, guid: 531dfdd657a9e080eb53cf0cd84ba553,
     type: 3}
   m_PrefabInstance: {fileID: 5993050734184128505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &761 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 703, guid: bc2aa4c8ad6027d5cbf5f9ed0bb8c9c3, type: 3}
+  m_PrefabInstance: {fileID: 2262882416815121967}
   m_PrefabAsset: {fileID: 0}

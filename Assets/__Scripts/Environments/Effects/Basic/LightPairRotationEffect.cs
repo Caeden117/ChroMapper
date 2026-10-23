@@ -13,10 +13,7 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
 
     private System.Func<float, float> positionSampler;
 
-    public void BindPositionSampler(System.Func<float, float> sampler)
-    {
-        positionSampler = sampler;
-    }
+    public void BindPositionSampler(System.Func<float, float> sampler) => positionSampler = sampler;
 
     private float GetUnanimatedPositionZ(float jsonTime) => Visual.transform.position.z;
 
@@ -170,16 +167,14 @@ public class LightPairRotationEffect : BasicMovementEffect<LightPairRotationStat
 
         if (current.OverrideRandomValues)
         {
-            // The deterministic override must follow edited track poses when the chain is rebuilt.
-            // TODO this is better but still not quite right, need to use these diag logs compared to in game positions to figure out why we still slightly desync (if its even possible not to desync at all)
+            // Re-evaluate the deterministic override at dispatch time after track edits.
             current.RandomDirection = 1f;
             current.RandomStartRotation = callbackFrame % 360;
             if (Visual.UseZPositionForAngleOffset)
             {
                 var callbackBeat = Atsc.GetBeatFromSeconds(current.CallbackSeconds);
-                var jsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(callbackBeat);
-                var positionZ = positionSampler(jsonTime);
-                current.RandomStartRotation += positionZ * Visual.ZPositionAngleOffsetScale;
+                var jsonTime = BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(callbackBeat) ?? callbackBeat;
+                current.RandomStartRotation += positionSampler(jsonTime) * Visual.ZPositionAngleOffsetScale;
             }
         }
         else

@@ -33,8 +33,10 @@ Shader "ChroMapper/Parametric Box Opaque"
             // Global: enabled by the bloom-fog renderer during its pass.
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile _ POST_BLOOM
+            #pragma multi_compile_fragment _ OVERDRAW_VIEW
 
             #include "UnityCG.cginc"
+            #include "ShaderLibrary/Common/Overdraw.hlsl"
             #include "ShaderLibrary/Core/Camera.hlsl"
             #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "ShaderLibrary/Common/Bloom.hlsl"
@@ -90,6 +92,9 @@ Shader "ChroMapper/Parametric Box Opaque"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                #if defined(OVERDRAW_VIEW)
+                return CalculateParametricOverdrawColor();
+                #endif
 
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 float alpha = color.a * color.a;

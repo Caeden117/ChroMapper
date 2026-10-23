@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Beatmap.Animations;
 using Beatmap.Base;
@@ -17,16 +17,24 @@ public class Track : MonoBehaviour
     private readonly Vector3 rotationPoint = Vector3.zero;
 
     private BaseGrid gridObject;
-    private ObjectContainer gridContainer;
+    public ObjectContainer GridContainer;
     private (Transform, Vector3, Quaternion)[] nodesTarget;
     private readonly Vector3[] newSplinePosition = new Vector3[ArcContainer.NumSamples + 1];
     private bool useCustom;
+    private bool movementUpdatesSubscribed;
     private float spawnTime;
     private float spawnPosition;
     private float despawnTime;
     private float despawnPosition;
     private float zScale = 1f;
     private bool v2;
+    private float noteFloorDurationSongBpm;
+    private bool useAuthoredNoteFloorHeight;
+
+    private const float NoteFloorDurationSeconds = 0.5f;
+    private const float NoteFloorTravelDistance = 100f;
+    private const string LegacyDisableNoteGravityKey = "_disableNoteGravity";
+    private const string DisableNoteGravityKey = "disableNoteGravity";
 
     // this number pulled from my ass, but it looks fine
     // oh, it's actually correct
@@ -37,8 +45,27 @@ public class Track : MonoBehaviour
 
     public void Awake() => zScale = IgnoreZScale ? 1f : BeatmapConstant.LaneSize;
 
-    public void OnEnable() => vNjsProvider.OnChanged += UpdateState;
-    public void OnDisable() => vNjsProvider.OnChanged -= UpdateState;
+    public void OnEnable()
+    {
+        if (gridObject != null && !useCustom)
+            SubscribeMovementUpdates();
+    }
+
+    public void OnDisable()
+    {
+        if (!movementUpdatesSubscribed)
+            return;
+        vNjsProvider.OnChanged -= UpdateState;
+        movementUpdatesSubscribed = false;
+    }
+
+    private void SubscribeMovementUpdates()
+    {
+        if (movementUpdatesSubscribed)
+            return;
+        vNjsProvider.OnChanged += UpdateState;
+        movementUpdatesSubscribed = true;
+    }
 
     public void AssignRotationValue(Vector3 rotation)
     {
@@ -67,6 +94,13 @@ public class Track : MonoBehaviour
         ObjectParentTransform.localPosition = new Vector3(position.x, y, 0f);
     }
 
+    internal void UpdateNoteRotation(float time)
+    {
+        if (gridObject is BaseNote && GridContainer is NoteContainer note)
+            note.DirectionTarget.localRotation = GetNoteSpawnRotation(
+                note, Mathf.Clamp01(Mathf.InverseLerp(spawnTime, despawnTime, time)));
+    }
+
     public void UpdateTime(float time)
     {
         float z;
@@ -75,9 +109,21 @@ public class Track : MonoBehaviour
         // Jump in
         if (time < spawnTime)
         {
-            z = (gridObject.CustomSpawnEffect != null ? (bool)gridObject.CustomSpawnEffect : !v2) ^ v2
-                ? Mathf.LerpUnclamped(spawnPosition, JUMP_FAR, (spawnTime - time) / JUMP_TIME)
-                : JUMP_FAR;
+            if (gridObject is BaseNote)
+            {
+                // Spawn effects control the flash, while notes travel the native floor distance before jumping.
+                var floorStartTime = spawnTime - noteFloorDurationSongBpm;
+                z = time < floorStartTime
+                    ? JUMP_FAR
+                    : Mathf.LerpUnclamped(spawnPosition + NoteFloorTravelDistance, spawnPosition,
+                        (time - floorStartTime) / noteFloorDurationSongBpm);
+            }
+            else
+            {
+                z = (gridObject.CustomSpawnEffect != null ? (bool)gridObject.CustomSpawnEffect : !v2) ^ v2
+                    ? Mathf.LerpUnclamped(spawnPosition, JUMP_FAR, (spawnTime - time) / JUMP_TIME)
+                    : JUMP_FAR;
+            }
         }
         else if (time < despawnTime)
             z = Mathf.LerpUnclamped(spawnPosition, despawnPosition, (time - spawnTime) / (despawnTime - spawnTime));
@@ -98,28 +144,26 @@ public class Track : MonoBehaviour
                     // [0-1] between spawn time and note time
                     // 0.3 magic number taken from ArcViewer (thanks polandball)
                     var spawnLifetime = Mathf.Clamp01(1 - ((normalizedLifetime - 0.5f) * 2));
-                    var rotationLifetime = Mathf.Clamp01(spawnLifetime / 0.3f);
 
                     // Beat Saber uses a parabolic arc so we use Quadratic Out easing because im lazy
                     var jumpT = Easing.Quadratic.Out(spawnLifetime);
-                    var rotationT = Easing.Quadratic.Out(rotationLifetime);
 
                     // TODO: Pre-compute starting position so notes can stack and flip can be supported
                     //   (Notes need to be aware of other notes)
+                    // Disabled-gravity notes start on their authored layer instead of dropping at the jump boundary.
+                    var jumpStartY = useAuthoredNoteFloorHeight
+                        ? note.GetPosition().y + BeatmapConstant.YOffset
+                        : BeatmapConstant.YOffset;
                     position.y = Mathf.LerpUnclamped(
-                        BeatmapConstant.YOffset,
+                        jumpStartY,
                         note.GetPosition().y + BeatmapConstant.YOffset + BeatmapConstant.PlayerYOffset,
                         jumpT);
 
-                    // Multiply euler rotation by spawn lifetime if we are in the first half (spawning) portion of our object lifetime
-                    if (normalizedLifetime >= 0.5f && gridContainer is NoteContainer noteContainer)
+                    if (GridContainer is NoteContainer noteContainer)
                     {
-                        var quaternion = Quaternion.Euler(noteContainer.DirectionTargetEuler);
-
-                        noteContainer.DirectionTarget.localRotation = Quaternion.LerpUnclamped(
-                            Quaternion.identity,
-                            quaternion,
-                            rotationT);
+                        noteContainer.DirectionTarget.localRotation = GetNoteSpawnRotation(
+                            noteContainer,
+                            1f - normalizedLifetime);
                     }
 
                     break;
@@ -162,7 +206,7 @@ public class Track : MonoBehaviour
                 }
             case BaseArc arc:
                 {
-                    var arcContainer = gridContainer as ArcContainer;
+                    var arcContainer = GridContainer as ArcContainer;
 
                     var normalizedLifetime = Mathf.Clamp01(
                         Mathf.InverseLerp(
@@ -224,9 +268,22 @@ public class Track : MonoBehaviour
         ObjectParentTransform.localPosition = position;
     }
 
+    internal static Quaternion GetNoteSpawnRotation(NoteContainer note, float normalTime)
+    {
+        var rotationLifetime = Mathf.Clamp01((normalTime * 2f) / 0.3f);
+        return Quaternion.LerpUnclamped(
+            Quaternion.identity,
+            Quaternion.Euler(note.DirectionTargetEuler),
+            Easing.Quadratic.Out(rotationLifetime));
+    }
+
     public void InitState()
     {
         v2 = BeatSaberSongContainer.Instance.Map.MajorVersion == 2;
+        var disableNoteGravityKey = v2 ? LegacyDisableNoteGravityKey : DisableNoteGravityKey;
+        // A missing optional flag must not create a JSON node while attaching a note.
+        useAuthoredNoteFloorHeight = gridObject is BaseNote
+            && gridObject.CustomData?.GetValueOrDefault(disableNoteGravityKey, null)?.AsBool == true;
         useCustom = (gridObject.CustomNoteJumpMovementSpeed?.IsNumber ?? false)
             || (gridObject.CustomNoteJumpStartBeatOffset?.IsNumber ?? false);
         if (!useCustom)
@@ -241,7 +298,7 @@ public class Track : MonoBehaviour
 
     public void UpdateState()
     {
-        if (!UIMode.PreviewMode || useCustom || gridObject == null || gridContainer.ObjectData == null) return;
+        if (!UIMode.PreviewMode || useCustom || gridObject == null || GridContainer.ObjectData == null) return;
 
         gridObject.SetSpawnParameters(
             vNjsProvider.HalfJumpDurationInBeats,
@@ -251,6 +308,7 @@ public class Track : MonoBehaviour
 
     public void UpdateSpawning()
     {
+        noteFloorDurationSongBpm = NoteFloorDurationSeconds * BeatSaberSongContainer.Instance.Info.BeatsPerMinute / 60f;
         spawnTime = gridObject.SongBpmTime - gridObject.HalfJumpDuration;
         spawnPosition = gridObject.HalfJumpDistance;
         switch (gridObject)
@@ -279,7 +337,7 @@ public class Track : MonoBehaviour
         spawnPosition += BeatmapConstant.ZOffset;
         despawnPosition += BeatmapConstant.ZOffset;
 
-        gridContainer.UpdateScalable(gridObject.HalfJumpDistance / gridObject.HalfJumpDuration);
+        GridContainer.UpdateScalable(gridObject.HalfJumpDistance / gridObject.HalfJumpDuration);
     }
 
     public void AttachContainer(ObjectContainer obj)
@@ -290,10 +348,10 @@ public class Track : MonoBehaviour
         obj.AssignTrack(this);
 
         if (obj.ObjectData is not BaseGrid g) return;
-        gridContainer = obj;
+        GridContainer = obj;
         gridObject = g;
 
-        if (gridContainer is ChainContainer chainContainer)
+        if (GridContainer is ChainContainer chainContainer)
         {
             nodesTarget = chainContainer
                 .Nodes.Select(n => (n.transform, n.transform.localPosition, n.transform.localRotation))
@@ -301,6 +359,10 @@ public class Track : MonoBehaviour
         }
 
         InitState();
+        // Geometry tracks and objects with authored jump parameters never consume shared NJS updates.
+        // Register only after attachment establishes that dependency, avoiding map-sized delegate copies.
+        if (isActiveAndEnabled && !useCustom)
+            SubscribeMovementUpdates();
     }
 
     public void UpdateMaterialRotation(ObjectContainer obj)
@@ -311,6 +373,8 @@ public class Track : MonoBehaviour
     public void ResetData()
     {
         enabled = false;
+        gridObject = null;
+        GridContainer = null;
         SelfTransform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         SelfTransform.localScale = Vector3.one;
         ObjectParentTransform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);

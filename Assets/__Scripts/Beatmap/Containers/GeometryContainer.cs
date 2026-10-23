@@ -1,4 +1,5 @@
 using Beatmap.Animations;
+using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
 using Beatmap.Enums;
@@ -13,7 +14,7 @@ namespace Beatmap.Containers
 {
     public class GeometryContainer : ObjectContainer
     {
-        private static Mesh triangleMesh = null;
+        private static Mesh triangleMesh;
 
         public override BaseObject ObjectData
         {
@@ -21,11 +22,21 @@ namespace Beatmap.Containers
             set => EnvironmentEnhancement = (BaseEnvironmentEnhancement)value;
         }
 
-        public BeatmapRuntimeContext Context;
-
         public BaseEnvironmentEnhancement EnvironmentEnhancement;
-
         public ObjectAnimator MaterialAnimator;
+
+        internal BaseMaterial MaterialDefinition;
+
+        internal enum GeometryType
+        {
+            Sphere,
+            Capsule,
+            Cylinder,
+            Cube,
+            Plane,
+            Quad,
+            Triangle
+        }
 
         public override void UpdateGridPosition()
         {
@@ -37,10 +48,24 @@ namespace Beatmap.Containers
             BeatmapRuntimeContext context,
             TracksManager tracksManager)
         {
+            Regex lookupRegex = null;
+            if (eh.Geometry == null && eh.LookupMethod == EnvironmentLookupMethod.Regex)
+            {
+                try
+                {
+                    lookupRegex = new Regex(eh.ID,
+                        RegexOptions.CultureInvariant | RegexOptions.ECMAScript | RegexOptions.Compiled);
+                }
+                catch (ArgumentException exception)
+                {
+                    Debug.LogError($"Error processing environment data for: ID [\"{eh.ID}\"] using method [Regex]. "
+                        + $"{BeatmapLogContext.Describe(eh)}\n{exception.Message}");
+                    return null;
+                }
+            }
             var container = Instantiate(prefab).GetComponent<GeometryContainer>();
             if (context.Descriptor != null)
                 SceneManager.MoveGameObjectToScene(container.gameObject, context.Descriptor.gameObject.scene);
-            container.Context = context;
             container.Animator.Context = context;
             container.Animator.TracksManager = tracksManager;
 
@@ -64,7 +89,12 @@ namespace Beatmap.Containers
             if (eh.Geometry != null)
             {
                 // Continue with geometry generation if the Geometry object is defined
-                GeneratePrimitiveGeometry(container, eh, context);
+                if (!GeneratePrimitiveGeometry(container, eh, context, tracksManager))
+                {
+                    DestroyImmediate(container.gameObject);
+                    return null;
+                }
+
                 // Primitive geometry is owned by this container, so its existing single-target animator remains valid.
                 container.Animator.AttachToGeometry(eh);
             }
@@ -72,51 +102,70 @@ namespace Beatmap.Containers
             {
                 // EnvironmentEnhancementWith*Track* regression tests require OEM hierarchies to remain intact; each
                 // matched object receives a data-only track controller instead of sharing the container transform.
-                GenerateEnvironmentEnhancement(container, eh, context, tracksManager);
+                GenerateEnvironmentEnhancement(container, eh, context, tracksManager, lookupRegex);
                 container.Animator.enabled = false;
             }
 
-            container.gameObject.SetActive(true);
+            container.gameObject.SetActive(eh.Geometry == null || eh.Active == null || eh.Active.AsBool);
             container.UpdateCollisionGroups();
 
             return container;
         }
 
-        private static void GeneratePrimitiveGeometry(
+        private static bool GeneratePrimitiveGeometry(
             GeometryContainer container,
             BaseEnvironmentEnhancement eh,
-            BeatmapRuntimeContext ctx)
+            BeatmapRuntimeContext ctx,
+            TracksManager tracksManager)
         {
-            PrimitiveType type;
-            if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
-                type = PrimitiveType.Quad;
-            else
+            if (!Enum.TryParse(eh.Geometry[eh.GeometryKeyType].Value, out GeometryType geometryType)
+                || !Enum.IsDefined(typeof(GeometryType), geometryType))
             {
-                if (!Enum.TryParse(eh.Geometry[eh.GeometryKeyType], out type))
-                    Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'! {BeatmapLogContext.Describe(eh)}");
+                Debug.LogError($"Invalid geometry type '{(string)eh.Geometry[eh.GeometryKeyType]}'! {BeatmapLogContext.Describe(eh)}");
+                return false;
             }
 
-            var shape = GameObject.CreatePrimitive(type);
+            container.MaterialDefinition = GeometryAppearanceSO.ResolveMaterial(eh);
+            var shader = GeometryAppearanceSO.ResolveShader(container.MaterialDefinition, eh);
+            var primitiveType = geometryType == GeometryType.Triangle
+                ? PrimitiveType.Quad
+                : (PrimitiveType)geometryType;
+            var shape = GameObject.CreatePrimitive(primitiveType);
             shape.transform.SetParent(container.transform);
             shape.layer = container.gameObject.layer;
             container.MpbController.Renderers = new() { shape.GetComponent<MeshRenderer>() };
 
-            var collider = shape.GetComponentInChildren<Collider>();
-            if (collider != null) DestroyImmediate(collider);
-
-            if (eh.Geometry[eh.GeometryKeyType] == "Triangle")
+            var collider = shape.GetComponent<Collider>();
+            var collisionKey = Settings.Instance.MapVersion == 2
+                ? "_collision"
+                : "collision";
+            var collision = eh.Geometry.GetValueOrDefault(collisionKey, null)?.AsBool ?? false;
+            // Physical colliders shorten preview light beams. Selection uses the container's separate IntersectionCollider.
+            if (!collision && collider != null)
             {
-                if (triangleMesh == null) triangleMesh = CreateTriangleMesh();
-                shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
+                DestroyImmediate(collider);
+                collider = null;
             }
 
-            // Handle components if needed
-            var descriptor = ctx.Descriptor;
-            // if (descriptor == null) return;
-
-            if (eh.Components?.HasKey("ILightWithId") ?? false)
+            if (geometryType == GeometryType.Triangle)
             {
-                var controller = shape.AddComponent<ParametricBloomFogLightController>();
+                if (triangleMesh == null)
+                    triangleMesh = CreateTriangleMesh();
+
+                shape.GetComponent<MeshFilter>().sharedMesh = triangleMesh;
+                if (collision && collider is MeshCollider meshCollider)
+                    meshCollider.sharedMesh = triangleMesh;
+
+            }
+
+            var descriptor = ctx.Descriptor;
+            var explicitLight = eh.Components?.HasKey("ILightWithId") ?? false;
+            // Chroma's light presets own their physical and fog light components even without a components payload.
+            ParametricBloomFogLightController controller = null;
+            if (GeometryAppearanceSO.IsLightType(shader) || explicitLight)
+            {
+                shape.SetActive(false);
+                controller = shape.AddComponent<ParametricBloomFogLightController>();
                 var light = shape.AddComponent<ParametricBoxLight>();
                 light.UpdateTransform = false;
                 light.Renderer = container.MpbController.Renderers[0];
@@ -125,27 +174,38 @@ namespace Beatmap.Containers
                 var bf = shape.AddComponent<BloomFogObject>();
                 controller.BloomFog = bf;
 
-                controller.Type = eh.LightType ?? 0;
-                descriptor.Register(controller, eh.LightID);
+                // Native generated lights keep the unregistered ID -1 until ILightWithId supplies a group.
+                controller.Type = eh.LightType ?? (explicitLight
+                    ? 0
+                    : -1);
+                if (descriptor != null && controller.Type >= 0)
+                    descriptor.Register(controller, eh.LightID);
+
+                foreach (var name in eh.TrackNames)
+                    tracksManager.RegisterBloomFogLights(name, new[] { controller });
+                shape.SetActive(true);
             }
 
             if (eh.Components?.HasKey("TubeBloomPrePassLight") ?? false)
             {
                 var ppLight = eh.Components["TubeBloomPrePassLight"];
-                var controller = shape.GetComponent<ParametricBloomFogLightController>();
-                if (controller == null) return;
-                if (ppLight["colorAlphaMultiplier"] != null)
+                if (controller != null && ppLight["colorAlphaMultiplier"] != null)
                     controller.SetColorAlphaMultiplier(ppLight["colorAlphaMultiplier"]);
-                if (ppLight["bloomFogIntensityMultiplier"] != null)
+
+                if (controller != null && ppLight["bloomFogIntensityMultiplier"] != null)
                     controller.SetBloomFogIntensityMultiplier(ppLight["bloomFogIntensityMultiplier"]);
+
             }
+
+            return true;
         }
 
         private static void GenerateEnvironmentEnhancement(
             GeometryContainer container,
             BaseEnvironmentEnhancement eh,
             BeatmapRuntimeContext ctx,
-            TracksManager tracksManager)
+            TracksManager tracksManager,
+            Regex lookupRegex)
         {
             // Get descriptor of currently loaded environment
             var descriptor = ctx.Descriptor;
@@ -156,7 +216,7 @@ namespace Beatmap.Containers
             // Use the ID / Lookup method to find our target marker
             var chromaIDMarkers = descriptor.ChromaIDMarkers;
             // Yes, all the matching IDs, don't ask me why
-            var targetObjects = chromaIDMarkers.Where(marker => FindMarker(marker, eh)).Select(x => (x, x)).ToList();
+            var targetObjects = chromaIDMarkers.Where(marker => FindMarker(marker, eh, lookupRegex)).Select(x => (x, x)).ToList();
 
             // Mirror Chroma's lookup warning format so missing enhancements can be compared between the editor
             // and game.
@@ -193,8 +253,10 @@ namespace Beatmap.Containers
                         duplicateObject.transform.SetParent(original.transform.parent, true);
                         var duplicate = duplicateObject.GetComponent<ChromaIDMarker>();
                         var originalParentId = duplicate.ChromaID;
-                        duplicate.ChromaID = original.ChromaID[..(original.ChromaID.LastIndexOf(']') + 1)]
-                            + duplicate.name;
+                        var nameStart = original.ChromaID.Length - original.name.Length;
+                        var siblingIndexStart = original.ChromaID.LastIndexOf('[', nameStart - 1);
+                        var parentId = original.ChromaID[..siblingIndexStart];
+                        duplicate.ChromaID = parentId + $"[{duplicateObject.transform.GetSiblingIndex()}]" + duplicate.name;
                         // GetComponentsInChildren includes the root marker, whose final ChromaID was assigned
                         // above. Rewrite only child IDs to avoid appending a second "(Clone)" to the root.
                         foreach (var childMarker in duplicateObject.GetComponentsInChildren<ChromaIDMarker>())
@@ -234,7 +296,7 @@ namespace Beatmap.Containers
             }
 
             // Cache the map-version decision once because every matched marker uses the same V2 unit conversion.
-            var v2 = BeatSaberSongContainer.Instance.Map.MajorVersion == 2;
+            var v2 = tracksManager.IsV2Map;
             var adjustScale = v2
                 ? BeatmapConstant.LaneSize
                 : 1f;
@@ -243,7 +305,7 @@ namespace Beatmap.Containers
             {
                 if (eh.Active != null) target.gameObject.SetActive(eh.Active.AsBool);
 
-                var boxLight = eh.Position != null || eh.LocalPosition != null || eh.Scale != null || eh.Track != null
+                var boxLight = eh.Position != null || eh.LocalPosition != null || eh.Scale != null || eh.TrackNames.Count > 0
                     ? target.GetComponentInChildren<ParametricBoxLight>(true)
                     : null;
                 if (boxLight != null)
@@ -271,19 +333,27 @@ namespace Beatmap.Containers
 
                 // A track with no transform property must be inert; a present property is applied directly to each
                 // matched transform by its own animator, matching Chroma without flattening the OEM hierarchy.
-                if (eh.Track != null)
+                if (eh.TrackNames.Count > 0)
                 {
-                    var animator = container.gameObject.AddComponent<ObjectAnimator>();
+                    foreach (var name in eh.TrackNames)
+                        tracksManager.RegisterBloomFogLights(name,
+                            target.GetComponentsInChildren<ParametricBloomFogLightController>(true));
+                    var animator = tracksManager.CreateEnvironmentAnimator(container.gameObject, target.transform);
                     animator.Context = ctx;
                     animator.TracksManager = tracksManager;
                     animator.AttachToEnvironmentObject(
                         target.transform,
-                        eh.Track,
+                        eh.TrackNames,
                         v2,
                         boxLight);
                     if (target.transform == descriptor.transform
                         || descriptor.transform.IsChildOf(target.transform))
-                        tracksManager.BindFogComponentTarget(eh.Track);
+                    {
+                        foreach (var name in eh.TrackNames)
+                        {
+                            tracksManager.BindFogComponentTarget(name);
+                        }
+                    }
                 }
 
                 if (eh.Duplicate != null) HandleDuplicateComponents(original.transform, target.transform);
@@ -351,14 +421,14 @@ namespace Beatmap.Containers
             }
         }
 
-        private static bool FindMarker(ChromaIDMarker marker, BaseEnvironmentEnhancement eh) =>
+        private static bool FindMarker(ChromaIDMarker marker, BaseEnvironmentEnhancement eh, Regex lookupRegex) =>
             eh.LookupMethod switch
             {
                 EnvironmentLookupMethod.Exact => marker.ChromaID == eh.ID,
                 EnvironmentLookupMethod.StartsWith => marker.ChromaID.StartsWith(eh.ID),
                 EnvironmentLookupMethod.EndsWith => marker.ChromaID.EndsWith(eh.ID),
                 EnvironmentLookupMethod.Contains => marker.ChromaID.Contains(eh.ID),
-                EnvironmentLookupMethod.Regex => Regex.IsMatch(marker.ChromaID, eh.ID),
+                EnvironmentLookupMethod.Regex => lookupRegex.IsMatch(marker.ChromaID),
                 _ => throw new ArgumentException($"Unknown lookup method {eh.LookupMethod}"),
             };
 

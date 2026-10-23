@@ -7,6 +7,27 @@ using ZLinq;
 
 public static class AssetBundleUtils
 {
+    /// <summary>Opens a bundle synchronously. The caller owns the returned bundle and its loaded assets.</summary>
+    /// <returns>The loaded bundle, or null when Unity cannot read it.</returns>
+    public static AssetBundle LoadFromFile(string filePath) => AssetBundle.LoadFromFile(filePath);
+
+    /// <summary>Loads each named asset lazily, preserving prefab components without sanitization.</summary>
+    /// <remarks>
+    /// Keep the caller-owned bundle loaded throughout enumeration. This method does not unload it on failure.
+    /// Assets that Unity cannot load are skipped; subassets are not enumerated separately.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">The bundle is null when enumeration begins.</exception>
+    public static IEnumerable<(string AssetPath, UnityEngine.Object Asset)> EnumerateAssets(AssetBundle assetBundle)
+    {
+        if (assetBundle == null) throw new ArgumentNullException(nameof(assetBundle));
+
+        foreach (var assetPath in assetBundle.GetAllAssetNames())
+        {
+            var asset = assetBundle.LoadAsset(assetPath);
+            if (asset != null) yield return (assetPath, asset);
+        }
+    }
+
     public static IEnumerator LoadAssetFromFileAsync<T>(
         string filePath,
         string assetName,
@@ -49,7 +70,7 @@ public static class AssetBundleUtils
 
         if (assetRequest == null)
         {
-            yield return assetBundle.UnloadAsync(true);
+            yield return UnloadAsync(assetBundle);
             onFailed($"Unity could not start loading the asset ({assetLoadException?.GetType().Name ?? "Unknown"})");
             yield break;
         }
@@ -58,7 +79,7 @@ public static class AssetBundleUtils
         var asset = assetRequest.asset as T;
         if (asset == null)
         {
-            yield return assetBundle.UnloadAsync(true);
+            yield return UnloadAsync(assetBundle);
             onFailed($"the bundle does not contain {assetName}");
             yield break;
         }
@@ -75,7 +96,7 @@ public static class AssetBundleUtils
 
         if (preparationException != null)
         {
-            yield return assetBundle.UnloadAsync(true);
+            yield return UnloadAsync(assetBundle);
             onFailed($"the asset could not be prepared ({preparationException.GetType().Name})");
             yield break;
         }
@@ -88,7 +109,7 @@ public static class AssetBundleUtils
         string assetName,
         params Type[] supportedTypes) where T : UnityEngine.Object
     {
-        var assetBundle = AssetBundle.LoadFromFile(filePath);
+        var assetBundle = LoadFromFile(filePath);
         if (assetBundle == null) throw new InvalidOperationException("Unity could not read the AssetBundle");
 
         try
@@ -103,7 +124,7 @@ public static class AssetBundleUtils
         }
         finally
         {
-            assetBundle.Unload(false);
+            Unload(assetBundle, false);
         }
     }
 

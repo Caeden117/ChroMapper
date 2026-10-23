@@ -38,18 +38,28 @@ public class MirrorRendererSO : ScriptableObject
         Settings.NotifyBySettingName(nameof(Settings.MirrorQuality), HandleMirrorQuality);
     }
 
+    private void OnEnable()
+    {
+        MapGraphicsSettings.Changed += HandleMapGraphicsChanged;
+        HandleMapGraphicsChanged();
+    }
+
+    private void HandleMapGraphicsChanged() => HandleMirrorQuality(Settings.Instance.MirrorQuality);
+
     private void HandleMirrorQuality(object value)
     {
     #if UNITY_EDITOR
         if (!Application.isPlaying) return;
     #endif
-        quality = (MirrorQuality)value;
+        quality = MapGraphicsSettings.MirrorQuality is int mapQuality
+            ? (MirrorQuality)mapQuality : (MirrorQuality)value;
         textureWidth = textureHeight = quality == MirrorQuality.Low ? 256 : 1024;
         antialiasing = quality == MirrorQuality.Low ? 1 : 2;
     }
 
     private void OnDisable()
     {
+        MapGraphicsSettings.Changed -= HandleMapGraphicsChanged;
         if ((bool)mirrorCamera)
         {
             GameObjectExtensions.DestroySafe(mirrorCamera.gameObject);

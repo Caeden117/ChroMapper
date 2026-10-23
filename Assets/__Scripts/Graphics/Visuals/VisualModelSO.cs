@@ -16,6 +16,15 @@ public class VisualModelSO : ScriptableObject
         if (Collider == null && Prefab != null) Collider = Prefab.GetComponentInChildren<MeshFilter>(true).sharedMesh;
     }
 
+    public static VisualModelSO Create(GameObject prefab)
+    {
+        var so = CreateInstance<VisualModelSO>();
+        so.Prefab = prefab;
+        so.name = prefab.name;
+        so.Name = so.name;
+        return so;
+    }
+
     public static VisualModelSO Create(GameObject prefab, string prefix)
     {
         var so = CreateInstance<VisualModelSO>();

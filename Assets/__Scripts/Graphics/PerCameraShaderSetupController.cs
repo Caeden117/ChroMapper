@@ -21,6 +21,7 @@ public sealed class PerCameraShaderSetupController : MonoBehaviour
     private readonly Vector4[] vectorPlanes = new Vector4[6];
 
     private Camera activeCamera;
+    public VivifyCameraManager VivifyCameras { get; set; }
     private bool active;
     private bool postBloomKeywordWasEnabled;
     private bool acesToneMappingKeywordWasEnabled;
@@ -67,13 +68,14 @@ public sealed class PerCameraShaderSetupController : MonoBehaviour
         UpdateFrustumPlanes(renderingCamera);
 
         if (renderingCamera != activeCamera
-            && renderingCamera.GetComponent<MirrorCamera>() == null)
+            && renderingCamera.GetComponent<MirrorCamera>() == null
+            && VivifyCameras?.IsCaptureCamera(renderingCamera) != true)
             return;
 
         // Tonemapping applies to authored camera output independently of bloom-fog.
         SetAcesToneMappingKeyword(true);
 
-        if (pyramidBloomController == null)
+        if (pyramidBloomController == null || VivifyCameras?.MainEffectEnabled(renderingCamera) == false)
             return;
 
         pyramidBloomController.ApplyPreRenderState();

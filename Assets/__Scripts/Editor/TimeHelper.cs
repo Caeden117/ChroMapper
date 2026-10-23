@@ -104,8 +104,7 @@ public class TimeHelper : MonoBehaviour
     public static Vector4 EncodeTimeAsVector(float time) =>
         new(time / 20f, time, time * 2f, time * 3f);
 
-    // _Time in shaders counts seconds since the last scene load, so the offset must
-    // subtract the same clock; Time.time would leak session uptime into the phase.
+    // Built-in shader _Time starts when the scene loads, rather than when the application starts.
     public static float GetShaderTimeValue() => Time.timeSinceLevelLoad;
 
     // Beat Saber dispatches zero-ahead beatmap callbacks on the first render LateUpdate

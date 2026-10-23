@@ -35,6 +35,8 @@ public class BloomfogRendererSO : ScriptableObject
     private Vector2 renderedTextureToScreenRatio;
     private Vector2 renderedEyeOffsets;
     private bool hasRenderedMatrices;
+    private Camera renderedCamera;
+    private VivifyCameraManager renderedVivifyCameras;
 
     public void Initialize()
     {
@@ -69,9 +71,12 @@ public class BloomfogRendererSO : ScriptableObject
         bloomfogQuads = null;
         bloomfogVertices = null;
         hasRenderedMatrices = false;
+        renderedCamera = null;
+        renderedVivifyCameras = null;
     }
 
-    public void RenderToTexture(Camera camera, RenderTexture tex, out Vector2 textureToScreenRatio)
+    public void RenderToTexture(Camera camera, RenderTexture tex, out Vector2 textureToScreenRatio,
+        VivifyCameraManager vivifyCameras = null)
     {
         var projectionMatrix = camera.projectionMatrix;
         var eyeOffsets = Vector2.zero;
@@ -91,7 +96,9 @@ public class BloomfogRendererSO : ScriptableObject
             projectionMatrix,
             tex,
             out textureToScreenRatio,
-            eyeOffsets);
+            eyeOffsets,
+            camera,
+            vivifyCameras);
     }
 
     public void RenderToTexture(
@@ -105,7 +112,9 @@ public class BloomfogRendererSO : ScriptableObject
             projectionMatrix,
             tex,
             out textureToScreenRatio,
-            Vector2.zero);
+            Vector2.zero,
+            null,
+            null);
     }
 
     private void RenderToTextureInternal(
@@ -113,7 +122,9 @@ public class BloomfogRendererSO : ScriptableObject
         Matrix4x4 projectionMatrix,
         RenderTexture tex,
         out Vector2 textureToScreenRatio,
-        Vector2 eyeOffsets)
+        Vector2 eyeOffsets,
+        Camera camera,
+        VivifyCameraManager vivifyCameras)
     {
         if (bloomfogCommandBuffer == null || bloomfogMesh == null) Initialize();
         Shader.SetGlobalVector(stereoCameraEyeOffsets, Vector2.zero);
@@ -133,7 +144,7 @@ public class BloomfogRendererSO : ScriptableObject
         bloomfogCommandBuffer.SetRenderTarget(tex);
         bloomfogCommandBuffer.ClearRenderTarget(true, true, Color.clear);
 
-        RenderQuads(viewMatrix, projectionMatrix, LineWidth);
+        RenderQuads(viewMatrix, projectionMatrix, LineWidth, camera, vivifyCameras);
 
         for (var i = 0; i < activeBatchCount; i++)
         {
@@ -156,10 +167,12 @@ public class BloomfogRendererSO : ScriptableObject
         renderedTextureToScreenRatio = textureToScreenRatio;
         renderedEyeOffsets = eyeOffsets;
         hasRenderedMatrices = true;
+        renderedCamera = camera;
+        renderedVivifyCameras = vivifyCameras;
 
         foreach (var bloomPrePassBeforeBlur in BloomPrePassNonLightPass.BloomPrePassBeforeBlurList)
         {
-            bloomPrePassBeforeBlur.Render(tex, viewMatrix, projectionMatrix);
+            RenderNonLightPass(bloomPrePassBeforeBlur, tex, viewMatrix, projectionMatrix, camera, vivifyCameras);
         }
     }
 
@@ -169,8 +182,23 @@ public class BloomfogRendererSO : ScriptableObject
 
         foreach (var bloomPrePassAfterBlur in BloomPrePassNonLightPass.BloomPrePassAfterBlurList)
         {
-            bloomPrePassAfterBlur.Render(tex, renderedViewMatrix, renderedProjectionMatrix);
+            RenderNonLightPass(bloomPrePassAfterBlur, tex, renderedViewMatrix, renderedProjectionMatrix,
+                renderedCamera, renderedVivifyCameras);
         }
+    }
+
+    private static void RenderNonLightPass(BloomPrePassNonLightPass pass, RenderTexture texture,
+        Matrix4x4 viewMatrix, Matrix4x4 projectionMatrix, Camera camera, VivifyCameraManager vivifyCameras)
+    {
+        if (vivifyCameras != null && pass is BloomPrePassBackgroundNonLightInstancedGroupRenderer group)
+        {
+            group.Render(texture, viewMatrix, projectionMatrix, camera, vivifyCameras);
+            return;
+        }
+
+        var target = pass is BloomPrePassBackgroundNonLightRendererCore core && core.Renderer != null
+            ? core.Renderer.gameObject : pass.gameObject;
+        if (vivifyCameras?.IsVisible(camera, target) != false) pass.Render(texture, viewMatrix, projectionMatrix);
     }
 
     internal void PublishGlobals()
@@ -180,13 +208,14 @@ public class BloomfogRendererSO : ScriptableObject
         Shader.SetGlobalVector(stereoCameraEyeOffsets, renderedEyeOffsets);
     }
 
-    private void RenderQuads(Matrix4x4 view, Matrix4x4 projection, float lineWidth)
+    private void RenderQuads(Matrix4x4 view, Matrix4x4 projection, float lineWidth,
+        Camera camera, VivifyCameraManager vivifyCameras)
     {
         var lights = BloomFogObject.AllBloomFogLights;
 
         if (lights.Count > capacity) PrepareMesh();
 
-        BuildLightBatches(lights);
+        BuildLightBatches(lights, camera, vivifyCameras);
         if (activeBatchCount == 0)
             return;
 
@@ -252,13 +281,14 @@ public class BloomfogRendererSO : ScriptableObject
         }
     }
 
-    private void BuildLightBatches(List<BloomFogObject> lights)
+    private void BuildLightBatches(List<BloomFogObject> lights, Camera camera, VivifyCameraManager vivifyCameras)
     {
         ClearLightBatches();
 
         for (var i = 0; i < lights.Count; i++)
         {
             var light = lights[i];
+            if (vivifyCameras?.IsVisible(camera, light.gameObject) == false) continue;
             var material = light.LightType?.Material ?? BloomfogObjectMaterial;
             var renderingPriority = light.LightType?.RenderingPriority ?? 0;
             var batchIndex = FindBatch(material, renderingPriority);

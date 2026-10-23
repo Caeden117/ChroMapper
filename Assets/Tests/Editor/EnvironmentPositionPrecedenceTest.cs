@@ -38,6 +38,7 @@ namespace Tests.Editor
             // The preceding parent case can leave a different scene fixture loaded;
             // establish this case's environment before inspecting its spawn pose.
             yield return TestUtils.ReloadMap(3, CreateDifficulty(3), environmentName: "BTSEnvironment");
+            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(0f);
             AssertBoxLocalPosition(new Vector3(3f, 4f, 5f), "V3 enhancement");
             AssertGeometryLocalPosition(new Vector3(3f, 4f, 5f), "V3 geometry enhancement");
             yield return SeekTo(4f);
@@ -45,6 +46,8 @@ namespace Tests.Editor
             AssertGeometryLocalPosition(new Vector3(7f, 8f, 9f), "V3 geometry AnimateTrack");
 
             yield return TestUtils.ReloadMap(2, CreateDifficulty(2), environmentName: "BTSEnvironment");
+            // Shared map swaps preserve the cursor; inspect the authored pose before its beat-4 animation.
+            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(0f);
             AssertBoxLocalPosition(new Vector3(1.8f, 2.4f, 3f), "V2 enhancement");
             AssertGeometryLocalPosition(new Vector3(1.8f, 2.4f, 3f), "V2 geometry enhancement");
             yield return SeekTo(4f);

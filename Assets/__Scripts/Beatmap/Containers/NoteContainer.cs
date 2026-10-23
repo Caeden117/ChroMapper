@@ -3,12 +3,14 @@ using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
 using System;
+using System.Linq;
 using TMPro;
 
 namespace Beatmap.Containers
 {
     public class NoteContainer : ObjectContainer
     {
+        private static readonly int glowColorId = Shader.PropertyToID("_GlowColor");
         private static readonly int colorMultiplierId = Shader.PropertyToID("_ColorMultiplier");
         private static readonly int objectTime = Shader.PropertyToID("_ObjectTime");
         private static readonly int translucentAlpha = Shader.PropertyToID("_TranslucentAlpha");
@@ -27,6 +29,7 @@ namespace Beatmap.Containers
         [SerializeField] private SpriteRenderer swingArcRenderer;
         [SerializeField] private TextMeshPro text;
 
+        public AssignObjectPrefabManager AssignObjectPrefabManager;
         public BaseNote NoteData;
 
         [NonSerialized] public Vector3 DirectionTargetEuler = Vector3.zero;
@@ -63,8 +66,7 @@ namespace Beatmap.Containers
             SetArcVisible(NoteGridContainer.ShowArcVisualizer);
         }
 
-        // TODO: have proper model swapper instead of convoluting the container
-        public void HandleModelChanged()
+        public override void HandleModelChanged()
         {
             if (NoteData == null) return;
             if (NoteData.Type == (int)NoteType.Bomb)
@@ -98,16 +100,102 @@ namespace Beatmap.Containers
                         : VisualSettings.GetNoteLeftModel();
             }
 
-            ModelController.Set(vm);
-
+            var defaultModel = vm;
             ArrowMpbController.gameObject.SetActive(!vm.DisableAux);
-            ArrowMpbController.ShowRenderer(true);
+
+            var kind = NoteData.Chains.Count > 0
+                ? TrackModelState.Kind.BurstSlider
+                : NoteData.CutDirection == (int)NoteCutDirection.Any
+                    ? TrackModelState.Kind.AnyNote
+                    : TrackModelState.Kind.DirectionalNote;
+
+            if (NoteData.CustomTrack != null && AssignObjectPrefabManager != null)
+            {
+                if (NoteData.CustomTrack.IsString)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(kind, NoteData.CustomTrack);
+                    if (result.HasOverride && result.OverrideModel != null)
+                    {
+                        vm = result.OverrideModel;
+                        ArrowMpbController.gameObject.SetActive(false);
+                        ArrowMpbController.ShowRenderer(false);
+                    }
+                    else
+                    {
+                        ArrowMpbController.gameObject.SetActive(!vm.DisableAux);
+                        ArrowMpbController.ShowRenderer(true);
+                    }
+
+                    ModelController.Set(vm);
+                    foreach (var model in result.AdditiveModels) ModelController.Add(model != null ? model : defaultModel);
+                    if (result.AdditiveModels.Contains(null))
+                    {
+                        ArrowMpbController.gameObject.SetActive(!defaultModel.DisableAux);
+                        ArrowMpbController.ShowRenderer(true);
+                    }
+                }
+                else if (NoteData.CustomTrack.IsArray)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(
+                        kind,
+                        NoteData.CustomTrack.Children.Select(x => (string)x).ToArray());
+                    if (result.HasOverride && result.OverrideModel != null)
+                    {
+                        vm = result.OverrideModel;
+                        ArrowMpbController.gameObject.SetActive(false);
+                        ArrowMpbController.ShowRenderer(false);
+                    }
+                    else
+                    {
+                        ArrowMpbController.gameObject.SetActive(!vm.DisableAux);
+                        ArrowMpbController.ShowRenderer(true);
+                    }
+
+                    ModelController.Set(vm);
+                    foreach (var model in result.AdditiveModels) ModelController.Add(model != null ? model : defaultModel);
+                    if (result.AdditiveModels.Contains(null))
+                    {
+                        ArrowMpbController.gameObject.SetActive(!defaultModel.DisableAux);
+                        ArrowMpbController.ShowRenderer(true);
+                    }
+                }
+            }
+            else
+            {
+                ModelController.Set(vm);
+                ArrowMpbController.ShowRenderer(true);
+            }
         }
 
         public void SetBombModel()
         {
-            ModelController.Set(VisualSettings.GetBombModel());
             ArrowMpbController.ShowRenderer(false);
+            var vm = VisualSettings.GetBombModel();
+            var defaultModel = vm;
+
+            if (NoteData.CustomTrack != null && AssignObjectPrefabManager != null)
+            {
+                if (NoteData.CustomTrack.IsString)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(
+                        TrackModelState.Kind.Bomb,
+                        NoteData.CustomTrack);
+                    if (result.HasOverride && result.OverrideModel != null) vm = result.OverrideModel;
+                    ModelController.Set(vm);
+                    foreach (var model in result.AdditiveModels) ModelController.Add(model != null ? model : defaultModel);
+                }
+                else if (NoteData.CustomTrack.IsArray)
+                {
+                    var result = AssignObjectPrefabManager.GetCurrentModels(
+                        TrackModelState.Kind.Bomb,
+                        NoteData.CustomTrack.Children.Select(x => (string)x).ToArray());
+                    if (result.HasOverride && result.OverrideModel != null) vm = result.OverrideModel;
+                    ModelController.Set(vm);
+                    foreach (var model in result.AdditiveModels) ModelController.Add(model != null ? model : defaultModel);
+                }
+            }
+            else
+                ModelController.Set(vm);
         }
 
         internal static Vector3 Directionalize(BaseNote noteData)
@@ -243,6 +331,7 @@ namespace Beatmap.Containers
 
             var arrowColor = Color.Lerp(color, Color.white, Settings.Instance.ArrowColorWhiteBlend);
             ArrowMpbController.Mpb.SetColor(ColorId, arrowColor);
+            ArrowMpbController.Mpb.SetColor(glowColorId, color);
             ArrowMpbController.Mpb.SetFloat(colorMultiplierId, Settings.Instance.ArrowColorMultiplier);
 
             UpdateMaterials();

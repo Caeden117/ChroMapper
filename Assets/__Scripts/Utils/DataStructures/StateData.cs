@@ -1,12 +1,12 @@
 using System;
 using Beatmap.Base;
 
-public abstract class StateData<T> : IEquatable<StateData<T>> where T : BaseObject
+public class StateData<T> : IEquatable<StateData<T>> where T : BaseObject
 {
     private static int ID;
     private readonly int id = ID++; // maybe reference equality is better, idk
 
-    protected StateData(T data) => Base = data;
+    public StateData(T data) => Base = data;
 
     public readonly T Base;
     public float StartTime = short.MinValue;

@@ -10,11 +10,14 @@ namespace Beatmap.Comparers
 
         // FileOrder belongs only to chronology. Clones and network packets match by content separately.
         public override int Compare(BaseObject left, BaseObject right)
+            => CompareKeys(left.JsonTime, left.FileOrder, right.JsonTime, right.FileOrder);
+
+        internal static int CompareKeys(float leftTime, int leftOrder, float rightTime, int rightOrder)
         {
-            var time = left.JsonTime.CompareTo(right.JsonTime);
+            var time = leftTime.CompareTo(rightTime);
             return time != 0
                 ? time
-                : left.FileOrder.CompareTo(right.FileOrder);
+                : leftOrder.CompareTo(rightOrder);
         }
     }
 }

@@ -6091,7 +6091,7 @@
         ],
         "boundsCenter": [
           -0.3609438,
-          -8.19563866E-07,
+          -8.19563866e-07,
           9.70322
         ],
         "instanceId": 454792
@@ -6101,7 +6101,7 @@
         "hash": "53cf1acdff5ab941eec4fff8d993fcd07593df6dd3388ae127ccea6f18e24743",
         "boundsSize": [
           3.0,
-          2.38418579E-07,
+          2.38418579e-07,
           2.00000024
         ],
         "boundsCenter": [
@@ -6146,7 +6146,7 @@
         "hash": "e80d45a551968ee7acc64ddb6378fc484e4cdd96c625748614197c97e40b38a0",
         "boundsSize": [
           3.0,
-          2.38418579E-07,
+          2.38418579e-07,
           2.00000024
         ],
         "boundsCenter": [
@@ -6437,7 +6437,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               15.0
             ],
@@ -9308,7 +9308,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               15.0
             ],
@@ -9613,7 +9613,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               270.0
             ],
@@ -12484,7 +12484,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               270.0
             ],
@@ -12789,7 +12789,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               75.0
             ],
@@ -15660,7 +15660,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               75.0
             ],
@@ -15965,7 +15965,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               135.0
             ],
@@ -18836,7 +18836,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               135.0
             ],
@@ -19141,7 +19141,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               195.0
             ],
@@ -22012,7 +22012,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               195.0
             ],
@@ -22317,7 +22317,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               255.0
             ],
@@ -25188,7 +25188,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               255.0
             ],
@@ -25493,7 +25493,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               30.0
             ],
@@ -28364,7 +28364,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               30.0
             ],
@@ -28669,7 +28669,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               90.0
             ],
@@ -31540,7 +31540,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               90.0
             ],
@@ -31845,7 +31845,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               150.0
             ],
@@ -34716,7 +34716,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               150.0
             ],
@@ -35021,7 +35021,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               -54.8,
               210.0
             ],
@@ -37892,7 +37892,7 @@
         "Transform": [
           {
             "position": [
-              2.98023224E-08,
+              2.98023224e-08,
               57.2,
               210.0
             ],
@@ -52736,7 +52736,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457392,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.12809374928474426,
+              0.9580174088478088
+            ]
           }
         ],
         "MeshFilter": [
@@ -52790,7 +52797,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457326,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.1951562464237213,
+              0.254366010427475
+            ]
           }
         ],
         "MeshFilter": [
@@ -52844,7 +52858,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456958,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              -0.0008125000167638063,
+              0.9580174088478088
+            ]
           }
         ],
         "MeshFilter": [
@@ -52898,7 +52919,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457054,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.04215624928474426,
+              0.9580174088478088
+            ]
           }
         ],
         "MeshFilter": [
@@ -52952,7 +52980,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457312,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9542656540870667,
+              0.06146961450576782
+            ]
           }
         ],
         "MeshFilter": [
@@ -53006,7 +53041,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457472,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9542656540870667,
+              0.030328556895256042
+            ]
           }
         ],
         "MeshFilter": [
@@ -53060,7 +53102,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457272,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.7511406540870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -55202,7 +55251,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457356,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6931562423706055,
+              0.08250509947538376
+            ]
           }
         ],
         "MeshFilter": [
@@ -55256,7 +55312,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456956,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7947187423706055,
+              0.07179014384746552
+            ]
           }
         ],
         "MeshFilter": [
@@ -55310,7 +55373,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457398,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7087812423706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -55364,7 +55434,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456978,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6931562423706055,
+              0.0932200476527214
+            ]
           }
         ],
         "MeshFilter": [
@@ -55418,7 +55495,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456948,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6072187423706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -55733,7 +55817,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457414,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.3944462835788727
+            ]
           }
         ],
         "MeshFilter": [
@@ -55787,7 +55878,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457320,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.5935937762260437,
+              0.11428570747375488
+            ]
           }
         ],
         "MeshFilter": [
@@ -55841,7 +55939,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457304,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1015625,
+              0.1015625,
+              0.19718749821186066,
+              0.5365577936172485
+            ]
           }
         ],
         "MeshFilter": [
@@ -55895,7 +56000,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457366,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.34293749928474426,
+              0.5689176321029663
+            ]
           }
         ],
         "MeshFilter": [
@@ -55949,7 +56061,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457358,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.32731249928474426,
+              0.7031930088996887
+            ]
           }
         ],
         "MeshFilter": [
@@ -56003,7 +56122,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457412,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.28434374928474426,
+              0.7031930088996887
+            ]
           }
         ],
         "MeshFilter": [
@@ -56617,7 +56743,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457466,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.24137499928474426,
+              0.609769880771637
+            ]
           }
         ],
         "MeshFilter": [
@@ -56671,7 +56804,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456960,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.1951562464237213,
+              0.3944462835788727
+            ]
           }
         ],
         "MeshFilter": [
@@ -56725,7 +56865,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457334,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.8527031540870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -56779,7 +56926,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457294,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.24137499928474426,
+              0.6409109234809875
+            ]
           }
         ],
         "MeshFilter": [
@@ -56833,7 +56987,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456970,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.19840624928474426,
+              0.6409109234809875
+            ]
           }
         ],
         "MeshFilter": [
@@ -56887,7 +57048,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457360,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.28434374928474426,
+              0.6720519661903381
+            ]
           }
         ],
         "MeshFilter": [
@@ -56941,7 +57109,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457254,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.29996874928474426,
+              0.5689176321029663
+            ]
           }
         ],
         "MeshFilter": [
@@ -59083,7 +59258,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457506,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7947187423706055,
+              0.08250509947538376
+            ]
           }
         ],
         "MeshFilter": [
@@ -59137,7 +59319,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457332,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6208906173706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -59191,7 +59380,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457436,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7361249923706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -59245,7 +59441,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457310,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6638593673706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -59299,7 +59502,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457318,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6501874923706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -59614,7 +59824,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457416,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.5345265865325928
+            ]
           }
         ],
         "MeshFilter": [
@@ -59668,7 +59885,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456950,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.1951562464237213,
+              0.11428570747375488
+            ]
           }
         ],
         "MeshFilter": [
@@ -59722,7 +59946,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456972,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1015625,
+              0.1015625,
+              0.6053906083106995,
+              -0.0020312501583248377
+            ]
           }
         ],
         "MeshFilter": [
@@ -59776,7 +60007,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457480,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.7081719040870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -59830,7 +60068,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457478,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.34293749928474426,
+              0.5377765893936157
+            ]
           }
         ],
         "MeshFilter": [
@@ -59884,7 +60129,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457426,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.24137499928474426,
+              0.6720519661903381
+            ]
           }
         ],
         "MeshFilter": [
@@ -60498,7 +60750,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457462,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.32731249928474426,
+              0.6720519661903381
+            ]
           }
         ],
         "MeshFilter": [
@@ -60552,7 +60811,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456964,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.254366010427475
+            ]
           }
         ],
         "MeshFilter": [
@@ -60606,7 +60872,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457338,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.32731249928474426,
+              0.6409109234809875
+            ]
           }
         ],
         "MeshFilter": [
@@ -60660,7 +60933,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457292,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.28434374928474426,
+              0.6409109234809875
+            ]
           }
         ],
         "MeshFilter": [
@@ -60714,7 +60994,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456968,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.29996874928474426,
+              0.5377765893936157
+            ]
           }
         ],
         "MeshFilter": [
@@ -60768,7 +61055,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457364,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.6495781540870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -60822,7 +61116,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457256,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.8097344040870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -62964,7 +63265,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457504,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6931562423706055,
+              0.07179014384746552
+            ]
           }
         ],
         "MeshFilter": [
@@ -63018,7 +63326,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457330,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7947187423706055,
+              0.10393499583005905
+            ]
           }
         ],
         "MeshFilter": [
@@ -63072,7 +63387,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457434,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6775312423706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -63126,7 +63448,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457308,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7947187423706055,
+              0.0932200476527214
+            ]
           }
         ],
         "MeshFilter": [
@@ -63180,7 +63509,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457316,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6345624923706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -63495,7 +63831,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457418,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.3943749964237213,
+              0.11428570747375488
+            ]
           }
         ],
         "MeshFilter": [
@@ -63549,7 +63892,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456952,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.8146871328353882
+            ]
           }
         ],
         "MeshFilter": [
@@ -63603,7 +63953,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456974,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1015625,
+              0.1015625,
+              0.7069531083106995,
+              -0.0020312501583248377
+            ]
           }
         ],
         "MeshFilter": [
@@ -63657,7 +64014,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457484,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.6066094040870667,
+              0.07118076831102371
+            ]
           }
         ],
         "MeshFilter": [
@@ -63711,7 +64075,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457476,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.08512499928474426,
+              0.9580174088478088
+            ]
           }
         ],
         "MeshFilter": [
@@ -63765,7 +64136,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457424,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.24137499928474426,
+              0.7031930088996887
+            ]
           }
         ],
         "MeshFilter": [
@@ -64379,7 +64757,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457464,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.19840624928474426,
+              0.609769880771637
+            ]
           }
         ],
         "MeshFilter": [
@@ -64433,7 +64818,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456962,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.11428570747375488
+            ]
           }
         ],
         "MeshFilter": [
@@ -64487,7 +64879,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457336,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.28434374928474426,
+              0.609769880771637
+            ]
           }
         ],
         "MeshFilter": [
@@ -64541,7 +64940,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457290,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9112969040870667,
+              0.030328556895256042
+            ]
           }
         ],
         "MeshFilter": [
@@ -64595,7 +65001,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456966,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.19840624928474426,
+              0.7031930088996887
+            ]
           }
         ],
         "MeshFilter": [
@@ -64649,7 +65062,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457362,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.32731249928474426,
+              0.609769880771637
+            ]
           }
         ],
         "MeshFilter": [
@@ -64703,7 +65123,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457258,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9112969040870667,
+              -0.0008125000167638063
+            ]
           }
         ],
         "MeshFilter": [
@@ -66845,7 +67272,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457502,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7224531173706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -66899,7 +67333,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457328,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7517499923706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -66953,7 +67394,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457432,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7790937423706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -67007,7 +67455,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457306,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.6931562423706055,
+              0.10393499583005905
+            ]
           }
         ],
         "MeshFilter": [
@@ -67061,7 +67516,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457314,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.01015624962747097,
+              0.01015624962747097,
+              0.7654218673706055,
+              0.1029312014579773
+            ]
           }
         ],
         "MeshFilter": [
@@ -67376,7 +67838,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457420,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              0.7928125262260437,
+              0.11428570747375488
+            ]
           }
         ],
         "MeshFilter": [
@@ -67430,7 +67899,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456954,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.203125,
+              0.203125,
+              -0.004062500316649675,
+              0.6746068596839905
+            ]
           }
         ],
         "MeshFilter": [
@@ -67484,7 +67960,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 456976,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.1015625,
+              0.1015625,
+              0.8085156083106995,
+              -0.0020312501583248377
+            ]
           }
         ],
         "MeshFilter": [
@@ -67538,7 +68021,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457482,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9542656540870667,
+              -0.0008125000167638063
+            ]
           }
         ],
         "MeshFilter": [
@@ -67592,7 +68082,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457474,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.19840624928474426,
+              0.6720519661903381
+            ]
           }
         ],
         "MeshFilter": [
@@ -67646,7 +68143,14 @@
               "9b5a515317f32e86a6a8bc02561960b2"
             ],
             "instanceId": 457422,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.04062499850988388,
+              0.04062499850988388,
+              0.9112969040870667,
+              0.06146961450576782
+            ]
           }
         ],
         "MeshFilter": [
@@ -68170,7 +68674,7 @@
             "rotation": [
               0.0,
               180.0,
-              -3.21865082E-05
+              -3.21865082e-05
             ],
             "localRotation": [
               0.0,
@@ -73823,7 +74327,14 @@
               "c8c30aa453da898602cb6f20d6d43de8"
             ],
             "instanceId": 456934,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.009140625596046448,
+              0.009140625596046448,
+              0.8103640675544739,
+              0.10295151174068451
+            ]
           }
         ],
         "Mirror": [
@@ -73971,7 +74482,14 @@
               "7d3e8dbac30398a8c43800dc938e5333"
             ],
             "instanceId": 456932,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.6276562809944153,
+              0.6276562809944153,
+              -0.01255312655121088,
+              -0.01255312655121088
+            ]
           }
         ]
       }
@@ -74409,7 +74927,14 @@
               "1e53fa985b947f42e4b4699cd8682448"
             ],
             "instanceId": 457052,
-            "isEnabled": true
+            "isEnabled": true,
+            "lightmapIndex": 0,
+            "lightmapScaleOffset": [
+              0.0185546875,
+              0.0185546875,
+              0.912109375,
+              0.09342317283153534
+            ]
           }
         ]
       }
@@ -74738,8 +75263,8 @@
             ],
             "localPosition": [
               -59.0000038,
-              1.07288361E-06,
-              -1.43051147E-06
+              1.07288361e-06,
+              -1.43051147e-06
             ],
             "rotation": [
               0.0,
@@ -74776,8 +75301,8 @@
             ],
             "localPosition": [
               57.0,
-              1.07288361E-06,
-              -1.43051147E-06
+              1.07288361e-06,
+              -1.43051147e-06
             ],
             "rotation": [
               0.0,
@@ -74808,12 +75333,12 @@
         "Transform": [
           {
             "position": [
-              1.52587887E-07,
+              1.52587887e-07,
               -0.64,
               7.75
             ],
             "localPosition": [
-              7.62939453E-06,
+              7.62939453e-06,
               0.0,
               0.0
             ],
@@ -75871,8 +76396,8 @@
               7.0
             ],
             "localPosition": [
-              3.81469727E-06,
-              3.81469727E-06,
+              3.81469727e-06,
+              3.81469727e-06,
               0.0
             ],
             "rotation": [
@@ -75909,8 +76434,8 @@
               7.0
             ],
             "localPosition": [
-              -3.81469727E-06,
-              4.29153442E-06,
+              -3.81469727e-06,
+              4.29153442e-06,
               0.0
             ],
             "rotation": [
@@ -76557,7 +77082,7 @@
             "localPosition": [
               -13.25,
               0.0005130768,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,
@@ -76709,7 +77234,7 @@
             "localPosition": [
               -0.75,
               -5.757202,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,
@@ -76747,7 +77272,7 @@
             "localPosition": [
               -1.0,
               0.0005130768,
-              -7.15255737E-05
+              -7.15255737e-05
             ],
             "rotation": [
               0.0,

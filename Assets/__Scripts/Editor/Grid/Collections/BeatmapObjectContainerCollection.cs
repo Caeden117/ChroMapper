@@ -451,6 +451,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     /// </summary>
     public abstract bool ContainsObject(BaseObject obj);
 
+    public static event Action<float> OnBpmTimingChanged;
+
     public static void RefreshFutureObjectsPosition(float jsonTime)
     {
         // we have to refresh bpm events FIRST, and only then can we refresh other objects
@@ -526,6 +528,7 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
         bookmarkManagerInstance.RefreshBookmarkTimelinePositions();
         bookmarkManagerInstance.RefreshBookTooltips();
+        OnBpmTimingChanged?.Invoke(jsonTime);
     }
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }

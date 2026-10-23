@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 
 public class BakedReflectionProbeData : EnvironmentComponentData<BakedReflectionProbe>
 {
@@ -12,6 +13,10 @@ public class BakedReflectionProbeData : EnvironmentComponentData<BakedReflection
         BakedReflectionProbe comp,
         CreateContainer container)
     {
+        // Environment exports describe probe bounds but omit the packed cubemaps. Restore the imported native pair when regenerating a scene.
+        comp.ReflectionProbeData = AssetDatabase.LoadAssetAtPath<ReflectionProbeDataSO>(PathUtils.Combine(
+            "Assets", "_Graphics", "Textures", "Environments", "BakedLighting",
+            container.EnvironmentId + "ReflectionProbeData.asset"));
         comp.Size = Size;
         comp.Offset = Offset;
         comp.ResolutionBeforeDownsample = ResolutionBeforeDownsample;

@@ -18,5 +18,9 @@ MonoBehaviour:
     type: 2}
   glowingMaterial: {fileID: 2100000, guid: aa8dc49216e45c016a9728a95732b608, type: 2}
   waterMaterial: {fileID: 2100000, guid: c1463863a69b55077994061b934a4dbc, type: 2}
+  baseWaterShader: {fileID: 4800000, guid: d03bcf5b16d2d7cafb65aa8ba3686a87, type: 3}
+  billieWaterMaterial: {fileID: 2100000, guid: 49f7a47600214dd689b978dba9de721d, type: 2}
   btsMaterial: {fileID: 2100000, guid: caa7cd1fa8b23b0adb8a5acbbe10fa23, type: 2}
+  interscopeConcreteMaterial: {fileID: 2100000, guid: 9ab390eca23b1150ca2e2154329ddb69, type: 2}
+  interscopeCarMaterial: {fileID: 2100000, guid: 4d31a67363896a9d0a9f1fa8b1e771a7, type: 2}
   obstacleMaterial: {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}

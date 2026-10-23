@@ -2125,7 +2125,8 @@ MonoBehaviour:
   IgnoreTrackFilter: 0
   notePrefab: {fileID: 1094719878252698, guid: 15ce91a6ccb07a24c9d338a4f60fe275, type: 3}
   bombPrefab: {fileID: 1141840594674112, guid: 755d36d1fe178c64dbdb2cc4a9c07af6, type: 3}
-  noteAppearanceSo: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
+  noteAppearance: {fileID: 11400000, guid: 0c2d133c05afa744d999a0758a8977a1, type: 2}
+  customEventStateManager: {fileID: 2055101782}
   tracksManager: {fileID: 902407107}
   countersPlus: {fileID: 471772270}
 --- !u!114 &25550678
@@ -2205,7 +2206,8 @@ MonoBehaviour:
   chainPrefab: {fileID: 1094719878252698, guid: a14acb27bffab494cb5735e7fba61dbf,
     type: 3}
   tracksManager: {fileID: 902407107}
-  chainAppearanceSO: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6, type: 2}
+  chainAppearance: {fileID: 11400000, guid: 7eafe2e8b1acf5b49903b99310732bf6, type: 2}
+  customEventStateManager: {fileID: 2055101782}
   countersPlus: {fileID: 471772270}
 --- !u!114 &25550682
 MonoBehaviour:
@@ -22724,6 +22726,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &444276308
 GameObject:
   m_ObjectHideFlags: 0
@@ -28153,6 +28156,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &560627534
 GameObject:
   m_ObjectHideFlags: 0
@@ -28522,6 +28526,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 0
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &567902551
 GameObject:
   m_ObjectHideFlags: 0
@@ -28825,6 +28830,7 @@ MonoBehaviour:
   currentSeconds: 0
   StopScheduled: 0
   Initialized: 0
+  SongSpeed: 10
   currentJsonTime: 0
   originBeat: 0
   currentSongBpmTime: 0
@@ -35129,6 +35135,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1001 &664349718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37898,6 +37905,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &708164246
 GameObject:
   m_ObjectHideFlags: 0
@@ -39465,6 +39473,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &756850812
 GameObject:
   m_ObjectHideFlags: 0
@@ -46144,6 +46153,7 @@ MonoBehaviour:
   trackPrefab: {fileID: 3052245767913613488, guid: 1e1f172e929d0ac4785e387f14dbd39e,
     type: 3}
   tracksParent: {fileID: 1300313309}
+  modelUpdateQueueManager: {fileID: 2055101784}
   rotationEventGridContainer: {fileID: 379166760}
   atsc: {fileID: 570484802}
   cameraManager: {fileID: 1206999167}
@@ -46582,6 +46592,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1001 &909659139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54270,6 +54281,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &1007058445
 GameObject:
   m_ObjectHideFlags: 0
@@ -74772,6 +74784,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &1436619975
 GameObject:
   m_ObjectHideFlags: 0
@@ -77857,6 +77870,7 @@ MonoBehaviour:
   vNjsProvider: {fileID: 597767624}
   IgnoreZScale: 1
   RotationValue: {x: 0, y: 0, z: 0}
+  GridContainer: {fileID: 0}
 --- !u!1 &1530021832
 GameObject:
   m_ObjectHideFlags: 0
@@ -80098,6 +80112,7 @@ Transform:
   - {fileID: 2116776174}
   - {fileID: 360549095}
   - {fileID: 904987245}
+  - {fileID: 2055101781}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1573245298
@@ -95302,6 +95317,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97ccfbdc1ebc6bc4091f3e36560d7cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1823009322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1823009323}
+  - component: {fileID: 1823009324}
+  m_Layer: 0
+  m_Name: Vivify
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1823009323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823009322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2055101781}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1823009324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823009322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3fcfc4710241b0a94360bcf82d4813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::VivifyAssetBundleManager
+  VisualRepository: {fileID: 11400000, guid: f78a4876c7186c6229988790d7825475, type: 2}
+  atsc: {fileID: 570484802}
+  tracksManager: {fileID: 902407107}
+  beatmapRuntimeContext: {fileID: 127874572}
+  Bundle: {fileID: 0}
 --- !u!1 &1828933690
 GameObject:
   m_ObjectHideFlags: 0
@@ -105360,6 +105424,84 @@ MonoBehaviour:
   EasingInputController: {fileID: 171301928}
   groupInputController: {fileID: 622396318}
   eventInputController: {fileID: 2011416988}
+--- !u!1 &2055101780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2055101781}
+  - component: {fileID: 2055101783}
+  - component: {fileID: 2055101782}
+  - component: {fileID: 2055101784}
+  m_Layer: 0
+  m_Name: Custom Event Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2055101781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055101780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1823009323}
+  m_Father: {fileID: 1573245297}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2055101782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055101780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417659c183c4415bbaa948ccec2d97b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::CustomEventStateManager
+  Atsc: {fileID: 570484802}
+  ID: -1
+  VisualRepository: {fileID: 11400000, guid: f78a4876c7186c6229988790d7825475, type: 2}
+  VivifyAssetBundleManager: {fileID: 1823009324}
+  TracksManager: {fileID: 902407107}
+--- !u!114 &2055101783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055101780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c02777d3b548c183b5cb7c238df92a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::CustomEventManager
+  Context: {fileID: 127874572}
+  manager: {fileID: 2055101782}
+--- !u!114 &2055101784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055101780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2b217593cb4b518c604ba762a9bb13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Main::ModelUpdateQueueManager
 --- !u!1 &2057519783
 GameObject:
   m_ObjectHideFlags: 0

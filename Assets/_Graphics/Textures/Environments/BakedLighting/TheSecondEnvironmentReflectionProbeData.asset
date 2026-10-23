@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94c4154dfe24b08a95e36a96521c8cf, type: 3}
+  m_Name: TheSecondEnvironmentReflectionProbeData
+  m_EditorClassIdentifier:
+  ReflectionProbeCubemap1: {fileID: -98131583685500669, guid: 6435c65c0faf43c685e94647eba9aef0, type: 3}
+  ReflectionProbeCubemap2: {fileID: -98131583685500669, guid: 2e8f1244f40a40edb43d5c6b64040d2f, type: 3}

@@ -90,8 +90,10 @@ Shader "ChroMapper/Parametric Box Transparent"
             #pragma shader_feature_local REFLECTION_PROBE
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile _ POST_BLOOM
+            #pragma multi_compile_fragment _ OVERDRAW_VIEW
 
             #include "UnityCG.cginc"
+            #include "ShaderLibrary/Common/Overdraw.hlsl"
             #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "ShaderLibrary/Common/Bloom.hlsl"
             #include "ShaderLibrary/Families/ParametricShared.hlsl"
@@ -176,6 +178,9 @@ Shader "ChroMapper/Parametric Box Transparent"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                #if defined(OVERDRAW_VIEW)
+                return CalculateParametricOverdrawColor();
+                #endif
 
                 float4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 // Cubic width alpha sharpens the transition before noise and fog.

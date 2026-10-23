@@ -12,8 +12,9 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     [SerializeField] private GameObject bombPrefab;
 
     [FormerlySerializedAs("noteAppearanceSO")] [SerializeField]
-    private NoteAppearanceSO noteAppearanceSo;
+    private NoteAppearanceSO noteAppearance;
 
+    [SerializeField] private CustomEventStateManager customEventStateManager;
     [SerializeField] private TracksManager tracksManager;
 
     [SerializeField] private CountersPlusController countersPlus;
@@ -138,7 +139,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         base.RefreshPool(forceRefresh);
     }
 
-    // TODO(EklipZ) we should do the same thing for obstacles. Their jump-in isn't being rendered in the Playing / Preview pause view still. 
+    // TODO(EklipZ) we should do the same thing for obstacles. Their jump-in isn't being rendered in the Playing / Preview pause view still.
     // TODO(EklipZ) what about chains / arcs / bombs as well?
     private readonly struct PausedGameplayNoteFilter : IContainerPoolFilter
     {
@@ -180,7 +181,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         }
     }
 
-    public void UpdateColor(Color red, Color blue) => noteAppearanceSo.UpdateColor(red, blue);
+    public void UpdateColor(Color red, Color blue) => noteAppearance.UpdateColor(red, blue);
 
     public override ObjectContainer CreateContainer()
     {
@@ -194,11 +195,11 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     {
         var note = con as NoteContainer;
         var noteData = obj as BaseNote;
-        noteAppearanceSo.SetNoteAppearance(note);
+        note.AssignObjectPrefabManager = customEventStateManager.AssignObjectPrefabManager;
+        note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
+        noteAppearance.SetNoteAppearance(note);
         note.Setup();
         note.SetIndicators(!isPlaying);
-        note.DirectionTargetEuler = NoteContainer.Directionalize(noteData);
-        note.DirectionTarget.localEulerAngles = note.DirectionTargetEuler;
 
         if (!note.Animator.AnimatedTrack)
         {
@@ -226,8 +227,11 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
     }
 
     // Here we check to see if any special angled notes are required.
-    protected override void HandleContainerSpawn(ObjectContainer container, BaseObject obj) =>
+    protected override void HandleContainerSpawn(ObjectContainer container, BaseObject obj)
+    {
         RefreshSpecialAngles(obj, true, BeatmapContext.Atsc.IsPlaying);
+        container.Animator.RefreshNoteDirection();
+    }
 
     protected override void HandleContainerDespawn(ObjectContainer container, BaseObject obj) =>
         RefreshSpecialAngles(obj, false, BeatmapContext.Atsc.IsPlaying);
@@ -275,8 +279,8 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
             var directionA = NoteContainer.Directionalize(a);
             var directionB = NoteContainer.Directionalize(b);
 
-            containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler = directionA;
-            containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler = directionB;
+            SetNoteDirection(containerA, directionA);
+            SetNoteDirection(containerB, directionB);
             return;
         }
 
@@ -324,8 +328,15 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         }
 
         // Immediately update direction target
-        containerA.DirectionTarget.localEulerAngles = containerA.DirectionTargetEuler;
-        containerB.DirectionTarget.localEulerAngles = containerB.DirectionTargetEuler;
+        SetNoteDirection(containerA, containerA.DirectionTargetEuler);
+        SetNoteDirection(containerB, containerB.DirectionTargetEuler);
+    }
+
+    private static void SetNoteDirection(NoteContainer note, Vector3 direction)
+    {
+        note.DirectionTargetEuler = direction;
+        note.DirectionTarget.localEulerAngles = direction;
+        note.Animator.RefreshNoteDirection();
     }
 
     public void ClearSpecialAngles(BaseObject obj)
@@ -359,8 +370,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         foreach (var toReset in objectsAtSameTime)
         {
             var direction = NoteContainer.Directionalize(toReset.ObjectData as BaseNote);
-            (toReset as NoteContainer).DirectionTarget.localEulerAngles = direction;
-            (toReset as NoteContainer).DirectionTargetEuler = direction;
+            SetNoteDirection(toReset as NoteContainer, direction);
         }
     }
 

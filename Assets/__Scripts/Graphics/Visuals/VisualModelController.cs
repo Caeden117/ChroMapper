@@ -8,6 +8,12 @@ using ZLinq;
 public class VisualModelController : VisualController
 {
     private static readonly HashSet<VisualModelController> instances = new();
+    // These authored shaders add _Cutout before clipping. Unknown shaders retain the native threshold contract.
+    // https://github.com/Swifter1243/you_map/tree/0a902cd1b8f7f7765afc80ea19585787f028138e/you_unity/Assets/Shaders/Note
+    private static readonly HashSet<string> visibilityCutoutShaders = new()
+    {
+        "You/ReflectiveNote", "You/GlassNote", "You/PortalNote", "You/FlickeringArrow"
+    };
     public Transform ParentTransform;
 
     [Header("State")] public List<ModelData> Actives = new();
@@ -190,8 +196,20 @@ public class VisualModelController : VisualController
         }
 
         Renderers.AddRange(data.MpbRenderers);
-        MpbController.Add(data.MpbRenderers);
+        var vivify = data.GameObject.GetComponent<VivifyObject>() != null;
+        foreach (var renderer in data.MpbRenderers)
+            MpbController.Add(renderer, vivify && UsesVisibilityCutout(renderer));
         MpbController.ApplyChanges();
+    }
+
+    private static bool UsesVisibilityCutout(Renderer renderer)
+    {
+        var materials = renderer.sharedMaterials;
+        if (materials.Length == 0) return false;
+        foreach (var material in materials)
+            if (material == null || material.shader == null || material.IsKeywordEnabled("DEBRIS")
+                || !visibilityCutoutShaders.Contains(material.shader.name)) return false;
+        return true;
     }
 }
 

@@ -10,9 +10,9 @@ public class BakedLightDataLoader : MonoBehaviour
 
     private Texture2D blackTexture;
 
-    protected void Start() => SetTextureDataToShaders();
+    protected void Start() => SendDataToShaders();
 
-    private void SetTextureDataToShaders()
+    public void SendDataToShaders()
     {
         Shader.SetGlobalTexture(
             lightMap1Id,

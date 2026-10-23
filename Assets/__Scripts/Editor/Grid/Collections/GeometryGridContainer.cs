@@ -15,6 +15,10 @@ public class GeometryGridContainer : BeatmapObjectContainerCollection<BaseEnviro
 
     protected override void HandleObjectSpawned(BaseObject obj, bool inCollection = false)
     {
+        // Native legacy removal returns before processing enhancement instructions.
+        if (BeatmapContext.HasLegacyEnvironmentRemoval)
+            return;
+
         var eh = obj as BaseEnvironmentEnhancement;
 
         var container = GeometryContainer.SpawnGeometry(

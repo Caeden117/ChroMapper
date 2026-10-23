@@ -1,0 +1,166 @@
+{
+  "version": "3.2.0",
+  "obstacles": [
+    {
+      "b": 264.02,
+      "x": 0,
+      "y": 0,
+      "d": 0.5,
+      "w": 1,
+      "h": 1,
+      "customData": {
+        "animation": {
+          "definitePosition": [
+            [
+              0,
+              0,
+              200,
+              0.25
+            ],
+            [
+              0,
+              0,
+              -100,
+              1
+            ]
+          ],
+          "color": [
+            [
+              1,
+              1,
+              1,
+              1,
+              0
+            ],
+            [
+              0.7017792,
+              0,
+              1.3381138,
+              0,
+              1
+            ]
+          ],
+          "dissolve": [
+            [
+              0,
+              0
+            ],
+            [
+              0.8,
+              0.25,
+              "easeStep"
+            ]
+          ]
+        },
+        "localRotation": [
+          0,
+          0,
+          90
+        ],
+        "coordinates": [
+          0,
+          1
+        ],
+        "uninteractable": true,
+        "size": [
+          40,
+          1,
+          10
+        ],
+        "worldRotation": [
+          0,
+          20,
+          20
+        ],
+        "noteJumpMovementSpeed": 50,
+        "track": "shapeZoomTrack",
+        "noteJumpStartBeatOffset": 0
+      }
+    }
+  ],
+  "customData": {
+    "fakeObstacles": [
+      {
+        "b": 264.3793103,
+        "x": 0,
+        "y": 0,
+        "d": 8.6206897,
+        "w": 1,
+        "h": 1,
+        "customData": {
+          "animation": {
+            "dissolve": [
+              [
+                0,
+                0.0491803
+              ],
+              [
+                1,
+                0.0491803
+              ]
+            ],
+            "definitePosition": [
+              [
+                8.5608824,
+                11.1966353,
+                164.1105528,
+                0.0491803
+              ],
+              [
+                10.1813621,
+                10.6764226,
+                163.1198713,
+                1
+              ]
+            ],
+            "localRotation": [
+              [
+                -1.298543,
+                30.4097917,
+                -66.6607475,
+                0.0491803
+              ],
+              [
+                -2.7e-06,
+                35.9999361,
+                -58.2825574,
+                1
+              ]
+            ],
+            "scale": [
+              [
+                24.3248097,
+                1.3880521,
+                1.3880519,
+                0.0491803
+              ],
+              [
+                24.3248081,
+                1.388052,
+                1.3880518,
+                1
+              ]
+            ]
+          },
+          "coordinates": [
+            0,
+            0
+          ],
+          "uninteractable": true,
+          "color": [
+            0.1109565,
+            0,
+            1.9912777
+          ],
+          "size": [
+            1,
+            1,
+            1
+          ],
+          "noteJumpMovementSpeed": 16,
+          "noteJumpStartBeatOffset": 0
+        }
+      }
+    ]
+  }
+}

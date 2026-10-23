@@ -1779,18 +1779,13 @@
 
             // Fragment program
             #if defined(OVERDRAW_VIEW)
-            float _TrueOverdrawOn;
-            float _OpaqueOverdrawOn;
-            float4 _OverdrawColor;
+            #include "ShaderLibrary/Common/Overdraw.hlsl"
             #endif
 
             float4 frag(v2f i, float facing : VFACE) : SV_Target
             {
                 #if defined(OVERDRAW_VIEW)
-                precise float overdraw = _TrueOverdrawOn * _OpaqueOverdrawOn;
-                overdraw *= asfloat(0x3dcccccdu);
-                precise float4 overdrawColor = overdraw * _OverdrawColor;
-                return overdrawColor;
+                return CalculateOpaqueOverdrawColor();
                 #else
                 UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Base.Customs;
+using Beatmap.Helper;
 using SimpleJSON;
 
 namespace Beatmap.Animations
@@ -19,6 +20,46 @@ namespace Beatmap.Animations
         {
             internal readonly List<BaseCustomEvent> Events = new();
             internal int Version;
+            internal Definition[] Definitions = Array.Empty<Definition>();
+            internal bool HasDefinitePosition;
+            private int preparedVersion = -1;
+            private int preparedTimingVersion = -1;
+
+            internal void Refresh(BaseDifficulty map, int currentTimingVersion)
+            {
+                if (preparedVersion == Version && preparedTimingVersion == currentTimingVersion) return;
+
+                var definitions = new List<Definition>();
+                HasDefinitePosition = false;
+                foreach (var ev in Events)
+                {
+                    foreach (var pair in ev.Data)
+                    {
+                        if ((pair.Value == null || pair.Value.IsNull) && !IsColor(pair.Key)) continue;
+                        HasDefinitePosition |= IsDefinitePosition(pair.Key);
+                        var transition = ev.DataDuration ?? 0f;
+                        definitions.Add(new Definition
+                        {
+                            PropertyName = pair.Key,
+                            Source = ev,
+                            Parameters = new IPointDefinition.UntypedParams
+                            {
+                                Key = $"track_{pair.Key}",
+                                Points = pair.Value,
+                                PreparedIndex = -1,
+                                Easing = ev.DataEasing,
+                                Time = ev.SongBpmTime,
+                                Transition = transition == 0f ? 0f
+                                    : (float)map.JsonTimeToSongBpmTime(ev.JsonTime + transition) - ev.SongBpmTime
+                            }
+                        });
+                    }
+                }
+
+                Definitions = definitions.ToArray();
+                preparedVersion = Version;
+                preparedTimingVersion = currentTimingVersion;
+            }
         }
 
         internal sealed class Definition
@@ -51,69 +92,56 @@ namespace Beatmap.Animations
                 for (var i = 0; i < sources.Length; i++) changed |= versions[i] != sources[i].Version;
                 if (!changed) return;
 
-                var definitions = new List<Definition>();
-                var properties = new Dictionary<string, List<Definition>>();
+                var count = 0;
                 HasDefinitePosition = false;
                 for (var i = 0; i < sources.Length; i++)
                 {
-                    foreach (var ev in sources[i].Events)
-                    {
-                        foreach (var pair in ev.Data)
-                        {
-                            if (pair.Value == null || pair.Value.IsNull) continue;
-                            HasDefinitePosition |= IsDefinitePosition(pair.Key);
-                            var transition = ev.DataDuration ?? 0f;
-                            var definition = new Definition
-                            {
-                                PropertyName = pair.Key,
-                                Source = ev,
-                                OriginalIndex = definitions.Count,
-                                Parameters = new IPointDefinition.UntypedParams
-                                {
-                                    Key = $"track_{pair.Key}",
-                                    Points = pair.Value,
-                                    Easing = ev.DataEasing,
-                                    Time = ev.SongBpmTime,
-                                    Transition = transition == 0f ? 0f
-                                        : (float)map.JsonTimeToSongBpmTime(ev.JsonTime + transition) - ev.SongBpmTime,
-                                    PreparedIndex = -1
-                                }
-                            };
-                            definitions.Add(definition);
-                            if (!properties.TryGetValue(pair.Key, out var property))
-                            {
-                                property = new List<Definition>();
-                                properties.Add(pair.Key, property);
-                            }
-
-                            // Binding still logs missing references. Exclude them from repeat boundaries
-                            // here because the normal parser never creates definitions for those sources.
-                            if (pair.Value is not JSONString named || map.PointDefinitions.ContainsKey(named.Value))
-                                property.Add(definition);
-                        }
-                    }
+                    sources[i].Refresh(map, currentTimingVersion);
+                    count += sources[i].Definitions.Length;
+                    HasDefinitePosition |= sources[i].HasDefinitePosition;
                     versions[i] = sources[i].Version;
                 }
 
+                Definitions = new Definition[count];
+                var offset = 0;
+                var properties = new Dictionary<string, List<Definition>>();
+                for (var i = 0; i < sources.Length; i++)
+                {
+                    foreach (var definition in sources[i].Definitions)
+                    {
+                        var parameters = definition.Parameters;
+                        if (IsColor(definition.PropertyName)) parameters.Key += "_" + i;
+                        var prepared = new Definition
+                        {
+                            PropertyName = definition.PropertyName,
+                            Source = definition.Source,
+                            Parameters = parameters,
+                            OriginalIndex = offset
+                        };
+                        Definitions[offset++] = prepared;
+                        if (parameters.Points == null || parameters.Points.IsNull
+                            || parameters.Points is JSONString named && !map.PointDefinitions.ContainsKey(named.Value))
+                            continue;
+                        if (!properties.TryGetValue(parameters.Key, out var property))
+                            properties.Add(parameters.Key, property = new List<Definition>());
+                        property.Add(prepared);
+                    }
+                }
                 foreach (var property in properties.Values)
                 {
                     property.Sort(static (a, b) =>
                     {
-                        var byTime = a.Parameters.Time.CompareTo(b.Parameters.Time);
-                        return byTime != 0 ? byTime : a.OriginalIndex.CompareTo(b.OriginalIndex);
+                        var order = a.Parameters.Time.CompareTo(b.Parameters.Time);
+                        return order != 0 ? order : a.OriginalIndex.CompareTo(b.OriginalIndex);
                     });
-                    var evaluated = AnimationDefinitionOrdering.FilterRepeatedSources(property,
-                        static definition => definition.Parameters.Time, static definition => definition.Source);
-                    for (var i = 0; i < evaluated.Length; i++)
+                    for (var i = 0; i < property.Count; i++)
                     {
-                        var parameters = evaluated[i].Parameters;
+                        var parameters = property[i].Parameters;
                         parameters.PreparedIndex = i;
-                        parameters.PreparedLength = evaluated.Length;
-                        evaluated[i].Parameters = parameters;
+                        parameters.PreparedLength = property.Count;
+                        property[i].Parameters = parameters;
                     }
                 }
-
-                Definitions = definitions.ToArray();
                 preparedTimingVersion = currentTimingVersion;
             }
         }
@@ -134,6 +162,15 @@ namespace Beatmap.Animations
             source.Version++;
         }
 
+        // Keep the source object so preparations for unrelated tracks remain valid.
+        internal void Replace(string track, IEnumerable<BaseCustomEvent> events)
+        {
+            var source = GetTrackEvents(track);
+            source.Events.Clear();
+            source.Events.AddRange(events);
+            source.Version++;
+        }
+
         internal void Remove(string track, BaseCustomEvent ev)
         {
             var source = eventsByTrack[track];
@@ -148,19 +185,7 @@ namespace Beatmap.Animations
             var preparation = obj.PreparedPathAnimation;
             if (preparation == null || !preparation.Matches(this, mapVersion, obj))
             {
-                var key = obj.CustomTrack?.ToString() ?? string.Empty;
-                if (!preparations.TryGetValue(key, out var tracks))
-                {
-                    var names = new List<string>();
-                    if (obj.CustomTrack is JSONString name) names.Add(name.Value);
-                    else if (obj.CustomTrack is JSONArray array)
-                        foreach (var child in array.Children) names.Add(child.Value);
-
-                    var sources = new TrackEvents[names.Count];
-                    for (var i = 0; i < names.Count; i++) sources[i] = GetTrackEvents(names[i]);
-                    tracks = new TrackPreparation(names.ToArray(), sources);
-                    preparations.Add(key, tracks);
-                }
+                var tracks = PrepareTracks(obj.CustomTrack, map);
 
                 preparation = new ObjectPathAnimationPreparation(this, mapVersion, obj, tracks);
                 obj.PreparedPathAnimation = preparation;
@@ -169,6 +194,24 @@ namespace Beatmap.Animations
             preparation.TrackDefinitions.Refresh(map, timingVersion);
             return preparation;
         }
+
+        internal TrackPreparation PrepareTracks(JSONNode trackData, BaseDifficulty map)
+        {
+            var key = trackData?.ToString() ?? string.Empty;
+            if (!preparations.TryGetValue(key, out var tracks))
+            {
+                var names = TrackDataReader.ReadNames(trackData);
+                var sources = new TrackEvents[names.Length];
+                for (var i = 0; i < names.Length; i++) sources[i] = GetTrackEvents(names[i]);
+                tracks = new TrackPreparation(names, sources);
+                preparations.Add(key, tracks);
+            }
+            tracks.Refresh(map, timingVersion);
+            return tracks;
+        }
+
+        internal static bool IsColor(string key) =>
+            key is AnimationPropertyKeys.LegacyColorKey or AnimationPropertyKeys.ColorKey;
 
         private TrackEvents GetTrackEvents(string name)
         {
@@ -217,9 +260,10 @@ namespace Beatmap.Animations
                         {
                             Key = pair.Key,
                             Overwrite = true,
+                            PreparedIndex = 0,
+                            PreparedLength = 1,
                             Points = pair.Value,
-                            LogSource = obj,
-                            PreparedLength = 1
+                            LogSource = obj
                         }
                     });
                 }

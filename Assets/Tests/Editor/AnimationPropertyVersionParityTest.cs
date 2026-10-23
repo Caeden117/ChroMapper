@@ -78,7 +78,21 @@ namespace Tests.Editor
             {
                 var prefix = note.NoteData.CustomTrack.Value == "versionPath" ? "track_" : "";
                 var properties = note.Animator.AnimatedProperties;
-                CheckProperties(properties, version, prefix, atsc.CurrentSongBpmTime);
+                // Color paths keep one compiled contributor per track rather than a shared dictionary entry.
+                var colorProperty = properties.Values.OfType<AnimateProperty<Color>>().Single();
+                CheckProperties(properties, version, prefix, atsc.CurrentSongBpmTime, colorProperty);
+                Assert.That(note.ModelController.MpbController.Renderers, Is.Not.Empty);
+                var block = new MaterialPropertyBlock();
+                foreach (var renderer in note.ModelController.MpbController.Renderers)
+                {
+                    renderer.GetPropertyBlock(block);
+                    var color = block.GetColor("_Color");
+                    Assert.That(
+                        Vector3.Distance(new Vector3(color.r, color.g, color.b), new Vector3(0.2f, 0.3f, 0.4f)),
+                        Is.LessThan(0.0001f),
+                        $"V{version} authored color did not reach note renderer '{renderer.name}'.");
+                }
+
                 Assert.That(((AnimateProperty<Vector3>)properties[prefix + Key(version, "definitePosition")])
                     .GetLerpedValue(atsc.CurrentSongBpmTime), Is.EqualTo(new Vector3(3, 4, 5)));
             }
@@ -131,8 +145,12 @@ namespace Tests.Editor
             [Key(version, "interactable")] = JSON.Parse("[[1,0],[0,1]]")
         };
 
-        private static void CheckProperties(Dictionary<string, IAnimateProperty> properties, int version,
-            string prefix, float time)
+        private static void CheckProperties(
+            Dictionary<string, IAnimateProperty> properties,
+            int version,
+            string prefix,
+            float time,
+            AnimateProperty<Color> colorProperty = null)
         {
             var interactable = prefix + Key(version, "interactable");
             Assert.That(properties.ContainsKey(interactable), Is.True,
@@ -147,7 +165,8 @@ namespace Tests.Editor
                 .GetLerpedValue(time), Quaternion.Euler(30, 20, 10)), Is.LessThan(0.01f));
             Assert.That(((AnimateProperty<Vector3>)properties[prefix + Key(version, "scale")]).GetLerpedValue(time),
                 Is.EqualTo(new Vector3(2, 3, 4)));
-            Assert.That(((AnimateProperty<Color>)properties[prefix + Key(version, "color")]).GetLerpedValue(time),
+            Assert.That(
+                (colorProperty ?? (AnimateProperty<Color>)properties[prefix + Key(version, "color")]).GetLerpedValue(time),
                 Is.EqualTo(new Color(0.2f, 0.3f, 0.4f, 0.5f)));
             Assert.That(((AnimateProperty<float>)properties[prefix + Key(version, "dissolve")]).GetLerpedValue(time),
                 Is.EqualTo(0.6f));

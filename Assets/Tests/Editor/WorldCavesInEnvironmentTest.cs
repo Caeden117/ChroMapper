@@ -424,42 +424,49 @@ namespace Tests.Editor
             AssertCloneCount("TrackConstruction(Clone)", 16, "TrackConstruction");
 
             EnterPlayingMode();
-            // The reported workflow is load -> Playing mode with no seek: the beat-0 events on the runway
-            // track have already fired before the first Playing frame, so the runway must already sit in
-            // front of the camera. Asserting only after a later seek masked this ordering regression when
-            // the user reported it (the beat-0 696969 hide must lose to the later beat-0 instant show).
-            yield return null;
-            yield return null;
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
             var camera = PlayingCamera();
-            Assert.That(
-                camera.position.z,
-                Is.EqualTo(PlayerStartZ).Within(2f),
-                "The playing camera did not ride the player track to the song-start position on the first " +
-                "Playing-mode frame.");
-
-            // The runway duplicate family rides TrackConstructionParent1 (beat-0 z 1337). Its _position
-            // property must resolve the two same-beat events in file order: the 696969 hide first, the
-            // instant 1337 show second — Heck's Property.Init makes the last applied event the base.
-            var runwayTrack = FindTrackAnimator("TrackConstructionParent1");
-            var runwayPosition = (AnimateProperty<Vector3>)runwayTrack.AnimatedProperties["_position"];
-            Assert.That(
-                runwayPosition.GetLerpedValue(0f).z,
-                Is.EqualTo(1337f).Within(0.01f),
-                $"TrackConstructionParent1's beat-0 instant AnimateTrack lost to the 696969 hide at the same " +
-                $"beat (evaluated z {runwayPosition.GetLerpedValue(0f).z}); same-time events must resolve in " +
-                "file order, not whatever List.Sort leaves behind.");
-
-            var runwayTrackConstruction = SingleEnhancedTarget("TrackConstruction1", "duplicated TrackConstruction runway");
-            var runwayTrackMirror = SingleEnhancedTarget("TrackMirror1", "duplicated TrackMirror runway");
-            foreach (var clone in new[] { runwayTrackConstruction, runwayTrackMirror })
+            Transform runwayTrackConstruction;
+            TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, 0f);
+            try
             {
+                // The runway parent events fire at 0.001 and 0.022; entering Playing view alone keeps time paused at zero.
+                yield return new WaitUntil(() => atsc.CurrentJsonTime >= 0.023f);
+                yield return null;
                 Assert.That(
-                    Mathf.Abs(clone.position.z - camera.position.z),
-                    Is.LessThan(150f),
-                    $"The duplicated runway construct '{clone.name}' stayed at its beat-0 hide position " +
-                    $"on the first Playing-mode frame (z {clone.position.z:F2}, camera z " +
-                    $"{camera.position.z:F2}); in game the duplicated runway duplicates in front of the player " +
-                    "at song start with the rings spinning in over it.");
+                    camera.position.z,
+                    Is.EqualTo(PlayerStartZ).Within(2f),
+                    "The playing camera did not ride the player track to the song-start position on the first " +
+                    "Playing-mode frame.");
+
+                // The runway duplicate family rides TrackConstructionParent1 (beat-0 z 1337). Its _position
+                // property must resolve the two same-beat events in file order: the 696969 hide first, the
+                // instant 1337 show second — Heck's Property.Init makes the last applied event the base.
+                var runwayTrack = FindTrackAnimator("TrackConstructionParent1");
+                var runwayPosition = (AnimateProperty<Vector3>)runwayTrack.AnimatedProperties["_position"];
+                Assert.That(
+                    runwayPosition.GetLerpedValue(0f).z,
+                    Is.EqualTo(1337f).Within(0.01f),
+                    $"TrackConstructionParent1's beat-0 instant AnimateTrack lost to the 696969 hide at the same " +
+                    $"beat (evaluated z {runwayPosition.GetLerpedValue(0f).z}); same-time events must resolve in " +
+                    "file order, not whatever List.Sort leaves behind.");
+
+                runwayTrackConstruction = SingleEnhancedTarget("TrackConstruction1", "duplicated TrackConstruction runway");
+                var runwayTrackMirror = SingleEnhancedTarget("TrackMirror1", "duplicated TrackMirror runway");
+                foreach (var clone in new[] { runwayTrackConstruction, runwayTrackMirror })
+                {
+                    Assert.That(
+                        Mathf.Abs(clone.position.z - camera.position.z),
+                        Is.LessThan(150f),
+                        $"The duplicated runway construct '{clone.name}' stayed at its beat-0 hide position " +
+                        $"on the first Playing-mode frame (z {clone.position.z:F2}, camera z " +
+                        $"{camera.position.z:F2}); in game the duplicated runway duplicates in front of the player " +
+                        "at song start with the rings spinning in over it.");
+                }
+            }
+            finally
+            {
+                if (atsc.IsPlaying) TestUtils.PauseDeterministicPlayback(atsc);
             }
 
             // The same state must still hold after an intro seek; a regression that only breaks the no-seek

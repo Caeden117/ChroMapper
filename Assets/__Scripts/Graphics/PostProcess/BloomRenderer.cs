@@ -40,6 +40,7 @@ public class BloomRenderer : MonoBehaviour
         if (!settingsCallbackSubscribed)
         {
             Settings.NotifyBySettingName(nameof(Settings.Bloom), UpdateBloom);
+            MapGraphicsSettings.Changed += HandleMapGraphicsChanged;
             settingsCallbackSubscribed = true;
         }
     }
@@ -49,6 +50,7 @@ public class BloomRenderer : MonoBehaviour
         if (settingsCallbackSubscribed)
         {
             Settings.StopNotifyingBySettingName(nameof(Settings.Bloom), UpdateBloom);
+            MapGraphicsSettings.Changed -= HandleMapGraphicsChanged;
             settingsCallbackSubscribed = false;
         }
     }
@@ -64,13 +66,16 @@ public class BloomRenderer : MonoBehaviour
         if (settingsCallbackSubscribed)
         {
             Settings.StopNotifyingBySettingName(nameof(Settings.Bloom), UpdateBloom);
+            MapGraphicsSettings.Changed -= HandleMapGraphicsChanged;
             settingsCallbackSubscribed = false;
         }
 
         if (bloomMaterial != null) Destroy(bloomMaterial);
     }
 
-    public void UpdateBloom(object obj) => bloomEnabled = Convert.ToBoolean(obj);
+    private void HandleMapGraphicsChanged() => UpdateBloom(Settings.Instance.Bloom);
+
+    public void UpdateBloom(object obj) => bloomEnabled = MapGraphicsSettings.Bloom ?? Convert.ToBoolean(obj);
 
     public RenderTextureDescriptor GetOutputDescriptor(
         int sourceWidth, int sourceHeight, int targetWidth)

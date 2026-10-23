@@ -159,8 +159,7 @@ namespace Beatmap.Base
         public override bool IsChroma() =>
             CustomData != null
             && ((CustomData.HasKey(CustomKeyColor) && CustomData[CustomKeyColor].IsArray)
-                || (CustomData.HasKey(CustomKeySpawnEffect) && CustomData[CustomKeySpawnEffect].IsBoolean)
-                || (CustomData.HasKey("disableDebris") && CustomData["disableDebris"].IsBoolean));
+                || HasChromaNoteFlags());
 
         public override bool IsNoodleExtensions() =>
             CustomData != null

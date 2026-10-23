@@ -16,10 +16,10 @@ namespace Beatmap.Animations
 
         public AudioTimeSyncController Atsc;
 
-        private readonly Dictionary<string, AnimateProperty<float>> animatedProperties = new();
+        private readonly Dictionary<string, ComponentAnimationProperty> animatedProperties = new();
         private readonly Dictionary<string, float[]> baselines = new();
         // Keep a reusable snapshot so removing events can delete dictionary entries during iteration.
-        private readonly List<KeyValuePair<string, AnimateProperty<float>>> properties = new(2);
+        private readonly List<KeyValuePair<string, ComponentAnimationProperty>> properties = new(2);
         private ParametricBloomFogLightController[] controllers = Array.Empty<ParametricBloomFogLightController>();
         private TrackAnimator trackAnimator;
         private bool resolved;
@@ -32,13 +32,6 @@ namespace Beatmap.Animations
 
             foreach (var jprop in component)
             {
-                if (jprop.Value == null || jprop.Value.IsNull)
-                {
-                    animatedProperties.Remove(jprop.Key);
-
-                    continue;
-                }
-
                 switch (jprop.Key)
                 {
                     case ColorAlphaMultiplierKey:
@@ -46,6 +39,12 @@ namespace Beatmap.Animations
                         break;
                     default:
                         continue;
+                }
+
+                if (jprop.Value == null || jprop.Value.IsNull)
+                {
+                    GetProperty(jprop.Key).StopAt(ev);
+                    continue;
                 }
 
                 var p = new IPointDefinition.UntypedParams
@@ -108,10 +107,10 @@ namespace Beatmap.Animations
         public void PushOnStoppedTimeChanged()
         {
             if (!isActiveAndEnabled || Atsc == null || Atsc.IsPlaying) return;
-            PushAt(Atsc.CurrentJsonTime);
+            PushAt(Atsc.CurrentJsonTime, true);
         }
 
-        private void PushAt(float time)
+        private void PushAt(float time, bool stoppedSeek = false)
         {
             if (properties.Count == 0) return;
 
@@ -127,7 +126,7 @@ namespace Beatmap.Animations
             {
                 if (time >= pair.Value.StartTime)
                 {
-                    pair.Value.UpdateProperty(time);
+                    pair.Value.UpdateProperty(time, stoppedSeek);
                 }
                 else
                 {
@@ -197,7 +196,7 @@ namespace Beatmap.Animations
             PushOnStoppedTimeChanged();
         }
 
-        private AnimateProperty<float> GetProperty(string key)
+        private ComponentAnimationProperty GetProperty(string key)
         {
             if (!animatedProperties.TryGetValue(key, out var prop))
             {
@@ -207,8 +206,7 @@ namespace Beatmap.Animations
                     baselines[key] = controllers.Select(controller => ReadParam(controller, key)).ToArray();
                 }
 
-                prop = new AnimateProperty<float>(
-                    new List<PointDefinition<float>>(),
+                prop = new ComponentAnimationProperty(
                     value => WriteParam(key, value),
                     baselines.TryGetValue(key, out var values) && values.Length > 0 ? values[0] : 0f);
                 animatedProperties[key] = prop;

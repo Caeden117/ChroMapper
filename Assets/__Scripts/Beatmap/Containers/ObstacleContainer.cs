@@ -21,6 +21,8 @@ namespace Beatmap.Containers
         [SerializeField] public MeshRenderer CoreRenderer;
         [SerializeField] private Material simpleObstacle;
         [SerializeField] private Material distortObstacle;
+        [SerializeField] private Material editorOutline;
+        [SerializeField] private Material previewOutline;
 
         [Header("Transform")] [SerializeField] public Transform CoreTransform;
         [SerializeField] public Transform OutlineTransform;
@@ -61,6 +63,10 @@ namespace Beatmap.Containers
         public void SwitchMaterial()
         {
             CoreRenderer.sharedMaterial = UIMode.PreviewMode ? distortObstacle : simpleObstacle;
+            // Editor frames use bounded transparency so overlapping decorative walls cannot add their colors indefinitely.
+            outlineRenderer.sharedMaterial = UIMode.PreviewMode
+                ? previewOutline
+                : editorOutline;
             MpbController.ApplyChanges();
         }
 
@@ -187,12 +193,16 @@ namespace Beatmap.Containers
             }
 
             // Enforce positive scale, offset our obstacles to match.
-            transform.localPosition = new Vector3(
-                0f,
-                BeatmapConstant.YOffset + BeatmapConstant.ObstacleYOffset,
-                (ObstacleData.SongBpmTime * EditorScaleController.EditorScale * BeatmapConstant.LaneSize)
-                + (length < 0f ? length : 0f)
-                + BeatmapConstant.ZOffset);
+            // Editor-scale changes redraw retained walls too. Their animation track already owns
+            // travel, so putting editor depth on the container would add that depth a second time.
+            transform.localPosition = UIMode.AnimationMode && Animator.AnimatedTrack
+                ? Vector3.zero
+                : new Vector3(
+                    0f,
+                    BeatmapConstant.YOffset + BeatmapConstant.ObstacleYOffset,
+                    (ObstacleData.SongBpmTime * EditorScaleController.EditorScale * BeatmapConstant.LaneSize)
+                    + (length < 0f ? length : 0f)
+                    + BeatmapConstant.ZOffset);
             Animator.LocalTarget.localPosition = ReadPosition();
             // Noodle "scale" resizes the visual child. Scaling the container root would also move
             // its coordinate-derived position.

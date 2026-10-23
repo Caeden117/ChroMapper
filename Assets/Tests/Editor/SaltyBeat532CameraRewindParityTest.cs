@@ -207,11 +207,17 @@ namespace Tests.Editor
             yield return null;
             RequirePristine("Normal mode exit post-frame");
 
-            // Preview keeps AnimationMode true, so the detach must come from the UI-mode guard.
+            // Preview retains the authored player pose while the editing camera remains free.
+            var editing = cameraManager.CameraControllers[0].Camera.transform;
+            var editingPosition = editing.position;
+            var editingRotation = editing.rotation;
             uiMode.SetUIMode(UIModeType.Preview, false);
             cameraManager.SelectCamera(CameraType.Editing);
+            RequireBound541("Preview mode at 541 immediate");
             yield return null;
-            RequirePristine("Preview mode at 541");
+            RequireBound541("Preview mode at 541 post-frame");
+            Assert.That(Vector3.Distance(editing.position, editingPosition), Is.LessThan(0.001f));
+            Assert.That(Quaternion.Angle(editing.rotation, editingRotation), Is.LessThan(0.001f));
 
             // Returning to Playing while still at 541 must synchronously rebind asdkm.
             uiMode.SetUIMode(UIModeType.Playing, false);

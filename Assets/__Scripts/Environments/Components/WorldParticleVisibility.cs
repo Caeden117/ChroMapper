@@ -50,6 +50,7 @@ public class WorldParticleVisibility : MonoBehaviour
     {
         UIMode.OnUIModeSwitched += UpdateVisibility;
         Settings.NotifyBySettingName(SettingName, UpdateSetting);
+        MapGraphicsSettings.Changed += UpdateMapGraphics;
         UpdateVisibility(UIMode.SelectedMode);
     }
 
@@ -57,16 +58,21 @@ public class WorldParticleVisibility : MonoBehaviour
     {
         UIMode.OnUIModeSwitched -= UpdateVisibility;
         Settings.StopNotifyingBySettingName(SettingName, UpdateSetting);
+        MapGraphicsSettings.Changed -= UpdateMapGraphics;
         Renderer.forceRenderingOff = false;
     }
 
     private void UpdateSetting(object value) => UpdateVisibility(UIMode.SelectedMode);
+
+    private void UpdateMapGraphics() => UpdateVisibility(UIMode.SelectedMode);
 
     private void UpdateVisibility(UIModeType mode)
     {
         var showInEditMode = IsSmoke
             ? Settings.Instance.EditModeSmoke
             : Settings.Instance.EditModeWorldParticles;
-        Renderer.forceRenderingOff = !showInEditMode && mode is not (UIModeType.Playing or UIModeType.Preview);
+        var visible = showInEditMode || mode is UIModeType.Playing or UIModeType.Preview;
+        if (IsSmoke && MapGraphicsSettings.Smoke == false) visible = false;
+        Renderer.forceRenderingOff = !visible;
     }
 }

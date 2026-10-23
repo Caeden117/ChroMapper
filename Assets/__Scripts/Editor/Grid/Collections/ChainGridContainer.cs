@@ -15,7 +15,8 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
 {
     [SerializeField] private GameObject chainPrefab;
     [SerializeField] private TracksManager tracksManager;
-    [SerializeField] private ChainAppearanceSO chainAppearanceSO;
+    [SerializeField] private ChainAppearanceSO chainAppearance;
+    [SerializeField] private CustomEventStateManager customEventStateManager;
 
     [SerializeField] private CountersPlusController countersPlus;
 
@@ -31,14 +32,15 @@ public class ChainGridContainer : BeatmapObjectContainerCollection<BaseChain>
         return con;
     }
 
-    public void UpdateColor(Color red, Color blue) => chainAppearanceSO.UpdateColor(red, blue);
+    public void UpdateColor(Color red, Color blue) => chainAppearance.UpdateColor(red, blue);
 
     protected override void UpdateContainerData(ObjectContainer con, BaseObject obj)
     {
         var chain = con as ChainContainer;
         var chainData = obj as BaseChain;
         chain.ChainData = chainData;
-        chainAppearanceSO.SetChainAppearance(chain);
+        chain.AssignObjectPrefabManager = customEventStateManager.AssignObjectPrefabManager;
+        chainAppearance.SetChainAppearance(chain);
         chain.Setup();
         chain.SetIndicators(!isPlaying);
 

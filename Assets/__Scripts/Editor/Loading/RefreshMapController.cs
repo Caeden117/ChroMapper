@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -107,6 +107,7 @@ public class RefreshMapController : MonoBehaviour, CMInput.IRefreshMapActions
 
         if (others)
         {
+            BeatSaberSongContainer.Instance.Map.PointDefinitions = map.PointDefinitions;
             BeatSaberSongContainer.Instance.Map.CustomEvents = map.CustomEvents;
             loader.LoadObjects(map.CustomEvents);
         }

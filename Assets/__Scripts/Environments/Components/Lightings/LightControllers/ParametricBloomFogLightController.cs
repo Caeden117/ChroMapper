@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Serialization;
 
 public class ParametricBloomFogLightController : LightController
 {
@@ -7,8 +8,10 @@ public class ParametricBloomFogLightController : LightController
     public bool OverrideChildrenLength = true;
     [SerializeField] private float length = 1f;
     public float Center = 0.5f;
-    public float ColorAlphaMultiplier = 1f;
-    public float BloomFogIntensityMultiplier = 1f;
+    [FormerlySerializedAs("ColorAlphaMultiplier")]
+    [SerializeField] private float colorAlphaMultiplier = 1f;
+    [FormerlySerializedAs("BloomFogIntensityMultiplier")]
+    [SerializeField] private float bloomFogIntensityMultiplier = 1f;
     public BloomFogLightType LightType;
     public float FakeBloomIntensityMultiplier = 1f;
     public float BoostToWhite;
@@ -69,6 +72,26 @@ public class ParametricBloomFogLightController : LightController
             shouldRefresh = true;
             if (BoxLight != null) BoxLight.UseCollision = value;
             if (SpriteLight != null) SpriteLight.UseCollision = value;
+        }
+    }
+
+    public float ColorAlphaMultiplier
+    {
+        get => colorAlphaMultiplier;
+        set
+        {
+            colorAlphaMultiplier = value;
+            shouldRefresh = true;
+        }
+    }
+
+    public float BloomFogIntensityMultiplier
+    {
+        get => bloomFogIntensityMultiplier;
+        set
+        {
+            bloomFogIntensityMultiplier = value;
+            shouldRefresh = true;
         }
     }
 

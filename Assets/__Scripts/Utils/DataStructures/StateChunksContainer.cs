@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Beatmap.Base;
 using UnityEngine;
 
@@ -20,6 +23,52 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
     {
         Collection.Add(state);
         statesByBase[state.Base] = state;
+    }
+
+    public bool EnumerateTo(float time, bool forward) => forward ? EnumerateToNext(time) : EnumerateToPrevious(time);
+
+    public bool IsNextDirection(float time) => time >= CurrentState.EndTime;
+
+    public bool EnumerateToNext(float target)
+    {
+        currLocalIdx++;
+        while (currBucketIdx < Collection.Buckets.Count)
+        {
+            currBucket = Collection.Buckets[currBucketIdx];
+            while (currLocalIdx < currBucket.Count)
+            {
+                CurrentState = currBucket[currLocalIdx];
+                return !CurrentState.IsWithinRange(target);
+            }
+
+            currLocalIdx = 0;
+            currBucketIdx++;
+        }
+
+        currLocalIdx = currBucket.Count - 1;
+        currBucketIdx = Collection.Buckets.Count - 1;
+        return false;
+    }
+
+    public bool EnumerateToPrevious(float target)
+    {
+        currLocalIdx--;
+        while (currBucketIdx >= 0)
+        {
+            currBucket = Collection.Buckets[currBucketIdx];
+            while (currLocalIdx >= 0 && currBucket.Count > currLocalIdx)
+            {
+                CurrentState = currBucket[currLocalIdx];
+                return !CurrentState.IsWithinRange(target);
+            }
+
+            currBucketIdx--;
+            currLocalIdx = Collection.Buckets[currBucketIdx].Count - 1;
+        }
+
+        currLocalIdx = 0;
+        currBucketIdx = 0;
+        return false;
     }
 
     // Cursor rounding belongs at load time; arbitrary paused lookups must preserve their exact time.

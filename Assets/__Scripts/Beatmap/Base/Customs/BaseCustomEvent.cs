@@ -1,5 +1,6 @@
 using System;
 using Beatmap.Enums;
+using Beatmap.Shared;
 using Beatmap.V2.Customs;
 using Beatmap.V3.Customs;
 using LiteNetLib.Utils;
@@ -66,7 +67,15 @@ namespace Beatmap.Base.Customs
         public void SetData(JSONNode node) => Data = node;
 
         public float? DataDuration { get; set; }
-        public string? DataEasing { get; set; }
+
+        private SerializedChromaEnumName dataEasing;
+
+        public string? DataEasing
+        {
+            get => dataEasing.RuntimeName;
+            set => dataEasing.SetEasingName(value);
+        }
+
         public int? DataRepeat { get; set; }
         public JSONNode DataChildrenTracks { get; set; }
         public JSONNode DataParentTrack { get; set; }
@@ -186,7 +195,7 @@ namespace Beatmap.Base.Customs
             else
                 DataWorldPositionStays = null;
 
-            DataEasing = Data.HasKey(DataKeyEasing) ? Data[DataKeyEasing] : null;
+            dataEasing.SetSerializedEasing(Data[DataKeyEasing]);
             DataChildrenTracks = Data.HasKey(DataKeyChildrenTracks) ? Data[DataKeyChildrenTracks] : null;
             DataParentTrack = Data.HasKey(DataKeyParentTrack) ? Data[DataKeyParentTrack] : null;
         }
@@ -195,7 +204,7 @@ namespace Beatmap.Base.Customs
         {
             if (CustomTrack != null) Data[CustomKeyTrack] = CustomTrack; else Data.Remove(CustomKeyTrack);
             if (DataDuration != null) Data[DataKeyDuration] = DataDuration; else Data.Remove(DataKeyDuration);
-            if (DataEasing != null) Data[DataKeyEasing] = DataEasing; else Data.Remove(DataKeyEasing);
+            dataEasing.WriteTo(Data, DataKeyEasing);
             if (DataRepeat != null) Data[DataKeyRepeat] = DataRepeat; else Data.Remove(DataKeyRepeat);
             if (DataChildrenTracks != null) Data[DataKeyChildrenTracks] = DataChildrenTracks; else Data.Remove(DataKeyChildrenTracks);
             if (DataParentTrack != null) Data[DataKeyParentTrack] = DataParentTrack; else Data.Remove(DataKeyParentTrack);

@@ -1,0 +1,298 @@
+{
+  "version": "3.2.0",
+  "bpmEvents": [
+    {
+      "b": 0,
+      "m": 150
+    }
+  ],
+  "colorNotes": [
+    {
+      "b": 37,
+      "x": 3,
+      "y": 1,
+      "a": 0,
+      "c": 1,
+      "d": 5,
+      "customData": {
+        "animation": {
+          "dissolve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.45,
+              "easeInExpo"
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.45,
+              "easeInExpo"
+            ]
+          ],
+          "localRotation": [
+            [
+              29.0903571,
+              42.3805841,
+              -36.6271601,
+              0
+            ],
+            [
+              -15.0857013,
+              20.1964436,
+              34.732762,
+              0.375,
+              "easeInOutCubic"
+            ],
+            [
+              0,
+              0,
+              0,
+              0.5,
+              "easeInOutCubic"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              -1.5785068,
+              -0.816102,
+              0,
+              0.35
+            ],
+            [
+              0,
+              0,
+              0,
+              0.5,
+              "easeInOutCubic"
+            ]
+          ]
+        },
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 14,
+        "noteJumpStartBeatOffset": 12,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    },
+    {
+      "b": 46,
+      "x": 0,
+      "y": 1,
+      "a": 0,
+      "c": 0,
+      "d": 4,
+      "customData": {
+        "animation": {
+          "dissolve": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.45,
+              "easeInExpo"
+            ]
+          ],
+          "dissolveArrow": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0.45,
+              "easeInExpo"
+            ]
+          ],
+          "localRotation": [
+            [
+              39.5049202,
+              -41.6761217,
+              39.5181874,
+              0
+            ],
+            [
+              23.7580014,
+              -15.5382045,
+              5.4014124,
+              0.375,
+              "easeInOutCubic"
+            ],
+            [
+              0,
+              0,
+              0,
+              0.5,
+              "easeInOutCubic"
+            ]
+          ],
+          "offsetPosition": [
+            [
+              1.1909533,
+              -2.262011,
+              0,
+              0.35
+            ],
+            [
+              0,
+              0,
+              0,
+              0.5,
+              "easeInOutCubic"
+            ]
+          ]
+        },
+        "track": "NoteTrack",
+        "noteJumpMovementSpeed": 14,
+        "noteJumpStartBeatOffset": 12,
+        "disableNoteGravity": true,
+        "spawnEffect": false
+      }
+    }
+  ],
+  "customData": {
+    "customEvents": [
+      {
+        "b": 0,
+        "t": "AssignPlayerToTrack",
+        "d": {
+          "track": "PlayerTrack"
+        }
+      },
+      {
+        "b": 0,
+        "t": "AssignTrackParent",
+        "d": {
+          "childrenTracks": [
+            "NoteTrack"
+          ],
+          "parentTrack": "PlayerTrack",
+          "worldPositionStays": true
+        }
+      },
+      {
+        "b": 0,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "PlayerTrack",
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "b": 34,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "NoteTrack",
+          "duration": 1,
+          "scale": [
+            [
+              1.2,
+              1.2,
+              1.2,
+              0
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeInCirc"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 42,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "NoteTrack",
+          "duration": 1,
+          "scale": [
+            [
+              1.2,
+              1.2,
+              1.2,
+              0
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeInCirc"
+            ]
+          ]
+        }
+      },
+      {
+        "b": 44,
+        "t": "AnimateTrack",
+        "d": {
+          "track": "NoteTrack",
+          "duration": 1,
+          "scale": [
+            [
+              1.2,
+              1.2,
+              1.2,
+              0
+            ],
+            [
+              1,
+              1,
+              1,
+              1,
+              "easeInCirc"
+            ]
+          ]
+        }
+      }
+    ],
+    "fakeColorNotes": [
+      {
+        "b": 35,
+        "x": 0,
+        "y": 1,
+        "c": 0,
+        "d": 0,
+        "a": 0,
+        "customData": {
+          "animation": {
+            "dissolve": [
+              0
+            ],
+            "dissolveArrow": [
+              [
+                0,
+                0
+              ],
+              [
+                0.2,
+                0.5
+              ]
+            ]
+          },
+          "disableNoteGravity": true,
+          "uninteractable": true,
+          "disableNoteLook": true,
+          "noteJumpMovementSpeed": 14,
+          "noteJumpStartBeatOffset": 0
+        }
+      }
+    ]
+  }
+}

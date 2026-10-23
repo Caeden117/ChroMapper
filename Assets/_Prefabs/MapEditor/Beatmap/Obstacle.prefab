@@ -57,6 +57,8 @@ MonoBehaviour:
   CoreRenderer: {fileID: 1479837386256119622}
   simpleObstacle: {fileID: 2100000, guid: 1145b3171efb541469ebd809c779e924, type: 2}
   distortObstacle: {fileID: 2100000, guid: c33b80c70e257e07aad443f4ed6b716f, type: 2}
+  editorOutline: {fileID: 2100000, guid: 24f1102fbd234b72880a2b49b8623fd7, type: 2}
+  previewOutline: {fileID: 2100000, guid: ed10b4bf10ee79d49a2f63af13875bac, type: 2}
   CoreTransform: {fileID: 5721831432656677478}
   OutlineTransform: {fileID: 2116131923093648968}
   outlineRenderer: {fileID: 5097922881444473704}

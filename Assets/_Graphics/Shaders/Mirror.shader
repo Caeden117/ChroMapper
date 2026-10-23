@@ -14,7 +14,7 @@ Shader "ChroMapper/Mirror"
     // ENABLE_BLOOM_FOG maps to BLOOM_FOG and lerps full RGBA.
     // Blue-noise dithering is unconditional and adds (noise-0.5)/255.
     // ChroMapper uses a per-camera reflection texture instead of the BEATGAMES_STEREO_PASS atlas.
-    // That atlas route, general INSTANCING_ON, white boost, and OVERDRAW_VIEW remain omitted.
+    // That atlas route, general INSTANCING_ON, and white boost remain omitted.
     Properties
     {
         _NormalTex ("Normal Texture", 2D) = "white" {}
@@ -89,8 +89,10 @@ Shader "ChroMapper/Mirror"
 
             #pragma multi_compile_fragment _ BLOOM_FOG
             #pragma multi_compile_fragment _ ACES_TONE_MAPPING
+            #pragma multi_compile_fragment _ OVERDRAW_VIEW
 
             #include "UnityCG.cginc"
+            #include "ShaderLibrary/Common/Overdraw.hlsl"
             #include "ShaderLibrary/Families/BloomFogComposition.hlsl"
             #include "ShaderLibrary/Common/Lighting.hlsl"
             #include "ShaderLibrary/Core/Tonemapping.hlsl"
@@ -188,6 +190,12 @@ Shader "ChroMapper/Mirror"
             float4 frag(v2f i) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                #if defined(OVERDRAW_VIEW)
+                // Native overdraw retains the undistorted reflection and bypasses normal, dirt and fog composition.
+                float2 overdrawReflectionUV = i.reflectionPos.xy / i.reflectionPos.w;
+                float reflectionScale = _ReflectionIntensity * _ReflectionIntensity;
+                return tex2D(_ReflectionTex, overdrawReflectionUV) * reflectionScale + CalculateOpaqueOverdrawColor();
+                #endif
 
                 float mirrorTime = _Time.x + _TimeHelperOffset.x;
                 float2 normalUV = TRANSFORM_TEX(i.uv, _NormalTex) + _TextureScrolling.xy * mirrorTime;

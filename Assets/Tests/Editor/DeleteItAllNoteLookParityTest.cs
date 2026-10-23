@@ -23,6 +23,7 @@ namespace Tests.Editor
         private Vector3 previousEditingCameraPosition;
         private Quaternion previousEditingCameraRotation;
         private bool editingCameraMoved;
+        private bool restoreEndingFixture;
         private AudioTimeSyncController playbackClock;
         private bool previousClockEnabled;
 
@@ -60,6 +61,64 @@ namespace Tests.Editor
 
         protected override void CleanupTestObjects()
         {
+        }
+
+        [UnityTest]
+        public IEnumerator SpawnFacingUsesTimeWhenDefinitePositionDoesNotTravel()
+        {
+            var path = PathUtils.Combine(Application.dataPath, "Tests", "Fixtures", "NoteSpawnFacingClockFixture.json");
+            yield return TestUtils.ReloadMap(3, JSON.Parse(File.ReadAllText(path)), beatsPerMinute: 150);
+            TestUtils.CaptureCurrentMapAsSharedBaseline();
+            uiMode.SetUIMode(UIModeType.Playing, false);
+            cameraManager.SelectCamera(CameraType.Playing);
+            var head = cameraManager.SelectedCameraController.transform.position;
+            var failures = new List<string>();
+            Vector3? pinnedPosition = null;
+            foreach (var sample in new[] { (Beat: 0.2f, Progress: 0.001f), (Beat: 0.7f, Progress: 0.05f), (Beat: 1.2f, Progress: 0.125f),
+                         (Beat: 2.2f, Progress: 0.499f), (Beat: 0.2f, Progress: 0.001f) })
+            {
+                yield return SeekTo(sample.Beat);
+                var loaded = Object.FindAnyObjectByType<NoteGridContainer>().LoadedContainers.Values
+                    .OfType<Beatmap.Containers.NoteContainer>().Where(note => Mathf.Abs(note.NoteData.JsonTime - 10f) < 0.001f).ToArray();
+                Assert.That(loaded.Length, Is.EqualTo(2), "Both normal and stationary notes must remain loaded.");
+                foreach (var note in loaded)
+                {
+                    note.Animator.LateUpdate();
+                    var front = note.DirectionTarget;
+                    if (sample.Progress < 0.01f)
+                    {
+                        // Native NoteJump begins at identity and reaches the twenty-degree middle turn through a sine phase.
+                        var angle = Vector3.Angle(front.up, front.parent.up);
+                        if (angle > 3f)
+                            failures.Add($"spawn time={sample.Progress}: fake={note.NoteData.CustomFake} begins with full cut-direction roll ({angle:F2} degrees).");
+                    }
+                    else if (sample.Progress < 0.1f)
+                    {
+                        // At time .05 the native sine phase reaches about53 degrees of this90-degree roll, with a bounded20-degree middle turn.
+                        var angle = Vector3.Angle(front.up, front.parent.up);
+                        if (angle < 25f || angle > 80f)
+                            failures.Add($"spawn time={sample.Progress}: fake={note.NoteData.CustomFake} skipped the native intermediate roll ({angle:F2} degrees).");
+                    }
+                    else if (sample.Progress > 0.49f)
+                    {
+                        var adjustedHead = head;
+                        adjustedHead.y = Mathf.Lerp(head.y, front.position.y, 0.8f);
+                        var angle = Vector3.Angle(front.forward, front.position - adjustedHead);
+                        if (angle > 1f)
+                            failures.Add($"spawn time={sample.Progress}: fake={note.NoteData.CustomFake} has not reached the native facing ray ({angle:F2} degrees).");
+                    }
+
+                    if (note.NoteData.CustomFake)
+                    {
+                        if (pinnedPosition.HasValue && Vector3.Distance(pinnedPosition.Value, front.position) > 0.001f)
+                            failures.Add("The definitePosition control moved while only its animation time changed.");
+
+                        pinnedPosition = front.position;
+                    }
+                }
+            }
+
+            Assert.That(failures, Is.Empty, string.Join("\n", failures));
         }
 
         [UnityTest]
@@ -125,86 +184,228 @@ namespace Tests.Editor
         }
 
         [UnityTest]
-        public IEnumerator PreviewDotFaceTracksEditingCameraWithoutDrift()
+        public IEnumerator PreviewDotsFacePlayerCameraWithoutDrift()
         {
+            uiMode.SetUIMode(UIModeType.Normal, false);
+            cameraManager.SelectCamera(CameraType.Editing);
+            var data = JSON.Parse(File.ReadAllText(FixturePath));
+            data["customData"]["customEvents"].Add(
+                new JSONObject
+                {
+                    ["b"] = 440f,
+                    ["t"] = "AssignPlayerToTrack",
+                    ["d"] = new JSONObject { ["track"] = "previewPlayer" }
+                });
+            data["customData"]["customEvents"].Add(
+                new JSONObject
+                {
+                    ["b"] = 440f,
+                    ["t"] = "AnimateTrack",
+                    ["d"] = new JSONObject
+                    {
+                        ["track"] = "previewPlayer",
+                        ["duration"] = 40f,
+                        ["position"] = JSON.Parse("[[12,0,-6,0],[20,0,-14,1]]")
+                    }
+                });
+            restoreEndingFixture = true;
+            Settings.Instance.Animations = true;
+            yield return TestUtils.ReloadMap(
+                3,
+                data,
+                beatsPerMinute: 155,
+                environmentName: "InterscopeEnvironment",
+                songLengthSeconds: 250);
+            TestUtils.CaptureCurrentMapAsSharedBaseline();
+            var editing = cameraManager.CameraControllers[0].Camera;
+            var player = cameraManager.CameraControllers[1].Camera.transform;
+            var playerHome = player.position;
+            previousEditingCameraPosition = editing.transform.position;
+            previousEditingCameraRotation = editing.transform.rotation;
+            editingCameraMoved = true;
+
+            // Playing is a positive control before checking the hidden player's Preview binding.
+            uiMode.SetUIMode(UIModeType.Playing, false);
+            cameraManager.SelectCamera(CameraType.Playing);
+            yield return SeekTo(460f);
+            Assert.That(
+                Vector3.Distance(player.position, ExpectedPlayerPosition(playerHome, 460f)),
+                Is.LessThan(0.001f),
+                $"Playing control: player={player.position}, home={playerHome}, authored={ExpectedPlayerPosition(playerHome, 460f)}.");
+            var failures = new List<string>();
+            CheckPlayerFacing(failures, 460f, ExpectedPlayerPosition(playerHome, 460f), "playing control");
+            Assert.That(failures, Is.Empty, string.Join("\n", failures));
+            var forwards = new List<Vector3>();
+            foreach (var sample in new[]
+                     {
+                         (Mode: UIModeType.Preview, Beat: 455f),
+                         (Mode: UIModeType.Playing, Beat: 460f),
+                         (Mode: UIModeType.Preview, Beat: 460f),
+                         (Mode: UIModeType.Preview, Beat: 468.5f),
+                         (Mode: UIModeType.Preview, Beat: 475f),
+                         (Mode: UIModeType.Preview, Beat: 460f),
+                         (Mode: UIModeType.Preview, Beat: 439.999f),
+                         (Mode: UIModeType.Preview, Beat: 440f),
+                         (Mode: UIModeType.Preview, Beat: 440.001f)
+                     })
+            {
+                uiMode.SetUIMode(sample.Mode, false);
+                cameraManager.SelectCamera(
+                    sample.Mode == UIModeType.Playing
+                        ? CameraType.Playing
+                        : CameraType.Editing);
+                yield return SeekTo(sample.Beat);
+                var expectedPlayer = ExpectedPlayerPosition(playerHome, sample.Beat);
+                if (Vector3.Distance(player.position, expectedPlayer) > 0.001f)
+                    failures.Add($"{sample.Mode} b{sample.Beat}: player={player.position}, authored player={expectedPlayer}.");
+
+                // Keep assignment and late player history separate from this fixture's loaded dot observations.
+                if (sample.Beat < 455f || sample.Beat == 475f)
+                    continue;
+
+                if (sample.Mode == UIModeType.Preview)
+                {
+                    foreach (var position in new[] { new Vector3(-60f, 1f, 12f), new Vector3(-90f, 2f, 15f), new Vector3(-55f, 3f, 30f) })
+                    {
+                        var note = FindFakeDotNote("benjamin", 469f);
+                        Assert.That(note, Is.Not.Null, $"Source dot is missing at b{sample.Beat}.");
+                        note.Animator.LateUpdate();
+                        var beforeRotation = note.DirectionTarget.rotation;
+                        var beforePosition = note.DirectionTarget.position;
+                        editing.transform.SetPositionAndRotation(
+                            position,
+                            Quaternion.LookRotation(beforePosition - position));
+                        yield return null;
+                        yield return null;
+                        note.Animator.LateUpdate();
+                        if (Quaternion.Angle(beforeRotation, note.DirectionTarget.rotation) > 0.01f)
+                            failures.Add($"Preview b{sample.Beat}: moving the editor camera changed note facing.");
+
+                        Assert.That(Vector3.Distance(beforePosition, note.DirectionTarget.position), Is.LessThan(0.001f));
+                        CheckPlayerFacing(failures, sample.Beat, expectedPlayer, "moved preview camera");
+                    }
+
+                    forwards.Add(FindFakeDotNote("benjamin", 469f).DirectionTarget.forward);
+                }
+
+                if (sample.Mode == UIModeType.Preview && (sample.Beat == 460f || sample.Beat == 468.5f))
+                    yield return CheckPreviewRollAgainstPlaying(failures, sample.Beat);
+            }
+
+            for (var i = 1; i < forwards.Count; i++)
+            {
+                if (Vector3.Angle(forwards[i - 1], forwards[i]) > 15f)
+                    failures.Add("Pinned dot facing drifted while only the source player track advanced or rewound.");
+            }
+
             uiMode.SetUIMode(UIModeType.Preview, false);
             cameraManager.SelectCamera(CameraType.Editing);
-            var editingCam = cameraManager.CameraControllers[0].Camera;
-            var playingCam = cameraManager.CameraControllers[1].Camera.transform;
-
-            yield return SeekTo(455f);
-            var note = FindFakeDotNote("benjamin", 469f);
-            Assert.That(note, Is.Not.Null, "benjamin fake dot not loaded at beat 455.");
-            Assert.That(note.Animator != null && note.Animator.isActiveAndEnabled, Is.True,
-                "benjamin animator missing or disabled.");
-
-            previousEditingCameraPosition = editingCam.transform.position;
-            previousEditingCameraRotation = editingCam.transform.rotation;
-            editingCameraMoved = true;
-            note.Animator.LateUpdate();
-            editingCam.transform.position = new Vector3(-60f, 1f, 12f);
-            editingCam.transform.rotation = Quaternion.LookRotation(
-                note.DirectionTarget.position - editingCam.transform.position);
-
-            var failures = new List<string>();
-            var postForwards = new List<(float beat, Vector3 forward, Vector3 pos)>();
-            foreach (var beat in new[] { 455f, 460f, 468.5f, 475f, 460f })
+            playbackClock = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            previousClockEnabled = playbackClock.enabled;
+            playbackClock.enabled = false;
+            TestUtils.StartDeterministicPlaybackAtSongBpmTime(playbackClock, 455f);
+            Quaternion? firstPlaybackFacing = null;
+            Vector3? firstPlaybackPosition = null;
+            foreach (var beat in new[] { 455f, 460f, 468f, 468.5f, 475f })
             {
-                yield return SeekTo(beat);
+                currentSecondsProperty.SetValue(playbackClock, playbackClock.GetSecondsFromBeat(beat));
+                editing.transform.position = new Vector3(-90f + (beat - 455f), 2f, 12f);
+                yield return null;
+                yield return null;
+                var expectedPlayer = ExpectedPlayerPosition(playerHome, beat);
+                if (Vector3.Distance(player.position, expectedPlayer) > 0.001f)
+                    failures.Add($"playing Preview b{beat}: hidden player lost the authored track.");
 
-                note = FindFakeDotNote("benjamin", 469f);
-                if (note == null || !note.gameObject.activeInHierarchy || note.NoteData == null)
-                {
-                    Debug.Log($"[BenjaminPhaseDiag] beat {beat}: benjamin dot absent from " +
-                        "paused pool (outside restart bounds).");
+                if (beat == 475f)
                     continue;
-                }
 
-                DumpDotPhase(note, editingCam, playingCam, beat, "prePose");
-
-                note.Animator.LateUpdate();
-                var post = DumpDotPhase(note, editingCam, playingCam, beat, "postPose");
-                postForwards.Add((beat, post.forward, post.pos));
-
-                var dotActive = note.DotModelController != null
-                    && note.DotModelController.gameObject.activeInHierarchy;
-                if (!dotActive)
+                CheckPlayerFacing(failures, beat, expectedPlayer, "deterministic Preview playback");
+                var front = FindFakeDotNote("benjamin", 469f).DirectionTarget;
+                if (!firstPlaybackFacing.HasValue)
                 {
-                    failures.Add($"beat {beat}: dot model inactive post-pose.");
-                    continue;
+                    firstPlaybackFacing = front.rotation;
+                    firstPlaybackPosition = front.position;
                 }
-
-                var vp = editingCam.WorldToViewportPoint(post.dotCenter);
-                if (!(vp.z > 0f && vp.x >= 0f && vp.x <= 1f && vp.y >= 0f && vp.y <= 1f))
-                    failures.Add($"beat {beat}: dot center {post.dotCenter} outside editing " +
-                        $"camera view (viewport={vp}).");
-
-                var rayDir = (post.bodyCenter - editingCam.transform.position).normalized;
-                var dotTowardCamera = Vector3.Dot(post.dotCenter - post.bodyCenter, rayDir);
-                if (dotTowardCamera >= -0.01f)
-                    failures.Add($"beat {beat}: post-pose dot is not on the editing-camera-facing " +
-                        $"side of the body (alongRay={dotTowardCamera:F3} dotCenter={post.dotCenter} " +
-                        $"bodyCenter={post.bodyCenter}).");
-
-                var viewerAlign = Vector3.Dot(post.forward, rayDir);
-                if (viewerAlign <= 0.9f)
-                    failures.Add($"beat {beat}: post-pose forward={post.forward} does not lie along " +
-                        $"the editing-camera->note ray={rayDir}: align={viewerAlign:F3}.");
+                else if (beat == 468f)
+                {
+                    Assert.That(Vector3.Distance(front.position, firstPlaybackPosition.Value), Is.LessThan(0.001f));
+                    if (Quaternion.Angle(front.rotation, firstPlaybackFacing.Value) < 0.1f)
+                        failures.Add("The authored player motion did not change the pinned dot's facing during Preview playback.");
+                }
             }
 
-            for (var i = 1; i < postForwards.Count; ++i)
-            {
-                var angle = Vector3.Angle(postForwards[i - 1].forward, postForwards[i].forward);
-                Debug.Log($"[BenjaminDriftDiag] post-pose forward drift b{postForwards[i - 1].beat} -> " +
-                    $"b{postForwards[i].beat}: {angle:F2} deg " +
-                    $"(pos {postForwards[i - 1].pos} -> {postForwards[i].pos})");
-                if (angle > 15f)
-                    failures.Add($"post-pose forward drifted {angle:F2} deg between " +
-                        $"b{postForwards[i - 1].beat} and b{postForwards[i].beat} while the definite " +
-                        $"position is pinned.");
-            }
-
+            TestUtils.PauseDeterministicPlayback(playbackClock);
+            uiMode.SetUIMode(UIModeType.Normal, false);
+            cameraManager.SelectCamera(CameraType.Editing);
+            yield return null;
+            yield return null;
+            Assert.That(Vector3.Distance(player.position, playerHome), Is.LessThan(0.001f), "Normal mode must still detach the player track and restore its home pose.");
             Assert.That(failures, Is.Empty, string.Join("\n", failures));
+        }
+
+        private IEnumerator CheckPreviewRollAgainstPlaying(List<string> failures, float beat)
+        {
+            var previewUp = new List<Vector3>();
+            foreach (var lane in new[] { 1, 2 })
+            {
+                var note = FindRealNote(470f, lane);
+                Assert.That(note, Is.Not.Null);
+                note.Animator.LateUpdate();
+                previewUp.Add(note.DirectionTarget.up);
+            }
+
+            uiMode.SetUIMode(UIModeType.Playing, false);
+            cameraManager.SelectCamera(CameraType.Playing);
+            yield return null;
+            yield return null;
+            for (var i = 0; i < previewUp.Count; i++)
+            {
+                var note = FindRealNote(470f, i + 1);
+                Assert.That(note, Is.Not.Null);
+                note.Animator.LateUpdate();
+                if (Vector3.Dot(previewUp[i], note.DirectionTarget.up) < 0.99999f)
+                    failures.Add($"b{beat}: Preview changed lane{i + 1}'s authored roll relative to the same player-facing Playing pose.");
+            }
+
+            uiMode.SetUIMode(UIModeType.Preview, false);
+            cameraManager.SelectCamera(CameraType.Editing);
+            yield return null;
+            yield return null;
+        }
+
+        private static Vector3 ExpectedPlayerPosition(Vector3 home, float beat) => beat < 440f
+            ? home
+            : home + Vector3.Lerp(new Vector3(12f, 0f, -6f), new Vector3(20f, 0f, -14f), (beat - 440f) / 40f);
+
+        // Noodle uses the player head and adjusts its height 80% toward the note in the animated world frame.
+        private static void CheckPlayerFacing(List<string> failures, float beat, Vector3 head, string route)
+        {
+            var note = FindFakeDotNote("benjamin", 469f);
+            Assert.That(note, Is.Not.Null, $"Source dot is missing at b{beat}.");
+            Assert.That(note.gameObject.activeInHierarchy, Is.True);
+            Assert.That(note.DotModelController.gameObject.activeInHierarchy, Is.True);
+            Assert.That(note.ModelController.MpbController.Renderers.Any(renderer => renderer.enabled && renderer.gameObject.activeInHierarchy), Is.True);
+            note.Animator.LateUpdate();
+            var front = note.DirectionTarget;
+            var inverse = Quaternion.Inverse(note.Animator.WorldTarget.rotation);
+            var headHeight = Vector3.Dot(inverse * head, Vector3.up);
+            var noteHeight = Vector3.Dot(inverse * front.position, Vector3.up);
+            head += note.Animator.WorldTarget.rotation * Vector3.up * (Mathf.Lerp(headHeight, noteHeight, 0.8f) - headHeight);
+            var ray = front.parent.rotation * (inverse * (front.position - head).normalized);
+            var authored = front.parent.rotation * Quaternion.Euler(note.DirectionTargetEuler);
+            var look = Quaternion.LookRotation(ray, authored * Vector3.up);
+            var progress = Mathf.Clamp01((beat - note.NoteData.SpawnSongBpmTime) / (note.NoteData.HalfJumpDuration * 2f));
+            var expected = Quaternion.Lerp(authored, look, progress * 2f);
+            if (Quaternion.Angle(front.rotation, expected) > 0.1f)
+                failures.Add($"{route} b{beat}: dot follows the viewing camera rather than the authored player ray.");
+
+            var noLook = FindFakeDotNote("benjaminblock", 469f);
+            Assert.That(noLook, Is.Not.Null);
+            noLook.Animator.LateUpdate();
+            Assert.That(
+                Quaternion.Angle(noLook.DirectionTarget.rotation, noLook.DirectionTarget.parent.rotation * Quaternion.Euler(noLook.DirectionTargetEuler)),
+                Is.LessThan(0.01f),
+                "disableNoteLook must retain its authored pose.");
         }
 
         [UnityTest]
@@ -638,7 +839,17 @@ namespace Tests.Editor
             Settings.Instance.PlayerCameraFOV = previousPlayerCameraFOV;
             Settings.Instance.PlayerCameraOffsetZ = previousPlayerCameraOffsetZ;
             Settings.Instance.CameraFOV = previousCameraFOV;
-            yield break;
+            if (restoreEndingFixture)
+            {
+                restoreEndingFixture = false;
+                yield return TestUtils.ReloadMap(
+                    3,
+                    JSON.Parse(File.ReadAllText(FixturePath)),
+                    beatsPerMinute: 155,
+                    environmentName: "InterscopeEnvironment",
+                    songLengthSeconds: 250);
+                TestUtils.CaptureCurrentMapAsSharedBaseline();
+            }
         }
     }
 }

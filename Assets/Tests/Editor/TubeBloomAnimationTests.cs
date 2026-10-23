@@ -123,25 +123,18 @@ namespace Tests.Editor
         {
             var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
             var controller = FindTrackLightController();
-            var animator = Object.FindAnyObjectByType<TracksManager>()
-                .GetAnimationTrack(TrackName).GetComponent<Beatmap.Animations.TubeBloomAnimator>();
-            var events = BeatSaberSongContainer.Instance.Map.CustomEvents;
+            var events = BeatSaberSongContainer.Instance.Map.CustomEvents.ToArray();
             atsc.MoveToJsonTime(17f);
             Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(5f));
-            foreach (var ev in events)
-            {
-                animator.RemoveEvent(ev);
-            }
+            var deletion = new BeatmapObjectDeletionAction(events, "Delete tube bloom animations");
+            BeatmapActionContainer.AddAction(deletion, true);
 
             Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(AuthoredAlpha),
                 "Deleting the last tube-bloom event retained its animated alpha.");
             Assert.That(controller.BloomFogIntensityMultiplier, Is.EqualTo(AuthoredBloomFog));
             Assert.That(controller.BoxLight.AlphaMultiplier, Is.EqualTo(AuthoredAlpha));
             Assert.That(controller.BloomFog.IntensityMultiplier, Is.EqualTo(AuthoredBloomFog));
-            foreach (var ev in events)
-            {
-                animator.AddEvent(ev);
-            }
+            Object.FindAnyObjectByType<BeatmapActionContainer>().Undo();
 
             atsc.MoveToJsonTime(0f);
             Assert.That(controller.ColorAlphaMultiplier, Is.EqualTo(AuthoredAlpha));

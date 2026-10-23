@@ -10,6 +10,16 @@ namespace Beatmap.Base
     {
         internal ObjectPathAnimationPreparation PreparedPathAnimation;
 
+        private const string SpawnEffectKey = "spawnEffect";
+        private const string LegacyDisableSpawnEffectKey = "_disableSpawnEffect";
+        private const string DisableDebrisKey = "disableDebris";
+
+        // Chroma reads these note and slider flags in both beatmap versions.
+        protected bool HasChromaNoteFlags() =>
+            CustomData.GetValueOrDefault(SpawnEffectKey, null) is JSONBool
+            || CustomData.GetValueOrDefault(LegacyDisableSpawnEffectKey, null) is JSONBool
+            || CustomData.GetValueOrDefault(DisableDebrisKey, null) is JSONBool;
+
         public override void Serialize(NetDataWriter writer)
         {
             writer.Put(PosX);

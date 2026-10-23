@@ -46,6 +46,12 @@ public class SceneTransitionManager : MonoBehaviour
         darkThemeSo.DarkThemeifyUI();
         Cursor.lockState = CursorLockMode.None;
         IsLoading = true;
+        // Restore map-owned render state while the outgoing cameras and parents are still alive.
+        if (SceneManager.GetActiveScene().name.StartsWith("03"))
+        {
+            var customEvents = FindFirstObjectByType<CustomEventManager>();
+            if (customEvents != null) customEvents.SuspendForMapChange();
+        }
         externalRoutines.Clear();
         foreach (var routine in routines) externalRoutines.Enqueue(routine);
         loadingCoroutine = StartCoroutine(SceneTransition(scene));

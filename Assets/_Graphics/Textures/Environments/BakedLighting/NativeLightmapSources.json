@@ -1,0 +1,1487 @@
+[
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/billieenvironment-Lightmap1.cmlightmap",
+    "nativeName": "Lightmap_0-0_comp_light",
+    "pathId": 76,
+    "sourceBundle": "billieenvironment_scenes_all_1c3f75665670aa85c4f1b8920653287c.bundle",
+    "sourceBundleSha256": "282be87225704f1c05aa6ba23015f6c7923b6757a8a0286364b14a51e763ffed",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "6062844aef6b5d0aa27cd663f405d5529890faf440031031a863242bc5f74346"
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/billieenvironment-Lightmap2.cmlightmap",
+    "nativeName": "Lightmap_1-0_comp_light",
+    "pathId": 74,
+    "sourceBundle": "billieenvironment_scenes_all_1c3f75665670aa85c4f1b8920653287c.bundle",
+    "sourceBundleSha256": "282be87225704f1c05aa6ba23015f6c7923b6757a8a0286364b14a51e763ffed",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "0c70e31d9f80ad4a7b5582d8a5fc687921b04313a48a73dbb054f3ede7988e21"
+  },
+  {
+    "environment": "BillieEnvironment",
+    "rendererAtlases": {
+      "Environment/RightFarRail1": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.24578124284744263,
+          0.24578124284744263,
+          0.7099280953407288,
+          0.1529482901096344
+        ]
+      },
+      "Environment/RightRail": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.7393749952316284,
+          0.7393749952316284,
+          -0.014787500724196434,
+          0.055392712354660034
+        ]
+      },
+      "Environment/RightFarRail2": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.24578124284744263,
+          0.24578124284744263,
+          0.7099280953407288,
+          0.18470364809036255
+        ]
+      },
+      "Environment/LeftFarRail2": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.24578124284744263,
+          0.24578124284744263,
+          0.7099280953407288,
+          0.09701994061470032
+        ]
+      },
+      "Environment/LeftFarRail1": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.24578124284744263,
+          0.24578124284744263,
+          0.7099280953407288,
+          0.06526459008455276
+        ]
+      },
+      "Environment/LeftRail": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.7393749952316284,
+          0.7393749952316284,
+          -0.014787500724196434,
+          0.14307641983032227
+        ]
+      },
+      "Environment/RailingFullFront": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.3688109815120697,
+          0.3688109815120697,
+          -0.002276584506034851,
+          0.24327103793621063
+        ]
+      },
+      "Environment/PlayersPlace/Mirror": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.047734376043081284,
+          0.047734376043081284,
+          0.26467031240463257,
+          0.7034074664115906
+        ]
+      },
+      "Environment/RailingFullBack": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.2649902105331421,
+          0.2649902105331421,
+          -0.0016357230488210917,
+          0.604093611240387
+        ]
+      },
+      "Environment/Waterfall/WaterfallFlatFar": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.5606250166893005,
+          0.5606250166893005,
+          0.3569515645503998,
+          0.23433512449264526
+        ]
+      },
+      "Environment/PlayersPlace/SaberBurnMarksArea": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.0947265625,
+          0.0947265625,
+          0.265625,
+          0.605729341506958
+        ]
+      },
+      "Environment/Waterfall/WaterfallFlatClose": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          1.040000081062317,
+          1.040000081062317,
+          -0.02080000378191471,
+          -0.02080000378191471
+        ]
+      },
+      "Environment/LightRailingSegment (2)/RailingCurveF": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.2177857756614685,
+          0.2177857756614685,
+          0.7687179446220398,
+          0.25624579191207886
+        ]
+      },
+      "Environment/LightRailingSegment (3)/RailingCurveF": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.2177857756614685,
+          0.2177857756614685,
+          0.5646163821220398,
+          0.25624579191207886
+        ]
+      },
+      "Environment/LightRailingSegment (1)/RailingCurveF": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.2177857756614685,
+          0.2177857756614685,
+          0.3605148196220398,
+          0.25624579191207886
+        ]
+      }
+    }
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/interscopeenvironment-Lightmap1.cmlightmap",
+    "nativeName": "Lightmap_0-0_comp_light",
+    "pathId": 62,
+    "sourceBundle": "interscopeenvironment_scenes_all_639e40733db3a14b54865ecb9c5a8b5e.bundle",
+    "sourceBundleSha256": "6453c30636c2d68f5e7bfb01166f938dda51c67a9b6ec83bcf85964711993ef5",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "68d430c6316cfca7518ea7108162ba7f3b1aeafd8e4061410a79860c7f685be7"
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/interscopeenvironment-Lightmap2.cmlightmap",
+    "nativeName": "Lightmap_1-0_comp_light",
+    "pathId": 60,
+    "sourceBundle": "interscopeenvironment_scenes_all_639e40733db3a14b54865ecb9c5a8b5e.bundle",
+    "sourceBundleSha256": "6453c30636c2d68f5e7bfb01166f938dda51c67a9b6ec83bcf85964711993ef5",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "3e93249fc322a1b1bfc06b396f1443b6f457bc4fedcf4a70948dcf2cd4b1afb2"
+  },
+  {
+    "environment": "InterscopeEnvironment",
+    "rendererAtlases": {
+      "Environment/CeilingFar": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.3046875,
+          0.3046875,
+          -0.006093750242143869,
+          0.5693181157112122
+        ]
+      },
+      "Environment/RampFar": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1452343761920929,
+          0.1452343761920929,
+          0.3554937541484833,
+          0.9062032103538513
+        ]
+      },
+      "Environment/FloorBackFar": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.16453126072883606,
+          0.16453126072883606,
+          0.7115530967712402,
+          0.17639687657356262
+        ]
+      },
+      "Environment/Car4/FrontWheels/FrontWheels": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.0866265520453453,
+          0.0866265520453453,
+          0.5222266316413879,
+          0.7195069193840027
+        ]
+      },
+      "Environment/FloorFar": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.3046875,
+          0.3046875,
+          0.35230469703674316,
+          0.24676434695720673
+        ]
+      },
+      "Environment/RearPillar_C_L": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.08293444663286209,
+          0.08293444663286209,
+          0.9219472408294678,
+          0.4308869242668152
+        ]
+      },
+      "Environment/RearPillar_C_R": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.08293444663286209,
+          0.08293444663286209,
+          0.5236358046531677,
+          0.8887259364128113
+        ]
+      },
+      "Environment/Car3/FrontWheels/FrontWheels": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.08779837936162949,
+          0.08779837936162949,
+          0.5222069621086121,
+          0.5466454029083252
+        ]
+      },
+      "Environment/RearPillar_A_R": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10976119339466095,
+          0.10976119339466095,
+          0.8199742436408997,
+          0.4303503930568695
+        ]
+      },
+      "Environment/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.4647369682788849,
+          0.4647369682788849,
+          -0.009076894260942936,
+          -0.009076894260942936
+        ]
+      },
+      "Environment/FloorBack": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.27015626430511475,
+          0.27015626430511475,
+          0.4457687437534332,
+          -0.005403125658631325
+        ]
+      },
+      "Environment/RearPillar_B_L": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1371193379163742,
+          0.1371193379163742,
+          0.44842949509620667,
+          0.10495995730161667
+        ]
+      },
+      "Environment/CeilingNear": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.36833953857421875,
+          0.36833953857421875,
+          -0.00719413161277771,
+          0.24566397070884705
+        ]
+      },
+      "Environment/RearPillar_A_L": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10976119339466095,
+          0.10976119339466095,
+          0.6530781984329224,
+          0.4303503930568695
+        ]
+      },
+      "Environment/RearPillar_B_R": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1371193379163742,
+          0.1371193379163742,
+          -0.0027423868887126446,
+          0.869544267654419
+        ]
+      },
+      "Environment/PlayersPlace/Mirror": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.011171875521540642,
+          0.011171875521540642,
+          0.45094844698905945,
+          0.2267477810382843
+        ]
+      },
+      "Environment/PlayersPlace/SaberBurnMarksArea": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.0234375,
+          0.0234375,
+          0.5869140625,
+          0.2170773446559906
+        ]
+      },
+      "Environment/Pillar (3)/PillarR": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.18296585977077484,
+          0.18296585977077484,
+          0.7112702131271362,
+          -0.003573552006855607
+        ]
+      },
+      "Environment/Pillar (4)/PillarR": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.18296585977077484,
+          0.18296585977077484,
+          0.6516999006271362,
+          0.2492845505475998
+        ]
+      },
+      "Environment/Pillar (2)/PillarR": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.18296585977077484,
+          0.18296585977077484,
+          0.8185959458351135,
+          0.2492845505475998
+        ]
+      },
+      "Environment/Pillar (1)/PillarR": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.18296585977077484,
+          0.18296585977077484,
+          0.35482487082481384,
+          0.5461593866348267
+        ]
+      },
+      "Environment/Pillar/PillarL": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10977951437234879,
+          0.10977951437234879,
+          0.13359805941581726,
+          0.8701425194740295
+        ]
+      },
+      "Environment/Car1/FrontWheels/FrontWheels": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.08277485519647598,
+          0.08277485519647598,
+          0.5222066044807434,
+          0.805265486240387
+        ]
+      },
+      "Environment/Pillar/PillarR": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.18296585977077484,
+          0.18296585977077484,
+          0.35482487082481384,
+          0.7258468866348267
+        ]
+      },
+      "Environment/Car2/FrontWheels/FrontWheels": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.08670496195554733,
+          0.08670496195554733,
+          0.5222322344779968,
+          0.6335750222206116
+        ]
+      },
+      "Environment/Pillar (3)/PillarL": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10977951437234879,
+          0.10977951437234879,
+          0.8795956373214722,
+          -0.0021441311109811068
+        ]
+      },
+      "Environment/Pillar (4)/PillarL": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10977951437234879,
+          0.10977951437234879,
+          0.23529820144176483,
+          0.8701425194740295
+        ]
+      },
+      "Environment/Pillar (2)/PillarL": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10977951437234879,
+          0.10977951437234879,
+          0.8795956373214722,
+          0.10723087191581726
+        ]
+      },
+      "Environment/Pillar (1)/PillarL": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10977951437234879,
+          0.10977951437234879,
+          0.5847699046134949,
+          0.10555821657180786
+        ]
+      }
+    }
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/linkinparkenvironment-Lightmap1.cmlightmap",
+    "nativeName": "Lightmap_0-0_comp_light",
+    "pathId": 60,
+    "sourceBundle": "linkinparkenvironment_scenes_all_b841bc56d9edce305c63eff90b1e1966.bundle",
+    "sourceBundleSha256": "bd5c490f6b54ccd9a2b8ae3eefac8e60bc6fcc13e7b023ee2896d6bef00e1f2f",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "e3f9bc4a42e4321ee60bdfa15ae1cc755f774bdc6e75f6cb4d298da9c2413655"
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/linkinparkenvironment-Lightmap2.cmlightmap",
+    "nativeName": "Lightmap_1-0_comp_light",
+    "pathId": 59,
+    "sourceBundle": "linkinparkenvironment_scenes_all_b841bc56d9edce305c63eff90b1e1966.bundle",
+    "sourceBundleSha256": "bd5c490f6b54ccd9a2b8ae3eefac8e60bc6fcc13e7b023ee2896d6bef00e1f2f",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "007dfe2a3c4f698d293a592d750f2f9ce7a270df4f5c6f4cc2284ecdfa25d36e"
+  },
+  {
+    "environment": "LinkinParkEnvironment",
+    "rendererAtlases": {
+      "Environment/TrackConstruction": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.14905284345149994,
+          0.14905284345149994,
+          0.6171875,
+          0.21392099559307098
+        ]
+      },
+      "Environment/PlayersPlace/Mirror": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.023359375074505806,
+          0.023359375074505806,
+          0.9438103437423706,
+          0.1749774068593979
+        ]
+      },
+      "Environment/Tunnel/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.4096373915672302,
+          0.4096373915672302,
+          -0.13521146774291992,
+          0.21950839459896088
+        ]
+      },
+      "Environment/TunnelRings": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.22595538198947906,
+          0.22595538198947906,
+          0.47985589504241943,
+          -0.00451910775154829
+        ]
+      },
+      "Environment/PlayersPlace/SaberBurnMarksArea": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.046875,
+          0.046875,
+          0.703125,
+          0.1754445880651474
+        ]
+      },
+      "Environment/Tunnel (4)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.9142302870750427,
+          0.17446768283843994
+        ]
+      },
+      "Environment/Tunnel (7)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.9712908267974854,
+          -0.0009769051102921367
+        ]
+      },
+      "Environment/Tunnel (8)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.8805680871009827,
+          0.17446768283843994
+        ]
+      },
+      "Environment/Tunnel (1)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.20430536568164825,
+          0.20430536568164825,
+          -0.06743629276752472,
+          0.6170963048934937
+        ]
+      },
+      "Environment/Tunnel (9)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.8637369871139526,
+          0.17446768283843994
+        ]
+      },
+      "Environment/Tunnel (2)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10163935273885727,
+          0.10163935273885727,
+          0.04031388834118843,
+          0.6196011900901794
+        ]
+      },
+      "Environment/Tunnel (10)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.9712908267974854,
+          0.04003871977329254
+        ]
+      },
+      "Environment/Tunnel (3)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10163935273885727,
+          0.10163935273885727,
+          0.9127403497695923,
+          -0.0024798361118882895
+        ]
+      },
+      "Environment/Tunnel (6)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.10163935273885727,
+          0.10163935273885727,
+          -0.033548709005117416,
+          0.8763248920440674
+        ]
+      },
+      "Environment/Tunnel (5)/Floor": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04003974422812462,
+          0.04003974422812462,
+          0.8973991870880127,
+          0.17446768283843994
+        ]
+      },
+      "Environment/Tunnel/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.5207958221435547,
+          0.5207958221435547,
+          -0.019675271585583687,
+          -0.06891130656003952
+        ]
+      },
+      "Environment/Tunnel (10)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.8242163062095642,
+          0.19404453039169312
+        ]
+      },
+      "Environment/Tunnel (2)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1299348622560501,
+          0.1299348622560501,
+          -0.004908840637654066,
+          0.8021537661552429
+        ]
+      },
+      "Environment/Tunnel (9)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.7509741187095642,
+          0.16859538853168488
+        ]
+      },
+      "Environment/Tunnel (1)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.2598697245121002,
+          0.2598697245121002,
+          0.6933073401451111,
+          -0.034385763108730316
+        ]
+      },
+      "Environment/Tunnel (6)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1299348622560501,
+          0.1299348622560501,
+          0.6982161402702332,
+          0.09879361093044281
+        ]
+      },
+      "Environment/Tunnel (5)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.9472631812095642,
+          0.10913729667663574
+        ]
+      },
+      "Environment/Tunnel (3)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1299348622560501,
+          0.1299348622560501,
+          0.8212630152702332,
+          0.09879361093044281
+        ]
+      },
+      "Environment/Tunnel (4)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.7509741187095642,
+          0.19404453039169312
+        ]
+      },
+      "Environment/Tunnel (8)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.9472631812095642,
+          0.1345864236354828
+        ]
+      },
+      "Environment/Tunnel (7)/Top": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.051762666553258896,
+          0.051762666553258896,
+          0.8242163062095642,
+          0.16859538853168488
+        ]
+      }
+    }
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/skrillexenvironment-Lightmap1.cmlightmap",
+    "nativeName": "Lightmap_0-0_comp_light",
+    "pathId": 101,
+    "sourceBundle": "skrillexenvironment_scenes_all_b5cd8208ec7d670da15cb1fe4c56952e.bundle",
+    "sourceBundleSha256": "dbe476364cb7e5bfba5c6d9cc0a11289bb0db486072e448bacf93e14e8366a5b",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "3cb8e3cf8dae4b5a39719731c427907f13a978469de13d043502b4ba7a1d6025"
+  },
+  {
+    "asset": "Assets/_Graphics/Textures/Environments/BakedLighting/skrillexenvironment-Lightmap2.cmlightmap",
+    "nativeName": "Lightmap_1-0_comp_light",
+    "pathId": 102,
+    "sourceBundle": "skrillexenvironment_scenes_all_b5cd8208ec7d670da15cb1fe4c56952e.bundle",
+    "sourceBundleSha256": "dbe476364cb7e5bfba5c6d9cc0a11289bb0db486072e448bacf93e14e8366a5b",
+    "width": 1024,
+    "height": 1024,
+    "mips": 11,
+    "format": 3,
+    "srgb": true,
+    "sampler": {
+      "filterMode": 2,
+      "wrapU": 1,
+      "wrapV": 1,
+      "anisotropy": 2,
+      "mipBias": 0.0
+    },
+    "sha256": "262632f051e419387b7ae712f59ce49fee03ecbf1395df7ccb5c8e4c2ed58a6a"
+  },
+  {
+    "environment": "SkrillexEnvironment",
+    "rendererAtlases": {
+      "Environment/PlayersPlace/Construction": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.6276562809944153,
+          0.6276562809944153,
+          -0.01255312655121088,
+          -0.01255312655121088
+        ]
+      },
+      "Environment/PlayersPlace/Mirror": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.009140625596046448,
+          0.009140625596046448,
+          0.8103640675544739,
+          0.10295151174068451
+        ]
+      },
+      "Environment/TrackBL/PlaneC (17)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6072187423706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBR/PlaneC (1)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.1951562464237213,
+          0.11428570747375488
+        ]
+      },
+      "Environment/TrackTR/PlaneC (1)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.8146871328353882
+        ]
+      },
+      "Environment/TrackTL/PlaneC (1)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.6746068596839905
+        ]
+      },
+      "Environment/TrackBL/PlaneC (14)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7947187423706055,
+          0.07179014384746552
+        ]
+      },
+      "Environment/TrackBL/PlaneC (8)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          -0.0008125000167638063,
+          0.9580174088478088
+        ]
+      },
+      "Environment/TrackBR/PlaneC (7)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.1951562464237213,
+          0.3944462835788727
+        ]
+      },
+      "Environment/TrackTL/PlaneC (7)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.11428570747375488
+        ]
+      },
+      "Environment/TrackTR/PlaneC (7)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.254366010427475
+        ]
+      },
+      "Environment/TrackTL/PlaneC (10)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.19840624928474426,
+          0.7031930088996887
+        ]
+      },
+      "Environment/TrackTR/PlaneC (10)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.29996874928474426,
+          0.5377765893936157
+        ]
+      },
+      "Environment/TrackBR/PlaneC (10)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.19840624928474426,
+          0.6409109234809875
+        ]
+      },
+      "Environment/TrackBR/PlaneC (2)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1015625,
+          0.1015625,
+          0.6053906083106995,
+          -0.0020312501583248377
+        ]
+      },
+      "Environment/TrackTR/PlaneC (2)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1015625,
+          0.1015625,
+          0.7069531083106995,
+          -0.0020312501583248377
+        ]
+      },
+      "Environment/TrackTL/PlaneC (2)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1015625,
+          0.1015625,
+          0.8085156083106995,
+          -0.0020312501583248377
+        ]
+      },
+      "Environment/TrackBL/PlaneC (16)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6931562423706055,
+          0.0932200476527214
+        ]
+      },
+      "Environment/PlayersPlace/SaberBurnMarksArea": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.0185546875,
+          0.0185546875,
+          0.912109375,
+          0.09342317283153534
+        ]
+      },
+      "Environment/TrackBL/PlaneC (9)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.04215624928474426,
+          0.9580174088478088
+        ]
+      },
+      "Environment/TrackBR/PlaneC (12)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.29996874928474426,
+          0.5689176321029663
+        ]
+      },
+      "Environment/TrackTR/PlaneC (12)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.8097344040870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackTL/PlaneC (12)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9112969040870667,
+          -0.0008125000167638063
+        ]
+      },
+      "Environment/TrackBL/PlaneC (12)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.7511406540870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackTL/PlaneC (9)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9112969040870667,
+          0.030328556895256042
+        ]
+      },
+      "Environment/TrackTR/PlaneC (9)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.28434374928474426,
+          0.6409109234809875
+        ]
+      },
+      "Environment/TrackBR/PlaneC (9)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.24137499928474426,
+          0.6409109234809875
+        ]
+      },
+      "Environment/TrackBL/PlaneC (2)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.1015625,
+          0.1015625,
+          0.19718749821186066,
+          0.5365577936172485
+        ]
+      },
+      "Environment/TrackTL/PlaneC (16)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6931562423706055,
+          0.10393499583005905
+        ]
+      },
+      "Environment/TrackTR/PlaneC (16)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7947187423706055,
+          0.0932200476527214
+        ]
+      },
+      "Environment/TrackBR/PlaneC (16)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6638593673706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBL/PlaneC (10)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9542656540870667,
+          0.06146961450576782
+        ]
+      },
+      "Environment/TrackTL/PlaneC (17)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7654218673706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackTR/PlaneC (17)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6345624923706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBR/PlaneC (17)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6501874923706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBL/PlaneC (1)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.5935937762260437,
+          0.11428570747375488
+        ]
+      },
+      "Environment/TrackBL/PlaneC (7)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.1951562464237213,
+          0.254366010427475
+        ]
+      },
+      "Environment/TrackTL/PlaneC (14)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7517499923706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackTR/PlaneC (14)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7947187423706055,
+          0.10393499583005905
+        ]
+      },
+      "Environment/TrackBR/PlaneC (14)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6208906173706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBR/PlaneC (8)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.8527031540870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackTL/PlaneC (8)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.28434374928474426,
+          0.609769880771637
+        ]
+      },
+      "Environment/TrackTR/PlaneC (8)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.32731249928474426,
+          0.6409109234809875
+        ]
+      },
+      "Environment/TrackBL/PlaneC (13)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6931562423706055,
+          0.08250509947538376
+        ]
+      },
+      "Environment/TrackBL/PlaneC (4)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.32731249928474426,
+          0.7031930088996887
+        ]
+      },
+      "Environment/TrackBR/PlaneC (11)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.28434374928474426,
+          0.6720519661903381
+        ]
+      },
+      "Environment/TrackTL/PlaneC (11)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.32731249928474426,
+          0.609769880771637
+        ]
+      },
+      "Environment/TrackTR/PlaneC (11)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.6495781540870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackBL/PlaneC (3)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.34293749928474426,
+          0.5689176321029663
+        ]
+      },
+      "Environment/TrackBL/PlaneC (6)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.12809374928474426,
+          0.9580174088478088
+        ]
+      },
+      "Environment/TrackBL/PlaneC (15)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7087812423706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBL/PlaneC (5)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.28434374928474426,
+          0.7031930088996887
+        ]
+      },
+      "Environment/TrackBL/PlaneC": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.3944462835788727
+        ]
+      },
+      "Environment/TrackBR/PlaneC": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          -0.004062500316649675,
+          0.5345265865325928
+        ]
+      },
+      "Environment/TrackTR/PlaneC": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.3943749964237213,
+          0.11428570747375488
+        ]
+      },
+      "Environment/TrackTL/PlaneC": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.203125,
+          0.203125,
+          0.7928125262260437,
+          0.11428570747375488
+        ]
+      },
+      "Environment/TrackTL/PlaneC (5)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9112969040870667,
+          0.06146961450576782
+        ]
+      },
+      "Environment/TrackTR/PlaneC (5)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.24137499928474426,
+          0.7031930088996887
+        ]
+      },
+      "Environment/TrackBR/PlaneC (5)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.24137499928474426,
+          0.6720519661903381
+        ]
+      },
+      "Environment/TrackTL/PlaneC (15)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7790937423706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackTR/PlaneC (15)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6775312423706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackBR/PlaneC (15)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7361249923706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackTR/PlaneC (6)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.32731249928474426,
+          0.6720519661903381
+        ]
+      },
+      "Environment/TrackTL/PlaneC (6)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.19840624928474426,
+          0.609769880771637
+        ]
+      },
+      "Environment/TrackBR/PlaneC (6)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.24137499928474426,
+          0.609769880771637
+        ]
+      },
+      "Environment/TrackBL/PlaneC (11)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9542656540870667,
+          0.030328556895256042
+        ]
+      },
+      "Environment/TrackTL/PlaneC (4)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.19840624928474426,
+          0.6720519661903381
+        ]
+      },
+      "Environment/TrackTR/PlaneC (4)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.08512499928474426,
+          0.9580174088478088
+        ]
+      },
+      "Environment/TrackBR/PlaneC (4)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.34293749928474426,
+          0.5377765893936157
+        ]
+      },
+      "Environment/TrackBR/PlaneC (3)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.7081719040870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackTL/PlaneC (3)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.9542656540870667,
+          -0.0008125000167638063
+        ]
+      },
+      "Environment/TrackTR/PlaneC (3)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.04062499850988388,
+          0.04062499850988388,
+          0.6066094040870667,
+          0.07118076831102371
+        ]
+      },
+      "Environment/TrackTL/PlaneC (13)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7224531173706055,
+          0.1029312014579773
+        ]
+      },
+      "Environment/TrackTR/PlaneC (13)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.6931562423706055,
+          0.07179014384746552
+        ]
+      },
+      "Environment/TrackBR/PlaneC (13)": {
+        "lightmapIndex": 0,
+        "lightmapScaleOffset": [
+          0.01015624962747097,
+          0.01015624962747097,
+          0.7947187423706055,
+          0.08250509947538376
+        ]
+      }
+    }
+  }
+]
