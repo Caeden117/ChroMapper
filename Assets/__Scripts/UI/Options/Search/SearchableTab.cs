@@ -9,6 +9,13 @@ public class SearchableTab : MonoBehaviour
     [SerializeField] private RectTransform layoutGroup;
     [SerializeField] private GameObject tab;
 
+    public void Configure(RectTransform content, GameObject categoryTab, SearchableSection section)
+    {
+        layoutGroup = content;
+        tab = categoryTab;
+        sections = new List<SearchableSection> { section };
+    }
+
     public void RegisterSection(SearchableSection section) => sections.Add(section);
 
     public void RemoveSection(SearchableSection section) => sections.Remove(section);

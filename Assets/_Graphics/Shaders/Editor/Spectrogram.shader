@@ -3,6 +3,9 @@ Shader "ChroMapper/Editor/Spectrogram"
     Properties
     {
         _Stencil ("Stencil ID", Integer) = 0
+        [HideInInspector] _TempoAntialias ("Tempo scrolling antialiasing", Float) = 0
+        [HideInInspector] _TempoOverview ("Tempo overview", Float) = 0
+        [HideInInspector] _TempoSongDuration ("Tempo song duration", Float) = 1
 
         [Toggle] _FlipX ("Flip X", float) = 0.0
         [Toggle] _FlipY ("Flip Y", float) = 0.0
@@ -44,6 +47,9 @@ Shader "ChroMapper/Editor/Spectrogram"
             };
 
             // Local variables
+            float _TempoAntialias;
+            float _TempoOverview;
+            float _TempoSongDuration;
             float _FlipX = 0;
             float _FlipY = 0;
             float _OutlineWidth = 0;
@@ -186,13 +192,33 @@ Shader "ChroMapper/Editor/Spectrogram"
                 float2 uv = float2(_FlipX > 0.5 ? 1 - i.uv.x : i.uv.x, _FlipY > 0.5 ? 1 - i.uv.y : i.uv.y);
 
                 // Calculate our X position within the view in seconds
-                float currentSeconds = lerp(_ViewStart, _ViewEnd, uv.x);
+                float currentSeconds = lerp(_TempoOverview > 0.5 ? 0 : _ViewStart, _TempoOverview > 0.5 ? _TempoSongDuration : _ViewEnd, uv.x);
 
                 // fix shimmering pixels by saturating our spectrogram value between [0,1]
                 //   I guess when interpolating between pixels, the above math can produce values slightly out of intended range.
-                float value = currentSeconds > 0
-                        ? saturate(calculateSpectrogramValue(currentSeconds, uv))
-                        : 0.0;
+                // Integrate the visible pixel footprint instead of sampling one changing FFT point.
+                // Bound the tap count so scrolling antialiasing remains practical on the existing buffer.
+                float secondsPerPixel = max(fwidth(currentSeconds), 0.000001);
+                float frequencyPerPixel = fwidth(uv.y);
+                float value = 0;
+                if (currentSeconds > 0)
+                {
+                    if (_TempoAntialias > 0.5)
+                    {
+                        int taps = (int)clamp(ceil(secondsPerPixel * FFTFrequency / FFTSize), 2.0, 8.0);
+                        [loop]
+                        for (int tap = 0; tap < taps; tap++)
+                        {
+                            float seconds = currentSeconds + ((tap + 0.5) / taps - 0.5) * secondsPerPixel;
+                            if (seconds <= 0) continue;
+                            value += calculateSpectrogramValue(seconds, float2(uv.x, saturate(uv.y - frequencyPerPixel * 0.25)));
+                            value += calculateSpectrogramValue(seconds, float2(uv.x, saturate(uv.y + frequencyPerPixel * 0.25)));
+                        }
+                        value /= taps * 2.0;
+                    }
+                    else value = calculateSpectrogramValue(currentSeconds, uv);
+                    value = saturate(value);
+                }
 
                 // Value clipping
                 clip(value - _ValueCutoff);

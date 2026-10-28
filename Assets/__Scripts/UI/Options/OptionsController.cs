@@ -22,17 +22,59 @@ public class OptionsController : MenuBase
     public List<CanvasGroup> OptionBodyCanvasGroups;
 
     private bool isClosing;
+    private static Action contextClosed;
+    private void Awake()
+    {
+        if (StartingGroup != TempoMapperGroup) return;
+        var canvas = optionsCanvasGroup.GetComponentInParent<UnityEngine.Canvas>().rootCanvas;
+        var foregroundOrder = UnityEngine.Object.FindObjectsByType<UnityEngine.Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(item => item.gameObject.scene != gameObject.scene && item.enabled)
+            .Select(item => item.sortingOrder).DefaultIfEmpty(0).Max() + 20;
+        // Child canvases with independent ordering retain their relative order above the settings background.
+        foreach (var child in canvas.GetComponentsInChildren<UnityEngine.Canvas>(true))
+            if (child == canvas || child.overrideSorting) child.sortingOrder += foregroundOrder;
+        canvas.overrideSorting = true;
+    }
+
+    public const int TempoMapperGroup = 100;
+    public static int StartingGroup { get; private set; }
 
     public static bool IsActive { get; internal set; }
 
-    public static void ShowOptions(int loadGroup = 0)
+    public static void ShowOptions(int loadGroup = 0, Action closed = null)
     {
         if (IsActive) return;
-        SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
-        CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController),
-            typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-        OnOptionsLoaded?.Invoke();
+        StartingGroup = loadGroup;
+        contextClosed = closed;
         IsActive = true;
+        try
+        {
+            CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController),
+                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+            SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
+            OnOptionsLoaded?.Invoke();
+        }
+        catch
+        {
+            ReleaseInputState();
+            throw;
+        }
+    }
+
+    private static void ReleaseInputState()
+    {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController),
+            typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        IsActive = false;
+        var notify = contextClosed;
+        contextClosed = null;
+        try { notify?.Invoke(); }
+        catch (Exception exception) { Debug.LogException(exception); }
+    }
+
+    private void OnDestroy()
+    {
+        if (IsActive) ReleaseInputState();
     }
 
     public void Close()
@@ -59,13 +101,12 @@ public class OptionsController : MenuBase
         try
         {
             yield return StartCoroutine(Close(2, optionsCanvasGroup));
-            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController),
-                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-            IsActive = false;
+            ReleaseInputState();
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
         }
         finally
         {
+            if (IsActive) ReleaseInputState();
             isClosing = false;
         }
     }

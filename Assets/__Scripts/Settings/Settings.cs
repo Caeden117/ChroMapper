@@ -103,6 +103,14 @@ public class Settings
     #region Audio
 
     public float Volume = 1;
+    // Tempo waveform backend: lower samples/peak increases detail and cache memory.
+    public bool TempoSpectrogramAntialias = true;
+    public int TempoOverviewDisplay = 0; // waveform, spectrogram
+    public int TempoEditorDisplay = 2; // waveform, spectrogram, both
+    public bool TempoWaveformRectifyPeaks = false;
+    public bool TempoFollowPlayback = true;
+    public int TempoWaveformSamplesPerPeak = 64;
+    public int TempoWaveformMaxColumns = 2048;
     public float SongVolume = 1;
     public float MetronomeVolume = 0;
     public float NoteHitVolume = 0.5f;

@@ -485,6 +485,130 @@ MonoBehaviour:
     m_Key: lightshowfile.placeholder
     m_Metadata:
       m_Items: []
+  - m_Id: 645939678474465280
+    m_Key: tempo.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128578
+    m_Key: tempo.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128579
+    m_Key: tempo.pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128584
+    m_Key: tempo.bpm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128585
+    m_Key: tempo.beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128588
+    m_Key: tempo.undo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128589
+    m_Key: tempo.redo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128591
+    m_Key: tempo.metronome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128592
+    m_Key: tempo.speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128595
+    m_Key: tempo.invalid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128597
+    m_Key: tempo.unsaved
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128598
+    m_Key: tempo.error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128599
+    m_Key: tempo.save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128600
+    m_Key: tempo.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128601
+    m_Key: tempo.discard.prompt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128602
+    m_Key: tempo.discard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128603
+    m_Key: tempo.keep.editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109751558144
+    m_Key: tempo.shift
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027136
+    m_Key: tempo.precision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027137
+    m_Key: tempo.zoom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027138
+    m_Key: tempo.volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027139
+    m_Key: tempo.statistics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646048450345758720
+    m_Key: tempo.reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238232256512
+    m_Key: tempo.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725504
+    m_Key: tempo.timeline.display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725505
+    m_Key: tempo.editor.display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725506
+    m_Key: tempo.waveform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725507
+    m_Key: tempo.spectrogram
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725508
+    m_Key: tempo.both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725515
+    m_Key: tempo.follow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646214639961305088
+    m_Key: tempo.waveform.rectify
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

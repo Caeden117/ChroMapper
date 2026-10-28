@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SearchableSection : MonoBehaviour
 {
-    [SerializeField] private List<SearchableOption> options;
+    [SerializeField] private List<SearchableOption> options = new();
+
+    public void ClearOptions() => options.Clear();
 
     public void RegisterOption(SearchableOption option) => options.Add(option);
 

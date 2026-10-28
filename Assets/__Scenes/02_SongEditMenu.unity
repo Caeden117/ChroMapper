@@ -431,6 +431,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewAudio: {fileID: 793019636}
+  tempoMetronomeSound: {fileID: 8300000, guid: cfc1b9a858584fe44bdd05fd4f71ecf9, type: 3}
+  tempoMapperIcon: {fileID: 21300000, guid: ace1f289c73d1af4a861914746e685ab, type: 3}
+  tempoResetIcon: {fileID: 21300084, guid: b6cbb1b9e5aaba74a8dbd0ce1f54f5bf, type: 3}
+  tempoToolIcons:
+  - {fileID: 21300000, guid: fd4ba26da39dff04d86e150d891eb7de, type: 3}
+  - {fileID: 21300000, guid: b95612b1edd812c45b965577ced95cad, type: 3}
+  - {fileID: 21300000, guid: 39a2665d0c71a5944a3aea9a6ef1ee1f, type: 3}
+  - {fileID: 21300000, guid: d7dc00f1109577c40a385e99a5259dc2, type: 3}
+  - {fileID: 21300000, guid: dae39add9544b434489fc8bd9638e8ad, type: 3}
+  tempoSliderTemplate: {fileID: 4911812701819320509, guid: 50a297fa40dfb4241bc74fa16575b68c,
+    type: 3}
+  tempoBackTemplate: {fileID: 1048209605}
+  tempoSaveTemplate: {fileID: 541969041}
   songInfoHeaderTitle: {fileID: 1355044936}
   difficultySelect: {fileID: 187183939}
   nameField: {fileID: 597544032}

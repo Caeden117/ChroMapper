@@ -13,19 +13,21 @@ public class TabManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tabTitle;
     [SerializeField] private LocalizeStringEvent tabTitleString;
     [SerializeField] private OptionsTabButton creditsTab;
+    [SerializeField] private OptionsTabButton tempoTab;
     [FormerlySerializedAs("_tabsGameObject")] [SerializeField] private GameObject tabsGameObject;
 
     [FormerlySerializedAs("selectedTab")] [HideInInspector] public OptionsTabButton SelectedTab;
 
     private readonly List<Canvas> tabs = new List<Canvas>();
-    public string TabName => SelectedTab.TextMeshTabName.text;
+    public string TabName => SelectedTab != null ? SelectedTab.TextMeshTabName.text : "";
 
     private void Start()
     {
         tabs.AddRange(tabsGameObject.GetComponentsInChildren<Canvas>()
             .Where(canvas => canvas.name.EndsWith("Panel")));
 
-        OnTabSelected(SceneManager.GetActiveScene().name != "03_Mapper" ? defaultTab : mapperTab);
+        OnTabSelected(OptionsController.StartingGroup == OptionsController.TempoMapperGroup && tempoTab != null ? tempoTab :
+            SceneManager.GetActiveScene().name != "03_Mapper" ? defaultTab : mapperTab);
     }
 
     public void OnTabSelected(OptionsTabButton tab)

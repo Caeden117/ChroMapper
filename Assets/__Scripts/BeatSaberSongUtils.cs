@@ -16,7 +16,7 @@ public static class BeatSaberSongUtils
             var mainNode = GetNodeFromFile(directory + "/Info.dat");
             if (mainNode == null)
             {
-                //Virgin "info.dat" VS chad "Info.dat"
+                //Virgin "info.dat" VS chad "Info.dat" (good comment)
                 mainNode = GetNodeFromFile(directory + "/info.dat");
                 if (mainNode == null) return null;
                 File.Move(directory + "/info.dat", directory + "/Info.dat");

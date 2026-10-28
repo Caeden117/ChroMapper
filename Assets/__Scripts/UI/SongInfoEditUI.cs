@@ -31,6 +31,13 @@ public class SongInfoEditUI : MenuBase
     };
 
     [SerializeField] private AudioSource previewAudio;
+    [SerializeField] private AudioClip tempoMetronomeSound;
+    [SerializeField] private Sprite tempoMapperIcon;
+    [SerializeField] private Sprite tempoResetIcon;
+    [SerializeField] private Sprite[] tempoToolIcons;
+    [SerializeField] private Slider tempoSliderTemplate;
+    [SerializeField] private Button tempoBackTemplate;
+    [SerializeField] private Button tempoSaveTemplate;
 
     [SerializeField] private TextMeshProUGUI songInfoHeaderTitle;
 
@@ -84,6 +91,97 @@ public class SongInfoEditUI : MenuBase
         ContributorWrapper.SetActive(true);
 
         LoadFromSong();
+        AddTempoMapperButton();
+    }
+
+    private void AddTempoMapperButton()
+    {
+        var field = (RectTransform)bpmField.transform;
+        var wrapper = new GameObject("BPM and tempo mapping", typeof(RectTransform), typeof(LayoutElement));
+        var wrapperRect = (RectTransform)wrapper.transform;
+        wrapperRect.SetParent(field.parent, false);
+        wrapperRect.SetSiblingIndex(field.GetSiblingIndex());
+        wrapperRect.anchorMin = field.anchorMin;
+        wrapperRect.anchorMax = field.anchorMax;
+        wrapperRect.pivot = field.pivot;
+        wrapperRect.sizeDelta = field.sizeDelta;
+        wrapperRect.anchoredPosition = field.anchoredPosition;
+        wrapperRect.localScale = field.localScale;
+        var size = wrapper.GetComponent<LayoutElement>();
+        size.minWidth = LayoutUtility.GetMinWidth(field);
+        size.preferredWidth = Mathf.Max(field.rect.width, LayoutUtility.GetPreferredWidth(field));
+        size.flexibleWidth = LayoutUtility.GetFlexibleWidth(field);
+        size.minHeight = LayoutUtility.GetMinHeight(field);
+        size.preferredHeight = LayoutUtility.GetPreferredHeight(field);
+        size.flexibleHeight = LayoutUtility.GetFlexibleHeight(field);
+        field.SetParent(wrapperRect, false);
+        field.localScale = Vector3.one;
+        field.anchorMin = Vector2.zero;
+        field.anchorMax = Vector2.one;
+        field.offsetMin = Vector2.zero;
+        field.offsetMax = new Vector2(-40, 0);
+        var button = ComponentStoreSO.Instance.InstantiateCMUIComponentForComponentType<ButtonComponent>(wrapperRect)
+            .OnClick(OpenTempoMapper);
+        button.name = "Tempo Mapping";
+        foreach (var label in button.GetComponentsInChildren<TMP_Text>(true)) label.gameObject.SetActive(false);
+        var layout = button.GetComponent<LayoutElement>();
+        if (layout != null) layout.ignoreLayout = true;
+        var rect = (RectTransform)button.transform;
+        rect.anchorMin = new Vector2(1, 0);
+        rect.anchorMax = Vector2.one;
+        rect.pivot = new Vector2(1, 0.5f);
+        rect.sizeDelta = new Vector2(34, 0);
+        rect.anchoredPosition = Vector2.zero;
+        var iconObject = new GameObject("Metronome icon", typeof(RectTransform), typeof(Image));
+        iconObject.transform.SetParent(rect, false);
+        var icon = iconObject.GetComponent<Image>();
+        icon.sprite = tempoMapperIcon;
+        icon.preserveAspect = true;
+        icon.raycastTarget = false;
+        iconObject.AddComponent<LayoutElement>().ignoreLayout = true;
+        var iconRect = (RectTransform)icon.transform;
+        iconRect.anchorMin = Vector2.zero;
+        iconRect.anchorMax = Vector2.one;
+        iconRect.offsetMin = new Vector2(6, 6);
+        iconRect.offsetMax = new Vector2(-6, -6);
+        var tooltip = button.GetComponent<Tooltip>();
+        if (tooltip == null) tooltip = button.gameObject.AddComponent<Tooltip>();
+        tooltip.enabled = true;
+        tooltip.LocalizedTooltip = new UnityEngine.Localization.LocalizedString("SongEditMenu", "tempo.title");
+        var buttonLayout = button.GetComponent<HorizontalLayoutGroup>();
+        if (buttonLayout != null) buttonLayout.childControlHeight = buttonLayout.childForceExpandHeight = true;
+    }
+
+    private bool openingTempoMapper;
+
+    private void OpenTempoMapper()
+    {
+        if (openingTempoMapper || PersistentUI.Instance.DialogBoxIsEnabled) return;
+        CheckForChanges(result =>
+        {
+            if (result == 2) return;
+            if (result == 0) SaveAllFields();
+            StartCoroutine(LoadTempoMapper());
+        });
+    }
+
+    private IEnumerator LoadTempoMapper()
+    {
+        openingTempoMapper = true;
+        var fullPath = PathUtils.Combine(Info.Directory, Info.SongFilename);
+        if (!File.Exists(fullPath) || !FileContentValidationHelper.IsSupportedAudioFormat(fullPath))
+        {
+            openingTempoMapper = false;
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "load.error.audio3", null, PersistentUI.DialogBoxPresetType.Ok);
+            yield break;
+        }
+        BeatSaberSongContainer.Instance.LoadedSong = null;
+        yield return LoadAudio(false);
+        openingTempoMapper = false;
+        var clip = BeatSaberSongContainer.Instance.LoadedSong;
+        if (clip == null) yield break;
+        previewAudio.Stop();
+        TempoMapperView.Open(clip, FindAnyObjectByType<AudioPreviewGenerator>(), difficultySelect, tempoMetronomeSound, tempoSliderTemplate, tempoBackTemplate, tempoSaveTemplate, tempoResetIcon, tempoToolIcons);
     }
 
     /// <summary>

@@ -1,0 +1,5 @@
+Undo, Redo, Settings, Play, and Pause icons from Google Material Design Icons.
+https://github.com/google/material-design-icons
+Licensed under Apache License 2.0 (LICENSE.txt).
+PNG glyphs recolored white for the ChroMapper dark UI.
+
