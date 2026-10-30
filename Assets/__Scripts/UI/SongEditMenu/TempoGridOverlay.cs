@@ -58,7 +58,9 @@ public class TempoGridOverlay : MaskableGraphic, IPointerDownHandler, IPointerUp
             Quad(vertices, Math.Max(rect.xMin, x - 0.5f), rect.center.y + 5.5f, Math.Min(rect.xMax, x + 0.5f), rect.yMax, markerColor);
             Quad(vertices, Math.Max(rect.xMin, x - 1.5f), rect.center.y - 5.5f, Math.Min(rect.xMax, x + 1.5f), rect.center.y + 5.5f, markerColor);
         }
-        Line(vertices, View.Sample, new Color(1, 0.35f, 0.12f, 1), 1, true);
+        var pulse = View.PlaybackMarkerPulse;
+        var playbackColor = Color.Lerp(new Color(1, 0.35f, 0.12f, 1), Color.white, pulse);
+        Line(vertices, View.Sample, playbackColor, 1.5f + pulse * 4.5f, true);
     }
 
     private double GridStep(double first, double last) => Math.Max(1d / View.Subdivision,

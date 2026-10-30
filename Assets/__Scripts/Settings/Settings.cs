@@ -104,11 +104,11 @@ public class Settings
 
     public float Volume = 1;
     // Tempo waveform backend: lower samples/peak increases detail and cache memory.
-    public bool TempoSpectrogramAntialias = true;
     public int TempoOverviewDisplay = 0; // waveform, spectrogram
     public int TempoEditorDisplay = 2; // waveform, spectrogram, both
     public bool TempoWaveformRectifyPeaks = false;
     public bool TempoFollowPlayback = true;
+    public bool TempoPulsePlayhead = true;
     public int TempoWaveformSamplesPerPeak = 64;
     public int TempoWaveformMaxColumns = 2048;
     public float SongVolume = 1;

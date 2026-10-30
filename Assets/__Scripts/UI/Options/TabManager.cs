@@ -1,33 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Components;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class TabManager : MonoBehaviour
 {
-    [FormerlySerializedAs("_defaultTab")] [SerializeField] private OptionsTabButton defaultTab;
-    [FormerlySerializedAs("_mapperTab")] [SerializeField] private OptionsTabButton mapperTab;
     [SerializeField] private TextMeshProUGUI tabTitle;
     [SerializeField] private LocalizeStringEvent tabTitleString;
     [SerializeField] private OptionsTabButton creditsTab;
-    [SerializeField] private OptionsTabButton tempoTab;
-    [FormerlySerializedAs("_tabsGameObject")] [SerializeField] private GameObject tabsGameObject;
+    [SerializeField] private List<OptionsTabButton> tabs = new();
 
     [FormerlySerializedAs("selectedTab")] [HideInInspector] public OptionsTabButton SelectedTab;
-
-    private readonly List<Canvas> tabs = new List<Canvas>();
     public string TabName => SelectedTab != null ? SelectedTab.TextMeshTabName.text : "";
 
     private void Start()
     {
-        tabs.AddRange(tabsGameObject.GetComponentsInChildren<Canvas>()
-            .Where(canvas => canvas.name.EndsWith("Panel")));
-
-        OnTabSelected(OptionsController.StartingGroup == OptionsController.TempoMapperGroup && tempoTab != null ? tempoTab :
-            SceneManager.GetActiveScene().name != "03_Mapper" ? defaultTab : mapperTab);
+        if (tabs.Count == 0) return;
+        OnTabSelected(tabs[Mathf.Clamp(OptionsController.StartingGroup, 0, tabs.Count - 1)]);
     }
 
     public void OnTabSelected(OptionsTabButton tab)
@@ -35,12 +25,11 @@ public class TabManager : MonoBehaviour
         if (tab == SelectedTab) return;
         SelectedTab = tab;
 
-        foreach (var ca in tabs)
+        foreach (var button in tabs)
         {
-            ca.enabled = ca.name.Substring(0, ca.name.LastIndexOf(" Panel")) ==
-                         tab.name.Substring(0, tab.name.LastIndexOf(" Tab"));
-            if (ca.enabled)
-                ca.BroadcastMessage("OnTabSelected", null, SendMessageOptions.DontRequireReceiver);
+            button.Panel.enabled = button == tab;
+            if (button == tab)
+                button.Panel.BroadcastMessage("OnTabSelected", null, SendMessageOptions.DontRequireReceiver);
         }
 
         tabTitleString.StringReference.TableEntryReference = tab == creditsTab ? "tab.credits" : "heading";

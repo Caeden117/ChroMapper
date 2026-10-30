@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SearchableSection : MonoBehaviour
 {
-    [SerializeField] private List<SearchableOption> options = new();
-
-    public void ClearOptions() => options.Clear();
+    [SerializeField] private List<SearchableOption> options;
 
     public void RegisterOption(SearchableOption option) => options.Add(option);
 

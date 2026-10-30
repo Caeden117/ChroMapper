@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,30 +22,14 @@ public class OptionsController : MenuBase
     public List<CanvasGroup> OptionBodyCanvasGroups;
 
     private bool isClosing;
-    private static Action contextClosed;
-    private void Awake()
-    {
-        if (StartingGroup != TempoMapperGroup) return;
-        var canvas = optionsCanvasGroup.GetComponentInParent<UnityEngine.Canvas>().rootCanvas;
-        var foregroundOrder = UnityEngine.Object.FindObjectsByType<UnityEngine.Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-            .Where(item => item.gameObject.scene != gameObject.scene && item.enabled)
-            .Select(item => item.sortingOrder).DefaultIfEmpty(0).Max() + 20;
-        // Child canvases with independent ordering retain their relative order above the settings background.
-        foreach (var child in canvas.GetComponentsInChildren<UnityEngine.Canvas>(true))
-            if (child == canvas || child.overrideSorting) child.sortingOrder += foregroundOrder;
-        canvas.overrideSorting = true;
-    }
-
-    public const int TempoMapperGroup = 100;
     public static int StartingGroup { get; private set; }
 
     public static bool IsActive { get; internal set; }
 
-    public static void ShowOptions(int loadGroup = 0, Action closed = null)
+    public static void ShowOptions(int loadGroup = 0)
     {
         if (IsActive) return;
         StartingGroup = loadGroup;
-        contextClosed = closed;
         IsActive = true;
         try
         {
@@ -66,10 +50,6 @@ public class OptionsController : MenuBase
         CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController),
             typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
         IsActive = false;
-        var notify = contextClosed;
-        contextClosed = null;
-        try { notify?.Invoke(); }
-        catch (Exception exception) { Debug.LogException(exception); }
     }
 
     private void OnDestroy()

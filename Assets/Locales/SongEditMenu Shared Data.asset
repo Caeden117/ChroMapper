@@ -609,6 +609,10 @@ MonoBehaviour:
     m_Key: tempo.waveform.rectify
     m_Metadata:
       m_Items: []
+  - m_Id: 900000000000000001
+    m_Key: tempo.pulse.playhead
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

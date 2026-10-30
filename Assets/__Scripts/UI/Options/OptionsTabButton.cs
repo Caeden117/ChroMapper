@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +9,7 @@ public class
     OptionsTabButton : UIBehaviour, IPointerExitHandler,
         IPointerEnterHandler //Should be renamed to TabHelper or something
 {
+    public Canvas Panel;
     [FormerlySerializedAs("hovering")] [HideInInspector] public bool Hovering;
 
     [FormerlySerializedAs("textMeshTabName")] public TextMeshProUGUI TextMeshTabName;

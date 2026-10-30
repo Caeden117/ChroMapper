@@ -1,72 +1,89 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
-/// <summary>One audio decode pass; dyadic min/max levels make visible-range queries independent of song length.</summary>
-public sealed class TempoWaveformData
+/// <summary>
+/// GPU min/max pyramid. Audio uploads are bounded; peak reduction and rendering stay on the GPU.
+/// The workspace owns the buffers and must dispose them on replacement or close.
+/// </summary>
+public sealed class TempoWaveformData : IDisposable
 {
-    private readonly List<Vector2[]> levels = new();
+    private readonly List<ComputeBuffer> levels = new();
     public int SamplesPerPeak { get; private set; }
     public int SampleCount { get; private set; }
     internal int LevelCount => levels.Count;
-    internal Vector2[] GetLevel(int index) => levels[index];
+    internal ComputeBuffer GetLevel(int index) => levels[index];
 
-    public static IEnumerator Generate(AudioClip clip, int samplesPerPeak, Action<TempoWaveformData> completed)
+    public static IEnumerator Generate(AudioClip clip, int samplesPerPeak, ComputeShader shader,
+        Action<TempoWaveformData> completed)
     {
-        // Bound memory on long recordings, while retaining the requested detail for ordinary songs.
+        if (!SystemInfo.supportsComputeShaders)
+        {
+            Debug.LogWarning("Waveform rendering requires compute shader support.");
+            completed(null);
+            yield break;
+        }
+
         var result = new TempoWaveformData
         {
             SamplesPerPeak = Math.Max(Math.Clamp(samplesPerPeak, 8, 8192), (int)Math.Ceiling(clip.samples / 1048576d)),
             SampleCount = clip.samples
         };
-        var peaks = new Vector2[(int)Math.Ceiling(clip.samples / (double)result.SamplesPerPeak)];
-        var frames = Math.Min(32768, clip.samples);
-        var buffer = new float[frames * clip.channels];
-        var budget = Stopwatch.StartNew();
-        for (var offset = 0; offset < clip.samples; offset += frames)
+        var transferred = false;
+        try
         {
-            if (!clip.GetData(buffer, offset))
+            var peakCount = (clip.samples + result.SamplesPerPeak - 1) / result.SamplesPerPeak;
+            var peaks = new ComputeBuffer(peakCount, sizeof(float) * 2);
+            result.levels.Add(peaks);
+
+            // Align chunks with bins: each invocation owns a complete peak, including all channels.
+            var frames = Math.Min(clip.samples, Math.Max(1, 32768 / result.SamplesPerPeak) * result.SamplesPerPeak);
+            var samples = new float[frames * clip.channels];
+            using var upload = new ComputeBuffer(samples.Length, sizeof(float));
+            var generate = shader.FindKernel("GeneratePeaks");
+            shader.SetInt("Channels", clip.channels);
+            shader.SetInt("SamplesPerPeak", result.SamplesPerPeak);
+            shader.SetBuffer(generate, "Samples", upload);
+            shader.SetBuffer(generate, "Output", peaks);
+
+            for (var offset = 0; offset < clip.samples; offset += frames)
             {
-                UnityEngine.Debug.LogWarning("Tempo waveform: unable to read decoded audio samples.");
-                completed(null);
-                yield break;
+                if (!clip.GetData(samples, offset))
+                    throw new InvalidOperationException("Unable to read decoded audio samples for the waveform.");
+
+                var valid = Math.Min(frames, clip.samples - offset);
+                upload.SetData(samples);
+                shader.SetInt("FrameCount", valid);
+                shader.SetInt("OutputOffset", offset / result.SamplesPerPeak);
+                shader.Dispatch(generate, ((valid + result.SamplesPerPeak - 1) / result.SamplesPerPeak + 63) / 64, 1, 1);
+                yield return null;
             }
-            var valid = Math.Min(frames, clip.samples - offset);
-            for (var frame = 0; frame < valid; frame++)
+
+            var reduce = shader.FindKernel("ReducePeaks");
+            while (peaks.count > 1)
             {
-                var index = (offset + frame) / result.SamplesPerPeak;
-                var peak = peaks[index];
-                for (var channel = 0; channel < clip.channels; channel++)
-                {
-                    var value = buffer[frame * clip.channels + channel];
-                    if (float.IsNaN(value) || float.IsInfinity(value)) continue;
-                    peak.x = Math.Min(peak.x, value);
-                    peak.y = Math.Max(peak.y, value);
-                }
-                peaks[index] = peak;
+                var next = new ComputeBuffer((peaks.count + 1) / 2, sizeof(float) * 2);
+                result.levels.Add(next);
+                shader.SetInt("InputCount", peaks.count);
+                shader.SetBuffer(reduce, "Input", peaks);
+                shader.SetBuffer(reduce, "Output", next);
+                shader.Dispatch(reduce, (next.count + 63) / 64, 1, 1);
+                peaks = next;
             }
-            if (budget.ElapsedMilliseconds < 4) continue;
-            yield return null;
-            budget.Restart();
+
+            completed(result);
+            transferred = true;
         }
-        result.levels.Add(peaks);
-        while (peaks.Length > 1)
+        finally
         {
-            var next = new Vector2[(peaks.Length + 1) / 2];
-            for (var i = 0; i < next.Length; i++)
-            {
-                var left = peaks[i * 2];
-                var right = peaks[Math.Min(i * 2 + 1, peaks.Length - 1)];
-                next[i] = new Vector2(Math.Min(left.x, right.x), Math.Max(left.y, right.y));
-            }
-            result.levels.Add(next);
-            peaks = next;
-            if (budget.ElapsedMilliseconds < 4) continue;
-            yield return null;
-            budget.Restart();
+            if (!transferred) result.Dispose();
         }
-        completed(result);
+    }
+
+    public void Dispose()
+    {
+        foreach (var level in levels) level.Dispose();
+        levels.Clear();
     }
 }

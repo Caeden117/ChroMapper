@@ -31,13 +31,6 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
     private DialogBox parent = null;
     private Action quickSubmitCallback = null;
     private bool closeOnQuickSubmit = true;
-    private Action closeRequested;
-
-    public DialogBox OnCloseRequested(Action callback)
-    {
-        closeRequested = callback;
-        return this;
-    }
 
     /// <summary>
     /// Assigns the specified title to the dialog box.
@@ -269,9 +262,7 @@ public class DialogBox : MonoBehaviour, CMInput.IDialogBoxActions
 
     public void OnCloseDialogBox(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-        if (closeRequested != null) closeRequested();
-        else Close();
+        if (context.performed) Close();
     }
 
     public void OnNavigateDown(InputAction.CallbackContext context)

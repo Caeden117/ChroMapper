@@ -609,7 +609,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 645939678575128600
-    m_Localized: Back to song setup
+    m_Localized: Back to Song Info
     m_Metadata:
       m_Items: []
   - m_Id: 645939678575128601
@@ -678,6 +678,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 646214639961305088
     m_Localized: Rectify peaks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900000000000000001
+    m_Localized: Pulse playhead
     m_Metadata:
       m_Items: []
   references:

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +8,6 @@ public class SearchableTab : MonoBehaviour
     [SerializeField] private List<SearchableSection> sections;
     [SerializeField] private RectTransform layoutGroup;
     [SerializeField] private GameObject tab;
-
-    public void Configure(RectTransform content, GameObject categoryTab, SearchableSection section)
-    {
-        layoutGroup = content;
-        tab = categoryTab;
-        sections = new List<SearchableSection> { section };
-    }
 
     public void RegisterSection(SearchableSection section) => sections.Add(section);
 

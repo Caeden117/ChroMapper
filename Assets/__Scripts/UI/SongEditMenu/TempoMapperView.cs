@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Info;
@@ -9,30 +10,66 @@ using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-/// <summary>Dedicated audio-time workspace borrowing the song menu's existing spectrogram and CMUI controls.</summary>
-public class TempoMapperView : MonoBehaviour
+/// <summary>Audio-time tempo editing over the serialized Tempo Mapper workspace prefab.</summary>
+public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, CMInput.IActionsActions,
+    CMInput.IPlaybackActions, CMInput.ISavingActions, CMInput.IMenusExtendedActions
 {
     public TempoMap Map { get; private set; }
     public int Sample { get; private set; }
     public int SelectedRegion { get; private set; }
     public double ViewStart { get; private set; }
     public double ViewEnd { get; private set; }
+    public int Subdivision { get; private set; }
+    public bool ShiftTimeline => shift.isOn;
+    public float PlaybackMarkerPulse => Settings.Instance.TempoPulsePlayhead && music != null && music.isPlaying && Map != null
+        ? (float)Math.Exp(-(Map.BeatAt(Sample) - Math.Floor(Map.BeatAt(Sample))) * 4)
+        : 0;
+    public bool IsFollowingPlayback => music != null && music.isPlaying && Settings.Instance.TempoFollowPlayback;
+    public bool PrecisionScrollActive => CMInputCallbackInstaller.InputInstance?.Timeline.ChangePrecisionModifier.IsPressed() == true;
 
-    private DialogBox dialog;
+    [SerializeField] private AudioSource music;
+    [SerializeField] private AudioSource metronome;
+    [SerializeField] private AudioClip tick;
+    [SerializeField] private TempoGridOverlay grid;
+    [SerializeField] private TempoGridOverlay overview;
+    [SerializeField] private TempoGridOverlay waveformGrid;
+    [SerializeField] private TempoWaveformGraphic waveform;
+    [SerializeField] private TempoWaveformGraphic overviewWaveform;
+    [SerializeField] private ComputeShader waveformShader;
+    [SerializeField] private RawImage mainSpectrogram;
+    [SerializeField] private RawImage overviewSpectrogram;
+    [SerializeField] private LayoutElement spectrogramLayout;
+    [SerializeField] private TempoBeatRuler beatRuler;
+    [SerializeField] private TextComponent position;
+    [SerializeField] private TextComponent status;
+    [SerializeField] private TextBoxFloatComponent bpm;
+    [SerializeField] private TextBoxFloatComponent beats;
+    [SerializeField] private TextBoxIntComponent subdivisionField;
+    [SerializeField] private Toggle shift;
+    [SerializeField] private ButtonComponent play;
+    [SerializeField] private ButtonComponent undoButton;
+    [SerializeField] private ButtonComponent redoButton;
+    [SerializeField] private ButtonComponent saveButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Image playIcon;
+    [SerializeField] private Sprite playSprite;
+    [SerializeField] private Sprite pauseSprite;
+    [SerializeField] private TempoMapperSlider zoom;
+    [SerializeField] private TempoMapperSlider speed;
+    [SerializeField] private TempoMapperSlider metronomeVolume;
+    [SerializeField] private TempoMapperSlider volume;
+    [SerializeField] private int tempoOptionsTab;
+
     private AudioPreviewGenerator preview;
     private DifficultySelect difficulties;
-    private AudioSource music;
-    private AudioSource metronome;
-    private AudioClip tick;
-    private TempoGridOverlay grid;
-    private TextComponent position;
-    private TextComponent status;
-    private TextBoxFloatComponent bpm;
-    private TextBoxFloatComponent beats;
-    private TextBoxIntComponent subdivisionField;
-    private InputAction precisionModifier;
-    private InputAction preciseModifier;
-    private InputAction precisionScroll;
+    private Material overviewMaterial;
+    private Material scrollingSpectrogramMaterial;
+    private TempoWaveformData waveformData;
+    private IEnumerator waveformRoutine;
+    private Coroutine waveformGeneration;
+    private bool initialized;
+    private bool confirmationOpen;
     private bool playbackClockRunning;
     private double playbackClockTime;
     private double playbackClockSample;
@@ -40,381 +77,119 @@ public class TempoMapperView : MonoBehaviour
     private int audioDriftTolerance;
     private double lastReadoutTime = double.NegativeInfinity;
     private double previousZoomFactor = double.NaN;
-    public bool ShiftTimeline { get; private set; }
-    public bool IsFollowingPlayback => music != null && music.isPlaying && Settings.Instance.TempoFollowPlayback;
-    public int Subdivision { get; private set; }
-    private TempoGridOverlay overview;
-    private TempoWaveformGraphic overviewWaveform;
-    private TempoWaveformGraphic waveform;
-    private TempoGridOverlay waveformGrid;
-    private Sprite resetIcon;
-    private Sprite[] toolIcons;
-    private RawImage overviewSpectrogram;
-    private Material overviewMaterial;
-    private RawImage mainSpectrogram;
-    private Material originalSpectrogramMaterial;
-    private Material scrollingSpectrogramMaterial;
-    private Slider zoomSlider;
-    private TextComponent zoomReadout;
-    private Coroutine waveformGeneration;
-    private CanvasGroup spectrumVisibility;
-    private bool ownsSpectrumVisibility;
-    private float spectrumAlpha;
-    private bool spectrumRaycasts;
-    private RectTransform workspacePanel;
-    private ButtonComponent play;
-    private Image playIcon;
-    private TempoBeatRuler beatRuler;
+    private int previousBeat = -1;
     private readonly Stack<TempoMap> undo = new();
     private readonly Stack<TempoMap> redo = new();
     private TempoMap gesture;
     private TempoMap saved;
-    private Slider sliderTemplate;
-    private Button backTemplate;
-    private Button saveTemplate;
-    private int previousBeat = -1;
-    private RectTransform spectrogram;
-    private Transform originalParent;
-    private int originalSibling;
-    private Vector2 originalMin, originalMax, originalPosition, originalSize, originalPivot;
-    private Vector3 originalScale;
-    private bool selectionVisible;
-    private LayoutElement spectrogramLayout;
-    private bool ownsSpectrogramLayout;
-    private bool restored;
-    private bool confirmationOpen;
-    private readonly Dictionary<ImageWithRoundedCorners, float> originalRadii = new();
-    private readonly Dictionary<ImageWithIndependentRoundedCorners, Vector4> originalIndependentRadii = new();
-    private readonly Dictionary<Image, (Sprite sprite, Image.Type type)> originalMaskImages = new();
-    private float workspaceScale = 1;
+
+    private static readonly string[] displaySettings =
+    {
+        nameof(Settings.TempoOverviewDisplay), nameof(Settings.TempoEditorDisplay),
+        nameof(Settings.TempoWaveformRectifyPeaks), nameof(Settings.TempoWaveformMaxColumns),
+        nameof(Settings.SpectrogramBilinearFiltering),
+        nameof(Settings.SpectrogramShift)
+    };
+
+    private static readonly Type[] blockedInputs = typeof(CMInput).GetNestedTypes()
+        .Where(type => type.IsInterface && type != typeof(CMInput.IUtilsActions)).ToArray();
 
     private static string Text(string key, params object[] args) =>
         LocalizationSettings.StringDatabase.GetLocalizedString("SongEditMenu", "tempo." + key, args);
 
-    public static void Open(AudioClip clip, AudioPreviewGenerator preview, DifficultySelect difficulties, AudioClip tick, Slider sliderTemplate = null, Button backTemplate = null, Button saveTemplate = null, Sprite resetIcon = null, Sprite[] toolIcons = null)
+    public static TempoMapperView Open(AudioClip clip, AudioPreviewGenerator preview,
+        DifficultySelect difficulties, TempoMapperView prefab)
     {
-        DialogBox dialog = null;
+        TempoMapperView view = null;
         try
         {
-            var info = BeatSaberSongContainer.Instance.Info;
-            var map = TempoMapFileStore.Load(info, difficulties.CurrentDiff, clip.samples - 1, clip.frequency);
-            dialog = PersistentUI.Instance.CreateNewDialogBox().WithTitle("SongEditMenu", "tempo.title");
-            var view = dialog.gameObject.AddComponent<TempoMapperView>();
-            view.dialog = dialog;
-            view.preview = preview;
-            view.difficulties = difficulties;
-            view.tick = tick;
-            view.sliderTemplate = sliderTemplate;
-            view.backTemplate = backTemplate;
-            view.saveTemplate = saveTemplate;
-            view.resetIcon = resetIcon;
-            view.toolIcons = toolIcons;
-            view.Map = map;
-            view.saved = map.Copy();
-            view.Build(clip);
-            dialog.OnCloseRequested(view.RequestClose).Open();
-            view.FitToCanvas();
-            view.ApplyDisplaySettings();
-            view.RebuildWaveform();
-            view.InstallPrecisionInput();
+            var map = TempoMapFileStore.Load(BeatSaberSongContainer.Instance.Info,
+                difficulties.CurrentDiff, clip.samples - 1, clip.frequency);
+            // A root canvas keeps this workspace independent of the persistent UI width-based scale.
+            view = Instantiate(prefab);
+            view.Initialize(clip, preview, difficulties, map);
+            return view;
         }
         catch (Exception exception)
         {
             Debug.LogException(exception);
-            if (dialog != null) dialog.Close();
+            if (view != null) Destroy(view.gameObject);
             PersistentUI.Instance.ShowDialogBox(Text("error", exception.Message), null, PersistentUI.DialogBoxPresetType.Ok);
+            return null;
         }
     }
 
-    private void Build(AudioClip clip)
+    private void Initialize(AudioClip clip, AudioPreviewGenerator audioPreview, DifficultySelect selector, TempoMap map)
     {
-        music = gameObject.AddComponent<AudioSource>();
-        music.playOnAwake = false;
+        preview = audioPreview;
+        difficulties = selector;
+        Map = map;
+        saved = map.Copy();
         music.clip = clip;
         music.volume = Settings.Instance.SongVolume;
-        metronome = gameObject.AddComponent<AudioSource>();
-        metronome.playOnAwake = false;
         metronome.volume = Settings.Instance.MetronomeVolume;
-
-        var anchor = dialog.AddComponent<TextComponent>();
-        var body = anchor.transform.parent;
-        workspacePanel = (RectTransform)body.parent;
-        workspacePanel.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(0, 0, 0, 0);
-        anchor.gameObject.SetActive(false);
-        Destroy(anchor.gameObject);
-        var bodyGroup = body.GetComponent<VerticalLayoutGroup>();
-        bodyGroup.padding.bottom = 4;
-        bodyGroup.childAlignment = TextAnchor.UpperLeft;
-        var bodySize = body.GetComponent<LayoutElement>();
-        if (bodySize == null) bodySize = body.gameObject.AddComponent<LayoutElement>();
-        bodySize.layoutPriority = 100;
-        bodySize.minHeight = bodySize.preferredHeight = 0;
-        bodySize.flexibleHeight = 1;
-        var workspace = Row(body, "Tempo workspace");
-        SetHeight(workspace, 390);
-        workspace.GetComponent<LayoutElement>().minHeight = 180;
-        workspace.GetComponent<LayoutElement>().flexibleHeight = 1;
-        workspace.GetComponent<HorizontalLayoutGroup>().childForceExpandHeight = true;
-        workspace.GetComponent<HorizontalLayoutGroup>().childForceExpandWidth = false;
-        var sidebar = new GameObject("Controls", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(LayoutElement));
-        sidebar.transform.SetParent(workspace, false);
-        var sideLayout = sidebar.GetComponent<LayoutElement>();
-        sideLayout.layoutPriority = 100;
-        sideLayout.minWidth = sideLayout.preferredWidth = 56;
-        sideLayout.flexibleWidth = 0;
-        var sideGroup = sidebar.GetComponent<VerticalLayoutGroup>();
-        sideGroup.spacing = 10;
-        sideGroup.childAlignment = TextAnchor.UpperCenter;
-        sideGroup.padding = new RectOffset(0, 0, 6, 0);
-        sideGroup.childControlHeight = sideGroup.childControlWidth = true;
-        sideGroup.childForceExpandHeight = false;
-        sideGroup.childForceExpandWidth = false;
-        ToolButton(sidebar.transform, "undo", Undo, 0);
-        ToolButton(sidebar.transform, "redo", Redo, 1);
-        var shiftLabel = dialog.AddComponent<TextComponent>().WithInitialValue("SongEditMenu", "tempo.shift");
-        shiftLabel.transform.SetParent(sidebar.transform, false);
-        SetHeight(shiftLabel, 20);
-        SetWidth(shiftLabel, 56, 0);
-        shiftLabel.GetComponentInChildren<TMP_Text>().alignment = TextAlignmentOptions.Center;
-        var shift = dialog.AddComponent<ToggleComponent>().WithNoLabel()
-            .OnChanged<ToggleComponent, bool>(value => ShiftTimeline = value);
-        shift.transform.SetParent(sidebar.transform, false);
-        shift.gameObject.AddComponent<Tooltip>().TooltipOverride = "Drag to shift all tempo boundaries together. The song origin stays fixed.";
-        CompactControl(shift, 56);
-        var checkbox = shift.GetComponentInChildren<Toggle>(true);
-        var checkboxRect = (RectTransform)checkbox.transform;
-        checkboxRect.anchorMin = checkboxRect.anchorMax = new Vector2(0.5f, 0.5f);
-        checkboxRect.anchoredPosition = Vector2.zero;
-        var center = new GameObject("Timeline", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(LayoutElement));
-        center.transform.SetParent(workspace, false);
-        var centerSize = center.GetComponent<LayoutElement>();
-        centerSize.layoutPriority = 100;
-        centerSize.minWidth = centerSize.preferredWidth = 0;
-        centerSize.flexibleWidth = 1;
-        var centerLayout = center.GetComponent<VerticalLayoutGroup>();
-        centerLayout.spacing = 4;
-        centerLayout.childControlHeight = centerLayout.childControlWidth = true;
-        centerLayout.childForceExpandHeight = false;
-
-        spectrogram = preview.Spectrogram;
-        foreach (var corner in spectrogram.GetComponentsInChildren<ImageWithRoundedCorners>(true))
-        {
-            originalRadii[corner] = corner.radius;
-            corner.radius = 0;
-            corner.Refresh();
-        }
-        foreach (var corner in spectrogram.GetComponentsInChildren<ImageWithIndependentRoundedCorners>(true))
-        {
-            originalIndependentRadii[corner] = corner.r;
-            corner.r = Vector4.zero;
-            corner.Refresh();
-        }
-        foreach (var mask in spectrogram.GetComponentsInChildren<Mask>(true))
-        {
-            var image = mask.GetComponent<Image>();
-            if (image == null) continue;
-            originalMaskImages[image] = (image.sprite, image.type);
-            image.sprite = null;
-            image.type = Image.Type.Simple;
-        }
-        originalParent = spectrogram.parent;
-        originalSibling = spectrogram.GetSiblingIndex();
-        originalMin = spectrogram.anchorMin;
-        originalMax = spectrogram.anchorMax;
-        originalPosition = spectrogram.anchoredPosition;
-        originalSize = spectrogram.sizeDelta;
-        originalPivot = spectrogram.pivot;
-        originalScale = spectrogram.localScale;
-        selectionVisible = preview.PreviewSelection.activeSelf;
-        preview.PreviewSelection.SetActive(false);
-        var overviewObject = new GameObject("Song overview", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
-        overviewObject.transform.SetParent(center.transform, false);
-        overviewObject.GetComponent<Image>().color = new Color(0.06f, 0.08f, 0.09f);
-        SetHeight(overviewObject.transform, 54);
-        var source = spectrogram.GetComponentInChildren<RawImage>(true);
-        if (source != null)
-        {
-            mainSpectrogram = source;
-            originalSpectrogramMaterial = source.material;
-            scrollingSpectrogramMaterial = new Material(source.material);
-            source.material = scrollingSpectrogramMaterial;
-            var imageObject = new GameObject("Overview spectrogram", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage), typeof(LayoutElement));
-            imageObject.transform.SetParent(overviewObject.transform, false);
-            imageObject.GetComponent<LayoutElement>().ignoreLayout = true;
-            var imageRect = (RectTransform)imageObject.transform;
-            imageRect.anchorMin = Vector2.zero;
-            imageRect.anchorMax = Vector2.one;
-            imageRect.sizeDelta = Vector2.zero;
-            overviewSpectrogram = imageObject.GetComponent<RawImage>();
-            overviewSpectrogram.raycastTarget = false;
-            overviewSpectrogram.texture = source.texture;
-            overviewMaterial = new Material(source.material);
-            overviewMaterial.SetInteger("_Stencil", 0);
-            overviewMaterial.SetFloat("_TempoOverview", 1);
-            overviewMaterial.SetFloat("_TempoSongDuration", clip.length);
-            overviewSpectrogram.material = overviewMaterial;
-        }
-        overviewWaveform = AddWaveform(overviewObject.transform);
-        overview = AddGrid(overviewObject.transform, true);
-
-        var inspector = Row(center.transform, "Statistics and playback");
-        bpm = dialog.AddComponent<TextBoxFloatComponent>().WithLabel("SongEditMenu", "tempo.bpm");
-        bpm.transform.SetParent(inspector, false);
-        bpm.OnEndEdit(value => Edit(m => m.SetBpm(SelectedRegion, value)));
-        CompactControl(bpm, 160);
-        beats = dialog.AddComponent<TextBoxFloatComponent>().WithLabel("SongEditMenu", "tempo.beats");
-        beats.transform.SetParent(inspector, false);
-        beats.OnEndEdit(value => Edit(m => m.SetBeats(SelectedRegion, value)));
-        CompactControl(beats, 150);
-        play = ToolButton(inspector, "play", TogglePlaying, 3);
-        SetHeight(play, 32);
-        SetHeight(inspector, 32);
-        inspector.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleLeft;
-        foreach (var control in new Component[] { bpm, beats, play })
-        {
-            foreach (var size in control.GetComponentsInChildren<LayoutElement>(true))
-            {
-                size.layoutPriority = 100;
-                size.minHeight = 0;
-                size.preferredHeight = 32;
-            }
-            SetHeight(control, 32);
-            foreach (var layout in control.GetComponentsInChildren<HorizontalLayoutGroup>(true))
-            {
-                layout.childControlHeight = layout.childForceExpandHeight = true;
-                layout.padding.top = layout.padding.bottom = 0;
-            }
-        }
-        position = dialog.AddComponent<TextComponent>();
-        position.transform.SetParent(inspector, false);
-        SetWidth(position, 150, 1);
-
-        var rulerObject = new GameObject("Beat numbers", typeof(RectTransform), typeof(LayoutElement), typeof(TempoBeatRuler));
-        rulerObject.transform.SetParent(center.transform, false);
-        SetHeight(rulerObject.transform, 20);
-        beatRuler = rulerObject.GetComponent<TempoBeatRuler>();
-        beatRuler.View = this;
-        beatRuler.Font = position.GetComponentInChildren<TMP_Text>().font;
-        var waveformObject = new GameObject("Editing waveform", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
-        waveformObject.transform.SetParent(center.transform, false);
-        waveformObject.GetComponent<Image>().color = new Color(0.06f, 0.08f, 0.09f);
-        SetHeight(waveformObject.transform, 64);
-        waveform = AddWaveform(waveformObject.transform);
-        waveformGrid = AddGrid(waveformObject.transform, false);
-
-        spectrogram.SetParent(center.transform, false);
-        spectrogram.localScale = Vector3.one;
-        spectrogramLayout = spectrogram.GetComponent<LayoutElement>();
-        ownsSpectrogramLayout = spectrogramLayout == null;
-        if (ownsSpectrogramLayout) spectrogramLayout = spectrogram.gameObject.AddComponent<LayoutElement>();
-        spectrumVisibility = spectrogram.GetComponent<CanvasGroup>();
-        ownsSpectrumVisibility = spectrumVisibility == null;
-        if (ownsSpectrumVisibility) spectrumVisibility = spectrogram.gameObject.AddComponent<CanvasGroup>();
-        spectrumAlpha = spectrumVisibility.alpha;
-        spectrumRaycasts = spectrumVisibility.blocksRaycasts;
-        spectrogramLayout.preferredHeight = 160;
-        spectrogramLayout.minHeight = 120;
-        spectrogramLayout.flexibleHeight = 1;
-        grid = AddGrid(spectrogram, false);
-
-        var options = Row(body, "Settings");
-        SetHeight(options, 60);
-        var defaultZoom = (float)(Math.Log(Math.Max(1, Map.EndSample / (Map.Frequency * 12d)), 2) / 8);
-        AddSettingSlider(options, "zoom", 0, 1, defaultZoom, SetZoom, value => $"{Math.Pow(2, value * 8):F1}x");
-        AddSettingSlider(options, "speed", 0.25f, 1.5f, 1, SetPlaybackSpeed, value => $"{value:F2}x");
-        Subdivision = Math.Clamp(Settings.Instance.CursorPrecisionA, 1, 64);
-        var subdivision = SettingColumn(options, "precision");
-        subdivision.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.UpperCenter;
-        var precision = dialog.AddComponent<TextBoxIntComponent>().WithNoLabel();
-        subdivisionField = precision;
-        if (precision.ScrollableInput != null) precision.ScrollableInput.enabled = false;
-        precision.transform.SetParent(subdivision, false);
-        SetWidth(precision, 44, 0);
-        SetHeight(precision, 26);
-        // CMUI's numeric field expects dialog-sized minimum heights. This compact input needs explicit bounds.
-        foreach (var element in precision.GetComponentsInChildren<LayoutElement>(true))
-        {
-            element.layoutPriority = 100;
-            element.minHeight = 0;
-            element.preferredHeight = 26;
-        }
-        foreach (var group in precision.GetComponentsInChildren<HorizontalLayoutGroup>(true))
-        {
-            group.padding = new RectOffset();
-            group.childForceExpandWidth = group.childForceExpandHeight = true;
-        }
-        precision.SetValueWithoutNotify(Subdivision);
-        precision.OnEndEdit(value =>
-        {
-            SetSubdivision(value);
-        });
-        AddSettingSlider(options, "metronome", 0, 1, Settings.Instance.MetronomeVolume,
-            value => metronome.volume = value, value => $"{value:P0}");
-        AddSettingSlider(options, "volume", 0, 1, Settings.Instance.SongVolume,
-            value => music.volume = value, value => $"{value:P0}");
-        status = dialog.AddComponent<TextComponent>();
-        SetHeight(status, 20);
-        var header = workspacePanel.GetChild(0);
-        var save = Button(header, "save", Save);
-        PlaceHeaderControl(save, 6, 70);
-        var settingsButton = ToolButton(header, "settings", OpenSettings, 2);
-        PlaceHeaderControl(settingsButton, 84, 28);
-        if (saveTemplate != null)
-        {
-            save.WithBackgroundColor(saveTemplate.targetGraphic.color);
-            var target = save.GetComponentInChildren<Button>();
-            target.colors = saveTemplate.colors;
-        }
-        else save.WithBackgroundColor(new Color(0.313025f, 0.3572f, 0.475f));
-        AddBackButton();
-        foreach (var text in dialog.GetComponentsInChildren<TMP_Text>(true))
-        {
-            text.fontSize = 14;
-            text.textWrappingMode = TextWrappingModes.NoWrap;
-            text.enableAutoSizing = true;
-            text.fontSizeMin = 10;
-            text.fontSizeMax = 14;
-            text.overflowMode = TextOverflowModes.Ellipsis;
-        }
         ViewEnd = Math.Min(Map.EndSample, Map.Frequency * 12d);
-        Refresh();
+        Subdivision = Math.Clamp(Settings.Instance.CursorPrecisionA, 1, 64);
+        subdivisionField.SetValueWithoutNotify(Subdivision);
+
+        // RawImage must not query _MainTex on the shared buffer-driven shader.
+        mainSpectrogram.texture = overviewSpectrogram.texture = Texture2D.whiteTexture;
+        scrollingSpectrogramMaterial = new Material(mainSpectrogram.material);
+        mainSpectrogram.material = scrollingSpectrogramMaterial;
+        overviewMaterial = new Material(overviewSpectrogram.material);
+        overviewMaterial.SetFloat("_ViewStart", 0);
+        overviewMaterial.SetFloat("_ViewEnd", clip.length);
+        overviewSpectrogram.material = overviewMaterial;
+
+        bpm.OnEndEdit(value => Edit(map => map.SetBpm(SelectedRegion, value)));
+        beats.OnEndEdit(value => Edit(map => map.SetBeats(SelectedRegion, value)));
+        subdivisionField.OnEndEdit(SetSubdivision);
+        undoButton.OnClick(Undo);
+        redoButton.OnClick(Redo);
+        play.OnClick(TogglePlaying);
+        saveButton.OnClick(Save);
+        settingsButton.onClick.AddListener(OpenSettings);
+        backButton.onClick.AddListener(RequestClose);
+
+        zoom.Initialize((float)(Math.Log(Math.Max(1, Map.EndSample / (Map.Frequency * 12d)), 2) / 8),
+            SetZoom, value => $"{Math.Pow(2, value * 8):F1}x");
+        zoom.Slider.maxValue = Math.Max(1, (float)(Math.Log(Math.Max(1, Map.EndSample / (Map.Frequency * 0.1)), 2) / 8));
+        speed.Initialize(1, SetPlaybackSpeed, value => $"{value:F2}x");
+        metronomeVolume.Initialize(metronome.volume, value => metronome.volume = value, value => $"{value:P0}");
+        volume.Initialize(music.volume, value => music.volume = value, value => $"{value:P0}");
+
+        foreach (var setting in displaySettings) Settings.NotifyBySettingName(setting, DisplaySettingChanged);
+        Settings.NotifyBySettingName(nameof(Settings.TempoWaveformSamplesPerPeak), WaveformResolutionChanged);
+        initialized = true;
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+        InstallInput();
+        ApplyDisplaySettings();
+        RebuildWaveform();
     }
 
-    private ButtonComponent ToolButton(Transform parent, string key, Action action, int iconIndex)
-    {
-        var button = Button(parent, key, action);
-        SetWidth(button, 32, 0);
-        foreach (var label in button.GetComponentsInChildren<TMP_Text>(true)) label.gameObject.SetActive(false);
-        var iconObject = new GameObject(key + " icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
-        iconObject.transform.SetParent(button.transform, false);
-        iconObject.GetComponent<LayoutElement>().ignoreLayout = true;
-        var image = iconObject.GetComponent<Image>();
-        image.sprite = toolIcons != null && iconIndex < toolIcons.Length ? toolIcons[iconIndex] : resetIcon;
-        image.preserveAspect = true;
-        image.raycastTarget = false;
-        var rect = (RectTransform)iconObject.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = new Vector2(6, 4);
-        rect.offsetMax = new Vector2(-6, -4);
-        var tooltip = button.GetComponent<Tooltip>();
-        if (tooltip == null) tooltip = button.gameObject.AddComponent<Tooltip>();
-        tooltip.enabled = true;
-        tooltip.TooltipOverride = Text(key);
-        if (key == "play") playIcon = image;
-        return button;
-    }
+    private void DisplaySettingChanged(object value) => ApplyDisplaySettings();
+    private void WaveformResolutionChanged(object value) => RebuildWaveform();
 
     private void RebuildWaveform()
     {
-        if (waveformGeneration != null) StopCoroutine(waveformGeneration);
-        waveformGeneration = StartCoroutine(TempoWaveformData.Generate(music.clip, Settings.Instance.TempoWaveformSamplesPerPeak, data =>
+        StopWaveformGeneration();
+        waveformRoutine = TempoWaveformData.Generate(music.clip, Settings.Instance.TempoWaveformSamplesPerPeak, waveformShader, data =>
         {
+            var previous = waveformData;
+            waveformData = data;
             waveform.Data = overviewWaveform.Data = data;
-            waveform.SetVerticesDirty();
-            overviewWaveform.SetVerticesDirty();
-            waveformGeneration = null;
-        }));
+            previous?.Dispose();
+        });
+        waveformGeneration = StartCoroutine(waveformRoutine);
+    }
+
+    private void StopWaveformGeneration()
+    {
+        if (waveformGeneration != null) StopCoroutine(waveformGeneration);
+        // Explicit disposal also releases an unfinished upload when Unity stops the coroutine.
+        (waveformRoutine as IDisposable)?.Dispose();
+        waveformRoutine = null;
+        waveformGeneration = null;
     }
 
     private void ApplyDisplaySettings()
@@ -423,99 +198,45 @@ public class TempoMapperView : MonoBehaviour
         var waveformVisible = settings.TempoEditorDisplay != 1;
         var spectrumVisible = settings.TempoEditorDisplay != 0;
         waveform.transform.parent.gameObject.SetActive(waveformVisible);
-        spectrumVisibility.alpha = spectrumVisible ? 1 : 0;
-        spectrumVisibility.blocksRaycasts = spectrumVisible;
-        spectrogramLayout.ignoreLayout = !spectrumVisible;
-        var bothVisible = waveformVisible && spectrumVisible;
-        SetHeight(waveform.transform.parent, (bothVisible ? 112 : 230) * workspaceScale);
+        mainSpectrogram.transform.parent.gameObject.SetActive(spectrumVisible);
         var waveSize = waveform.transform.parent.GetComponent<LayoutElement>();
-        // Equal minimum, preferred and flexible sizes keep Both evenly split at every window size.
-        waveSize.minHeight = bothVisible ? 50 : 40;
-        waveSize.flexibleHeight = bothVisible ? 1 : 3;
-        spectrogramLayout.preferredHeight = (bothVisible ? 112 : 230) * workspaceScale;
-        spectrogramLayout.minHeight = bothVisible ? 50 : 60;
-        spectrogramLayout.flexibleHeight = bothVisible ? 1 : 2;
+        waveSize.minHeight = spectrogramLayout.minHeight = 40;
+        waveSize.preferredHeight = spectrogramLayout.preferredHeight = 112;
+        waveSize.flexibleHeight = spectrogramLayout.flexibleHeight = 1;
         overviewWaveform.enabled = settings.TempoOverviewDisplay == 0;
-        if (overviewSpectrogram != null) overviewSpectrogram.enabled = settings.TempoOverviewDisplay == 1;
-        foreach (var graphic in new[] { waveform, overviewWaveform })
-        {
-            graphic.MaximumColumns = settings.TempoWaveformMaxColumns;
-            graphic.RectifyPeaks = settings.TempoWaveformRectifyPeaks;
-            graphic.SetVerticesDirty();
-        }
-        if (scrollingSpectrogramMaterial != null) scrollingSpectrogramMaterial.SetFloat("_TempoAntialias", settings.TempoSpectrogramAntialias ? 1 : 0);
-        if (overviewMaterial != null) overviewMaterial.SetFloat("_TempoAntialias", settings.TempoSpectrogramAntialias ? 1 : 0);
+        overviewSpectrogram.enabled = settings.TempoOverviewDisplay == 1;
+        waveform.MaximumColumns = overviewWaveform.MaximumColumns = settings.TempoWaveformMaxColumns;
+        waveform.RectifyPeaks = overviewWaveform.RectifyPeaks = settings.TempoWaveformRectifyPeaks;
         Shader.SetGlobalFloat("_Spectrogram_BilinearFiltering", settings.SpectrogramBilinearFiltering ? 1 : 0);
         Shader.SetGlobalFloat("_Spectrogram_Shift", settings.SpectrogramShift);
-        // FFT generation lives on the borrowed preview. Keep it active if only the overview needs its buffers.
         if (spectrumVisible || settings.TempoOverviewDisplay == 1) preview.PrepareTempoMapper();
         Refresh();
     }
+
 
     private void OpenSettings()
     {
         if (OptionsController.IsActive) return;
         PausePlayback();
-        var previousResolution = Settings.Instance.TempoWaveformSamplesPerPeak;
-        try
-        {
-            OptionsController.ShowOptions(OptionsController.TempoMapperGroup, closed: () =>
-        {
-            if (this == null) return;
-            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
-            ApplyDisplaySettings();
-            if (previousResolution != Settings.Instance.TempoWaveformSamplesPerPeak) RebuildWaveform();
-            InstallPrecisionInput();
-        });
-        }
-        catch (Exception exception)
-        {
-            Debug.LogException(exception);
-            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
-        }
+        OptionsController.ShowOptions(tempoOptionsTab);
     }
 
     private void SetSubdivision(int value)
     {
         Subdivision = Math.Clamp(value, 1, 64);
         Settings.Instance.CursorPrecisionA = Subdivision;
-        Settings.NonPersistentSettings[AudioTimeSyncController.PrecisionSnapName] = Subdivision;
+        Settings.ManuallyNotifySettingUpdatedEvent(AudioTimeSyncController.PrecisionSnapName, Subdivision);
         subdivisionField.SetValueWithoutNotify(Subdivision);
         Refresh();
     }
 
-    public bool PrecisionScrollActive => precisionModifier != null && precisionModifier.IsPressed();
-
-    private void InstallPrecisionInput()
+    internal static int StepSubdivision(int current, float scroll, bool precise)
     {
-        precisionModifier?.Dispose();
-        preciseModifier?.Dispose();
-        precisionScroll?.Dispose();
-        var asset = CMInputCallbackInstaller.InputInstance?.asset;
-        if (asset == null) return;
-        // Clone only these actions so the modal can keep the 3D timeline disabled. Cloning retains binding overrides.
-        InputAction Clone(string path)
-        {
-            var source = asset.FindAction(path, true);
-            var action = source.Clone();
-            action.bindingMask = source.bindingMask ?? source.actionMap?.bindingMask ?? asset.bindingMask;
-            return action;
-        }
-        precisionModifier = Clone("Timeline/Change Precision Modifier");
-        preciseModifier = Clone("Timeline/Precise Snap Modification");
-        precisionScroll = Clone("Timeline/+Change Time and Precision");
-        precisionModifier.wantsInitialStateCheck = preciseModifier.wantsInitialStateCheck = true;
-        precisionScroll.performed += context =>
-        {
-            if (!Application.isFocused || OptionsController.IsActive || confirmationOpen || !PrecisionScrollActive) return;
-            var scroll = context.ReadValue<float>();
-            if (scroll != 0) SetSubdivision(TempoCursorPrecision.Step(Subdivision, scroll, preciseModifier.IsPressed()));
-        };
-        precisionModifier.Enable();
-        preciseModifier.Enable();
-        precisionScroll.Enable();
+        if (scroll == 0) return current;
+        var increase = (scroll > 0) != Settings.Instance.InvertPrecisionScroll;
+        return Mathf.Clamp(precise ? current + (increase ? 1 : -1)
+            : Mathf.RoundToInt(current * (increase ? 2f : 0.5f)), 1, 64);
     }
-
     private void ResetPlaybackClock(double sample)
     {
         playbackClockTime = Time.realtimeSinceStartupAsDouble;
@@ -538,6 +259,7 @@ public class TempoMapperView : MonoBehaviour
 
     private void PausePlayback()
     {
+        heldPlayback = false;
         music.Pause();
         playbackClockRunning = false;
         Sample = Math.Clamp(music.timeSamples, 0, Map.EndSample);
@@ -548,261 +270,6 @@ public class TempoMapperView : MonoBehaviour
     private void OnApplicationPause(bool paused)
     {
         if (paused) playbackClockRunning = false;
-    }
-
-    private Transform SettingColumn(Transform parent, string key)
-    {
-        var column = new GameObject(key, typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(LayoutElement));
-        column.transform.SetParent(parent, false);
-        SetWidth(column.transform, key == "precision" ? 110 : 130, key == "precision" ? 0 : 1);
-        SetHeight(column.transform, 56);
-        var group = column.GetComponent<VerticalLayoutGroup>();
-        group.childControlWidth = group.childControlHeight = true;
-        group.childForceExpandWidth = group.childForceExpandHeight = false;
-        group.spacing = 6;
-        var caption = dialog.AddComponent<TextComponent>().WithInitialValue("SongEditMenu", "tempo." + key);
-        caption.transform.SetParent(column.transform, false);
-        SetHeight(caption, 20);
-        SetWidth(caption, key == "precision" ? 110 : 130, 1);
-        return column.transform;
-    }
-
-    private void AddSettingSlider(Transform parent, string key, float minimum, float maximum, float defaultValue,
-        Action<float> changed, Func<float, string> format)
-    {
-        var column = SettingColumn(parent, key);
-        var controls = Row(column, key + " slider");
-        SetHeight(controls, 26);
-        SetWidth(controls, 130, 1);
-        var readout = dialog.AddComponent<TextComponent>();
-        readout.transform.SetParent(controls, false);
-        SetWidth(readout, 32, 0);
-        SetHeight(readout, 26);
-        // Reuse the settings screen's horizontal slider, including its fill and handle graphics.
-        Slider slider;
-        if (sliderTemplate != null)
-        {
-            slider = Instantiate(sliderTemplate, controls, false);
-            slider.onValueChanged = new Slider.SliderEvent();
-            foreach (var label in slider.GetComponentsInChildren<TMP_Text>(true)) label.gameObject.SetActive(false);
-        }
-        else
-        {
-            var fallback = dialog.AddComponent<SliderComponent>().WithNoLabel().WithDisplay(false);
-            fallback.transform.SetParent(controls, false);
-            slider = fallback.GetComponentInChildren<Slider>(true);
-        }
-        slider.minValue = minimum;
-        slider.maxValue = key == "zoom"
-            ? Math.Max(1, (float)(Math.Log(Math.Max(1, Map.EndSample / (Map.Frequency * 0.1)), 2) / 8)) : maximum;
-        slider.wholeNumbers = false;
-        SetWidth(slider, 50, 1);
-        SetHeight(slider, 26);
-        slider.onValueChanged.AddListener(value => { changed(value); readout.Value = format(value); });
-        if (key == "zoom") { zoomSlider = slider; zoomReadout = readout; }
-        var reset = Button(controls, "reset", () =>
-        {
-            slider.SetValueWithoutNotify(defaultValue);
-            changed(defaultValue);
-            readout.Value = format(defaultValue);
-        });
-        foreach (var label in reset.GetComponentsInChildren<TMP_Text>(true)) label.gameObject.SetActive(false);
-        var iconObject = new GameObject("Reset icon", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
-        iconObject.transform.SetParent(reset.transform, false);
-        iconObject.GetComponent<LayoutElement>().ignoreLayout = true;
-        var icon = iconObject.GetComponent<Image>();
-        icon.sprite = resetIcon;
-        icon.preserveAspect = true;
-        icon.raycastTarget = false;
-        var rect = (RectTransform)icon.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = new Vector2(5, 5);
-        rect.offsetMax = new Vector2(-5, -5);
-        if (resetIcon == null)
-        {
-            iconObject.SetActive(false);
-            var fallback = reset.GetComponentInChildren<TMP_Text>(true);
-            fallback.gameObject.SetActive(true);
-            fallback.text = "\u21BA";
-        }
-        var tooltip = reset.GetComponent<Tooltip>();
-        if (tooltip == null) tooltip = reset.gameObject.AddComponent<Tooltip>();
-        tooltip.enabled = true;
-        tooltip.TooltipOverride = Text("reset") + " " + Text(key);
-        SetWidth(reset, 26, 0);
-        SetHeight(reset, 26);
-        slider.SetValueWithoutNotify(defaultValue);
-        // Initial values are already applied by Build. In particular, zoom must not refresh a half-built view.
-        readout.Value = format(defaultValue);
-    }
-
-    private static void PlaceHeaderControl(Component control, float right, float width)
-    {
-        var size = control.GetComponent<LayoutElement>();
-        if (size == null) size = control.gameObject.AddComponent<LayoutElement>();
-        size.ignoreLayout = true;
-        var rect = (RectTransform)control.transform;
-        rect.anchorMin = new Vector2(1, 0.15f);
-        rect.anchorMax = new Vector2(1, 0.85f);
-        rect.pivot = new Vector2(1, 0.5f);
-        rect.sizeDelta = new Vector2(width, 0);
-        rect.anchoredPosition = new Vector2(-right, 0);
-    }
-
-    private void AddBackButton()
-    {
-        var body = workspacePanel;
-        var header = body.GetChild(0);
-        Button back;
-        if (backTemplate != null)
-        {
-            back = Instantiate(backTemplate, header, false);
-            back.onClick = new Button.ButtonClickedEvent();
-            back.onClick.AddListener(RequestClose);
-        }
-        else
-        {
-            var component = dialog.AddComponent<ButtonComponent>().OnClick(RequestClose).WithLabel("<");
-            component.transform.SetParent(header, false);
-            back = component.GetComponentInChildren<Button>();
-        }
-        back.gameObject.SetActive(true);
-        var rect = (RectTransform)back.transform;
-        var layout = back.GetComponent<LayoutElement>();
-        if (layout == null) layout = back.gameObject.AddComponent<LayoutElement>();
-        layout.ignoreLayout = true;
-        rect.anchorMin = new Vector2(0, 0.15f);
-        rect.anchorMax = new Vector2(0, 0.85f);
-        rect.pivot = new Vector2(0, 0.5f);
-        rect.sizeDelta = new Vector2(22, 0);
-        rect.anchoredPosition = new Vector2(6, 0);
-        foreach (RectTransform child in rect)
-        {
-            child.anchorMin = Vector2.zero;
-            child.anchorMax = Vector2.one;
-            child.offsetMin = new Vector2(3, 3);
-            child.offsetMax = new Vector2(-3, -3);
-        }
-        var tooltip = back.GetComponent<Tooltip>();
-        if (tooltip == null) tooltip = back.gameObject.AddComponent<Tooltip>();
-        tooltip.TooltipOverride = Text("close");
-    }
-
-    private static Transform Row(Transform body, string name)
-    {
-        var row = new GameObject(name, typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
-        row.transform.SetParent(body, false);
-        var layout = row.GetComponent<HorizontalLayoutGroup>();
-        layout.spacing = 8;
-        layout.childControlWidth = layout.childControlHeight = true;
-        layout.childForceExpandWidth = false;
-        layout.childForceExpandHeight = false;
-        row.GetComponent<LayoutElement>().preferredHeight = 32;
-        return row.transform;
-    }
-
-    private static void SetWidth(Component component, float width, float flexible)
-    {
-        var element = component.GetComponent<LayoutElement>();
-        if (element == null) element = component.gameObject.AddComponent<LayoutElement>();
-        element.layoutPriority = 100;
-        element.minWidth = width;
-        element.preferredWidth = width;
-        element.flexibleWidth = flexible;
-    }
-
-    /// <summary>Keep CMUI controls, but arrange their existing label/value containers for a compact workspace.</summary>
-    private static void CompactControl(Component control, float width)
-    {
-        SetWidth(control, width, 0);
-        SetHeight(control, 32);
-        var group = control.GetComponent<HorizontalLayoutGroup>();
-        if (group != null)
-        {
-            group.padding = new RectOffset(4, 4, 0, 0);
-            group.spacing = 4;
-            group.childForceExpandWidth = false;
-        }
-        var label = control.transform.Find("Label Container");
-        if (label != null) SetWidth(label, width * 0.6f, 0);
-        foreach (Transform child in control.transform)
-            if (child != label) SetWidth(child, 24, 1);
-    }
-
-    private static void SetHeight(Component component, float height)
-    {
-        var layout = component.GetComponent<LayoutElement>();
-        if (layout == null) layout = component.gameObject.AddComponent<LayoutElement>();
-        layout.minHeight = layout.preferredHeight = height;
-        layout.flexibleHeight = 0;
-    }
-
-    private void FitToCanvas()
-    {
-        Canvas.ForceUpdateCanvases();
-        var panel = workspacePanel;
-        var available = ((RectTransform)dialog.transform).rect.height - 16;
-        var preferred = LayoutUtility.GetPreferredHeight(panel);
-        if (preferred <= available || preferred <= 0) return;
-        var scale = available / preferred;
-        workspaceScale = scale;
-        foreach (var text in dialog.GetComponentsInChildren<TMP_Text>(true)) text.fontSize *= scale;
-        foreach (var layout in dialog.GetComponentsInChildren<LayoutElement>(true))
-        {
-            if (layout.minHeight > 0) layout.minHeight *= scale;
-            if (layout.preferredHeight > 0) layout.preferredHeight *= scale;
-        }
-        foreach (var layout in dialog.GetComponentsInChildren<VerticalLayoutGroup>(true))
-        {
-            layout.spacing *= scale;
-            layout.padding.top = Mathf.FloorToInt(layout.padding.top * scale);
-            layout.padding.bottom = Mathf.FloorToInt(layout.padding.bottom * scale);
-        }
-        Canvas.ForceUpdateCanvases();
-    }
-
-    private ButtonComponent Button(Transform row, string key, Action action)
-    {
-        var button = dialog.AddComponent<ButtonComponent>().WithLabel("SongEditMenu", "tempo." + key).OnClick(action);
-        button.transform.SetParent(row, false);
-        SetHeight(button, 28);
-        SetWidth(button, 76, 0);
-        var layout = button.GetComponent<HorizontalLayoutGroup>();
-        if (layout != null) layout.childControlHeight = layout.childForceExpandHeight = true;
-        return button;
-    }
-
-    private TempoWaveformGraphic AddWaveform(Transform parent)
-    {
-        var graphic = new GameObject("Waveform peaks", typeof(RectTransform), typeof(CanvasRenderer), typeof(TempoWaveformGraphic), typeof(LayoutElement));
-        graphic.transform.SetParent(parent, false);
-        graphic.GetComponent<LayoutElement>().ignoreLayout = true;
-        var rect = (RectTransform)graphic.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.sizeDelta = Vector2.zero;
-        var result = graphic.GetComponent<TempoWaveformGraphic>();
-        result.raycastTarget = false;
-        result.color = new Color(0.1f, 0.85f, 0.75f, 1);
-        result.MaximumColumns = Settings.Instance.TempoWaveformMaxColumns;
-        return result;
-    }
-
-    private TempoGridOverlay AddGrid(Transform parent, bool isOverview)
-    {
-        var overlay = new GameObject("Tempo grid", typeof(RectTransform), typeof(CanvasRenderer), typeof(TempoGridOverlay), typeof(LayoutElement));
-        overlay.transform.SetParent(parent, false);
-        overlay.layer = parent.gameObject.layer;
-        overlay.GetComponent<LayoutElement>().ignoreLayout = true;
-        var rect = (RectTransform)overlay.transform;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.sizeDelta = Vector2.zero;
-        var result = overlay.GetComponent<TempoGridOverlay>();
-        result.View = this;
-        result.Overview = isOverview;
-        return result;
     }
 
     private void SetZoom(float value)
@@ -904,8 +371,8 @@ public class TempoMapperView : MonoBehaviour
     {
         if (music.isPlaying) PausePlayback();
         else { if (Sample >= Map.EndSample) Seek(0); music.Play(); ResetPlaybackClock(Sample); }
-        if (playIcon != null && toolIcons != null && toolIcons.Length > 4)
-            playIcon.sprite = toolIcons[music.isPlaying ? 4 : 3];
+        if (playIcon != null)
+            playIcon.sprite = music.isPlaying ? pauseSprite : playSprite;
         var playTooltip = play.GetComponent<Tooltip>();
         if (playTooltip != null) playTooltip.TooltipOverride = Text(music.isPlaying ? "pause" : "play");
     }
@@ -934,10 +401,18 @@ public class TempoMapperView : MonoBehaviour
             if (Settings.Instance.TempoFollowPlayback)
             {
                 var span = ViewEnd - ViewStart;
-                var pixels = Math.Max(1, grid.rectTransform.rect.width * grid.canvas.scaleFactor);
+                var editingGrid = waveformGrid.isActiveAndEnabled ? waveformGrid : grid;
+                var pixels = Math.Max(1, editingGrid.rectTransform.rect.width * editingGrid.canvas.scaleFactor);
                 var samplesPerPixel = span / pixels;
                 // Translate every audio layer by the same whole-pixel step; fractional raster phase stays fixed.
                 ViewStart = Math.Round((predicted - span / 2) / samplesPerPixel) * samplesPerPixel;
+                ViewEnd = ViewStart + span;
+            }
+            else if (Sample < ViewStart || Sample >= ViewEnd)
+            {
+                // Page forward only on leaving the current window; do not continuously center playback.
+                var span = ViewEnd - ViewStart;
+                ViewStart = Math.Clamp(Sample, 0, Math.Max(0, Map.EndSample - span));
                 ViewEnd = ViewStart + span;
             }
             Refresh(false);
@@ -947,16 +422,6 @@ public class TempoMapperView : MonoBehaviour
             playbackClockRunning = false;
             Sample = Map.EndSample;
             Refresh();
-        }
-        var keyboard = Keyboard.current;
-        var selected = EventSystem.current.currentSelectedGameObject;
-        if (confirmationOpen || OptionsController.IsActive || keyboard == null || (selected != null && selected.GetComponent<TMP_InputField>() is { isFocused: true })) return;
-        if (keyboard.spaceKey.wasPressedThisFrame) TogglePlaying();
-        if (keyboard.ctrlKey.isPressed || keyboard.leftMetaKey.isPressed || keyboard.rightMetaKey.isPressed)
-        {
-            if (keyboard.zKey.wasPressedThisFrame) { if (keyboard.shiftKey.isPressed) Redo(); else Undo(); }
-            if (keyboard.yKey.wasPressedThisFrame) Redo();
-            if (keyboard.sKey.wasPressedThisFrame) Save();
         }
     }
 
@@ -979,13 +444,13 @@ public class TempoMapperView : MonoBehaviour
         overview.SetVerticesDirty();
         waveformGrid.SetVerticesDirty();
         if (beatRuler != null) beatRuler.Refresh();
-        if (zoomSlider != null)
+        if (zoom != null)
         {
             var factor = Map.EndSample / Math.Max(1, ViewEnd - ViewStart);
             if (factor != previousZoomFactor)
             {
-                zoomSlider.SetValueWithoutNotify((float)(Math.Log(factor, 2) / 8));
-                zoomReadout.Value = $"{factor:F1}x";
+                zoom.SetValueWithoutNotify((float)(Math.Log(factor, 2) / 8));
+
                 previousZoomFactor = factor;
             }
         }
@@ -997,8 +462,8 @@ public class TempoMapperView : MonoBehaviour
             lastReadoutTime = Time.realtimeSinceStartupAsDouble;
             var seconds = Sample / (double)Map.Frequency;
             position.Value = Text("statistics", (int)(seconds / 60), seconds % 60, Map.BeatAt(Sample), SelectedRegion + 1, Map.Regions.Count);
-            if (playIcon != null && toolIcons != null && toolIcons.Length > 4)
-                playIcon.sprite = toolIcons[music.isPlaying ? 4 : 3];
+            if (playIcon != null)
+                playIcon.sprite = music.isPlaying ? pauseSprite : playSprite;
             var playTooltip = play.GetComponent<Tooltip>();
             if (playTooltip != null) playTooltip.TooltipOverride = Text(music.isPlaying ? "pause" : "play");
         }
@@ -1024,64 +489,54 @@ public class TempoMapperView : MonoBehaviour
         catch (Exception exception) { Debug.LogException(exception); status.gameObject.SetActive(true); status.Value = Text("error", exception.Message); }
     }
 
+
     private void RequestClose()
     {
-        if (gesture != null) { EndGesture(true); return; }
+        if (confirmationOpen || OptionsController.IsActive) return;
+        if (gesture != null)
+        {
+            EndGesture(true);
+            return;
+        }
         PausePlayback();
-        if (Map.Regions.SequenceEqual(saved.Regions)) { Close(); return; }
+        if (Map.Regions.SequenceEqual(saved.Regions))
+        {
+            Close();
+            return;
+        }
+
         confirmationOpen = true;
         var confirm = PersistentUI.Instance.CreateNewDialogBox().WithTitle("SongEditMenu", "tempo.unsaved");
         confirm.AddComponent<TextComponent>().WithInitialValue("SongEditMenu", "tempo.discard.prompt");
-        confirm.AddFooterButton(() => { confirmationOpen = false; Close(); }, "SongEditMenu", "tempo.discard");
-        confirm.AddFooterButton(() => confirmationOpen = false, "SongEditMenu", "tempo.keep.editing");
-        confirm.OnCloseRequested(() => { confirmationOpen = false; confirm.Close(); });
-        confirm.Open(dialog);
+        confirm.AddFooterButton(Close, "SongEditMenu", "tempo.discard");
+        confirm.AddFooterButton(() => { }, "SongEditMenu", "tempo.keep.editing");
+        confirm.Open();
+        StartCoroutine(WaitForConfirmation(confirm));
+    }
+
+    private IEnumerator WaitForConfirmation(DialogBox confirm)
+    {
+        yield return new WaitUntil(() => confirm == null || !confirm.gameObject.activeSelf);
+        confirmationOpen = false;
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void Close()
     {
-        RestoreSpectrogram();
-        dialog.Close();
-    }
-
-    private void RestoreSpectrogram()
-    {
-        if (restored || spectrogram == null || originalParent == null) return;
-        restored = true;
-        music.Stop();
-        foreach (var item in originalRadii) if (item.Key != null) { item.Key.radius = item.Value; item.Key.Refresh(); }
-        foreach (var item in originalIndependentRadii) if (item.Key != null) { item.Key.r = item.Value; item.Key.Refresh(); }
-        foreach (var item in originalMaskImages) if (item.Key != null) { item.Key.sprite = item.Value.sprite; item.Key.type = item.Value.type; }
-        if (mainSpectrogram != null) mainSpectrogram.material = originalSpectrogramMaterial;
-        if (scrollingSpectrogramMaterial != null) Destroy(scrollingSpectrogramMaterial);
-        if (grid != null) Destroy(grid.gameObject);
-        if (ownsSpectrogramLayout) Destroy(spectrogramLayout);
-        else spectrogramLayout.ignoreLayout = false;
-        if (ownsSpectrumVisibility) Destroy(spectrumVisibility);
-        else if (spectrumVisibility != null)
-        {
-            spectrumVisibility.alpha = spectrumAlpha;
-            spectrumVisibility.blocksRaycasts = spectrumRaycasts;
-        }
-        spectrogram.SetParent(originalParent, false);
-        spectrogram.SetSiblingIndex(originalSibling);
-        spectrogram.anchorMin = originalMin;
-        spectrogram.anchorMax = originalMax;
-        spectrogram.anchoredPosition = originalPosition;
-        spectrogram.sizeDelta = originalSize;
-        spectrogram.pivot = originalPivot;
-        spectrogram.localScale = originalScale;
-        preview.PreviewSelection.SetActive(selectionVisible);
-        preview.RestorePreviewBounds();
+        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     private void OnDestroy()
     {
-        precisionModifier?.Dispose();
-        preciseModifier?.Dispose();
-        precisionScroll?.Dispose();
-        RestoreSpectrogram();
+        StopWaveformGeneration();
+        waveformData?.Dispose();
         if (overviewMaterial != null) Destroy(overviewMaterial);
+        if (scrollingSpectrogramMaterial != null) Destroy(scrollingSpectrogramMaterial);
+        if (!initialized) return;
+        UninstallInput();
+        foreach (var setting in displaySettings) Settings.StopNotifyingBySettingName(setting, DisplaySettingChanged);
+        Settings.StopNotifyingBySettingName(nameof(Settings.TempoWaveformSamplesPerPeak), WaveformResolutionChanged);
+        if (preview != null) preview.RestorePreviewBounds();
     }
 }
-
