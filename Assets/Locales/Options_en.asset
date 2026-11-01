@@ -1621,6 +1621,14 @@ MonoBehaviour:
     m_Localized: Change how much smaller transparent preview nodes appear in the main GLS track lanes for events nested inside a GLS group.
     m_Metadata:
       m_Items: []
+  - m_Id: 781108813288137152
+    m_Localized: Sync copied objects with clipboard JSON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137153
+    m_Localized: Export copied objects as JSON when leaving ChroMapper and import recognized clipboard JSON when returning.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

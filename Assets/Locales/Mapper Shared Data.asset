@@ -1107,6 +1107,14 @@ MonoBehaviour:
     m_Key: event.desyncwarning
     m_Metadata:
       m_Items: []
+  - m_Id: 620000000000000000
+    m_Key: clipboard.json.ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000000001
+    m_Key: clipboard.partial.eventbox.comment
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -1209,6 +1209,14 @@ MonoBehaviour:
     m_Localized: "Too close together,\nyour rings / lasers\nwill desync randomly\nin game."
     m_Metadata:
       m_Items: []
+  - m_Id: 620000000000000000
+    m_Localized: Ready to paste clipboard json
+    m_Metadata:
+      m_Items: []
+  - m_Id: 620000000000000001
+    m_Localized: CM partial eventbox, include this comment when copying back into CM to merge inner events with original event box instead of replacing all events
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
