@@ -43,6 +43,7 @@ internal static class ClipboardJsonController
     private const string ClipboardJsonReadyMessageKey = "clipboard.json.ready";
     private const string PartialEventBoxCommentKey = "clipboard.partial.eventbox.comment";
     private const string PartialEventBoxMarker = "//+ ";
+    private const int MaximumClipboardJsonNestingDepth = 128;
 
     private static ITextClipboard textClipboard = new UnityTextClipboard();
     private static IReadOnlyList<ClipboardJsonObject> pendingObjects;
@@ -396,6 +397,11 @@ internal static class ClipboardJsonController
             }
 
             trimmedText = jsonText;
+            // Parsing is iterative, but object cloning and some import paths recurse through JSON children.
+            if (HasExcessiveJsonNesting(trimmedText))
+            {
+                return false;
+            }
 
             JSONNode json;
             if (trimmedText[0] == '{' && trimmedText.EndsWith(","))
@@ -438,7 +444,22 @@ internal static class ClipboardJsonController
                 return false;
             }
 
-            var firstJsonTime = importedObjects.Min(importedObject => importedObject.JsonTime);
+            var firstJsonTime = float.PositiveInfinity;
+            for (var i = 0; i < importedObjects.Count; i++)
+            {
+                var importedObject = importedObjects[i];
+                if (!HasFiniteTiming(importedObject)
+                    || (importedObject is BaseEvent basicEvent && !IsFinite(basicEvent.FloatValue)))
+                {
+                    return false;
+                }
+
+                if (importedObject.JsonTime < firstJsonTime)
+                {
+                    firstJsonTime = importedObject.JsonTime;
+                }
+            }
+
             for (var i = 0; i < importedObjects.Count; i++)
             {
                 var importedObject = importedObjects[i];
@@ -457,6 +478,78 @@ internal static class ClipboardJsonController
             return false;
         }
     }
+
+    private static bool HasExcessiveJsonNesting(string jsonText)
+    {
+        var depth = 0;
+        var insideString = false;
+        var insideLineComment = false;
+        for (var i = 0; i < jsonText.Length; i++)
+        {
+            var character = jsonText[i];
+            if (insideLineComment)
+            {
+                if (character == '\r' || character == '\n')
+                    insideLineComment = false;
+                continue;
+            }
+
+            if (insideString)
+            {
+                if (character == '\\' && i + 1 < jsonText.Length)
+                {
+                    i++;
+                    continue;
+                }
+
+                if (character == '"')
+                    insideString = false;
+                continue;
+            }
+
+            if (character == '"')
+                insideString = true;
+            else if (character == '/' && i + 1 < jsonText.Length && jsonText[i + 1] == '/')
+                insideLineComment = true;
+            else if (character == '{' || character == '[')
+            {
+                depth++;
+                if (depth > MaximumClipboardJsonNestingDepth)
+                    return true;
+            }
+            else if (character == '}' || character == ']')
+                depth--;
+        }
+
+        return false;
+    }
+
+    private static bool HasFiniteTiming(BaseObject importedObject)
+    {
+        if (!IsFinite(importedObject.JsonTime)
+            || (importedObject is BaseSlider slider && !IsFinite(slider.TailJsonTime))
+            || (importedObject is BaseGLSEvent glsEvent && !IsFinite(glsEvent.RelativeJsonTime))
+            || (importedObject is BaseBpmEvent bpmEvent && !IsFinite(bpmEvent.Bpm)))
+        {
+            return false;
+        }
+
+        if (importedObject is BaseEventBoxGroup group)
+        {
+            foreach (var box in group.ReadOnlyBoxes)
+            {
+                foreach (var evt in box.ReadOnlyEvents)
+                {
+                    if (!IsFinite(evt.JsonTime) || !IsFinite(evt.RelativeJsonTime))
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
     private static bool TryStripPartialEventBoxComment(string text, out string jsonText)
     {
@@ -721,7 +814,11 @@ internal static class ClipboardJsonController
     {
         for (var i = 0; i < jsonArray.Count; i++)
         {
-            var importedObject = CreateObject(collectionKey, jsonArray[i]);
+            var objectJson = jsonArray[i];
+            if (!objectJson.IsObject || objectJson.Count == 0)
+                return false;
+
+            var importedObject = CreateObject(collectionKey, objectJson);
             if (importedObject == null)
             {
                 return false;
