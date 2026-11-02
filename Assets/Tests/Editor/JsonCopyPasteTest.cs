@@ -858,6 +858,73 @@ namespace Tests.Editor
         }
 
         [Test]
+        public void ReturningWithDeeplyNestedCustomDataDoesNotReplaceCopiedObjects()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var source = PlaceUtils.Place(new BaseNote { JsonTime = 2, Type = (int)NoteType.Red });
+            SelectionController.Select(source);
+            selectionController.Copy();
+            var copiedObject = SelectionController.CopiedObjects.Single();
+            LeaveChroMapperWindow();
+            var nestedValue = new string('[', 129) + "0" + new string(']', 129);
+            ExternalClipboardText = "[{\"b\":4,\"x\":0,\"y\":0,\"c\":0,\"d\":1,\"customData\":{\"payload\":"
+                + nestedValue + "}}]";
+
+            ReturnToChroMapperWindow();
+
+            Assert.That(SelectionController.CopiedObjects.Single(), Is.SameAs(copiedObject));
+        }
+
+        [Test]
+        public void ReturningWithNonFiniteBeatDoesNotReplaceCopiedObjects()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var source = PlaceUtils.Place(new BaseNote { JsonTime = 2, Type = (int)NoteType.Red });
+            SelectionController.Select(source);
+            selectionController.Copy();
+            var copiedObject = SelectionController.CopiedObjects.Single();
+            LeaveChroMapperWindow();
+            ExternalClipboardText = "[{\"b\":\"NaN\",\"x\":0,\"y\":0,\"c\":0,\"d\":1}]";
+
+            ReturnToChroMapperWindow();
+
+            Assert.That(SelectionController.CopiedObjects.Single(), Is.SameAs(copiedObject));
+        }
+
+        [Test]
+        public void ReturningWithNonFiniteBasicEventBrightnessDoesNotReplaceCopiedObjects()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var source = PlaceUtils.Place(new BaseNote { JsonTime = 2, Type = (int)NoteType.Red });
+            SelectionController.Select(source);
+            selectionController.Copy();
+            var copiedObject = SelectionController.CopiedObjects.Single();
+            LeaveChroMapperWindow();
+            ExternalClipboardText = "{\"basicBeatmapEvents\":[{\"b\":1,\"et\":1,\"i\":5,\"f\":\"NaN\"}]}";
+
+            ReturnToChroMapperWindow();
+
+            Assert.That(SelectionController.CopiedObjects.Single(), Is.SameAs(copiedObject));
+        }
+
+        [TestCase("colorNotes")]
+        [TestCase("basicBeatmapEvents")]
+        public void ReturningWithEmptyObjectInRecognizedCollectionDoesNotReplaceCopiedObjects(string collectionKey)
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var source = PlaceUtils.Place(new BaseNote { JsonTime = 2, Type = (int)NoteType.Red });
+            SelectionController.Select(source);
+            selectionController.Copy();
+            var copiedObject = SelectionController.CopiedObjects.Single();
+            LeaveChroMapperWindow();
+            ExternalClipboardText = $"{{\"{collectionKey}\":[{{}}]}}";
+
+            ReturnToChroMapperWindow();
+
+            Assert.That(SelectionController.CopiedObjects.Single(), Is.SameAs(copiedObject));
+        }
+
+        [Test]
         public void CopyingInnerGlsEventsFromOneFilterLaneExportsRawEventArray()
         {
             var selectionController = Object.FindAnyObjectByType<SelectionController>();
