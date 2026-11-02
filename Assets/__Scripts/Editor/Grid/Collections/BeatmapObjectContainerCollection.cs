@@ -682,19 +682,29 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     public virtual void RemoveConflictingObjects(IEnumerable<T> newObjects, out List<T> conflicting)
     {
         conflicting = new List<T>();
+        HashSet<T> seenConflicts = null;
 
         foreach (var newObject in newObjects)
         {
+            if (seenConflicts == null && conflicting.Count > 0)
+                seenConflicts = new HashSet<T>(conflicting);
+
             var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
 
             for (var i = 0; i < localWindow.Length; i++)
             {
                 var obj = localWindow[i];
 
-                if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
+                if (obj.IsConflictingWith(newObject)
+                    && newObject != obj
+                    && (seenConflicts == null || seenConflicts.Add(obj)))
+                {
+                    conflicting.Add(obj);
+                }
             }
         }
 
+        // Several pasted objects can overlap the same existing object.
         foreach (var conflict in conflicting)
             DeleteConflictingObject(conflict);
     }
