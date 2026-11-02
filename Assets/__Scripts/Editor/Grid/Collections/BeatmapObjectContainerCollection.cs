@@ -654,21 +654,37 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
     /// <param name="conflicting">Enumerable of all existing objects that were deleted as a conflict.</param>
     public virtual void RemoveConflictingObjects(IEnumerable<T> newObjects, out List<T> conflicting)
     {
-        conflicting = new List<T>();
+        conflicting = FindConflictingObjects(newObjects);
+        conflicting.ForEach(conflict => DeleteObject(conflict, false, false));
+    }
+
+    // Collect conflicts before deleting so several pasted objects cannot delete the same map object twice.
+    protected List<T> FindConflictingObjects(IEnumerable<T> newObjects)
+    {
+        var conflicting = new List<T>();
+        HashSet<T> seenConflicts = null;
 
         foreach (var newObject in newObjects)
         {
+            if (seenConflicts == null && conflicting.Count > 0)
+                seenConflicts = new HashSet<T>(conflicting);
+
             var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
 
             for (var i = 0; i < localWindow.Length; i++)
             {
                 var obj = localWindow[i];
 
-                if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
+                if (obj.IsConflictingWith(newObject)
+                    && newObject != obj
+                    && (seenConflicts == null || seenConflicts.Add(obj)))
+                {
+                    conflicting.Add(obj);
+                }
             }
         }
 
-        conflicting.ForEach(conflict => DeleteObject(conflict, false, false));
+        return conflicting;
     }
 
     /// <inheritdoc/>

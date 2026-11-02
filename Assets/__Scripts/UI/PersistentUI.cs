@@ -175,11 +175,26 @@ public class PersistentUI : MonoBehaviour
     [Serializable]
     public class MessageDisplayer
     {
+        private const float MessageFadeInTimeInSeconds = 0.2f;
+
         [SerializeField] private TMP_Text messageText;
+        [SerializeField] private Image background;
 
         [FormerlySerializedAs("host")] public MonoBehaviour Host;
         private readonly Queue<NotificationMessage> messagesQueue = new Queue<NotificationMessage>();
         private bool isShowingMessages;
+        private float backgroundOpacity = -1f;
+
+        internal MessageDisplayer(MonoBehaviour host, TMP_Text text, Image messageBackground)
+        {
+            Host = host;
+            messageText = text;
+            background = messageBackground;
+        }
+
+        public MessageDisplayer()
+        {
+        }
 
         private IEnumerator MessageRoutine()
         {
@@ -195,22 +210,40 @@ public class PersistentUI : MonoBehaviour
 
         private IEnumerator MessageFadingRoutine(NotificationMessage message)
         {
+            if (background != null)
+            {
+                if (backgroundOpacity < 0f)
+                {
+                    backgroundOpacity = background.color.a;
+                }
+
+                var backgroundRect = background.rectTransform;
+                var parentRect = backgroundRect.parent as RectTransform;
+                var maximumWidth = parentRect != null ? parentRect.rect.width * 0.75f : backgroundRect.rect.width;
+                var preferredWidth = messageText.GetPreferredValues(message.Message).x;
+                var textMargins = messageText.margin;
+                backgroundRect.anchorMin = new Vector2(0.5f, backgroundRect.anchorMin.y);
+                backgroundRect.anchorMax = new Vector2(0.5f, backgroundRect.anchorMax.y);
+                backgroundRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
+                    Mathf.Min(preferredWidth + textMargins.x + textMargins.z + 24f, maximumWidth));
+                background.enabled = true;
+            }
             // Fade in
             float t = 0;
-            messageText.alpha = 0;
             messageText.text = message.Message;
+            SetMessageOpacity(0f);
             while (t < 1 && !message.Cancelled && !message.SkipFade)
             {
                 yield return null;
-                t += Time.deltaTime;
+                t += Time.deltaTime / MessageFadeInTimeInSeconds;
                 if (t > 1) t = 1;
-                messageText.alpha = t;
+                SetMessageOpacity(t);
             }
 
-            // Wait for 2 seconds
-            messageText.alpha = 1;
+            SetMessageOpacity(1f);
             yield return new WaitForFixedUpdate();
-            while (t <= message.WaitTime && !message.Cancelled && !message.SkipDisplay)
+            t = 0f;
+            while (t < message.WaitTime && !message.Cancelled && !message.SkipDisplay)
             {
                 t += Time.deltaTime;
                 yield return null;
@@ -224,10 +257,25 @@ public class PersistentUI : MonoBehaviour
                 yield return null;
                 t -= Time.deltaTime;
                 if (t < 0) t = 0;
-                messageText.alpha = t;
+                SetMessageOpacity(t);
             }
 
-            messageText.alpha = 0;
+            SetMessageOpacity(0f);
+            if (background != null)
+            {
+                background.enabled = false;
+            }
+        }
+
+        private void SetMessageOpacity(float opacity)
+        {
+            messageText.alpha = opacity;
+            if (background != null)
+            {
+                var color = background.color;
+                color.a = backgroundOpacity * opacity;
+                background.color = color;
+            }
         }
 
         public void DisplayMessage(NotificationMessage message)
@@ -245,7 +293,7 @@ public class PersistentUI : MonoBehaviour
             public bool SkipDisplay = false;
             public bool SkipFade = false;
 
-            public float WaitTime = 2.0f;
+            public float WaitTime = 5.0f;
 
             public NotificationMessage(AsyncOperationHandle<string> localisable, DisplayMessageType type)
             {

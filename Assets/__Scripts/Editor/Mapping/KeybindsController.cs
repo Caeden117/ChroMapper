@@ -43,7 +43,14 @@ public class KeybindsController : MonoBehaviour, CMInput.IUtilsActions
     public void OnMouseMovement(InputAction.CallbackContext context)
     {
         MousePosition = context.ReadValue<Vector2>();
-        IsMouseInWindow = IsMouseInBounds();
+        var isMouseInWindow = IsMouseInBounds();
+        if (isMouseInWindow == IsMouseInWindow)
+        {
+            return;
+        }
+
+        IsMouseInWindow = isMouseInWindow;
+        ClipboardJsonController.HandlePointerPresenceChanged(isMouseInWindow);
     }
 
     private static bool IsMouseInBounds()

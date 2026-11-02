@@ -2,6 +2,13 @@
 
 This directory contains ChroMapper's Unity Input System configuration and generated wrapper. Use this guide when adding or changing permanent input actions.
 
+## Hint
+
+This section is temporary. These tips will become localized hint messages on the main menu screen in a future PR.
+
+- Objects you copy in ChroMapper are pasteable into text editors. You can edit their JSON and then copy paste them back to ChroMapper!
+- Paste inner GLS events inside a group to replace on existing lanes. Paste them in the outer GLS view to create a copy of the group with just those selected events inside.
+
 ## Data flow
 
 1. `Master.inputactions` is the authoritative source for action maps, actions, bindings, composites, and stable IDs.

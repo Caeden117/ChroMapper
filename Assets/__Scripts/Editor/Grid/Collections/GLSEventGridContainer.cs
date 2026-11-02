@@ -292,20 +292,7 @@ public class GLSEventGridContainer : BeatmapObjectContainerCollection<BaseGLSEve
         IEnumerable<BaseGLSEvent> newObjects,
         out List<BaseGLSEvent> conflicting)
     {
-        conflicting = new List<BaseGLSEvent>();
-
-        foreach (var newObject in newObjects)
-        {
-            var localWindow = GetBetween(newObject.JsonTime - 0.1f, newObject.JsonTime + 0.1f);
-
-            for (var i = 0; i < localWindow.Length; i++)
-            {
-                var obj = localWindow[i];
-                if (obj.IsConflictingWith(newObject) && newObject != obj) conflicting.Add(obj);
-            }
-
-        }
-
+        conflicting = FindConflictingObjects(newObjects);
         conflicting.ForEach(conflict => DeleteObject(conflict, false, false, triggerHandle: false));
     }
 

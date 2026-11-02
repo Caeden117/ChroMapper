@@ -8,6 +8,7 @@
     "Unity.TextMeshPro",
     "Unity.InputSystem",
     "Unity.InputSystem.TestFramework",
+    "Unity.ResourceManager",
     "LiteNetLib",
     "TestsEditMode",
     "FileBrowser",
