@@ -1,4 +1,5 @@
 ﻿using Beatmap.Containers;
+using Beatmap.Base;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using UnityEngine;
@@ -35,20 +36,24 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
         if (containerToEdit == null) return;
         if (containerToEdit.NJSData.UsePrevious == 1) return;
 
-        var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
-
-        var modifier = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue)
-            * scrollPrecisionController.GetCurrentTimePrecision();
-
-        containerToEdit.NJSData.RelativeNJS =
-            CMMath.RoundToDecimals(containerToEdit.NJSData.RelativeNJS + modifier);
-        if (containerToEdit.NJSData.RelativeNJS
-            <= -BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed)
+        var precision = scrollPrecisionController.GetCurrentTimePrecision();
+        var modifier = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) * precision;
+        var noteJumpSpeed = BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed;
+        void Tweak(BaseNJSEvent data)
         {
-            containerToEdit.NJSData.RelativeNJS = CMMath.RoundToDecimals(
-                scrollPrecisionController.GetCurrentTimePrecision()
-                - BeatSaberSongContainer.Instance.MapDifficultyInfo.NoteJumpSpeed);
+            if (data.UsePrevious == 1)
+                return;
+
+            data.RelativeNJS = CMMath.RoundToDecimals(data.RelativeNJS + modifier);
+            if (data.RelativeNJS <= -noteJumpSpeed)
+                data.RelativeNJS = CMMath.RoundToDecimals(precision - noteJumpSpeed);
         }
+
+        if (HoverSelectionMutation.TryApply(containerToEdit.NJSData, Tweak, out _))
+            return;
+
+        var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
+        Tweak(containerToEdit.NJSData);
 
         if (containerToEdit.NJSData.HasSameContent(original))
             return;
@@ -76,9 +81,23 @@ public class BeatmapNJSEventInputController : BeatmapInputController<NJSEventCon
         var direction = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         if (direction == 0)
             return;
-        var index = System.Array.IndexOf(EasingValues, (EaseType)containerToEdit.NJSData.Easing);
-        var next = EasingValues[
-            ((index < 0 ? 0 : index) + direction + EasingValues.Length) % EasingValues.Length];
-        VNJSEventCommand.SetEasing(containerToEdit, (int)next);
+        int GetNextEasing(BaseNJSEvent data)
+        {
+            var index = System.Array.IndexOf(EasingValues, (EaseType)data.Easing);
+            var currentIndex = index < 0
+                ? 0
+                : index;
+            return (int)EasingValues[(currentIndex + direction + EasingValues.Length) % EasingValues.Length];
+        }
+
+        if (HoverSelectionMutation.TryApply(
+                containerToEdit.NJSData,
+                data => data.Easing = GetNextEasing(data),
+                out _))
+        {
+            return;
+        }
+
+        VNJSEventCommand.SetEasing(containerToEdit, GetNextEasing(containerToEdit.NJSData));
     }
 }

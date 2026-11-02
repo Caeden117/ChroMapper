@@ -9,6 +9,7 @@ using UnityEngine;
 public class GLSEventGridProvider : MonoBehaviour
 {
     public event Action<BaseEventBoxGroup> OnGroupChanged;
+    public event Action OnAutomaticLaneDefaultsChanged;
     // Retiring an outer group must clear inner node ownership without sending null to handlers that require a valid group.
     public event Action OnGroupRetired;
 
@@ -52,6 +53,29 @@ public class GLSEventGridProvider : MonoBehaviour
 
     private bool markRemove;
     public BaseEventBoxGroup LastContext;
+
+    private void Awake()
+    {
+        Settings.NotifyBySettingName(nameof(Settings.DefaultGLSAffectFirst), HandleAutomaticLaneDefaultChanged);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.StopNotifyingBySettingName(nameof(Settings.DefaultGLSAffectFirst), HandleAutomaticLaneDefaultChanged);
+    }
+
+    private void HandleAutomaticLaneDefaultChanged(object _)
+    {
+        // Cached automatic lanes describe future boxes. Saved boxes keep their own configured value.
+        foreach (var lanes in unusedLanesByGroupType.Values)
+        {
+            for (var axis = 0; axis < lanes.Length; axis++)
+            {
+                lanes[axis].ApplyDefaultAffectFirst();
+            }
+        }
+        OnAutomaticLaneDefaultsChanged?.Invoke();
+    }
 
     public void MarkRemove()
     {
@@ -332,9 +356,12 @@ public class GLSEventGridProvider : MonoBehaviour
             }
         }
 
+        var enabledAxes = beatmapRuntimeContext.TrackDefinitions.Gls.TryGetValue(group.ID, out var trackDefinition)
+            ? transformGroup.GetEnabledAxes(trackDefinition)
+            : null;
         for (var axis = 0; axis < unusedLanes.Length; axis++)
         {
-            if ((presentAxes & (1 << axis)) == 0)
+            if ((presentAxes & (1 << axis)) == 0 && (enabledAxes == null || enabledAxes[axis]))
             {
                 lanes.Add(unusedLanes[axis]);
             }

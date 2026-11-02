@@ -1637,6 +1637,14 @@ MonoBehaviour:
     m_Localized: Change how much smaller transparent preview nodes appear in the main GLS track lanes for events nested inside a GLS group.
     m_Metadata:
       m_Items: []
+  - m_Id: 619100100000000001
+    m_Localized: '"Affect First" default to on?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619100100000000002
+    m_Localized: By default new event boxes will have Affect First defaulted to on, when this is enabled. Disable this if you prefer the Original Editor behavior. This value will not be serialized in your json unless the event box has some distribution related settings.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

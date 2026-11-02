@@ -81,37 +81,6 @@ namespace Tests.Editor
                 $"Preview {transition} lerpType {lerpType}");
         }
 
-        // Label legacy HSV separately so maps do not appear to use TrueHSV.
-        [UnityTest]
-        public IEnumerator LegacyHsvNodeDisplaysLhsvLabel()
-        {
-            yield return AssertNodeLerpTypeLabel("HSV", "LHSV");
-        }
-
-        // TrueHSV uses the HSV label shown on GLS nodes.
-        [UnityTest]
-        public IEnumerator CanonicalTrueHSVNodeDisplaysHSVLabel()
-        {
-            yield return AssertNodeLerpTypeLabel("TrueHSV", "HSV");
-        }
-
-        [UnityTest]
-        public IEnumerator MiscasedTrueHsvNodeShowsNoLerpTypeLabel()
-        {
-            var source = PlaceHsvTransition(
-                "trueHSV",
-                EventTypeValue.Event2,
-                Color.white,
-                new Color(1f, 0f, 0.6f, 1f)).Source;
-            yield return null;
-
-            var labelLines = ReadNodeLabelLines(source);
-            Assert.That(labelLines[labelLines.Length - 1], Is.Not.EqualTo("HSV"),
-                "Miscased trueHSV must not display the angular HSV label.");
-            Assert.That(labelLines[labelLines.Length - 1], Is.Not.EqualTo("LHSV"),
-                "Miscased trueHSV must not display the legacy LHSV label.");
-        }
-
         // RGB can share a midpoint with HSV. Check the shader mode so matching colors cannot hide incorrect
         // dispatch.
         [UnityTest]
@@ -121,6 +90,8 @@ namespace Tests.Editor
             var transition = PlaceHsvTransition("TrueHSV", EventTypeValue.Event2,
                 Color.white, new Color(1f, 0f, 0.6f, 1f));
             yield return null;
+
+            AssertNodeLerpTypeLabel(transition.Source, "TrueHSV", "HSV");
 
             var container = GetEventsContainer().LoadedContainers[transition.Source];
             var ribbon = container.GetComponentInChildren<LightGradientController>(true);
@@ -141,6 +112,8 @@ namespace Tests.Editor
                 Color.white,
                 new Color(1f, 0f, 0.6f, 1f));
             yield return null;
+
+            AssertNodeLerpTypeLabel(whiteToPink.Source, "HSV", "LHSV");
 
             AssertRibbonMidpoint(
                 whiteToPink,
@@ -176,6 +149,12 @@ namespace Tests.Editor
                 Color.white,
                 new Color(1f, 0f, 0.6f, 1f));
             yield return null;
+
+            var labelLines = ReadNodeLabelLines(whiteToPink.Source);
+            Assert.That(labelLines[labelLines.Length - 1], Is.Not.EqualTo("HSV"),
+                "Miscased trueHSV must not display the angular HSV label.");
+            Assert.That(labelLines[labelLines.Length - 1], Is.Not.EqualTo("LHSV"),
+                "Miscased trueHSV must not display the legacy LHSV label.");
 
             AssertRibbonMidpoint(
                 whiteToPink,
@@ -260,15 +239,8 @@ namespace Tests.Editor
         }
 
         // Node labels must come from the production EventAppearanceSO output rather than a parallel test formatter.
-        private static IEnumerator AssertNodeLerpTypeLabel(string lerpType, string expectedLabel)
+        private static void AssertNodeLerpTypeLabel(BaseEvent source, string lerpType, string expectedLabel)
         {
-            var source = PlaceHsvTransition(
-                lerpType,
-                EventTypeValue.Event2,
-                Color.white,
-                new Color(1f, 0f, 0.6f, 1f)).Source;
-            yield return null;
-
             var labelLines = ReadNodeLabelLines(source);
             Assert.That(
                 labelLines[labelLines.Length - 1],

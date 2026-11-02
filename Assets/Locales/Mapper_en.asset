@@ -1046,7 +1046,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 618823330992717824
-    m_Localized: Limit
+    m_Localized: Limit %
     m_Metadata:
       m_Items: []
   - m_Id: 618823397669568512
@@ -1170,7 +1170,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 618845221228871680
-    m_Localized: Section
+    m_Localized: Sections
     m_Metadata:
       m_Items: []
   - m_Id: 618845221228871681
@@ -1235,6 +1235,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 619000074803281920
     m_Localized: "Too close together,\nyour rings / lasers\nwill desync randomly\nin game."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281921
+    m_Localized: Split
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281922
+    m_Localized: When unchecked, the distribution will NOT apply to the first event in this event box.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281923
+    m_Localized: After updating Sections count, click this button to duplicate this event box for each of the other section ids in this split
     m_Metadata:
       m_Items: []
   references:

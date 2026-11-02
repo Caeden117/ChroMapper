@@ -29,6 +29,84 @@ namespace Tests.Editor
             NodeEditorController.IsActive = false;
         }
 
+        [UnityTest]
+        public IEnumerator SelectionChangeResetsJsonScrollWhileOpen()
+        {
+            yield return AssertSelectionChangeResetsJsonScroll(false);
+        }
+
+        [UnityTest]
+        public IEnumerator SelectionChangeResetsJsonScrollWhenReopened()
+        {
+            yield return AssertSelectionChangeResetsJsonScroll(true);
+        }
+
+        private static IEnumerator AssertSelectionChangeResetsJsonScroll(bool closeBeforeSelecting)
+        {
+            var nodeEditor = Object.FindAnyObjectByType<NodeEditorController>();
+            var inputField = nodeEditor.GetComponentInChildren<TMP_InputField>();
+            var previousUseKeybind = Settings.Instance.NodeEditor_UseKeybind;
+            Settings.Instance.NodeEditor_UseKeybind = true;
+
+            try
+            {
+                var groupJson = JSON.Parse(@"{ ""b"": 2, ""g"": 1, ""e"": [ { ""f"": { ""f"": 1, ""p"": 1 }, ""e"": [] } ] }");
+                var events = groupJson["e"][0]["e"].AsArray;
+                for (var i = 0; i < 64; i++)
+                    events.Add(JSON.Parse($"{{\"b\":{i},\"c\":0,\"s\":1,\"i\":0}}"));
+
+                var group = BeatmapFactory.LightColorEventBoxGroups(groupJson);
+                PlaceGlsGroup(group);
+                var basicEvent = PlaceUtils.Place(new BaseEvent
+                {
+                    JsonTime = 2,
+                    Type = (int)EventTypeValue.Event0,
+                    Value = (int)LightValue.Off
+                });
+
+                nodeEditor.SendMessage("UpdateGroup", true);
+                SelectionController.Select(group);
+                yield return null;
+                Canvas.ForceUpdateCanvases();
+
+                Assert.That(inputField.verticalScrollbar.size, Is.LessThan(0.5f), "The GLS JSON must exceed the viewport.");
+                inputField.caretPosition = inputField.text.Length;
+                inputField.verticalScrollbar.value = 0.8f;
+                Assert.That(inputField.textComponent.rectTransform.anchoredPosition.y, Is.GreaterThan(0f));
+
+                if (closeBeforeSelecting)
+                {
+                    nodeEditor.Close();
+                    yield return null;
+                }
+
+                SelectionController.Select(basicEvent);
+                if (closeBeforeSelecting)
+                    nodeEditor.SendMessage("UpdateGroup", true);
+
+                yield return null;
+                Canvas.ForceUpdateCanvases();
+
+                Assert.AreEqual(basicEvent.ToJson().ToString(2).Replace("\r", ""), inputField.text);
+                Assert.That(
+                    inputField.textComponent.rectTransform.anchoredPosition.y,
+                    Is.EqualTo(0f).Within(0.01f),
+                    "The new JSON must start at the top of the viewport.");
+                Assert.That(inputField.verticalScrollbar.value, Is.EqualTo(0f).Within(0.001f));
+                Assert.That(
+                    inputField.verticalScrollbar.size,
+                    Is.EqualTo(1f).Within(0.001f),
+                    "The scrollbar must reflect the smaller JSON height.");
+                Assert.AreEqual(0, inputField.caretPosition);
+            }
+            finally
+            {
+                nodeEditor.Close();
+                Settings.Instance.NodeEditor_UseKeybind = previousUseKeybind;
+                NodeEditorController.IsActive = true;
+            }
+        }
+
         [Test]
         public void JsonMerge()
         {

@@ -52,10 +52,8 @@ namespace Tests.Editor
 
         // Empty boxes claim their lights at beat 0 but must not turn them on before the first color event at
         // beat 9.
-        [Test]
-        public void SparseFirstGroupPlaybackStaysOffBeforeFirstEvent()
+        private void AssertSparseFirstGroupPlaybackStaysOffBeforeFirstEvent()
         {
-            LoadPlayback(SparseFirstGroupStrobeMapJson);
             Assert.That(ColorAt(0, 4f).a, Is.EqualTo(0f).Within(0.001f));
             Assert.That(ColorAt(0, 8.9f).a, Is.EqualTo(0f).Within(0.001f));
             Assert.That(ColorAt(3, 4f).a, Is.GreaterThan(0.1f));
@@ -65,7 +63,7 @@ namespace Tests.Editor
         // The incoming beat-9 ribbon may show previously lit lights, but lights with no preceding event must
         // stay dark.
         [Test]
-        public void SparseFirstGroupRibbonLeavesUnseenLightsDark()
+        public void SparseFirstGroupKeepsPlaybackAndRibbonsDarkUntilEachLightsFirstEvent()
         {
             LoadPlayback(SparseFirstGroupStrobeMapJson);
             var ribbonObject = new GameObject("Sparse first group incoming ribbon");
@@ -92,23 +90,23 @@ namespace Tests.Editor
                 Object.DestroyImmediate(material);
                 Object.DestroyImmediate(ribbonObject);
             }
+
+            AssertSparseFirstGroupPlaybackStaysOffBeforeFirstEvent();
+            AssertDelayedFirstColorEventKeepsLightOffUntilItsOwnBeat();
+            AssertDelayedFirstColorEventHasNoPrematureIncomingRibbon();
         }
 
         // A first node at beat 0.5 must not turn on at its group's beat-0 start.
-        [Test]
-        public void DelayedFirstColorEventKeepsLightOffUntilItsOwnBeat()
+        private void AssertDelayedFirstColorEventKeepsLightOffUntilItsOwnBeat()
         {
-            LoadPlayback(SparseFirstGroupStrobeMapJson);
             Assert.That(ColorAt(4, 0.25f).a, Is.EqualTo(0f).Within(0.001f));
             Assert.That(ColorAt(4, 0.75f).a, Is.GreaterThan(0.1f));
             Assert.That(ColorAt(3, 0.25f).a, Is.GreaterThan(0.1f));
         }
 
         // The first node at beat 0.5 has no preceding color to draw before it.
-        [Test]
-        public void DelayedFirstColorEventHasNoPrematureIncomingRibbon()
+        private void AssertDelayedFirstColorEventHasNoPrematureIncomingRibbon()
         {
-            LoadPlayback(SparseFirstGroupStrobeMapJson);
             var delayed = Node(0, 4);
             var ribbonObject = new GameObject("Delayed first color incoming ribbon");
             try
@@ -128,10 +126,8 @@ namespace Tests.Editor
         }
 
         // Instant first nodes preserve the sentinel black and have no incoming transition ribbon.
-        [Test]
-        public void FirstInstantNodeRemainsOffUntilItsBeatAndHasNoIncomingRibbon()
+        private void AssertFirstInstantNodeRemainsOffUntilItsBeatAndHasNoIncomingRibbon()
         {
-            LoadPlayback(InstantHeadMapJson);
             Assert.That(ColorAt(0, 25f).a, Is.EqualTo(0f).Within(0.001f),
                 "GLS lights must remain off before their first authored event.");
             var ribbonObject = new GameObject("First node incoming ribbon");
@@ -196,16 +192,9 @@ namespace Tests.Editor
                     "An initial sentinel must not become a visible incoming ribbon source.");
         }
 
-        // The last authored node's segment keeps every light lit until the song ends, so its ribbon must extend past the node instead of ending there.
-        [TestCase(0, 47f)]
-        [TestCase(1, 60f)]
-        [TestCase(7, 99.5f)]
-        public void LitTailExtendsOutgoingRibbonToSongEnd(int light, float beat) =>
-            AssertRibbonPixels(2, 0, 0, beat, light);
-
-        // The held tail must also retain its source group, or the visible strip disappears when the node scrolls offscreen.
+        // A held tail needs both its ribbon pixels and its source group after the final node scrolls offscreen.
         [Test]
-        public void LitTailRetainsSourceGroupUntilSongEnd()
+        public void LitTailRendersAndRetainsSourceGroupUntilSongEnd()
         {
             var final = Node(2);
             var timeline = GLSEventCommon.GetColorTimeline(final, LightCount);
@@ -216,15 +205,22 @@ namespace Tests.Editor
             GLSEventCommon.GetColorTransitionSourceGroupsAt(SongTime(80f), null, retained);
             Assert.IsTrue(retained.Contains(map.LightColorEventBoxGroups[2]),
                 "The final node's group must stay loaded while its held tail ribbon remains visible.");
+
+            foreach (var (light, beat) in new[] { (0, 47f), (1, 60f), (7, 99.5f) })
+            {
+                AssertRibbonPixels(2, 0, 0, beat, light);
+            }
         }
 
         // After a cross-group takeover the new last node holds every light; its tail must still reach the song end.
-        [TestCase(0, 25f)]
-        [TestCase(7, 60f)]
-        public void InterruptedTailExtendsAfterTakeover(int light, float beat)
+        [Test]
+        public void InterruptedTailExtendsAfterTakeover()
         {
             LoadPlayback(InterruptedMapJson);
-            AssertRibbonPixels(2, 0, 0, beat, light);
+            foreach (var (light, beat) in new[] { (0, 25f), (7, 60f) })
+            {
+                AssertRibbonPixels(2, 0, 0, beat, light);
+            }
         }
 
         // A lane that only holds black has nothing to show: no tail ribbon and no retention past the last lit segment.
@@ -257,11 +253,8 @@ namespace Tests.Editor
 
         // A transition-type first node is preceded only by the dark sentinel, so neither box's
         // first node may render an inner incoming ribbon.
-        [TestCase(0)]
-        [TestCase(1)]
-        public void FirstNodesHaveNoInnerIncomingRibbon(int box)
+        private void AssertFirstNodesHaveNoInnerIncomingRibbon(int box)
         {
-            LoadAlternatingChunks();
             var ribbonObject = new GameObject("First node inner incoming ribbon");
             try
             {
@@ -277,11 +270,15 @@ namespace Tests.Editor
             }
         }
 
-        // The first node has no incoming ribbon in the outer view either.
         [Test]
-        public void FirstNodeHasNoOuterIncomingRibbon()
+        public void FirstNodesHaveNoInnerOrOuterIncomingRibbon()
         {
             LoadAlternatingChunks();
+            for (var box = 0; box < 2; box++)
+            {
+                AssertFirstNodesHaveNoInnerIncomingRibbon(box);
+            }
+
             var collection = Object.FindAnyObjectByType<GLSGroupColorGridContainer>();
             var owner = (GLSGroupContainer)collection.CreateContainer();
             try
@@ -305,10 +302,8 @@ namespace Tests.Editor
 
         // A lone transition node lights at its own beat and holds after it, but nothing precedes
         // it, so no incoming ribbon may render before it.
-        [Test]
-        public void SoloTransitionNodeHoldsAfterItsBeatWithoutIncoming()
+        private void AssertSoloTransitionNodeHoldsAfterItsBeatWithoutIncoming()
         {
-            LoadPlayback(SoloTransitionMapJson);
             var ribbonObject = new GameObject("Solo node incoming ribbon");
             try
             {
@@ -327,10 +322,8 @@ namespace Tests.Editor
 
         // Nothing precedes the first node, so its group must not be retained before its own beat;
         // the held tail still keeps the group loaded afterwards.
-        [Test]
-        public void FirstNodeGroupIsNotRetainedBeforeItsBeat()
+        private void AssertFirstNodeGroupIsNotRetainedBeforeItsBeat()
         {
-            LoadPlayback(SoloTransitionMapJson);
             var node = Node(0);
             var timeline = GLSEventCommon.GetColorTimeline(node, LightCount);
             Assert.IsTrue(timeline.TryGetBounds(node, out var start, out _));
@@ -348,7 +341,7 @@ namespace Tests.Editor
         // A first Linear node at beat 50 stays dark until that beat; the initial off state must not create an
         // early fade-in.
         [Test]
-        public void InterpolatedFirstColorEventKeepsLightsOffUntilItsBeat()
+        public void FirstTransitionNodeStartsPlaybackRibbonsAndRetentionAtItsOwnBeat()
         {
             LoadPlayback(SoloTransitionMapJson);
             foreach (var beat in new[] { 25f, 49f })
@@ -391,6 +384,8 @@ namespace Tests.Editor
             Assert.IsTrue(GLSEventCommon.TryGetColorRibbonBounds(Node(0), LightCount, out var start, out _));
             Assert.That(start, Is.EqualTo(Node(0).SongBpmTime).Within(0.001f),
                 "Retention must begin at the first node itself, not at the pre-map sentinel.");
+            AssertSoloTransitionNodeHoldsAfterItsBeatWithoutIncoming();
+            AssertFirstNodeGroupIsNotRetainedBeforeItsBeat();
         }
 
         // An instant first node keeps the pre-map black, so neither an incoming ribbon nor early retention may appear.
@@ -418,6 +413,7 @@ namespace Tests.Editor
                 "Retention must begin at the node itself, not at the pre-map sentinel.");
             Assert.That(end, Is.GreaterThan(SongTime(99f)),
                 "The instant node's held output still needs its tail interval through the song end.");
+            AssertFirstInstantNodeRemainsOffUntilItsBeatAndHasNoIncomingRibbon();
         }
 
         // A first node stays dark to its own beat even when a BPM event rescales song time;
@@ -446,43 +442,45 @@ namespace Tests.Editor
         }
 
         // B and C need the preceding group's incoming strips in their own inner lanes without losing their outgoing ribbons.
-        [TestCase(0)]
-        [TestCase(1)]
-        public void InnerFirstNodeHasIncomingRibbonFromA(int box)
+        [Test]
+        public void InnerFirstNodesHaveIncomingRibbonFromA()
         {
-            var collection = Object.FindAnyObjectByType<GLSEventGridContainer>();
-            var container = (GLSEventContainer)collection.CreateContainer();
-            var innerAppearance = ScriptableObject.CreateInstance<GLSEventAppearanceSO>();
-            try
+            for (var box = 0; box < 2; box++)
             {
-                container.ObjectData = Node(1, box);
-                container.Setup();
-                container.GlsLightCount = LightCount;
-                typeof(GLSEventAppearanceSO).GetField("eventAppearance", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(innerAppearance, appearance);
-                innerAppearance.SetAppearance(container);
-                container.UpdateGridPosition();
-                innerAppearance.UpdateTransitionRibbon(container, _ => false);
-                var incoming = false;
-                var outgoing = false;
-                foreach (var ribbon in container.GetComponentsInChildren<LightGradientController>(true))
+                var collection = Object.FindAnyObjectByType<GLSEventGridContainer>();
+                var container = (GLSEventContainer)collection.CreateContainer();
+                var innerAppearance = ScriptableObject.CreateInstance<GLSEventAppearanceSO>();
+                try
                 {
-                    if (!ribbon.gameObject.activeSelf)
-                        continue;
-                    if (ribbon.transform.localPosition.z < -0.1f)
-                        incoming = true;
-                    else
-                        outgoing = true;
+                    container.ObjectData = Node(1, box);
+                    container.Setup();
+                    container.GlsLightCount = LightCount;
+                    typeof(GLSEventAppearanceSO).GetField("eventAppearance", BindingFlags.Instance | BindingFlags.NonPublic)
+                        .SetValue(innerAppearance, appearance);
+                    innerAppearance.SetAppearance(container);
+                    container.UpdateGridPosition();
+                    innerAppearance.UpdateTransitionRibbon(container, _ => false);
+                    var incoming = false;
+                    var outgoing = false;
+                    foreach (var ribbon in container.GetComponentsInChildren<LightGradientController>(true))
+                    {
+                        if (!ribbon.gameObject.activeSelf)
+                            continue;
+                        if (ribbon.transform.localPosition.z < -0.1f)
+                            incoming = true;
+                        else
+                            outgoing = true;
+                    }
+                    Assert.IsTrue(incoming,
+                        $"Inner box {box} must show A's incoming transition on its own controlled strips.");
+                    Assert.IsTrue(outgoing,
+                        $"Inner box {box} must retain its outgoing transition while displaying the cross-group incoming one.");
                 }
-                Assert.IsTrue(incoming,
-                    $"Inner box {box} must show A's incoming transition on its own controlled strips.");
-                Assert.IsTrue(outgoing,
-                    $"Inner box {box} must retain its outgoing transition while displaying the cross-group incoming one.");
-            }
-            finally
-            {
-                Object.DestroyImmediate(container.gameObject);
-                Object.DestroyImmediate(innerAppearance);
+                finally
+                {
+                    Object.DestroyImmediate(container.gameObject);
+                    Object.DestroyImmediate(innerAppearance);
+                }
             }
         }
     }

@@ -41,35 +41,6 @@ namespace Tests.Editor
             }
         }
 
-        [TestCase(0.01f)]
-        [TestCase(0.02f)]
-        [TestCase(0.03f)]
-        [TestCase(0.34f)]
-        [TestCase(0.36f)]
-        [TestCase(0.44f)]
-        [TestCase(0.46f)]
-        [TestCase(0.54f)]
-        [TestCase(0.56f)]
-        [TestCase(0.64f)]
-        [TestCase(0.66f)]
-        [TestCase(0.97f)]
-        [TestCase(0.98f)]
-        [TestCase(0.99f)]
-        public void PulseWidthIsContinuousAtTheExtremesAndMiddle(float pulseWidth)
-        {
-            var instance = GLSStrobePulseWidthIconTest.CreateIcon(EaseType.Linear, pulseWidth);
-            try
-            {
-                var renderer = instance.transform.Find("Secondary Icon Side/Strobe Icon Surface")
-                    .GetComponent<GLSStrobeIconRenderer>();
-                Assert.That(renderer.CurveParameters.y, Is.EqualTo(pulseWidth));
-            }
-            finally
-            {
-                Object.DestroyImmediate(instance);
-            }
-        }
-
         [TestCase(0f)]
         [TestCase(1f)]
         public void EndpointCyclesDrawTheVerticalReset(float pulseWidth)

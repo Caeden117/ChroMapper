@@ -46,19 +46,19 @@ public class ColorPicker : MonoBehaviour
     public float H
     {
         get => hue;
-        set => AssignHsv(value, saturation, brightness, false);
+        set => AssignHsv(value, saturation, brightness);
     }
 
     public float S
     {
         get => saturation;
-        set => AssignHsv(hue, value, brightness, false);
+        set => AssignHsv(hue, value, brightness);
     }
 
     public float V
     {
         get => brightness;
-        set => AssignHsv(hue, saturation, value, false);
+        set => AssignHsv(hue, saturation, value);
     }
 
     public float R
@@ -150,7 +150,7 @@ public class ColorPicker : MonoBehaviour
         brightness = color.NormalizedV;
     }
 
-    private void AssignHsv(float newHue, float newSaturation, float newBrightness, bool roundChannels)
+    private void AssignHsv(float newHue, float newSaturation, float newBrightness)
     {
         if (hue == newHue && saturation == newSaturation && brightness == newBrightness)
             return;
@@ -160,20 +160,23 @@ public class ColorPicker : MonoBehaviour
         brightness = newBrightness;
         var color = HSVUtil.ConvertHsvToRgb(hue * 360, saturation, brightness, alpha);
 
-        // HSV sliders must round their generated RGB channels, while typed HSV values keep their precision.
-        red = roundChannels
-            ? RoundChannel(color.r)
-            : color.r;
-        green = roundChannels
-            ? RoundChannel(color.g)
-            : color.g;
-        blue = roundChannels
-            ? RoundChannel(color.b)
-            : color.b;
+        // HSV edits generate new RGB channels. Only direct RGB entry and loaded colors retain extra precision.
+        red = RoundChannel(color.r);
+        green = RoundChannel(color.g);
+        blue = RoundChannel(color.b);
         SendChangedEvent();
     }
 
     private static float RoundChannel(float value) => (float)Math.Round(value, 3);
+
+    public void AssignRoundedRgb(Color color)
+    {
+        CurrentColor = new Color(
+            RoundChannel(color.r),
+            RoundChannel(color.g),
+            RoundChannel(color.b),
+            color.a);
+    }
 
     private void SendChangedEvent(bool updateChroma = true)
     {
@@ -187,7 +190,7 @@ public class ColorPicker : MonoBehaviour
 
     public void AssignColor(ColorValues type, float value, bool roundChannels)
     {
-        // Text and loaded colors bypass quantization. Only slider callbacks opt into three-decimal channels.
+        // Direct channel text keeps its precision. Slider callbacks round the channel being edited.
         if (roundChannels && type is ColorValues.R or ColorValues.G or ColorValues.B or ColorValues.A)
             value = RoundChannel(value);
 
@@ -206,13 +209,13 @@ public class ColorPicker : MonoBehaviour
                 A = value;
                 break;
             case ColorValues.Hue:
-                AssignHsv(value, saturation, brightness, roundChannels);
+                AssignHsv(value, saturation, brightness);
                 break;
             case ColorValues.Saturation:
-                AssignHsv(hue, value, brightness, roundChannels);
+                AssignHsv(hue, value, brightness);
                 break;
             case ColorValues.Value:
-                AssignHsv(hue, saturation, value, roundChannels);
+                AssignHsv(hue, saturation, value);
                 break;
         }
     }

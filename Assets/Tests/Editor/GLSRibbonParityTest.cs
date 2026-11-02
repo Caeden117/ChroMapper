@@ -69,24 +69,31 @@ namespace Tests.Editor
         };
 
         // The first source fans out to B/C, and C/final B each keep only their four owned strips until D.
-        [TestCase(0, 0, 0, 5f)]
-        [TestCase(0, 0, 0, 20f)]
-        [TestCase(1, 0, 0, 14.35f)]
-        [TestCase(1, 0, 2, 33.1f)]
-        [TestCase(1, 0, 3, 42.1f)]
-        [TestCase(1, 1, 0, 23.35f)]
-        [TestCase(1, 1, 0, 30.15f)]
-        [TestCase(1, 1, 0, 45.999f)]
-        public void RibbonPixelsMatchEachOwnedPreviewLight(int group, int box, int node, float beat) =>
-            AssertRibbonPixels(group, box, node, beat, -1);
+        [Test]
+        public void RibbonPixelsMatchEachOwnedPreviewLight()
+        {
+            foreach (var (group, box, node, beat) in new[]
+            {
+                (0, 0, 0, 5f), (0, 0, 0, 20f), (1, 0, 0, 14.35f), (1, 0, 2, 33.1f),
+                (1, 0, 3, 42.1f), (1, 1, 0, 23.35f), (1, 1, 0, 30.15f), (1, 1, 0, 45.999f)
+            })
+            {
+                AssertRibbonPixels(group, box, node, beat, -1);
+            }
+        }
 
         // Probe odd strips directly so a wrong even-light mask cannot hide distribution/easing failures later in the loop.
-        [TestCase(0, 0, 7, 23.6f)]
-        [TestCase(1, 1, 1, 23.35f)]
-        [TestCase(1, 1, 7, 24.2f)]
-        [TestCase(1, 1, 3, 31.6f)]
-        public void DistributedTimingAndIndependentEasingsMatchPreview(int group, int box, int light, float beat) =>
-            AssertRibbonPixels(group, box, 0, beat, light);
+        [Test]
+        public void DistributedTimingAndIndependentEasingsMatchPreview()
+        {
+            foreach (var (group, box, light, beat) in new[]
+            {
+                (0, 0, 7, 23.6f), (1, 1, 1, 23.35f), (1, 1, 7, 24.2f), (1, 1, 3, 31.6f)
+            })
+            {
+                AssertRibbonPixels(group, box, 0, beat, light);
+            }
+        }
 
         // Instant destinations ignore their stored transition-only metadata and still show the preceding held/strobing strip.
         [Test]
@@ -149,16 +156,8 @@ namespace Tests.Editor
         public void EveryStrobeEasingMatchesRibbonOutput() =>
             AssertEveryEasingMatchesRibbonOutput(RibbonEasingTrack.Strobe);
 
-        [TestCase(0.9f, 0.75f, false, 1f)]
-        [TestCase(0.9f, 0.95f, false, 0f)]
-        [TestCase(0f, 0.25f, false, 0f)]
-        [TestCase(1f, 0.75f, false, 1f)]
-        [TestCase(0.9f, 0.45f, true, 0.875f)]
-        [TestCase(0.9f, 0.95f, true, 0.125f)]
-        [TestCase(0.5f, 0.75f, true, 0.125f)]
-        [TestCase(0f, 0.25f, true, 0.015625f)]
-        [TestCase(1f, 0.25f, true, 0.984375f)]
-        public void StrobePulseWidthRibbonPixelsMatchIndependentWaveform(float pulseWidth, float phase, bool fade, float expectedAlpha)
+        internal static void AssertStrobePulseWidthRibbonPixelsMatchIndependentWaveform(
+            float pulseWidth, float phase, bool fade, float expectedAlpha)
         {
             var texture = new Texture2D(1, 9, TextureFormat.RGBAFloat, false, true);
             var material = new Material(Shader.Find("ChroMapper/Object/Basic Gradient"));
@@ -190,14 +189,8 @@ namespace Tests.Editor
             }
         }
 
-        [TestCase(0.1f, 0.9f, 0.25f, false)]
-        [TestCase(0.9f, 0.1f, 0.75f, false)]
-        [TestCase(0.1f, 0.9f, 0.25f, true)]
-        [TestCase(0.9f, 0.1f, 0.75f, true)]
-        [TestCase(0.5f, 0.9f, 0.75f, false)]
-        [TestCase(0.9f, 0.5f, 0.75f, false)]
-        [TestCase(0f, 1f, 0.25f, false)]
-        public void StrobePulseWidthTransitionRibbonUsesBothEndpoints(float from, float to, float progress, bool fade)
+        internal static void AssertStrobePulseWidthTransitionRibbonUsesBothEndpoints(
+            float from, float to, float progress, bool fade)
         {
             var texture = new Texture2D(1, 9, TextureFormat.RGBAFloat, false, true);
             var material = new Material(Shader.Find("ChroMapper/Object/Basic Gradient"));
@@ -273,78 +266,35 @@ namespace Tests.Editor
 
         // Near the blue destination, ribbons must match the lasers' washed-out blue. Even lights transition
         // from beat 39 to 46; odd lights transition from beat 24 to 46.
-        [TestCase(0, 0, 3, 44f)]
-        [TestCase(0, 0, 3, 45f)]
-        [TestCase(0, 0, 3, 45.5f)]
-        [TestCase(0, 1, 1, 44f)]
-        [TestCase(0, 1, 1, 45f)]
-        [TestCase(0, 1, 1, 45.5f)]
-        public void WashedOutColorDistributionRibbonMatchesPreviewLight(int group, int box, int node, float beat)
-        {
-            LoadPlayback(ReportedWaveMapJson);
-            // The second box owns odd lights and uses equal-brightness RGB endpoints, so those strips must
-            // retain their peak intensity.
-            System.Func<int, bool> expectsPeakCompensation = box == 1
-                ? light => light % 2 == 1
-                : _ => false;
-            var expectedPreview = ReportedWaveExpectedPreview[beat];
-            System.Func<int, bool> expectedOwnership = box == 0
-                ? light => light % 2 == 0
-                : light => light % 2 == 1;
-            AssertRibbonPixels(
-                group,
-                box,
-                node,
-                beat,
-                -1,
-                expectsPeakCompensation,
-                light => expectedPreview[light],
-                expectedOwnership);
-        }
-
         [Test]
-        public void DumpStripVsLightValues()
+        public void WashedOutColorDistributionRibbonMatchesPreviewLight()
         {
             LoadPlayback(ReportedWaveMapJson);
-            var lightMaterial = GLSColorTransitionCacheTest.CreateLightSampleMaterial();
-            var sb = new StringBuilder();
-            foreach (var beat in new[] { 43f, 44f, 45f })
+            foreach (var (group, box, node, beat) in new[]
             {
-                sb.AppendLine($"=== beat {beat} ===");
-                for (var light = 0; light < LightCount; light++)
-                {
-                    var live = ColorAt(light, beat);
-                    lightMaterial.SetColor("_Color", live);
-                    var laser = GLSColorTransitionCacheTest.RenderGradientPixel(lightMaterial, 0.5f, 0.5f);
-                    var state = StateAt(light, beat);
-                    sb.AppendLine($"light={light} live={live} laser={laser} owner={state?.Base?.JsonTime} grp={state?.Base?.EventBoxGroupData?.JsonTime} boxIdx={(state?.Base?.EventBoxData as BaseLightColorEventBox)?.BeatDistribution}");
-                }
-
-                for (var box = 0; box < map.LightColorEventBoxGroups[0].Boxes.Count; box++)
-                {
-                    for (var node = 0; node < map.LightColorEventBoxGroups[0].Boxes[box].Events.Length; node++)
-                    {
-                        var source = Node(0, box, node);
-                        DumpRibbon(sb, $"out b{box}n{node}@{source.JsonTime}", source,
-                            (r, s) => GLSEventCommon.UpdateColorTransitionRibbon(r, s, appearance, _ => false, LightCount), beat);
-                        DumpRibbon(sb, $"in b{box}n{node}@{source.JsonTime}", source,
-                            (r, s) => GLSEventCommon.UpdateIncomingColorTransitionRibbon(r, s, appearance, _ => false, LightCount), beat);
-                    }
-                }
-
-                // The outer lane previews aggregate every same-time box into one ribbon per group node.
-                foreach (var group in map.LightColorEventBoxGroups)
-                {
-                    var representative = group.Boxes.SelectMany(b => b.Events).OrderBy(e => e.RelativeJsonTime).FirstOrDefault();
-                    if (representative == null) continue;
-                    DumpRibbon(sb, $"aggOut g{group.JsonTime}", representative,
-                        (r, s) => GLSEventCommon.UpdateColorTransitionRibbon(r, s, appearance, _ => false, LightCount, aggregateSameTimeBoxes: true), beat);
-                    DumpRibbon(sb, $"aggIn g{group.JsonTime}", representative,
-                        (r, s) => GLSEventCommon.UpdateIncomingColorTransitionRibbon(r, s, appearance, _ => false, LightCount, aggregateSameTimeBoxes: true), beat);
-                }
+                (0, 0, 3, 44f), (0, 0, 3, 45f), (0, 0, 3, 45.5f),
+                (0, 1, 1, 44f), (0, 1, 1, 45f), (0, 1, 1, 45.5f)
+            })
+            {
+                // The second box owns odd lights and uses equal-brightness RGB endpoints, so those strips must
+                // retain their peak intensity.
+                System.Func<int, bool> expectsPeakCompensation = box == 1
+                    ? light => light % 2 == 1
+                    : _ => false;
+                var expectedPreview = ReportedWaveExpectedPreview[beat];
+                System.Func<int, bool> expectedOwnership = box == 0
+                    ? light => light % 2 == 0
+                    : light => light % 2 == 1;
+                AssertRibbonPixels(
+                    group,
+                    box,
+                    node,
+                    beat,
+                    -1,
+                    expectsPeakCompensation,
+                    light => expectedPreview[light],
+                    expectedOwnership);
             }
-            Debug.Log(sb.ToString());
-            Object.DestroyImmediate(lightMaterial);
         }
 
         // At frequency 20, integer and half-beat samples always land on phase zero. Sample the full cycle to
@@ -639,160 +589,5 @@ namespace Tests.Editor
             }
         }
 
-        [Test]
-        public void DumpStripImage()
-        {
-            LoadPlayback(ReportedWaveMapJson);
-            var objects = new List<GameObject>();
-            try
-            {
-                // Composite every strip that covers the [39,46] lane region like the scene does:
-                // each box's outgoing strip plus the blue destination node's incoming strip.
-                var sources = new List<(string label, BaseLightColorBase node, bool incoming)>
-                {
-                    ("out b0n3", Node(0, 0, 3), false),
-                    ("out b1n1", Node(0, 1, 1), false),
-                };
-                var blueNode = map.LightColorEventBoxGroups
-                    .SelectMany(g => g.Boxes.SelectMany(b => b.Events))
-                    .FirstOrDefault(e => Mathf.Approximately((float)e.JsonTime, 46f));
-                if (blueNode != null)
-                {
-                    sources.Add(("in b46", blueNode, true));
-                }
-
-                var materials = new List<(string label, Material material, float start, float duration)>();
-                foreach (var (label, node, incoming) in sources)
-                {
-                    var ribbonObject = new GameObject($"strip {label}");
-                    objects.Add(ribbonObject);
-                    var ribbon = GLSColorTransitionCacheTest.CreateRibbonController(ribbonObject, out var renderer);
-                    if (incoming)
-                    {
-                        GLSEventCommon.UpdateIncomingColorTransitionRibbon(ribbon, node, appearance, _ => false, LightCount);
-                    }
-                    else
-                    {
-                        GLSEventCommon.UpdateColorTransitionRibbon(ribbon, node, appearance, _ => false, LightCount);
-                    }
-
-                    if (!ribbonObject.activeSelf)
-                    {
-                        Debug.Log($"{label}: hidden");
-                        continue;
-                    }
-
-                    var properties = new MaterialPropertyBlock();
-                    renderer.GetPropertyBlock(properties);
-                    materials.Add((label, GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties),
-                        ribbon.ColorTimelineStart, ribbon.ColorTimelineDuration));
-                    Debug.Log($"{label}: span=[{ribbon.ColorTimelineStart},{ribbon.ColorTimelineStart + ribbon.ColorTimelineDuration}]");
-                }
-
-                const int columns = 140;
-                const int lanes = 8;
-                const float windowStart = 39f;
-                const float windowEnd = 46f;
-                var rt = new RenderTexture(columns, lanes, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-                var read = new Texture2D(columns, lanes, TextureFormat.RGBA32, false, true);
-                try
-                {
-                    rt.Create();
-                    RenderTexture.active = rt;
-                    GL.Clear(true, true, Color.black);
-                    GL.PushMatrix();
-                    GL.LoadOrtho();
-                    foreach (var (label, material, start, duration) in materials)
-                    {
-                        var u0 = (SongTime(windowStart) - start) / duration;
-                        var u1 = (SongTime(windowEnd) - start) / duration;
-                        var mesh = new Mesh
-                        {
-                            vertices = new[] { new Vector3(0, 0), new Vector3(1, 0), new Vector3(1, 1), new Vector3(0, 1) },
-                            triangles = new[] { 0, 1, 2, 0, 2, 3 },
-                            uv = new[]
-                            {
-                                new Vector2(u0, 0), new Vector2(u1, 0), new Vector2(u1, 1), new Vector2(u0, 1)
-                            }
-                        };
-                        material.SetPass(0);
-                        Graphics.DrawMeshNow(mesh, Matrix4x4.identity);
-                        Object.DestroyImmediate(mesh);
-                    }
-                    GL.PopMatrix();
-                    read.ReadPixels(new Rect(0, 0, columns, lanes), 0, 0, false);
-                    read.Apply(false, false);
-                }
-                finally
-                {
-                    RenderTexture.active = null;
-                }
-
-                var sb = new StringBuilder();
-                for (var x = 0; x < columns; x += 4)
-                {
-                    var beat = windowStart + ((x / (float)(columns - 1)) * (windowEnd - windowStart));
-                    sb.Append($"t={beat:0.00}: ");
-                    for (var y = lanes - 1; y >= 0; y--)
-                    {
-                        var p = read.GetPixel(x, y).gamma;
-                        sb.Append($"L{lanes - 1 - y}[{p.r:0.00},{p.g:0.00},{p.b:0.00}] ");
-                    }
-                    sb.AppendLine();
-                }
-                Debug.Log(sb.ToString());
-                Object.DestroyImmediate(read);
-                rt.Release();
-                Object.DestroyImmediate(rt);
-                foreach (var (_, material, _, _) in materials)
-                {
-                    Object.DestroyImmediate(material);
-                }
-            }
-            finally
-            {
-                foreach (var o in objects)
-                {
-                    Object.DestroyImmediate(o);
-                }
-            }
-        }
-
-        private void DumpRibbon(
-            StringBuilder sb, string label, BaseLightColorBase source,
-            System.Action<LightGradientController, BaseLightColorBase> update, float beat)
-        {
-            var ribbonObject = new GameObject($"strip {label}");
-            try
-            {
-                var ribbon = GLSColorTransitionCacheTest.CreateRibbonController(ribbonObject, out var renderer);
-                update(ribbon, source);
-                if (!ribbonObject.activeSelf)
-                {
-                    sb.AppendLine($"strip {label}: hidden");
-                    return;
-                }
-
-                var properties = new MaterialPropertyBlock();
-                renderer.GetPropertyBlock(properties);
-                var material = GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties);
-                var start = ribbon.ColorTimelineStart;
-                var duration = ribbon.ColorTimelineDuration;
-                var progress = (SongTime(beat) - start) / duration;
-                sb.AppendLine($"strip {label} span=[{start},{start + duration}] progress={progress:0.###}");
-                for (var light = 0; light < LightCount; light++)
-                {
-                    var lane = (LightCount - light - 0.5f) / LightCount;
-                    var pixel = GLSColorTransitionCacheTest.RenderGradientPixel(material, progress, lane);
-                    sb.AppendLine($"  light={light} lane={lane:0.###} stored={pixel} presented={pixel.gamma}");
-                }
-
-                Object.DestroyImmediate(material);
-            }
-            finally
-            {
-                Object.DestroyImmediate(ribbonObject);
-            }
-        }
     }
 }

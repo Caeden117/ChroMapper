@@ -1135,6 +1135,18 @@ MonoBehaviour:
     m_Key: event.desyncwarning
     m_Metadata:
       m_Items: []
+  - m_Id: 619000074803281921
+    m_Key: eventbox.filter.sections.split
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281922
+    m_Key: eventbox.affectfirst.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281923
+    m_Key: eventbox.filter.sections.split.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

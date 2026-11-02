@@ -133,97 +133,6 @@ namespace Tests.Editor
             descriptor.FloatFxGroupEffectManager.IdToEffect.Add(DiagnosticFloatFxGroupId, floatFxEffect);
         }
 
-        [TestCase(GlsNodeKind.Color, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Color, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.Rotation, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Rotation, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.Translation, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Translation, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.FloatFx, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.FloatFx, GroupLayout.GroupSpansBpmChange)]
-        public void BpmChangeRetimesGlsGroupAndNodeSongBpmTimes(GlsNodeKind kind, GroupLayout layout)
-        {
-            PlaceBpmEvents();
-            var group = PlaceDiagnosticGroup(kind, layout);
-            var spanning = layout == GroupLayout.GroupSpansBpmChange;
-            var nodes = group.ReadOnlyBoxes[0].ReadOnlyEvents;
-
-            AssertSongBpmTime(group, spanning ? 0f : 12f, "group before the BPM edit");
-            AssertSongBpmTime(nodes[0], spanning ? 2f : 12f, "first node before the BPM edit");
-            AssertSongBpmTime(nodes[^1], spanning ? 16f : 28f, "last node before the BPM edit");
-
-            ChangeAuthoredBpmTo200();
-
-            AssertSongBpmTime(group, spanning ? 0f : 8f, "group after the BPM edit");
-            AssertSongBpmTime(nodes[0], spanning ? 2f : 8f, "first node after the BPM edit");
-            AssertSongBpmTime(nodes[^1], spanning ? 10f : 16f, "last node after the BPM edit");
-            if (spanning)
-            {
-                AssertSongBpmTime(nodes[1], 8f, "node past the edited beat after the BPM edit");
-            }
-        }
-
-        [TestCase(GlsNodeKind.Color, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Color, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.Rotation, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Rotation, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.Translation, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.Translation, GroupLayout.GroupSpansBpmChange)]
-        [TestCase(GlsNodeKind.FloatFx, GroupLayout.FutureGroup)]
-        [TestCase(GlsNodeKind.FloatFx, GroupLayout.GroupSpansBpmChange)]
-        public void BpmChangeRetimesGeneratedGlsPreviewOutput(GlsNodeKind kind, GroupLayout layout)
-        {
-            PlaceBpmEvents();
-            PlaceDiagnosticGroup(kind, layout);
-            var spanning = layout == GroupLayout.GroupSpansBpmChange;
-
-            AssertBaselinePreview(kind, spanning);
-            ChangeAuthoredBpmTo200();
-
-            if (spanning)
-            {
-                AssertPreview(
-                    kind,
-                    5f,
-                    kind == GlsNodeKind.Rotation ? 45f : 0.2f,
-                    new Color(0.5f, 0.5f, 0f, 1f),
-                    "preview at remapped song time 5");
-                AssertPreview(
-                    kind,
-                    9f,
-                    kind == GlsNodeKind.Rotation ? 180f : 0.7f,
-                    new Color(0f, 0.5f, 0.5f, 1f),
-                    "preview at remapped song time 9");
-                AssertPreview(
-                    kind,
-                    12f,
-                    kind == GlsNodeKind.Rotation ? 270f : 1f,
-                    new Color(0f, 0f, 1f, 1f),
-                    "preview at remapped song time 12");
-            }
-            else
-            {
-                AssertPreview(
-                    kind,
-                    8f,
-                    kind == GlsNodeKind.Rotation ? 30f : 0.2f,
-                    new Color(0f, 1f, 0f, 1f),
-                    "preview at remapped song time 8");
-                AssertPreview(
-                    kind,
-                    12f,
-                    kind == GlsNodeKind.Rotation ? 105f : 0.6f,
-                    new Color(0f, 0.5f, 0.5f, 1f),
-                    "preview at remapped song time 12");
-                AssertPreview(
-                    kind,
-                    20f,
-                    kind == GlsNodeKind.Rotation ? 180f : 1f,
-                    new Color(0f, 0f, 1f, 1f),
-                    "preview at remapped song time 20");
-            }
-        }
-
         [Test]
         public void BpmChangeRetainsColorTimelineAndUnaffectedPrefix()
         {
@@ -459,8 +368,63 @@ namespace Tests.Editor
             var spanning = layout == GroupLayout.GroupSpansBpmChange;
             var nodes = group.ReadOnlyBoxes[0].ReadOnlyEvents;
 
+            AssertSongBpmTime(group, spanning ? 0f : 12f, "group before the BPM edit");
+            AssertSongBpmTime(nodes[0], spanning ? 2f : 12f, "first node before the BPM edit");
+            AssertSongBpmTime(nodes[^1], spanning ? 16f : 28f, "last node before the BPM edit");
+
+            AssertBaselinePreview(kind, spanning);
             ChangeAuthoredBpmTo200();
+
+            AssertSongBpmTime(group, spanning ? 0f : 8f, "group after the BPM edit");
+            AssertSongBpmTime(nodes[0], spanning ? 2f : 8f, "first node after the BPM edit");
             AssertSongBpmTime(nodes[^1], spanning ? 10f : 16f, "last node after the BPM edit");
+            if (spanning)
+            {
+                AssertSongBpmTime(nodes[1], 8f, "node past the edited beat after the BPM edit");
+            }
+
+            if (spanning)
+            {
+                AssertPreview(
+                    kind,
+                    5f,
+                    kind == GlsNodeKind.Rotation ? 45f : 0.2f,
+                    new Color(0.5f, 0.5f, 0f, 1f),
+                    "preview at remapped song time 5");
+                AssertPreview(
+                    kind,
+                    9f,
+                    kind == GlsNodeKind.Rotation ? 180f : 0.7f,
+                    new Color(0f, 0.5f, 0.5f, 1f),
+                    "preview at remapped song time 9");
+                AssertPreview(
+                    kind,
+                    12f,
+                    kind == GlsNodeKind.Rotation ? 270f : 1f,
+                    new Color(0f, 0f, 1f, 1f),
+                    "preview at remapped song time 12");
+            }
+            else
+            {
+                AssertPreview(
+                    kind,
+                    8f,
+                    kind == GlsNodeKind.Rotation ? 30f : 0.2f,
+                    new Color(0f, 1f, 0f, 1f),
+                    "preview at remapped song time 8");
+                AssertPreview(
+                    kind,
+                    12f,
+                    kind == GlsNodeKind.Rotation ? 105f : 0.6f,
+                    new Color(0f, 0.5f, 0.5f, 1f),
+                    "preview at remapped song time 12");
+                AssertPreview(
+                    kind,
+                    20f,
+                    kind == GlsNodeKind.Rotation ? 180f : 1f,
+                    new Color(0f, 0f, 1f, 1f),
+                    "preview at remapped song time 20");
+            }
 
             PlaceUtils.Undo();
             AssertSongBpmTime(group, spanning ? 0f : 12f, "group after undoing the BPM edit");

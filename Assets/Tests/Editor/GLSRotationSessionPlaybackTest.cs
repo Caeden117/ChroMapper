@@ -118,30 +118,6 @@ namespace Tests.Editor
                 "The first placed node remained a display-only lane in the live playback cache.");
         }
 
-        // Received actions must refresh preview caches like local actions, while staying out of outbound
-        // network traffic.
-        [Test]
-        public void NetworkedRotationGroupPlacementUpdatesPreviewWithoutReload()
-        {
-            RegisterEffectWithSceneManager();
-            actionGroup = CreateGroup(0f, (0f, 90f));
-            actionGroup.ID = DiagnosticGroupId;
-            var action = new BeatmapObjectPlacementAction(
-                actionGroup,
-                Array.Empty<BaseObject>(),
-                "Place networked diagnostic GLS rotation group.")
-            {
-                Networked = true
-            };
-
-            BeatmapActionContainer.AddAction(action, true);
-
-            Assert.That(
-                Quaternion.Angle(targetObject.transform.localRotation, Quaternion.Euler(0f, 90f, 0f)),
-                Is.LessThan(0.001f),
-                "The received group reached the map but not the live GLS rotation cache.");
-        }
-
         // Remote undo removes the group by GUID; its cached GLS effect must disappear in the same operation.
         [Test]
         public void NetworkedRotationGroupUndoUpdatesPreviewWithoutReload()
@@ -175,9 +151,9 @@ namespace Tests.Editor
                 "The received undo removed the group from the map but not from the live GLS rotation cache.");
         }
 
-        // Remote redo must restore the group's cached GLS effect immediately.
+        // Check received placement before rebuilding the empty cache to isolate the redo notification.
         [Test]
-        public void NetworkedRotationGroupRedoUpdatesPreviewWithoutReload()
+        public void NetworkedRotationGroupPlacementAndRedoUpdatePreviewWithoutReload()
         {
             RegisterEffectWithSceneManager();
             actionGroup = CreateGroup(0f, (0f, 90f));
@@ -191,6 +167,12 @@ namespace Tests.Editor
             };
 
             BeatmapActionContainer.AddAction(action, true);
+
+            Assert.That(
+                Quaternion.Angle(targetObject.transform.localRotation, Quaternion.Euler(0f, 90f, 0f)),
+                Is.LessThan(0.001f),
+                "The received group reached the map but not the live GLS rotation cache.");
+
             BeatmapActionContainer.Undo(action.Guid);
 
             // Rebuild playback after undo so only the remote redo notification is under test.

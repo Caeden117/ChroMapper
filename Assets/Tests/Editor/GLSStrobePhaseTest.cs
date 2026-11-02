@@ -43,6 +43,12 @@ namespace Tests.Editor
             Assert.That(color.a, Is.EqualTo(expectedAlpha).Within(0.0001f),
                 "The pulse split and vertically flipped falling easing must control preview brightness.");
             AssertRibbonPixels(0, 0, 0, beat, 0);
+            // The independent texture probe takes normalized widths instead of raw custom-data values.
+            if (pulseWidth >= 0f && pulseWidth <= 1f)
+            {
+                GLSRibbonParityTest.AssertStrobePulseWidthRibbonPixelsMatchIndependentWaveform(
+                    pulseWidth, phase, fade, expectedAlpha);
+            }
         }
 
         [Test]
@@ -109,6 +115,12 @@ namespace Tests.Editor
             Assert.That(ColorAt(0, beat).a, Is.EqualTo(expectedAlpha).Within(0.0001f),
                 "Pulse width must use the linear strobe clock, transition to the next node, and hold on Instant or Extend.");
             AssertRibbonPixels(0, 0, 0, beat, 0);
+            // This texture probe isolates linear width interpolation without the model or timeline builder.
+            if (transition == 1)
+            {
+                GLSRibbonParityTest.AssertStrobePulseWidthTransitionRibbonUsesBothEndpoints(
+                    from, to, progress, fade);
+            }
         }
 
         // Exact beat-88/93 report: the destination starts an sf=1 strobe with a black (sb=0) alternate phase.
@@ -149,52 +161,50 @@ namespace Tests.Editor
                 {""b"":0,""c"":0,""s"":1,""i"":0,""f"":0,""sb"":0,""sf"":0,""customData"":{""color"":[1,1,0]}}]}]}]}";
 
         // A 0->1 strobe ramp over five beats accumulates 2.5 cycles; it must not finish black and reset bright at beat 93.
-        [TestCase(0)]
-        [TestCase(3)]
-        [TestCase(7)]
-        public void StartingBlackStrobeDoesNotSnapBrightAtBeat93(int light)
+        [Test]
+        public void StartingBlackStrobeDoesNotSnapBrightAtBeat93()
         {
             LoadPlayback(BlackStrobeStartMapJson);
-            var before = ColorAt(light, 92.9999f);
-            var at = ColorAt(light, 93f);
-            var after = ColorAt(light, 93.0001f);
-            Debug.Log($"[BlackStrobeStart] light={light} before={before} at={at} after={after}");
-            AssertColor(before, at, 0.002f,
-                "The beat-93 strobe must not snap from its black alternate phase to full primary brightness.");
-            AssertColor(at, after, 0.002f, "The newly active strobe must continue smoothly after its boundary.");
-            Assert.That(at.a, Is.EqualTo(0.5f).Within(0.002f), "The node's native phase-zero primary brightness must remain intact.");
+            foreach (var light in new[] { 0, 3, 7 })
+            {
+                var before = ColorAt(light, 92.9999f);
+                var at = ColorAt(light, 93f);
+                var after = ColorAt(light, 93.0001f);
+                Debug.Log($"[BlackStrobeStart] light={light} before={before} at={at} after={after}");
+                AssertColor(before, at, 0.002f,
+                    "The beat-93 strobe must not snap from its black alternate phase to full primary brightness.");
+                AssertColor(at, after, 0.002f, "The newly active strobe must continue smoothly after its boundary.");
+                Assert.That(at.a, Is.EqualTo(0.5f).Within(0.002f), "The node's native phase-zero primary brightness must remain intact.");
+            }
         }
 
         // The same authored color distributions, Back easing and phase anchor must reach every ribbon strip, not just playback.
-        [TestCase(89.25f)]
-        [TestCase(90f)]
-        [TestCase(90.5f)]
-        [TestCase(91f)]
-        [TestCase(91.5f)]
-        [TestCase(92f)]
-        [TestCase(92.999f)]
-        public void StartingBlackStrobeRibbonMatchesPreview(float beat)
+        [Test]
+        public void StartingBlackStrobeRibbonMatchesPreview()
         {
             LoadPlayback(BlackStrobeStartMapJson);
-            AssertRibbonPixels(0, 0, 0, beat, -1, _ => true);
+            foreach (var beat in new[] { 89.25f, 90f, 90.5f, 91f, 91.5f, 92f, 92.999f })
+            {
+                AssertRibbonPixels(0, 0, 0, beat, -1, _ => true);
+            }
         }
 
         // The inner lanes are the control: each keeps its own four lights and their complementary pulse phases.
-        [TestCase(100.125f)]
-        [TestCase(100.625f)]
-        public void InnerAlternatingChunkRibbonsMatchPlayback(float beat)
+        [Test]
+        public void InnerAlternatingChunkRibbonsMatchPlayback()
         {
             LoadAlternatingChunks();
-            AssertRibbonPixels(0, 0, 0, beat, -1);
-            AssertRibbonPixels(0, 1, 0, beat, -1);
+            foreach (var beat in new[] { 100.125f, 100.625f })
+            {
+                AssertRibbonPixels(0, 0, 0, beat, -1);
+                AssertRibbonPixels(0, 1, 0, beat, -1);
+            }
         }
 
         // The actual outer preview deduplicates the two timestamps, but its single ribbon must retain both boxes' owned strips.
-        [TestCase(100.125f, false)]
-        [TestCase(100.625f, false)]
-        [TestCase(100.125f, true)]
-        [TestCase(100.625f, true)]
-        public void OuterAlternatingChunkRibbonsIncludeBothBoxes(float beat, bool rebindWithoutSecondBox)
+        [TestCase(100.125f)]
+        [TestCase(100.625f)]
+        public void OuterAlternatingChunkRibbonsIncludeBothBoxes(float beat)
         {
             LoadAlternatingChunks();
             var root = new GameObject("Alternating chunk outer preview test");
@@ -215,43 +225,48 @@ namespace Tests.Editor
                 appearanceField.SetValue(outerAppearance, appearance);
                 Settings.Instance.GLSOuterTrackGhostNodeOpacity = 0.5f;
                 owner.ConfigurePreviewNodes(_ => false);
-                // Reusing the same outer renderer must clear rows formerly owned by a removed sibling box.
-                if (rebindWithoutSecondBox)
+                foreach (var rebindWithoutSecondBox in new[] { false, true })
                 {
-                    var json = JSON.Parse(AlternatingChunksMapJson);
-                    json["lightColorEventBoxGroups"][0]["e"].Remove(1);
-                    LoadPlayback(json.ToString());
-                    // Resolve GLS palette colors through the environment's ColorSchemeProvider.
-                    playback.ColorSchemeProvider.ColorScheme.EnvironmentLeftColor = Color.white;
-                    // The load-time Refresh bakes scheme colors into each tween; re-resolve them after overriding the environment color.
-                    playback.Refresh();
-                    owner.ObjectData = map.LightColorEventBoxGroups[0];
-                    owner.ConfigurePreviewNodes(_ => false);
-                }
-                var ghosts = (System.Collections.Generic.List<GLSGroupContainer>)typeof(GLSGroupContainer)
-                    .GetField("previewGhosts", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(owner);
-                Assert.AreEqual(1, ghosts.Count, "Keep one selectable preview per timestamp; do not overlay duplicate node bodies.");
-                var ribbon = owner.lightGradientController;
-                Assert.IsTrue(ribbon.gameObject.activeSelf);
-                var renderer = (MeshRenderer)typeof(LightGradientController)
-                    .GetField("meshRenderer", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ribbon);
-                var properties = new MaterialPropertyBlock();
-                renderer.GetPropertyBlock(properties);
-                material = GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties);
-                var progress = (SongTime(beat) - ribbon.ColorTimelineStart) / ribbon.ColorTimelineDuration;
-                var secondHalf = beat - Mathf.Floor(beat) >= 0.5f;
-                for (var light = 0; light < LightCount; light++)
-                {
-                    var firstBox = (light / 2) % 2 == 0;
-                    var expectedOn = firstBox == secondHalf && (!rebindWithoutSecondBox || firstBox);
-                    Assert.That(ColorAt(light, beat).a, Is.EqualTo(expectedOn ? 1f : 0f).Within(0.0001f),
-                        $"Playback control: light {light} at {beat} must belong to the expected alternating chunk.");
-                    var pixel = GLSColorTransitionCacheTest.RenderGradientPixel(material, progress,
-                        (LightCount - light - 0.5f) / LightCount);
-                    if (expectedOn)
-                        Assert.Greater(pixel.maxColorComponent, 0.05f, $"Outer preview omitted lit light {light} at {beat}.");
-                    else
-                        Assert.Less(pixel.maxColorComponent, 0.02f, $"Outer preview lit the off-phase light {light} at {beat}.");
+                    // Reusing the same outer renderer must clear rows formerly owned by a removed sibling box.
+                    if (rebindWithoutSecondBox)
+                    {
+                        var json = JSON.Parse(AlternatingChunksMapJson);
+                        json["lightColorEventBoxGroups"][0]["e"].Remove(1);
+                        LoadPlayback(json.ToString());
+                        // Resolve GLS palette colors through the environment's ColorSchemeProvider.
+                        playback.ColorSchemeProvider.ColorScheme.EnvironmentLeftColor = Color.white;
+                        // The load-time Refresh bakes scheme colors into each tween; re-resolve them after overriding the environment color.
+                        playback.Refresh();
+                        owner.ObjectData = map.LightColorEventBoxGroups[0];
+                        owner.ConfigurePreviewNodes(_ => false);
+                    }
+                    var ghosts = (System.Collections.Generic.List<GLSGroupContainer>)typeof(GLSGroupContainer)
+                        .GetField("previewGhosts", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(owner);
+                    Assert.AreEqual(1, ghosts.Count, "Keep one selectable preview per timestamp; do not overlay duplicate node bodies.");
+                    var ribbon = owner.lightGradientController;
+                    Assert.IsTrue(ribbon.gameObject.activeSelf);
+                    var renderer = (MeshRenderer)typeof(LightGradientController)
+                        .GetField("meshRenderer", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ribbon);
+                    var properties = new MaterialPropertyBlock();
+                    renderer.GetPropertyBlock(properties);
+                    material = GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties);
+                    var progress = (SongTime(beat) - ribbon.ColorTimelineStart) / ribbon.ColorTimelineDuration;
+                    var secondHalf = beat - Mathf.Floor(beat) >= 0.5f;
+                    for (var light = 0; light < LightCount; light++)
+                    {
+                        var firstBox = (light / 2) % 2 == 0;
+                        var expectedOn = firstBox == secondHalf && (!rebindWithoutSecondBox || firstBox);
+                        Assert.That(ColorAt(light, beat).a, Is.EqualTo(expectedOn ? 1f : 0f).Within(0.0001f),
+                            $"Playback control: light {light} at {beat} must belong to the expected alternating chunk.");
+                        var pixel = GLSColorTransitionCacheTest.RenderGradientPixel(material, progress,
+                            (LightCount - light - 0.5f) / LightCount);
+                        if (expectedOn)
+                            Assert.Greater(pixel.maxColorComponent, 0.05f, $"Outer preview omitted lit light {light} at {beat}.");
+                        else
+                            Assert.Less(pixel.maxColorComponent, 0.02f, $"Outer preview lit the off-phase light {light} at {beat}.");
+                    }
+                    Object.DestroyImmediate(material);
+                    material = null;
                 }
             }
             finally
@@ -265,18 +280,16 @@ namespace Tests.Editor
         }
 
         // B's no-strobe transition and both final D paths must converge to primary RGBA regardless of the residual phase.
-        [TestCase(0, 17f)]
-        [TestCase(0, 46f)]
-        [TestCase(1, 46f)]
-        [TestCase(3, 46f)]
-        [TestCase(6, 46f)]
-        [TestCase(7, 46f)]
-        public void NoStrobeTransitionConvergesBeforeItsBoundary(int light, float targetBeat)
+        [Test]
+        public void NoStrobeTransitionConvergesBeforeItsBoundary()
         {
-            var before = ColorAt(light, targetBeat - 0.0001f);
-            var after = ColorAt(light, targetBeat);
-            Debug.Log($"[GLSStrobe] light={light} target={targetBeat} before={before} after={after}");
-            AssertColor(before, after, 0.002f, "A transition must not snap from residual strobe color to primary at its boundary.");
+            foreach (var (light, targetBeat) in new[] { (0, 17f), (0, 46f), (1, 46f), (3, 46f), (6, 46f), (7, 46f) })
+            {
+                var before = ColorAt(light, targetBeat - 0.0001f);
+                var after = ColorAt(light, targetBeat);
+                Debug.Log($"[GLSStrobe] light={light} target={targetBeat} before={before} after={after}");
+                AssertColor(before, after, 0.002f, "A transition must not snap from residual strobe color to primary at its boundary.");
+            }
         }
 
         // strobeEasing is node-scoped in ChromaGLS, so C's outgoing pulse must not silently adopt D's default cubic fade.
@@ -383,9 +396,8 @@ namespace Tests.Editor
         }
 
         // A strobing final node keeps pulsing after the group; the tail strip must track the same phase as playback.
-        [TestCase(110f)]
-        [TestCase(115.25f)]
-        public void StrobingTailExtendsAndMatchesPreview(float beat)
+        [Test]
+        public void StrobingTailExtendsAndMatchesPreview()
         {
             var song = BeatSaberSongContainer.Instance;
             var originalSong = song.LoadedSong;
@@ -394,8 +406,11 @@ namespace Tests.Editor
             try
             {
                 LoadAlternatingChunks();
-                AssertRibbonPixels(0, 0, 1, beat, -1);
-                AssertRibbonPixels(0, 1, 1, beat, -1);
+                foreach (var beat in new[] { 110f, 115.25f })
+                {
+                    AssertRibbonPixels(0, 0, 1, beat, -1);
+                    AssertRibbonPixels(0, 1, 1, beat, -1);
+                }
             }
             finally
             {

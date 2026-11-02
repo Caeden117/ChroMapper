@@ -193,28 +193,26 @@ namespace Tests.Editor
             }
         }
 
-        [TestCase(0f)]
-        [TestCase(0.001f)]
-        [TestCase(0.024f)]
-        [TestCase(0.025f)]
-        [TestCase(0.074f)]
-        [TestCase(0.075f)]
-        [TestCase(0.942f)]
-        [TestCase(0.976f)]
-        [TestCase(0.999f)]
-        [TestCase(1f)]
-        public void PulseWidthKeepsItsExactValue(float pulseWidth)
+        [Test]
+        public void PulseWidthKeepsItsExactValue()
         {
-            var instance = CreateIcon(EaseType.Linear, pulseWidth);
-            try
+            foreach (var pulseWidth in new[]
             {
-                var renderer = instance.transform.Find("Secondary Icon Side/Strobe Icon Surface")
-                    .GetComponent<GLSStrobeIconRenderer>();
-                Assert.That(renderer.CurveParameters.y, Is.EqualTo(pulseWidth));
-            }
-            finally
+                0.01f, 0.02f, 0.03f, 0.34f, 0.36f, 0.44f, 0.46f, 0.54f, 0.56f, 0.64f, 0.66f, 0.97f, 0.98f, 0.99f,
+                0f, 0.001f, 0.024f, 0.025f, 0.074f, 0.075f, 0.942f, 0.976f, 0.999f, 1f
+            })
             {
-                Object.DestroyImmediate(instance);
+                var instance = CreateIcon(EaseType.Linear, pulseWidth);
+                try
+                {
+                    var renderer = instance.transform.Find("Secondary Icon Side/Strobe Icon Surface")
+                        .GetComponent<GLSStrobeIconRenderer>();
+                    Assert.That(renderer.CurveParameters.y, Is.EqualTo(pulseWidth));
+                }
+                finally
+                {
+                    Object.DestroyImmediate(instance);
+                }
             }
         }
 
@@ -282,9 +280,14 @@ namespace Tests.Editor
             foreach (var name in new[] { "GLS Event", "GLS Group" })
             {
                 var prefab = AssetDatabase.LoadAssetAtPath<GameObject>($"Assets/_Prefabs/MapEditor/Beatmap/{name}.prefab");
-                var material = new SerializedObject(prefab.GetComponent<GLSEventIconView>())
-                    .FindProperty("strobeIconMaterial").objectReferenceValue;
-                Assert.That(material, Is.SameAs(expected));
+                var strobeRenderers = new SerializedObject(prefab.GetComponent<GLSEventIconView>())
+                    .FindProperty("strobeRenderers");
+                for (var i = 0; i < strobeRenderers.arraySize; i++)
+                {
+                    var surface = strobeRenderers.GetArrayElementAtIndex(i).objectReferenceValue;
+                    var material = new SerializedObject(surface).FindProperty("material").objectReferenceValue;
+                    Assert.That(material, Is.SameAs(expected));
+                }
             }
         }
 

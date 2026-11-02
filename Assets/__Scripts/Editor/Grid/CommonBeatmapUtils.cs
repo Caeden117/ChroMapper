@@ -45,7 +45,7 @@ public static class CommonBeatmapUtils
         }
     }
 
-    public static bool TryClampTimeOffset(IEnumerable<BaseObject> objects, float requestedOffset,
+    public static bool TryClampTimeOffset(HashSet<BaseObject> objects, float requestedOffset,
         float finalJsonTime, out float offset)
     {
         var minimumOffset = float.NegativeInfinity;

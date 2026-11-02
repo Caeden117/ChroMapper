@@ -1,4 +1,5 @@
-using Beatmap.Appearances;
+﻿using Beatmap.Appearances;
+using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
@@ -26,9 +27,16 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
 
     public void TweakValue(ChainContainer c, int modifier)
     {
-        var sliceCount = Mathf.Clamp(c.ChainData.SliceCount + modifier, minChainCount, maxChainCount);
-        
-        ChainCommand.SetSliceCount(c.ChainData, sliceCount);
+        int GetSliceCount(BaseChain data) => Mathf.Clamp(data.SliceCount + modifier, minChainCount, maxChainCount);
+        if (HoverSelectionMutation.TryApply(
+                c.ChainData,
+                data => data.SliceCount = GetSliceCount(data),
+                out _))
+        {
+            return;
+        }
+
+        ChainCommand.SetSliceCount(c.ChainData, GetSliceCount(c.ChainData));
     }
 
     public void OnTweakChainSquish(InputAction.CallbackContext context)
@@ -42,11 +50,19 @@ public class BeatmapChainInputController : BeatmapInputController<ChainContainer
 
     public void TweakChainSquish(ChainContainer c, float modifier)
     {
-        var squish = Mathf.Clamp(
-            CMMath.RoundToDecimals(c.ChainData.Squish + modifier),
+        float GetSquish(BaseChain data) => Mathf.Clamp(
+            CMMath.RoundToDecimals(data.Squish + modifier),
             minChainSquish,
             maxChainSquish);
-        
-        ChainCommand.SetSquish(c.ChainData, squish);
+
+        if (HoverSelectionMutation.TryApply(
+                c.ChainData,
+                data => data.Squish = GetSquish(data),
+                out _))
+        {
+            return;
+        }
+
+        ChainCommand.SetSquish(c.ChainData, GetSquish(c.ChainData));
     }
 }

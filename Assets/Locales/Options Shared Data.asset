@@ -1509,6 +1509,14 @@ MonoBehaviour:
     m_Key: map.glsinnerpreviewshrink.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 619100100000000001
+    m_Key: map.glsaffectfirstdefault
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619100100000000002
+    m_Key: map.glsaffectfirstdefault.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

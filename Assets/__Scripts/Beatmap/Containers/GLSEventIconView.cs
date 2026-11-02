@@ -37,32 +37,7 @@ namespace Beatmap.Containers
         [SerializeField] private SpriteRenderer[] primaryRenderers;
         [SerializeField] private SpriteRenderer[] secondaryRenderers;
         [SerializeField] private SpriteRenderer[] tertiaryRenderers;
-        [SerializeField] private Material strobeIconMaterial;
-        [SerializeField, HideInInspector] private GLSStrobeIconRenderer[] strobeRenderers;
-
-        private void Awake()
-        {
-            // Ghost clones already have these surfaces. Recreating them would leave the copied surfaces
-            // registered in the draw batch.
-            if (strobeRenderers != null && strobeRenderers.Length > 0)
-                return;
-
-            strobeRenderers = new GLSStrobeIconRenderer[secondaryRenderers.Length];
-            for (var i = 0; i < secondaryRenderers.Length; i++)
-            {
-                var source = secondaryRenderers[i];
-                var surface = new GameObject("Strobe Icon Surface");
-                surface.SetActive(false);
-                surface.layer = source.gameObject.layer;
-                surface.transform.SetParent(source.transform, false);
-                surface.transform.localScale = new Vector3(0.9f, 1f, 1f);
-                var renderer = surface.AddComponent<GLSStrobeIconRenderer>();
-                renderer.Initialize(strobeIconMaterial);
-                renderer.enabled = false;
-                strobeRenderers[i] = renderer;
-                surface.SetActive(true);
-            }
-        }
+        [SerializeField] private GLSStrobeIconRenderer[] strobeRenderers;
 
         public void SetPreviewVisualParent(Transform parent) => previewVisualParent = parent;
 

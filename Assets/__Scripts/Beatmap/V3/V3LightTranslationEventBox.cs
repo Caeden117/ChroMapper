@@ -35,7 +35,13 @@ namespace Beatmap.V3
             node["d"] = box.BeatDistributionType;
             node["s"] = box.TranslationDistribution;
             node["t"] = box.TranslationDistributionType;
-            node["b"] = box.TranslationAffectFirst;
+            if (box.ShouldSerializeAffectFirst(
+                box.TranslationAffectFirst,
+                box.TranslationDistribution,
+                box.TranslationDistributionType))
+            {
+                node["b"] = box.TranslationAffectFirst;
+            }
             node["a"] = box.Axis;
             node["r"] = box.Flip;
             node["i"] = box.Easing;

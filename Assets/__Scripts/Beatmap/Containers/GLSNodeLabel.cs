@@ -8,6 +8,9 @@ namespace Beatmap.Containers
     [DisallowMultipleComponent]
     public sealed class GLSNodeLabel : MonoBehaviour
     {
+        private const int InitialCharacterCapacity = 32;
+        private const string BufferWarmupText = "0000000000000000000000000000\n\n\n";
+
         [SerializeField] private TextMeshPro display;
         [SerializeField] private GLSNodeLabelLayout layout;
         private readonly GLSNodeLabelBuffer buffer = new();
@@ -17,19 +20,24 @@ namespace Beatmap.Containers
 
         private void Awake()
         {
-            // Populate TMP's private input buffers through its public API before this pooled face is used.
-            display.SetText("0000000000000000000000000000\n\n\n");
-            display.ForceMeshUpdate(true);
-            TMP_TextInfo.Resize(ref display.textInfo.characterInfo, 32);
-            display.textInfo.meshInfo[0].ResizeMeshInfo(32);
-            display.SetText(string.Empty);
-            // Disabled TMPs normally have no mesh attached. OnEnable will attach the warmed mesh when the label is needed.
-            if (!display.enabled)
-                display.meshFilter.sharedMesh = null;
+            WarmTextBuffers();
             display.OnPreRenderText += ApplyLayout;
         }
 
         private void OnDestroy() => display.OnPreRenderText -= ApplyLayout;
+
+        // TMP's internal text buffers are runtime-only, so reserve them before this pooled face is used.
+        private void WarmTextBuffers()
+        {
+            display.SetText(BufferWarmupText);
+            display.ForceMeshUpdate(true);
+            TMP_TextInfo.Resize(ref display.textInfo.characterInfo, InitialCharacterCapacity);
+            display.textInfo.meshInfo[0].ResizeMeshInfo(InitialCharacterCapacity);
+            display.SetText(string.Empty);
+            // A disabled TMP must keep its detached mesh, so clear the one the warmup forced.
+            if (!display.enabled)
+                display.meshFilter.sharedMesh = null;
+        }
 
         public void SetEvent(BaseGLSEvent evt)
         {

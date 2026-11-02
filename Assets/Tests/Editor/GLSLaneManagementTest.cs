@@ -7,10 +7,74 @@ using Beatmap.V3;
 using NUnit.Framework;
 using Tests.Infrastructure;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 namespace Tests.Editor
 {
+    public class GLSGroupSupportedAxisPlacementTest : GLSExtensionTestBase
+    {
+        [TestCase("Left")]
+        [TestCase("Right")]
+        public void PlacingDaftPunkTrisWallGroupCreatesOnlyZLane(string side)
+        {
+            var daft = AssetDatabase.LoadAssetAtPath<TrackDefinitionsSO>(
+                "Assets/__Scripts/Environments/TrackDefinitions/DaftPunkEnvironmentTrackDefinitions.asset");
+            var triangles = daft.Gls.Values.Single(definition =>
+                definition.Group == "Tris Wall" && definition.Name == side);
+            var track = groupProvider.IdToTracks[0];
+            track.TrackDefinition.TranslationTracks = triangles.TranslationTracks;
+
+            var group = PlaceGroup(true, Axis.Z);
+            var innerProvider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            innerProvider.GroupContext = group;
+
+            Assert.That(innerProvider.DisplayedLaneCount, Is.EqualTo(1));
+            Assert.That(innerProvider.TryGetDisplayedBox(0, out var box), Is.True);
+            Assert.That(box.GetAxis(), Is.EqualTo(Axis.Z));
+        }
+
+        [Test]
+        public void PlacingTransformGroupUsesFirstSupportedAxis(
+            [Values(false, true)] bool translation,
+            [Values(1, 2, 3, 4, 5, 6, 7)] int supportedAxes)
+        {
+            var track = groupProvider.IdToTracks[0];
+            var enabled = new[]
+            {
+                (supportedAxes & 1) != 0,
+                (supportedAxes & 2) != 0,
+                (supportedAxes & 4) != 0
+            };
+            track.TrackDefinition.RotationTracks = enabled;
+            track.TrackDefinition.TranslationTracks = enabled;
+
+            PlaceGroup(translation, (Axis)System.Array.FindIndex(enabled, axis => axis));
+        }
+
+        private BaseEventBoxGroup PlaceGroup(bool translation, Axis expectedAxis)
+        {
+            var placementProvider = groupProvider.IdToTracks[0].GetComponent<PlacementProvider>();
+            BasePlacement placement = translation
+                ? placementProvider.Placements.OfType<GLSGroupTranslationPlacement>().Single()
+                : placementProvider.Placements.OfType<GLSGroupRotationPlacement>().Single();
+            placement.Initialize(placementProvider);
+            var queued = Field<BaseEventBoxGroup>(placement, "QueuedData");
+            queued.JsonTime = 8f;
+            placement.GetType().GetMethod("HandleApply").Invoke(placement, null);
+
+            Assert.That(queued.ReadOnlyBoxes.Count, Is.EqualTo(1));
+            var box = queued.ReadOnlyBoxes[0];
+            Assert.That(box.GetAxis(), Is.EqualTo(expectedAxis),
+                "Outer group placement must create its first event box on a supported axis.");
+            Assert.That(box.ReadOnlyEvents.Count, Is.EqualTo(1));
+            Assert.That(box.IsAutomaticAxisLane, Is.False);
+            Assert.That(Field<BaseEventBoxGroup>(placement, "QueuedData").ReadOnlyBoxes[0].GetAxis(),
+                Is.EqualTo(expectedAxis), "The next queued group must retain the supported axis.");
+            return queued;
+        }
+    }
+
     public class GLSLaneManagementTest : TestBase
     {
         [TestCase(false, false, 0)]

@@ -11,6 +11,7 @@ namespace Beatmap.Base
     {
         public BaseLightColorEventBox()
         {
+            ApplyDefaultAffectFirst();
             BrightnessDistributionType = (int)DistributionType.Wave;
             Events = Array.Empty<BaseLightColorBase>();
         }

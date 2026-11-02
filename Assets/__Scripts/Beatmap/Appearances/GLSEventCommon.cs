@@ -969,7 +969,6 @@ public sealed class GLSColorTransitionPreview : IDisposable
 
     private Texture2D texture;
     private int textureLightCount;
-    private bool textureCapacityWarningReported;
     private Color[] textureColors = Array.Empty<Color>();
     // Scrubbing often produces the same ribbon pixels. Keep the last upload to avoid repeating
     // SetPixels/Apply.
@@ -1117,11 +1116,7 @@ public sealed class GLSColorTransitionPreview : IDisposable
         var boostPayloadTexels = boostBoundaries.Count > 0
             ? boostBoundaries.Count + (4L * recordCount)
             : 0L;
-        if (!TryEnsureCapacity(count,
-                (10L * count) + (9L * timelineNeighborStates.Count) + boostPayloadTexels))
-        {
-            return false;
-        }
+        EnsureCapacity(count, (10L * count) + (9L * timelineNeighborStates.Count) + boostPayloadTexels);
 
         var boostTableBase = (10 * count) + (9 * timelineNeighborStates.Count);
         var altColorsBase = boostTableBase + boostBoundaries.Count;
@@ -1338,28 +1333,15 @@ public sealed class GLSColorTransitionPreview : IDisposable
         return true;
     }
 
-    private bool TryEnsureCapacity(int lightCount, long texelCount)
+    private void EnsureCapacity(int lightCount, long texelCount)
     {
         // Column headers bound reads, so unused capacity can retain data from a previous update.
         if (texture != null && textureLightCount == lightCount && textureColors.LongLength >= texelCount)
         {
-            return true;
+            return;
         }
 
         var maximumSize = SystemInfo.maxTextureSize;
-        if (texelCount > (long)maximumSize * maximumSize || texelCount > int.MaxValue)
-        {
-            if (!textureCapacityWarningReported)
-            {
-                Debug.LogWarning(
-                    $"GLS ribbon preview needs {texelCount} texels, exceeding the GPU's {maximumSize}x{maximumSize} " +
-                    "texture capacity. This ribbon is hidden; map data and light playback are unchanged.");
-                textureCapacityWarningReported = true;
-            }
-
-            return false;
-        }
-
         // Keep the logical row-major table intact, wrapping it across wider physical rows when needed.
         var width = (int)Math.Min(maximumSize,
             Math.Max(lightCount, (texelCount + maximumSize - 1) / maximumSize));
@@ -1387,8 +1369,6 @@ public sealed class GLSColorTransitionPreview : IDisposable
         };
         // A freshly allocated texture is blank, so the next pack must upload regardless of payload equality.
         uploadDirty = true;
-        textureCapacityWarningReported = false;
-        return true;
     }
 
     public void Dispose()

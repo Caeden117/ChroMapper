@@ -34,7 +34,13 @@ namespace Beatmap.V3
             node["d"] = box.BeatDistributionType;
             node["r"] = box.BrightnessDistribution;
             node["t"] = box.BrightnessDistributionType;
-            node["b"] = box.BrightnessAffectFirst;
+            if (box.ShouldSerializeAffectFirst(
+                box.BrightnessAffectFirst,
+                box.BrightnessDistribution,
+                box.BrightnessDistributionType))
+            {
+                node["b"] = box.BrightnessAffectFirst;
+            }
             node["i"] = box.Easing;
             var ary = new JSONArray();
             foreach (var k in box.Events) ary.Add(V3LightColorBase.ToJson(k));

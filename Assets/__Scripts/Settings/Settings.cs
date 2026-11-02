@@ -83,6 +83,7 @@ public class Settings
     public float GLSOuterTrackGhostNodeOpacity = 0.8f;
     public float GLSInnerEventPreviewShrink = 0.1f;
     public bool EnableGLSGhostPreview = true;
+    public bool DefaultGLSAffectFirst = true;
     public float PastNotesGridScale = 0.5f;
     public float SongSpeedChangeAmount = 2;
     // SongSpeed is a non-persistent setting

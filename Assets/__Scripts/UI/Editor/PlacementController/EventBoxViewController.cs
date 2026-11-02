@@ -65,6 +65,7 @@ public class EventBoxViewController : MonoBehaviour
     [SerializeField] private TextBoxIntComponent chunkInput;
     [SerializeField] private ToggleComponent reverseToggle;
     [SerializeField] private TextBoxIntComponent p0Input;
+    [SerializeField] private ButtonComponent splitSectionsButton;
     [SerializeField] private TextBoxIntComponent p1Input;
     [SerializeField] private ToggleComponent randomToggle;
     [SerializeField] private ToggleComponent inOrderToggle;
@@ -91,11 +92,13 @@ public class EventBoxViewController : MonoBehaviour
     private BaseEventBoxGroup groupContext;
     private BaseEventBox boxContext;
     private int boxIndex;
+    private int displayedBoxIndex;
 
     private void Start()
     {
         editModeContext.OnEditModeChanged += HandleEditModeChanged;
         glsEventGridProvider.OnGroupChanged += HandleGroupChanged;
+        glsEventGridProvider.OnAutomaticLaneDefaultsChanged += HandleAutomaticLaneDefaultsChanged;
         addEventBoxButton.OnClick(HandleAddEventBox);
         addIdsEventBoxButton.OnClick(HandleAddIdsEventBox);
         addAxesEventBoxButton.OnClick(HandleAddAxesEventBox);
@@ -107,6 +110,7 @@ public class EventBoxViewController : MonoBehaviour
         moveDownEventBoxButton.OnClick(HandleMoveDownEventBox);
         moveUpEventBoxButton.OnClick(HandleMoveUpEventBox);
         duplicateEventBoxButton.OnClick(HandleDuplicateEventBox);
+        splitSectionsButton.OnClick(HandleSplitSections);
 
         // Explain where the new lane is inserted and that the first matching box controls each light.
         const string addLaneTooltip =
@@ -159,6 +163,7 @@ public class EventBoxViewController : MonoBehaviour
         reverseToggle.OnValueChanged(HandleReverseValueChanged);
         p0Input
             .WithInvertScroll(() => Settings.Instance.InvertScrollEventValue)
+            .OnEditingValueChanged(HandleParam0EditingValueChanged)
             .OnEndEdit(HandleParam0ValueChanged)
             .OnValueChanged(HandleParam0ValueChanged);
         p1Input
@@ -214,6 +219,14 @@ public class EventBoxViewController : MonoBehaviour
             SetBoxIndex(0);
     }
 
+    private void HandleAutomaticLaneDefaultsChanged()
+    {
+        if (boxContext is BaseLightTransformEventBox { IsAutomaticAxisLane: true } box)
+        {
+            affectFirstToggle.SetValueWithoutNotify(box.AffectFirst == 1);
+        }
+    }
+
     private void HandleGroupChanged(BaseEventBoxGroup group)
     {
         groupContext = group;
@@ -229,9 +242,7 @@ public class EventBoxViewController : MonoBehaviour
             return;
         }
 
-        boxIndex = group.ReadOnlyBoxes.Count > 0 ? Math.Clamp(boxIndex, 0, group.ReadOnlyBoxes.Count - 1) : -1;
-
-        SetBoxIndex(boxIndex);
+        SetBoxIndex(displayedBoxIndex);
     }
 
     private void ConfigureAxisActions(BaseEventBoxGroup group)
@@ -253,20 +264,32 @@ public class EventBoxViewController : MonoBehaviour
 
     private void HandleAddEventBox()
     {
-        if (groupContext == null) return;
-        GLSEventBoxCommand.AddEventBox(groupContext, ++boxIndex);
+        if (groupContext == null)
+            return;
+        if (boxIndex < 0 && boxContext != null)
+        {
+            MaterializeSelectedLane();
+            return;
+        }
+        var targetIndex = boxIndex + 1;
+        if (GLSEventBoxCommand.AddEventBox(groupContext, targetIndex) != null)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(targetIndex));
+        }
     }
 
     private void HandleAddIdsEventBox()
     {
-        if (groupContext == null) return;
+        if (groupContext == null)
+            return;
         GLSEventBoxCommand.AddAllIdsEventBox(groupContext, GetGroupSize(groupContext));
     }
 
     private void HandleAddAxesEventBox()
     {
         // Axis generation is meaningful only for groups implementing the shared transform contract.
-        if (groupContext is not ILightTransformEventBoxGroup) return;
+        if (groupContext is not ILightTransformEventBoxGroup)
+            return;
         var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesEventBox(groupContext, td);
     }
@@ -274,51 +297,87 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleAddIdsAndAxesEventBox()
     {
         // Axis generation is meaningful only for groups implementing the shared transform contract.
-        if (groupContext is not ILightTransformEventBoxGroup) return;
+        if (groupContext is not ILightTransformEventBoxGroup)
+            return;
         var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
         GLSEventBoxCommand.AddAllAxesAndIdsEventBox(groupContext, td, GetGroupSize(groupContext));
     }
 
     private void HandleDeleteEventBox()
     {
-        if (groupContext == null) return;
-        GLSEventBoxCommand.DeleteEventBox(groupContext, boxIndex);
+        if (groupContext == null)
+            return;
+        if (boxIndex >= 0)
+        {
+            GLSEventBoxCommand.DeleteEventBox(groupContext, boxIndex);
+        }
     }
 
     private void HandleDeletePruneEventBox()
     {
-        if (groupContext == null) return;
+        if (groupContext == null)
+            return;
         GLSEventBoxCommand.DeletePruneEventBox(groupContext);
     }
 
     private void HandleSortIdsEventBox()
     {
-        if (groupContext == null) return;
+        if (groupContext == null)
+            return;
         GLSEventBoxCommand.SortIdsEventBox(groupContext);
     }
 
     private void HandleSortAxesEventBox()
     {
-        if (groupContext == null) return;
+        if (groupContext == null)
+            return;
         GLSEventBoxCommand.SortAxesEventBox(groupContext);
     }
 
     private void HandleMoveDownEventBox()
     {
-        if (groupContext == null) return;
-        GLSEventBoxCommand.MoveDownEventBox(groupContext, boxIndex++);
+        if (groupContext == null)
+            return;
+        if (boxIndex < 0)
+        {
+            return;
+        }
+        var targetIndex = boxIndex + 1;
+        if (GLSEventBoxCommand.MoveDownEventBox(groupContext, boxIndex) != null)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(targetIndex));
+        }
     }
 
     private void HandleMoveUpEventBox()
     {
-        if (groupContext == null) return;
-        GLSEventBoxCommand.MoveUpEventBox(groupContext, boxIndex--);
+        if (groupContext == null)
+            return;
+        if (boxIndex < 0)
+        {
+            return;
+        }
+        var targetIndex = boxIndex - 1;
+        if (GLSEventBoxCommand.MoveUpEventBox(groupContext, boxIndex) != null)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(targetIndex));
+        }
     }
 
     private void HandleDuplicateEventBox()
     {
-        if (groupContext == null) return;
-        GLSEventBoxCommand.DuplicateEventBox(groupContext, boxIndex++);
+        if (groupContext == null)
+            return;
+        if (boxIndex < 0)
+        {
+            MaterializeSelectedLane();
+            return;
+        }
+        var targetIndex = boxIndex + 1;
+        if (GLSEventBoxCommand.DuplicateEventBox(groupContext, boxIndex) != null)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(targetIndex));
+        }
     }
 
     public void HandleApplyToSelected()
@@ -338,7 +397,8 @@ public class EventBoxViewController : MonoBehaviour
         }
 
         Debug.Log($"[EventBoxViewController] Found {selectedGlsEvents.Count} selected GLS events");
-        if (selectedGlsEvents.Count == 0) return;
+        if (selectedGlsEvents.Count == 0)
+            return;
 
         var byGroup = new Dictionary<BaseEventBoxGroup, List<BaseGLSEvent>>();
         foreach (var selectedGlsEvent in selectedGlsEvents)
@@ -454,19 +514,24 @@ public class EventBoxViewController : MonoBehaviour
 
     private void SetBoxIndex(int newIndex)
     {
-        if (groupContext == null) return;
-        boxIndex = Math.Clamp(
+        if (groupContext == null)
+            return;
+        displayedBoxIndex = Math.Clamp(
             newIndex,
-            groupContext.ReadOnlyBoxes.Count == 0 ? -1 : 0,
-            groupContext.ReadOnlyBoxes.Count - 1);
-        boxContext = groupContext.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
+            glsEventGridProvider.DisplayedLaneCount == 0 ? -1 : 0,
+            glsEventGridProvider.DisplayedLaneCount - 1);
+        boxIndex = glsEventGridProvider.GetAuthoredBoxIndex(displayedBoxIndex);
+        glsEventGridProvider.TryGetDisplayedBox(displayedBoxIndex, out boxContext);
+        deleteEventBoxButton.Selectable.interactable = boxIndex >= 0;
+        moveUpEventBoxButton.Selectable.interactable = boxIndex > 0;
+        moveDownEventBoxButton.Selectable.interactable = boxIndex >= 0 && boxIndex < groupContext.ReadOnlyBoxes.Count - 1;
         RefreshID();
         HandleEventBoxChanged(groupContext, boxContext);
     }
 
     private void RefreshID()
     {
-        var count = groupContext.ReadOnlyBoxes.Count;
+        var count = glsEventGridProvider.DisplayedLaneCount;
 
         int i;
         for (i = 0; i < count; i++)
@@ -482,8 +547,15 @@ public class EventBoxViewController : MonoBehaviour
             else
                 idTab = instantiatedIdTab[i];
 
-            idTab.SetValueWithoutNotify(i == boxIndex);
-            idTab.Selectable.interactable = i != boxIndex;
+            glsEventGridProvider.TryGetDisplayedBox(i, out var displayedBox);
+            var labelColor = idTabPrefab.LabelColor;
+            if (displayedBox.IsAutomaticAxisLane && displayedBox.ReadOnlyEvents.Count == 0)
+            {
+                labelColor.a *= 0.375f;
+            }
+            idTab.LabelColor = labelColor;
+            idTab.SetValueWithoutNotify(i == displayedBoxIndex);
+            idTab.Selectable.interactable = i != displayedBoxIndex;
             idTab.gameObject.SetActive(true);
         }
 
@@ -494,7 +566,6 @@ public class EventBoxViewController : MonoBehaviour
 
     private void HandleEventBoxChanged(BaseEventBoxGroup group, BaseEventBox box)
     {
-        var boxes = group.ReadOnlyBoxes;
         var groupSize = GetGroupSize(group);
 
         foreach (var t in instantiatedErrorText) Destroy(t);
@@ -520,8 +591,13 @@ public class EventBoxViewController : MonoBehaviour
 
         HashSet<int> affectedId = new();
         var currentBoxPassed = false;
-        foreach (var (b, x) in boxes.AsValueEnumerable().Select((b, x) => (b, x)).Where(b => b.b.GetAxis() == box.GetAxis()))
+        for (var x = 0; x < glsEventGridProvider.DisplayedLaneCount; x++)
         {
+            glsEventGridProvider.TryGetDisplayedBox(x, out var b);
+            if (b.GetAxis() != box.GetAxis())
+            {
+                continue;
+            }
             var ifh = IndexFilterHelper.Convert(b.IndexFilter, groupSize);
             if (ifh == null)
             {
@@ -580,6 +656,8 @@ public class EventBoxViewController : MonoBehaviour
         chunkInput.SetValueWithoutNotify(box.IndexFilter.Chunks);
 
         reverseToggle.SetValueWithoutNotify(box.IndexFilter.Reverse == 1);
+        splitSectionsButton.gameObject.SetActive(box.IndexFilter.Type == (int)IndexFilterType.Division);
+        splitSectionsButton.Selectable.interactable = GLSEventBoxCommand.CanSplitSections(group, box);
         if (box.IndexFilter.Type == (int)IndexFilterType.Division)
         {
             p0Input.MinValue = 1;
@@ -624,6 +702,9 @@ public class EventBoxViewController : MonoBehaviour
             axisXToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.X);
             axisYToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.Y);
             axisZToggle.SetValueWithoutNotify(transformBox.Axis == (int)Axis.Z);
+            axisXToggle.gameObject.SetActive(enabledAxes[0]);
+            axisYToggle.gameObject.SetActive(enabledAxes[1]);
+            axisZToggle.gameObject.SetActive(enabledAxes[2]);
             axisXToggle.Selectable.interactable = enabledAxes[0];
             axisYToggle.Selectable.interactable = enabledAxes[1];
             axisZToggle.Selectable.interactable = enabledAxes[2];
@@ -677,104 +758,168 @@ public class EventBoxViewController : MonoBehaviour
         }
     }
 
+    private int GetBoxEditIndex()
+    {
+        if (boxIndex >= 0)
+        {
+            return boxIndex;
+        }
+
+        // Materialization sorts the missing axis between the saved lanes already displayed before it.
+        var index = 0;
+        for (var lane = 0; lane < displayedBoxIndex; lane++)
+        {
+            if (glsEventGridProvider.GetAuthoredBoxIndex(lane) >= 0)
+            {
+                index++;
+            }
+        }
+        return index;
+    }
+
+    private void ApplyBoxOption<T>(
+        T value,
+        Func<T, BaseEventBoxGroup, int, BaseEventBox, BaseEventBoxGroup> command)
+    {
+        var editedIndex = GetBoxEditIndex();
+        var originalGroup = groupContext;
+        var editedGroup = command(value, originalGroup, boxIndex, boxContext);
+        if (editedGroup != null && editedGroup != originalGroup)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(editedIndex));
+        }
+    }
+
+    private void MaterializeSelectedLane()
+    {
+        var editedIndex = GetBoxEditIndex();
+        if (GLSEventBoxCommand.MaterializeAutomaticLane(groupContext, boxContext) != null)
+        {
+            SetBoxIndex(glsEventGridProvider.GetDisplayedLaneIndex(editedIndex));
+        }
+    }
+
     private void HandleBeatDistributionWaveValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetBeatDistributionType((int)DistributionType.Wave, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)DistributionType.Wave, GLSEventBoxCommand.SetBeatDistributionType);
     }
 
     private void HandleBeatDistributionStepValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetBeatDistributionType((int)DistributionType.Step, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)DistributionType.Step, GLSEventBoxCommand.SetBeatDistributionType);
     }
 
     private void HandleBeatDistributionValueChanged(float value) =>
-        GLSEventBoxCommand.SetBeatDistribution(value, groupContext, boxIndex);
+        ApplyBoxOption(value, GLSEventBoxCommand.SetBeatDistribution);
 
     private void HandleFilterTypeSectionValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetType((int)IndexFilterType.Division, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)IndexFilterType.Division, GLSEventBoxCommand.SetType);
     }
 
     private void HandleFilterTypeStepValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetType((int)IndexFilterType.StepAndOffset, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)IndexFilterType.StepAndOffset, GLSEventBoxCommand.SetType);
     }
 
-    private void HandleChunkValueChanged(int value) => GLSEventBoxCommand.SetChunk(value, groupContext, boxIndex);
+    private void HandleChunkValueChanged(int value) => ApplyBoxOption(value, GLSEventBoxCommand.SetChunk);
 
     private void HandleReverseValueChanged(bool value) =>
-        GLSEventBoxCommand.SetReverse(value ? 1 : 0, groupContext, boxIndex);
+        ApplyBoxOption(value ? 1 : 0, GLSEventBoxCommand.SetReverse);
 
-    private void HandleParam0ValueChanged(int value) => GLSEventBoxCommand.SetParam0(value, groupContext, boxIndex);
+    private void HandleSplitSections()
+    {
+        if (groupContext == null || boxIndex < 0)
+        {
+            return;
+        }
+        GLSEventBoxCommand.SplitSections(groupContext, boxIndex);
+    }
 
-    private void HandleParam1ValueChanged(int value) => GLSEventBoxCommand.SetParam1(value, groupContext, boxIndex);
+    private void HandleParam0ValueChanged(int value)
+    {
+        ApplyBoxOption(value, GLSEventBoxCommand.SetParam0);
+        splitSectionsButton.Selectable.interactable = GLSEventBoxCommand.CanSplitSections(groupContext, boxContext);
+    }
+
+    private void HandleParam0EditingValueChanged(bool valid, int value)
+    {
+        splitSectionsButton.Selectable.interactable = valid
+            && GLSEventBoxCommand.CanSplitSections(groupContext, boxContext, value);
+    }
+
+    private void HandleParam1ValueChanged(int value) => ApplyBoxOption(value, GLSEventBoxCommand.SetParam1);
 
     private void HandleRandomValueChanged(bool value) =>
-        GLSEventBoxCommand.SetRandom(
-            boxContext.IndexFilter.Random ^ (int)RandomType.RandomElements,
-            groupContext,
-            boxIndex);
+        ApplyBoxOption(boxContext.IndexFilter.Random ^ (int)RandomType.RandomElements, GLSEventBoxCommand.SetRandom);
 
     private void HandleInOrderValueChanged(bool value) =>
-        GLSEventBoxCommand.SetRandom(boxContext.IndexFilter.Random ^ (int)RandomType.KeepOrder, groupContext, boxIndex);
+        ApplyBoxOption(boxContext.IndexFilter.Random ^ (int)RandomType.KeepOrder, GLSEventBoxCommand.SetRandom);
 
-    private void HandleSeedValueChanged(int value) => GLSEventBoxCommand.SetSeed(value, groupContext, boxIndex);
+    private void HandleSeedValueChanged(int value) => ApplyBoxOption(value, GLSEventBoxCommand.SetSeed);
 
     private void HandleRandomizeSeed() =>
-        GLSEventBoxCommand.SetSeed(UnityEngine.Random.Range(int.MinValue, int.MaxValue), groupContext, boxIndex);
+        ApplyBoxOption(UnityEngine.Random.Range(int.MinValue, int.MaxValue), GLSEventBoxCommand.SetSeed);
 
-    private void HandleResetSeed() => GLSEventBoxCommand.SetSeed(0, groupContext, boxIndex);
+    private void HandleResetSeed() => ApplyBoxOption(0, GLSEventBoxCommand.SetSeed);
 
     private void HandleAxisXValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetAxis((int)Axis.X, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)Axis.X, GLSEventBoxCommand.SetAxis);
     }
 
     private void HandleAxisYValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetAxis((int)Axis.Y, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)Axis.Y, GLSEventBoxCommand.SetAxis);
     }
 
     private void HandleAxisZValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetAxis((int)Axis.Z, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)Axis.Z, GLSEventBoxCommand.SetAxis);
     }
 
     private void HandleFlipValueChanged(bool value) =>
-        GLSEventBoxCommand.SetFlip(value ? 1 : 0, groupContext, boxIndex);
+        ApplyBoxOption(value ? 1 : 0, GLSEventBoxCommand.SetFlip);
 
     private void HandleLimitValueChanged(float value) =>
-        GLSEventBoxCommand.SetLimit(value / 100f, groupContext, boxIndex);
+        ApplyBoxOption(value / 100f, GLSEventBoxCommand.SetLimit);
 
     private void HandleLimitDurationValueChanged(bool value) =>
-        GLSEventBoxCommand.SetLimitAffectsType(
+        ApplyBoxOption(
             boxContext.IndexFilter.LimitAffectsType ^ (int)LimitAlsoAffectType.Duration,
-            groupContext,
-            boxIndex);
+            GLSEventBoxCommand.SetLimitAffectsType);
 
     private void HandleLimitDistributionValueChanged(bool value) =>
-        GLSEventBoxCommand.SetLimitAffectsType(
+        ApplyBoxOption(
             boxContext.IndexFilter.LimitAffectsType ^ (int)LimitAlsoAffectType.Distribution,
-            groupContext,
-            boxIndex);
+            GLSEventBoxCommand.SetLimitAffectsType);
 
     private void HandleValueDistributionWaveValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetValueDistributionType((int)DistributionType.Wave, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)DistributionType.Wave, GLSEventBoxCommand.SetValueDistributionType);
     }
 
     private void HandleValueDistributionStepValueChanged(bool value)
     {
-        if (value) GLSEventBoxCommand.SetValueDistributionType((int)DistributionType.Step, groupContext, boxIndex);
+        if (value)
+            ApplyBoxOption((int)DistributionType.Step, GLSEventBoxCommand.SetValueDistributionType);
     }
 
     private void HandleValueDistributionValueChanged(float value) =>
-        GLSEventBoxCommand.SetValueDistribution(value, groupContext, boxIndex);
+        ApplyBoxOption(value, GLSEventBoxCommand.SetValueDistribution);
 
     private void HandleAffectFirstValueChanged(bool value) =>
-        GLSEventBoxCommand.SetAffectFirst(value ? 1 : 0, groupContext, boxIndex);
+        ApplyBoxOption(value ? 1 : 0, GLSEventBoxCommand.SetAffectFirst);
 
-    private void HandleEaseTypeValueChanged(int value) => GLSEventBoxCommand.SetEasing(value, groupContext, boxIndex);
+    private void HandleEaseTypeValueChanged(int value) => ApplyBoxOption(value, GLSEventBoxCommand.SetEasing);
 
     // Keep the local tooltip draft self-contained until its text is moved into localized string tables.
     private static void AddTooltip(ButtonComponent button, string text, string advancedText = null,

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Beatmap.Appearances;
 using Beatmap.Base;
@@ -27,10 +27,16 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
 
     public void ChangeMu(ArcContainer s, float modifier)
     {
-        var headControlPointLengthMultiplier =
-            CMMath.RoundToDecimals(s.ArcData.HeadControlPointLengthMultiplier + modifier);
+        float GetMultiplier(BaseArc data) => CMMath.RoundToDecimals(data.HeadControlPointLengthMultiplier + modifier);
+        if (HoverSelectionMutation.TryApply(
+                s.ArcData,
+                data => data.HeadControlPointLengthMultiplier = GetMultiplier(data),
+                out _))
+        {
+            return;
+        }
 
-        ArcCommand.SetHeadControlPointLengthMultiplier(s.ArcData, headControlPointLengthMultiplier);
+        ArcCommand.SetHeadControlPointLengthMultiplier(s.ArcData, GetMultiplier(s.ArcData));
     }
 
     public void OnChangingTmu(InputAction.CallbackContext context)
@@ -44,9 +50,15 @@ public class BeatmapArcInputController : BeatmapInputController<ArcContainer>, C
 
     public void ChangeTmu(ArcContainer s, float modifier)
     {
-        var tailControlPointLengthMultiplier =
-            CMMath.RoundToDecimals(s.ArcData.TailControlPointLengthMultiplier + modifier);
+        float GetMultiplier(BaseArc data) => CMMath.RoundToDecimals(data.TailControlPointLengthMultiplier + modifier);
+        if (HoverSelectionMutation.TryApply(
+                s.ArcData,
+                data => data.TailControlPointLengthMultiplier = GetMultiplier(data),
+                out _))
+        {
+            return;
+        }
 
-        ArcCommand.SetTailControlPointLengthMultiplier(s.ArcData, tailControlPointLengthMultiplier);
+        ArcCommand.SetTailControlPointLengthMultiplier(s.ArcData, GetMultiplier(s.ArcData));
     }
 }

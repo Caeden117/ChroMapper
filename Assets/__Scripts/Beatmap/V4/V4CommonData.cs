@@ -570,6 +570,9 @@ namespace Beatmap.V4
             public float BrightnessDistribution { get; set; }
             public int BrightnessDistributionType { get; set; }
             public int BrightnessAffectFirst { get; set; }
+
+            // Filters and custom data live outside shared V4 records, so deduplication must preserve this export decision.
+            private bool OmitAffectFirst { get; set; }
             
             public static LightColorEventBox GetFromJson(JSONNode node) => new()
             {
@@ -589,6 +592,10 @@ namespace Beatmap.V4
                 BrightnessDistribution = baseLightColorEventBox.BrightnessDistribution,
                 BrightnessDistributionType = baseLightColorEventBox.BrightnessDistributionType,
                 BrightnessAffectFirst = baseLightColorEventBox.BrightnessAffectFirst,
+                OmitAffectFirst = !baseLightColorEventBox.ShouldSerializeAffectFirst(
+                    baseLightColorEventBox.BrightnessAffectFirst,
+                    baseLightColorEventBox.BrightnessDistribution,
+                    baseLightColorEventBox.BrightnessDistributionType),
             };
             
             public JSONNode ToJson()
@@ -599,17 +606,21 @@ namespace Beatmap.V4
                 node["d"] = BeatDistributionType;
                 node["s"] = BrightnessDistribution;
                 node["t"] = BrightnessDistributionType;
-                node["b"] = BrightnessAffectFirst;
+                if (!OmitAffectFirst)
+                {
+                    node["b"] = BrightnessAffectFirst;
+                }
                 node["e"] = Easing;
 
                 return node;
             }
 
             public bool Equals(LightColorEventBox other) => BeatDistribution.Equals(other.BeatDistribution)
-                                                            && BeatDistributionType == other.BeatDistributionType 
-                                                            && Easing == other.Easing 
+                                                            && BeatDistributionType == other.BeatDistributionType
+                                                            && Easing == other.Easing
                                                             && BrightnessDistribution.Equals(other.BrightnessDistribution)
                                                             && BrightnessDistributionType == other.BrightnessDistributionType
+                                                            && OmitAffectFirst == other.OmitAffectFirst
                                                             && BrightnessAffectFirst == other.BrightnessAffectFirst;
 
             public override bool Equals(object obj) => obj is LightColorEventBox other && Equals(other);
@@ -624,6 +635,7 @@ namespace Beatmap.V4
                     hashCode = (hashCode * 397) ^ BrightnessDistribution.GetHashCode();
                     hashCode = (hashCode * 397) ^ BrightnessDistributionType;
                     hashCode = (hashCode * 397) ^ BrightnessAffectFirst;
+                    hashCode = (hashCode * 397) ^ OmitAffectFirst.GetHashCode();
                     return hashCode;
                 }
             }
@@ -716,6 +728,9 @@ namespace Beatmap.V4
             public float RotationDistribution { get; set; }
             public int RotationDistributionType { get; set; }
             public int RotationAffectFirst { get; set; }
+
+            // Filters and custom data live outside shared V4 records, so deduplication must preserve this export decision.
+            private bool OmitAffectFirst { get; set; }
             public int Axis { get; set; }
             public int Flip { get; set; }
             
@@ -739,6 +754,10 @@ namespace Beatmap.V4
                 RotationDistribution = baseLightRotationEventBox.RotationDistribution,
                 RotationDistributionType = baseLightRotationEventBox.RotationDistributionType,
                 RotationAffectFirst = baseLightRotationEventBox.RotationAffectFirst,
+                OmitAffectFirst = !baseLightRotationEventBox.ShouldSerializeAffectFirst(
+                    baseLightRotationEventBox.RotationAffectFirst,
+                    baseLightRotationEventBox.RotationDistribution,
+                    baseLightRotationEventBox.RotationDistributionType),
                 Axis = baseLightRotationEventBox.Axis,
                 Flip = baseLightRotationEventBox.Flip
             };
@@ -751,7 +770,10 @@ namespace Beatmap.V4
                 node["d"] = BeatDistributionType;
                 node["s"] = RotationDistribution;
                 node["t"] = RotationDistributionType;
-                node["b"] = RotationAffectFirst;
+                if (!OmitAffectFirst)
+                {
+                    node["b"] = RotationAffectFirst;
+                }
                 node["e"] = Easing;
                 node["a"] = Axis;
                 node["f"] = Flip;
@@ -763,9 +785,10 @@ namespace Beatmap.V4
                                                                && BeatDistributionType == other.BeatDistributionType
                                                                && Easing == other.Easing
                                                                && RotationDistribution.Equals(other.RotationDistribution)
-                                                               && RotationDistributionType == other.RotationDistributionType 
-                                                               && RotationAffectFirst == other.RotationAffectFirst 
-                                                               && Axis == other.Axis 
+                                                               && RotationDistributionType == other.RotationDistributionType
+                                                               && OmitAffectFirst == other.OmitAffectFirst
+                                                               && RotationAffectFirst == other.RotationAffectFirst
+                                                               && Axis == other.Axis
                                                                && Flip == other.Flip;
 
             public override bool Equals(object obj) => obj is LightRotationEventBox other && Equals(other);
@@ -780,6 +803,7 @@ namespace Beatmap.V4
                     hashCode = (hashCode * 397) ^ RotationDistribution.GetHashCode();
                     hashCode = (hashCode * 397) ^ RotationDistributionType;
                     hashCode = (hashCode * 397) ^ RotationAffectFirst;
+                    hashCode = (hashCode * 397) ^ OmitAffectFirst.GetHashCode();
                     hashCode = (hashCode * 397) ^ Axis;
                     hashCode = (hashCode * 397) ^ Flip;
                     return hashCode;
@@ -856,6 +880,9 @@ namespace Beatmap.V4
             public float TranslationDistribution { get; set; }
             public int TranslationDistributionType { get; set; }
             public int TranslationAffectFirst { get; set; }
+
+            // Filters and custom data live outside shared V4 records, so deduplication must preserve this export decision.
+            private bool OmitAffectFirst { get; set; }
             public int Axis { get; set; }
             public int Flip { get; set; }
             
@@ -879,6 +906,10 @@ namespace Beatmap.V4
                 TranslationDistribution = baseLightTranslationEventBox.TranslationDistribution,
                 TranslationDistributionType = baseLightTranslationEventBox.TranslationDistributionType,
                 TranslationAffectFirst = baseLightTranslationEventBox.TranslationAffectFirst,
+                OmitAffectFirst = !baseLightTranslationEventBox.ShouldSerializeAffectFirst(
+                    baseLightTranslationEventBox.TranslationAffectFirst,
+                    baseLightTranslationEventBox.TranslationDistribution,
+                    baseLightTranslationEventBox.TranslationDistributionType),
                 Axis = baseLightTranslationEventBox.Axis,
                 Flip = baseLightTranslationEventBox.Flip
             };
@@ -891,7 +922,10 @@ namespace Beatmap.V4
                 node["d"] = BeatDistributionType;
                 node["s"] = TranslationDistribution;
                 node["t"] = TranslationDistributionType;
-                node["b"] = TranslationAffectFirst;
+                if (!OmitAffectFirst)
+                {
+                    node["b"] = TranslationAffectFirst;
+                }
                 node["e"] = Easing;
                 node["a"] = Axis;
                 node["f"] = Flip;
@@ -900,12 +934,13 @@ namespace Beatmap.V4
             }
 
             public bool Equals(LightTranslationEventBox other) => BeatDistribution.Equals(other.BeatDistribution) 
-                                                                  && BeatDistributionType == other.BeatDistributionType 
-                                                                  && Easing == other.Easing 
-                                                                  && TranslationDistribution.Equals(other.TranslationDistribution) 
-                                                                  && TranslationDistributionType == other.TranslationDistributionType 
-                                                                  && TranslationAffectFirst == other.TranslationAffectFirst 
-                                                                  && Axis == other.Axis 
+                                                                  && BeatDistributionType == other.BeatDistributionType
+                                                                  && Easing == other.Easing
+                                                                  && TranslationDistribution.Equals(other.TranslationDistribution)
+                                                                  && TranslationDistributionType == other.TranslationDistributionType
+                                                                  && OmitAffectFirst == other.OmitAffectFirst
+                                                                  && TranslationAffectFirst == other.TranslationAffectFirst
+                                                                  && Axis == other.Axis
                                                                   && Flip == other.Flip;
 
             public override bool Equals(object obj) => obj is LightTranslationEventBox other && Equals(other);
@@ -920,6 +955,7 @@ namespace Beatmap.V4
                     hashCode = (hashCode * 397) ^ TranslationDistribution.GetHashCode();
                     hashCode = (hashCode * 397) ^ TranslationDistributionType;
                     hashCode = (hashCode * 397) ^ TranslationAffectFirst;
+                    hashCode = (hashCode * 397) ^ OmitAffectFirst.GetHashCode();
                     hashCode = (hashCode * 397) ^ Axis;
                     hashCode = (hashCode * 397) ^ Flip;
                     return hashCode;
@@ -989,6 +1025,9 @@ namespace Beatmap.V4
             public int FxDistributionType { get; set; }
             public int FxAffectFirst { get; set; }
 
+            // Filters and custom data live outside shared V4 records, so deduplication must preserve this export decision.
+            private bool OmitAffectFirst { get; set; }
+
             public static FxEventBox GetFromJson(JSONNode node) => new()
             {
                 BeatDistribution = node["w"].AsFloat,
@@ -1006,6 +1045,10 @@ namespace Beatmap.V4
                 FxDistribution = baseVfxEventEventBox.VfxDistribution,
                 FxDistributionType = baseVfxEventEventBox.VfxDistributionType,
                 FxAffectFirst = baseVfxEventEventBox.VfxAffectFirst,
+                OmitAffectFirst = !baseVfxEventEventBox.ShouldSerializeAffectFirst(
+                    baseVfxEventEventBox.VfxAffectFirst,
+                    baseVfxEventEventBox.VfxDistribution,
+                    baseVfxEventEventBox.VfxDistributionType),
                 Easing = baseVfxEventEventBox.Easing,
             };
 
@@ -1017,17 +1060,21 @@ namespace Beatmap.V4
                 node["d"] = BeatDistributionType;
                 node["s"] = FxDistribution;
                 node["t"] = FxDistributionType;
-                node["b"] = FxAffectFirst;
+                if (!OmitAffectFirst)
+                {
+                    node["b"] = FxAffectFirst;
+                }
                 node["e"] = Easing;
 
                 return node;
             }
 
             public bool Equals(FxEventBox other) => BeatDistribution.Equals(other.BeatDistribution) 
-                                                    && BeatDistributionType == other.BeatDistributionType 
-                                                    && Easing == other.Easing 
+                                                    && BeatDistributionType == other.BeatDistributionType
+                                                    && Easing == other.Easing
                                                     && FxDistribution.Equals(other.FxDistribution)
                                                     && FxDistributionType == other.FxDistributionType
+                                                    && OmitAffectFirst == other.OmitAffectFirst
                                                     && FxAffectFirst == other.FxAffectFirst;
 
             public override bool Equals(object obj) => obj is FxEventBox other && Equals(other);
@@ -1042,6 +1089,7 @@ namespace Beatmap.V4
                     hashCode = (hashCode * 397) ^ FxDistribution.GetHashCode();
                     hashCode = (hashCode * 397) ^ FxDistributionType;
                     hashCode = (hashCode * 397) ^ FxAffectFirst;
+                    hashCode = (hashCode * 397) ^ OmitAffectFirst.GetHashCode();
                     return hashCode;
                 }
             }

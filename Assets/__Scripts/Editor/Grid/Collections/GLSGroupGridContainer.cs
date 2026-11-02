@@ -37,10 +37,10 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
 
         public int CompareTo(PendingPreviewConfiguration other)
         {
-            var comparison = Priority.CompareTo(other.Priority);
+            var comparison = other.Priority.CompareTo(Priority);
             return comparison != 0
                 ? comparison
-                : Sequence.CompareTo(other.Sequence);
+                : other.Sequence.CompareTo(Sequence);
         }
     }
 
@@ -67,12 +67,8 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
     protected readonly HashSet<BaseGLSEvent> RetainedPreviewEvents = new();
     private readonly Dictionary<BaseEventBoxGroup, HashSet<BaseGLSEvent>> retainedPreviewEventsByGroup = new();
     private readonly Stack<HashSet<BaseGLSEvent>> spareRetainedPreviewEventSets = new();
-    // Track owners rebound during this refresh so only unused owners are deactivated.
-    private readonly HashSet<GLSGroupContainer> previouslyLoadedContainers = new();
-    // Process earlier song times first, reusing the queue to avoid allocating a new sorted list each refresh.
-    private readonly SortedSet<PendingPreviewConfiguration> pendingPreviewConfigurations = new();
-    private readonly Dictionary<GLSGroupContainer, PendingPreviewConfiguration> queuedPreviewContainers = new();
-    private readonly HashSet<GLSGroupContainer> hiddenReboundContainers = new();
+    // Reusable list keeps later beats first so the earliest ribbon pops from the end without shifting.
+    private readonly List<PendingPreviewConfiguration> pendingPreviewConfigurations = new();
     private readonly HashSet<GLSGroupContainer> reboundContainers = new();
     // Reuse still-active bodies before inactive ones so a rebind does not unregister and rebuild their labels.
     private readonly Stack<ObjectContainer> activePooledContainers = new();
@@ -284,13 +280,6 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
         if (!deferAutomaticPreviewConfiguration)
             CancelPendingPreviewConfigurations();
 
-        previouslyLoadedContainers.Clear();
-        foreach (var container in LoadedContainers.Values)
-        {
-            if (container is GLSGroupContainer groupContainer)
-                previouslyLoadedContainers.Add(groupContainer);
-        }
-
         previewLowerBound = lowerBound;
         previewUpperBound = upperBound;
         PrepareRetainedPreviewEvents(lowerBound);
@@ -328,37 +317,24 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
             var groupContainer = container as GLSGroupContainer;
             if (groupContainer != null)
             {
-                previouslyLoadedContainers.Remove(groupContainer);
                 ConfigureLoadedGroup(groupContainer);
             }
         }
 
-        foreach (var unusedContainer in previouslyLoadedContainers)
-        {
-            if (deferAutomaticPreviewConfiguration)
-            {
-                SchedulePreviewSuspension(unusedContainer);
-            }
-            else
-            {
-                unusedContainer.SuspendPreviewGhosts();
-            }
-        }
+        // The active pool already holds only the released owners this refresh did not reuse.
+        foreach (var unusedContainer in activePooledContainers)
+            SchedulePreviewSuspension((GLSGroupContainer)unusedContainer);
     }
 
     private void SchedulePreviewConfiguration(GLSGroupContainer container, bool hideUntilConfigured)
     {
-        var remainsHidden = hideUntilConfigured || hiddenReboundContainers.Contains(container);
         var retainedEvents = GetRetainedPreviewEvents(container.EventBoxGroupData);
         // Preserve pending ribbon jobs when the visible node identities and window bounds are unchanged.
-        if (!remainsHidden
+        if (!hideUntilConfigured
             && container.HasSamePreviewNodeWindow(previewLowerBound, previewUpperBound, retainedEvents))
         {
             return;
         }
-
-        if (remainsHidden)
-            hiddenReboundContainers.Add(container);
 
         container.BeginPreviewNodeConfiguration(
             eventGridContainer.IsBoostAt,
@@ -366,7 +342,7 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
             previewUpperBound,
             retainedEvents,
             false,
-            remainsHidden,
+            hideUntilConfigured,
             true,
             eventGridContainer.BoostEvents);
         // Finish visible node binding before returning from the scrub refresh so nodes never wait for the
@@ -375,13 +351,7 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
         {
         }
 
-        hiddenReboundContainers.Remove(container);
-        if (queuedPreviewContainers.TryGetValue(container, out var queuedEntry))
-        {
-            pendingPreviewConfigurations.Remove(queuedEntry);
-            queuedPreviewContainers.Remove(container);
-        }
-
+        RemovePendingPreviewConfiguration(container);
         if (container.HasPendingPreviewRibbons)
             EnqueuePreviewConfiguration(container);
     }
@@ -408,13 +378,8 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
 
     private void SchedulePreviewSuspension(GLSGroupContainer container)
     {
-        hiddenReboundContainers.Remove(container);
         container.SuspendPreviewGhosts();
-        if (queuedPreviewContainers.TryGetValue(container, out var queuedEntry))
-        {
-            pendingPreviewConfigurations.Remove(queuedEntry);
-            queuedPreviewContainers.Remove(container);
-        }
+        RemovePendingPreviewConfiguration(container);
     }
 
     private void ProcessNextPreviewConfiguration()
@@ -426,22 +391,13 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
         while (pendingPreviewConfigurations.Count > 0
             && processedSteps < MaximumPreviewConfigurationStepsPerFrame)
         {
-            var queuedEntry = pendingPreviewConfigurations.Min;
-            pendingPreviewConfigurations.Remove(queuedEntry);
+            var queuedEntry = pendingPreviewConfigurations[^1];
+            pendingPreviewConfigurations.RemoveAt(pendingPreviewConfigurations.Count - 1);
             var container = queuedEntry.Container;
             if (container == null)
-            {
-                queuedPreviewContainers.Remove(container);
-                hiddenReboundContainers.Remove(container);
                 continue;
-            }
 
-            queuedPreviewContainers.Remove(container);
-            if (container.ProcessNextPreviewRibbon())
-            {
-                hiddenReboundContainers.Remove(container);
-            }
-            else
+            if (!container.ProcessNextPreviewRibbon())
             {
                 // Recalculate the queue priority after each ribbon because the next ghost may be at a
                 // different beat.
@@ -488,24 +444,35 @@ public abstract class GLSGroupGridContainer<TGroup> : BeatmapObjectContainerColl
     private void EnqueuePreviewConfiguration(GLSGroupContainer container)
     {
         var entry = new PendingPreviewConfiguration(container, previewConfigurationSequence++);
-        pendingPreviewConfigurations.Add(entry);
-        queuedPreviewContainers[container] = entry;
+        var index = pendingPreviewConfigurations.BinarySearch(entry);
+        pendingPreviewConfigurations.Insert(~index, entry);
+    }
+
+    private void RemovePendingPreviewConfiguration(GLSGroupContainer container)
+    {
+        for (var index = pendingPreviewConfigurations.Count - 1; index >= 0; index--)
+        {
+            if (!ReferenceEquals(pendingPreviewConfigurations[index].Container, container))
+                continue;
+
+            pendingPreviewConfigurations.RemoveAt(index);
+            return;
+        }
     }
 
     internal GLSGroupContainer NextPendingPreviewConfiguration => pendingPreviewConfigurations.Count > 0
-        ? pendingPreviewConfigurations.Min.Container
+        ? pendingPreviewConfigurations[^1].Container
         : null;
 
     private void CancelPendingPreviewConfigurations()
     {
-        foreach (var container in queuedPreviewContainers.Keys)
+        foreach (var entry in pendingPreviewConfigurations)
         {
-            if (container != null)
-                container.CancelPreviewNodeConfiguration();
+            if (entry.Container != null)
+                entry.Container.CancelPreviewNodeConfiguration();
         }
+
         pendingPreviewConfigurations.Clear();
-        queuedPreviewContainers.Clear();
-        hiddenReboundContainers.Clear();
         reboundContainers.Clear();
     }
 

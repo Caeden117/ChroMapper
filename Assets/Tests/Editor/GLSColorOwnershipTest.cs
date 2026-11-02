@@ -7,9 +7,9 @@ namespace Tests.Editor
     // and OEM's nodeBeat < nextElementStart cross-group interruption semantics.
     public class GLSColorOwnershipTest : GLSColorPlaybackTestBase
     {
-        // Keep the current serialized arrangement and custom timing metadata distinct from the older Wave tests.
+        // The second all-light box cannot steal the first box's even lights, even though its node is later in time.
         [Test]
-        public void WaveFixtureMatchesSerializedArrangement()
+        public void SerializedFirstBoxWinsAndDistributionKeepsPhysicalOrder()
         {
             Assert.AreEqual(3, map.LightColorEventBoxGroups.Count);
             Assert.AreEqual(2, map.LightColorEventBoxGroups[1].Boxes.Count);
@@ -19,12 +19,7 @@ namespace Tests.Editor
             Assert.AreEqual(4, Node(1, 1).ChromaStrobeColorEasing);
             Assert.AreEqual(19, Node(1, 1).ChromaStrobeEasing);
             Assert.AreEqual(2f, Node(1, 1).ChromaStrobeInterval);
-        }
 
-        // The second all-light box cannot steal the first box's even lights, even though its node is later in time.
-        [Test]
-        public void SerializedFirstBoxWinsAndDistributionKeepsPhysicalOrder()
-        {
             for (var light = 0; light < LightCount; light++)
             {
                 var first = StateAt(light, 5f);
@@ -42,13 +37,7 @@ namespace Tests.Editor
                 Assert.That(HasState(light, Node(1, 0, 3)), Is.EqualTo(light % 2 == 0), $"light {light}: filtered node 3 exists iff the light is even");
                 Assert.That(HasState(light, Node(1, 1)), Is.EqualTo(light % 2 == 1), $"light {light}: the all-light node exists iff the light is odd");
             }
-        }
 
-        // A later separate all-lights group starts after the filtered box's final node, so every owned timeline
-        // keeps its prior final source and converges on the later group's node without cancelling earlier children.
-        [Test]
-        public void DifferentAllLightsGroupAfterFilteredFinalTakesOverAllEightLights()
-        {
             for (var light = 0; light < LightCount; light++)
             {
                 var before = StateAt(light, 45f);

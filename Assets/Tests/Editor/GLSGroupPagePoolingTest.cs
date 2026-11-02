@@ -88,6 +88,15 @@ namespace Tests.Editor
             Assert.That(collection.LoadedContainers.ContainsKey(first), Is.True);
             Assert.That(collection.LoadedContainers.ContainsKey(second), Is.False,
                 "An inactive GLS page must remain data-only instead of allocating nodes or ribbons.");
+
+            if (kind == GlsKind.Color)
+            {
+                var inactiveNode = (BaseLightColorBase)second.OrderedEvents[0];
+                Assert.That(GLSEventCommon.GetColorTimeline(inactiveNode, 4), Is.Not.Null,
+                    "Inactive-page color events must remain available to the global light timeline.");
+                Assert.That(collection.LoadedContainers.ContainsKey(second), Is.False,
+                    "Timeline indexing must not require an inactive page's ribbon owner or preview nodes.");
+            }
         }
 
         [Test]
@@ -164,22 +173,6 @@ namespace Tests.Editor
                 target.Release();
                 UnityEngine.Object.DestroyImmediate(target);
             }
-        }
-
-        [Test]
-        public void InactiveColorPagesKeepTimelineDataWithoutMaterializingVisuals()
-        {
-            var active = SpawnGroup(GlsKind.Color, FirstGroupId);
-            var inactive = SpawnGroup(GlsKind.Color, SecondGroupId);
-            var collection = BeatmapObjectContainerCollection.GetCollectionForType(active.ObjectType);
-
-            collection.RefreshPool(0f, 20f, true);
-
-            var inactiveNode = (BaseLightColorBase)inactive.OrderedEvents[0];
-            Assert.That(GLSEventCommon.GetColorTimeline(inactiveNode, 4), Is.Not.Null,
-                "Inactive-page color events must remain available to the global light timeline.");
-            Assert.That(collection.LoadedContainers.ContainsKey(inactive), Is.False,
-                "Timeline indexing must not require an inactive page's ribbon owner or preview nodes.");
         }
 
         [Test]

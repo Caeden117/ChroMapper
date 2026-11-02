@@ -31,12 +31,33 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
             RaycastFirstObject(out var containerToEdit);
             if (containerToEdit != null)
             {
-                var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
-
                 var modifier = context.GetScrollDirection();
 
-                containerToEdit.BpmData.Bpm = CMMath.RoundToDecimals(containerToEdit.BpmData.Bpm + modifier);
-                if (containerToEdit.BpmData.Bpm <= 0) containerToEdit.BpmData.Bpm = 1f;
+                void Tweak(BaseBpmEvent data)
+                {
+                    data.Bpm = CMMath.RoundToDecimals(data.Bpm + modifier);
+                    if (data.Bpm <= 0)
+                        data.Bpm = 1f;
+                }
+
+                if (HoverSelectionMutation.TryApply(containerToEdit.BpmData, Tweak, out var edited))
+                {
+                    if (edited.Count > 0)
+                    {
+                        var firstEditedBeat = edited[0].JsonTime;
+                        foreach (var evt in edited)
+                            firstEditedBeat = System.Math.Min(firstEditedBeat, evt.JsonTime);
+
+                        var collection = BeatmapObjectContainerCollection.GetCollectionForType<BPMChangeGridContainer>(
+                            ObjectType.BpmChange);
+                        RefreshCursorAfterTweak(collection, firstEditedBeat);
+                    }
+
+                    return;
+                }
+
+                var original = BeatmapFactory.Clone(containerToEdit.ObjectData);
+                Tweak(containerToEdit.BpmData);
                 containerToEdit.UpdateGridPosition();
 
                 if (containerToEdit.BpmData.HasSameContent(original))
@@ -59,14 +80,16 @@ public class BeatmapBPMChangeInputController : BeatmapInputController<BpmEventCo
                 BeatmapObjectContainerCollection.RefreshFutureObjectsPosition(containerToEdit.BpmData.JsonTime);
                 bpmChanges.RefreshModifiedBeat();
 
-                // Update cursor position
-                var atsc = bpmChanges.BeatmapContext.Atsc;
-                if (containerToEdit.BpmData.JsonTime < atsc.CurrentJsonTime)
-                {
-                    atsc.MoveToJsonTime(atsc.CurrentJsonTime);
-                }
+                RefreshCursorAfterTweak(bpmChanges, containerToEdit.BpmData.JsonTime);
             }
         }
+    }
+
+    private static void RefreshCursorAfterTweak(BPMChangeGridContainer collection, float firstEditedBeat)
+    {
+        var atsc = collection.BeatmapContext.Atsc;
+        if (firstEditedBeat < atsc.CurrentJsonTime)
+            atsc.MoveToJsonTime(atsc.CurrentJsonTime);
     }
 
     internal static void ChangeBpm(BpmEventContainer containerToEdit, string obj)

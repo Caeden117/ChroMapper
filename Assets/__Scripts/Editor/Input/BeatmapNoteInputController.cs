@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,23 +71,45 @@ public class BeatmapNoteInputController : BeatmapInputController<NoteContainer>,
 
     public void ScrollUpdateDirection(NoteContainer note, int direction)
     {
-        var cutDirection =
-            (direction > 0 ? cutDirectionMovedBackward : cutDirectionMovedForward)[note.NoteData.CutDirection];
-        NoteCommand.SetCutDirection(
-            note.NoteData,
-            cutDirection,
-            preserveAngleOffset: Settings.Instance.MapVersion >= 3);
+        var directions = direction > 0
+            ? cutDirectionMovedBackward
+            : cutDirectionMovedForward;
+        int GetDirection(BaseNote data) => directions[data.CutDirection];
+
+        var preserveAngleOffset = Settings.Instance.MapVersion >= 3;
+        // Selection scrolling must not propagate note edits to connected arcs or chains of another object type.
+        if (HoverSelectionMutation.TryApply(
+                note.NoteData,
+                data => NoteCommand.ApplyCutDirection(data, GetDirection(data), preserveAngleOffset),
+                out _))
+        {
+            return;
+        }
+
+        NoteCommand.SetCutDirection(note.NoteData, GetDirection(note.NoteData), preserveAngleOffset);
     }
 
     public void ScrollPreciseUpdateDirection(NoteContainer note, int direction)
     {
-        // V2 note unsupported. Could implement either ME or NE for V2 note.
-        if (Settings.Instance.MapVersion < 3) return;
+        // V2 has no native angle offset.
+        if (Settings.Instance.MapVersion < 3)
+            return;
 
         var precision = scrollPrecisionController.GetCurrentAngleOffsetPrecision();
-        var value = (int)CMMath.RoundToDecimals(note.NoteData.AngleOffset + (direction * precision));
-        var angleOffset = (int)Mathf.Repeat(value, 360);
+        int GetAngleOffset(BaseNote data)
+        {
+            var value = (int)CMMath.RoundToDecimals(data.AngleOffset + (direction * precision));
+            return (int)Mathf.Repeat(value, 360);
+        }
 
-        NoteCommand.SetAngleOffset(note.NoteData, angleOffset);
+        if (HoverSelectionMutation.TryApply(
+                note.NoteData,
+                data => data.AngleOffset = GetAngleOffset(data),
+                out _))
+        {
+            return;
+        }
+
+        NoteCommand.SetAngleOffset(note.NoteData, GetAngleOffset(note.NoteData));
     }
 }

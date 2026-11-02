@@ -6,6 +6,7 @@
     "Main",
     "Plugins",
     "Unity.TextMeshPro",
+    "Unity.Localization",
     "Unity.InputSystem",
     "Unity.InputSystem.TestFramework",
     "LiteNetLib",

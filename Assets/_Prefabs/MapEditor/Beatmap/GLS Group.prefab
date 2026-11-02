@@ -128,7 +128,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d0bfe5677aaf46b8b778b06407cd2fda, type: 3}
   - {fileID: 21300000, guid: eb4b3a767f9d46098ff6d1da188dac88, type: 3}
   - {fileID: 21300000, guid: ef200d8082e542ae95a584d7d5258859, type: 3}
-  strobeIconMaterial: {fileID: 2100000, guid: 1e79a568c5e04675b89cc508a518247a, type: 2}
   primaryRenderers:
   - {fileID: 920000000000000012}
   - {fileID: 920000000000000032}
@@ -138,6 +137,9 @@ MonoBehaviour:
   tertiaryRenderers:
   - {fileID: 920000000000000052}
   - {fileID: 920000000000000062}
+  strobeRenderers:
+  - {fileID: 920000000000000072}
+  - {fileID: 920000000000000075}
 --- !u!1 &920000000000000010
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +260,8 @@ Transform:
   m_LocalPosition: {x: 0.25, y: 0.515, z: 0.31}
   m_LocalScale: {x: 0.22, y: 0.22, z: 0.22}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 920000000000000071}
   m_Father: {fileID: 4108609160957664}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &920000000000000022
@@ -440,7 +443,8 @@ Transform:
   m_LocalPosition: {x: 0.25, y: 0.31, z: -0.515}
   m_LocalScale: {x: 0.22, y: 0.22, z: 0.22}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 920000000000000074}
   m_Father: {fileID: 4108609160957664}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &920000000000000042
@@ -1701,3 +1705,93 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   display: {fileID: 7153726087407678856}
   layout: {fileID: 11400000, guid: b9a27aff6cd34972b30883ff27377937, type: 2}
+--- !u!1 &920000000000000070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 920000000000000071}
+  - component: {fileID: 920000000000000072}
+  m_Layer: 9
+  m_Name: Strobe Icon Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &920000000000000071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000000000000070}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 920000000000000021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920000000000000072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000000000000070}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55dc6a2cd6334665a165e6544ce6b0aa, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  material: {fileID: 2100000, guid: 1e79a568c5e04675b89cc508a518247a, type: 2}
+--- !u!1 &920000000000000073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 920000000000000074}
+  - component: {fileID: 920000000000000075}
+  m_Layer: 9
+  m_Name: Strobe Icon Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &920000000000000074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000000000000073}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.9, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 920000000000000041}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920000000000000075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920000000000000073}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55dc6a2cd6334665a165e6544ce6b0aa, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  material: {fileID: 2100000, guid: 1e79a568c5e04675b89cc508a518247a, type: 2}

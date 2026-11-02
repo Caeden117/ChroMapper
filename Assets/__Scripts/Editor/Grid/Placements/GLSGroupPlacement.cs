@@ -30,6 +30,21 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
         GlsGroupTrack = provider.GetComponent<GLSGroupTrack>();
         PlacementTrack = GlsGroupTrack.Track.ObjectParentTransform;
         QueuedData.ID = GlsGroupTrack.TrackDefinition.ID;
+        // Refresh the hover template when returning to a track after editing options.
+        QueuedData.ReadOnlyBoxes[0].ApplyDefaultAffectFirst();
+        // Placement queues persist between tracks, whose supported transform axes can differ.
+        if (QueuedData is ILightTransformEventBoxGroup transformGroup)
+        {
+            var enabledAxes = transformGroup.GetEnabledAxes(GlsGroupTrack.TrackDefinition);
+            for (var axis = 0; axis < enabledAxes.Length; axis++)
+            {
+                if (enabledAxes[axis])
+                {
+                    ((BaseLightTransformEventBox)QueuedData.ReadOnlyBoxes[0]).Axis = axis;
+                    break;
+                }
+            }
+        }
         PlacementVisualContainer.EventBoxGroupData = QueuedData;
         PlacementVisualContainer.transform.SetParent(PlacementTrack, false);
         PlacementVisualContainer.SafeSetActive(CanPlace);
@@ -84,6 +99,8 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
 
     public override void HandleApply()
     {
+        // Options can change while this track remains active, so take the default again when creating the box.
+        QueuedData.ReadOnlyBoxes[0].ApplyDefaultAffectFirst();
         // Copied groups can bypass Extension callbacks. Normalize each queued node before applying the group.
         foreach (var box in QueuedData.ReadOnlyBoxes)
         {

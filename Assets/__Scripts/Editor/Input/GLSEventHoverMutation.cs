@@ -9,34 +9,57 @@ using UnityEngine.InputSystem;
 public static class GLSEventHoverMutation
 {
     // Keep inner and outer GLS hover mutations identical while each controller owns target resolution.
-    public static void AdjustColorBrightness(InputAction.CallbackContext context, BaseLightColorBase evt, ScrollPrecisionController precision)
+    public static bool AdjustColorBrightness(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
         if (!context.performed
             || evt == null
-            || !InputChordOwnership.Owns(context))
+            || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustColorBrightness(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var delta = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         var value = CMMath.RoundToDecimals(evt.Brightness + (delta * (precision.GetCurrentBrightnessPrecision() / 100f)));
-        GLSEventColorCommand.SetBrightness(evt, Mathf.Max(0f, value));
+        return GLSEventColorCommand.SetBrightness(evt, Mathf.Max(0f, value), inPlace) != null;
     }
 
-    public static void AdjustColorFrequency(InputAction.CallbackContext context, BaseLightColorBase evt, ScrollPrecisionController precision)
+    public static bool AdjustColorFrequency(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
         if (!context.performed
             || evt == null
             || precision == null
-            || !InputChordOwnership.Owns(context))
+            || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
         }
 
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustColorFrequency(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
+        }
 
         var delta = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         if (delta == 0)
-            return;
+            return false;
 
         // customData.strobeInterval is a period in beats per cycle; use the ring zoom precision ladder for tweaks.
         if (evt.ChromaStrobeInterval is { } interval)
@@ -48,15 +71,12 @@ public static class GLSEventHoverMutation
             if (newInterval <= 0.5f && delta == 1)
             {
                 // If we scrolled strobe interval lower and we're at 1/2 or below, swap back to OEM fractions.
-                GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, null);
+                return GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, null, inPlace) != null;
             }
             else
             {
-                GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, newInterval);
+                return GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, newInterval, inPlace) != null;
             }
-
-
-            return;
         }
 
         // Native frequency is cycles per beat, displayed as 1/N.
@@ -66,42 +86,78 @@ public static class GLSEventHoverMutation
         if (evt.Frequency == 0 && delta == -1)
         {
             // Scrolling past 1/1 switches to the custom float interval starting at 1.0 beats per cycle.
-            GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, 1.0f);
+            return GLSEventColorCommand.SetStrobeIntervalAndClosestFrequency(evt, 1.0f, inPlace) != null;
         }
         else
         {
-            GLSEventColorCommand.SetStrobeFrequencyOnly(evt, newFrequency);
+            return GLSEventColorCommand.SetStrobeFrequencyOnly(evt, newFrequency, inPlace) != null;
         }
     }
 
-    public static void AdjustColorStrobeBrightness(InputAction.CallbackContext context, BaseLightColorBase evt, ScrollPrecisionController precision)
+    public static bool AdjustColorStrobeBrightness(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
         }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustColorStrobeBrightness(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
+        }
+
         var delta = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         var value = CMMath.RoundToDecimals(evt.StrobeBrightness + (delta * (precision.GetCurrentBrightnessPrecision() / 100f)));
-        GLSEventColorCommand.SetStrobeBrightness(evt, Mathf.Max(0f, value));
+        return GLSEventColorCommand.SetStrobeBrightness(evt, Mathf.Max(0f, value), inPlace) != null;
     }
 
-    public static bool AdjustColorStrobePulseWidth(InputAction.CallbackContext context, BaseLightColorBase evt, ScrollPrecisionController precision)
+    public static bool AdjustColorStrobePulseWidth(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
         if (!context.performed || evt == null || context.ReadValue<float>() == 0f)
             return false;
 
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustColorStrobePulseWidth(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
+        }
+
         var delta = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         var value = CMMath.RoundToDecimals(evt.ChromaStrobePulseWidth + (delta * precision.GetCurrentStrobePulseWidthPrecision()));
-        return GLSEventColorCommand.SetStrobePulseWidth(evt, value) != null;
+        return GLSEventColorCommand.SetStrobePulseWidth(evt, value, inPlace) != null;
     }
 
-    public static bool CycleColorStrobeFade(InputAction.CallbackContext context, BaseLightColorBase evt)
+    public static bool CycleColorStrobeFade(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        bool inPlace = false)
     {
         if (!context.performed
             || evt == null
-            || !InputChordOwnership.Owns(context))
+            || (!inPlace && !InputChordOwnership.Owns(context)))
         {
             return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => CycleColorStrobeFade(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var current = evt.StrobeFade == 1
@@ -110,47 +166,71 @@ public static class GLSEventHoverMutation
         var next = GetNextEasingValue(current, context, StrobeFadeEasingValues);
         if (next == (int)EaseType.None)
         {
-            return GLSEventColorCommand.SetStrobeFadeEasing(evt, 0, null) != null;
+            return GLSEventColorCommand.SetStrobeFadeEasing(evt, 0, null, inPlace) != null;
         }
 
         return GLSEventColorCommand.SetStrobeFadeEasing(
             evt,
             1,
-            next == (int)EaseType.InOutCubic ? null : next) != null;
+            next == (int)EaseType.InOutCubic ? null : next,
+            inPlace) != null;
     }
 
-    public static void AdjustColorEasing(InputAction.CallbackContext context, BaseLightColorBase evt)
+    public static bool AdjustColorEasing(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustColorEasing(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var current = evt.ChromaColorEasing ?? evt.Easing;
         var next = GetNextEasingValue(current, context, AllEasingValues);
         if (next <= (int)EaseType.Linear)
         {
-            GLSEventColorCommand.SetColorEasing(evt, next, null);
+            return GLSEventColorCommand.SetColorEasing(evt, next, null, inPlace) != null;
         }
         else
         {
-            GLSEventColorCommand.SetColorEasing(
+            return GLSEventColorCommand.SetColorEasing(
                 evt,
                 Math.Max(evt.Easing, (int)EaseType.Linear),
-                next);
+                next,
+                inPlace) != null;
         }
     }
 
-    public static void AdjustStrobeColorEasing(InputAction.CallbackContext context, BaseLightColorBase evt)
+    public static bool AdjustStrobeColorEasing(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustStrobeColorEasing(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var current = evt.ChromaStrobeColorEasing ?? (int)EaseType.None;
         var next = GetNextEasingValue(current, context, AllEasingValues);
-        GLSEventColorCommand.SetStrobeColorEasing(evt, next == (int)EaseType.None ? null : next);
+        return GLSEventColorCommand.SetStrobeColorEasing(evt, next == (int)EaseType.None ? null : next, inPlace) != null;
     }
 
     public static void MirrorColor(InputAction.CallbackContext context, BaseLightColorBase evt)
@@ -170,12 +250,23 @@ public static class GLSEventHoverMutation
             return;
         }
 
+        if (GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => ToggleColorLerpType(context, node, inPlace: true),
+                out _))
+        {
+            return;
+        }
+
         ToggleColorLerpType(context, evt);
     }
 
-    public static bool ToggleColorLerpType(InputAction.CallbackContext context, BaseLightColorBase evt)
+    public static bool ToggleColorLerpType(
+        InputAction.CallbackContext context,
+        BaseLightColorBase evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
             return false;
         }
@@ -184,68 +275,125 @@ public static class GLSEventHoverMutation
             evt,
             evt.CustomLerpType == BasicEventColorLerpType.TrueHSV
                 ? BasicEventColorLerpType.RGB
-                : BasicEventColorLerpType.TrueHSV) != null;
+                : BasicEventColorLerpType.TrueHSV,
+            inPlace) != null;
     }
 
-    public static void AdjustRotation(InputAction.CallbackContext context, BaseLightRotationBase evt, ScrollPrecisionController precision)
+    public static bool AdjustRotation(
+        InputAction.CallbackContext context,
+        BaseLightRotationBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustRotation(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var value = CMMath.RoundToDecimals(evt.Rotation + (context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) * precision.GetCurrentRotationPrecision()));
-        GLSEventRotationCommand.SetValue(evt, Mathf.Repeat(value, 360f));
+        return GLSEventRotationCommand.SetValue(evt, Mathf.Repeat(value, 360f), inPlace) != null;
     }
 
-    public static void AdjustRotationLoop(InputAction.CallbackContext context, BaseLightRotationBase evt)
+    public static bool AdjustRotationLoop(
+        InputAction.CallbackContext context,
+        BaseLightRotationBase evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
         }
 
-        GLSEventRotationCommand.SetLoop(evt, (evt.Loop + context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) + 5) % 5);
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustRotationLoop(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
+        }
+
+        return GLSEventRotationCommand.SetLoop(evt, (evt.Loop + context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) + 5) % 5, inPlace) != null;
     }
 
-    public static void AdjustEasing(InputAction.CallbackContext context, BaseGLSEvent evt)
+    public static bool AdjustEasing(
+        InputAction.CallbackContext context,
+        BaseGLSEvent evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustEasing(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var nextEasing = GetNextEasingValue(evt.Easing, context, AllEasingValues);
-        GLSEventEasingCommand.SetEasing(evt, nextEasing);
+        return GLSEventEasingCommand.SetEasing(evt, nextEasing, inPlace) != null;
     }
 
-    public static void CycleRotationDirection(InputAction.CallbackContext context, BaseLightRotationBase evt)
+    public static bool CycleRotationDirection(
+        InputAction.CallbackContext context,
+        BaseLightRotationBase evt,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => CycleRotationDirection(context, node, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var values = (LightRotationDirection[])Enum.GetValues(typeof(LightRotationDirection));
         var index = Array.IndexOf(values, (LightRotationDirection)evt.Direction);
-        GLSEventRotationCommand.SetDirection(evt, values[((index < 0 ? 0 : index) + 1) % values.Length]);
+        return GLSEventRotationCommand.SetDirection(evt, values[((index < 0 ? 0 : index) + 1) % values.Length], inPlace) != null;
     }
 
-    public static void AdjustTranslation(InputAction.CallbackContext context, BaseLightTranslationBase evt, ScrollPrecisionController precision)
+    public static bool AdjustTranslation(
+        InputAction.CallbackContext context,
+        BaseLightTranslationBase evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustTranslation(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
         // Adjusting a YEETed node un-yeets it before adjusting. Otherwise you'd just be invisibly messing with your un-yeet value while just showing YEET the whole time.
         if (GLSEventTranslationCommand.IsYeet(evt.Translation))
         {
-            GLSEventTranslationCommand.SetValue(evt, evt.Translation + GLSEventTranslationCommand.YeetOffset);
-            return;
+            return GLSEventTranslationCommand.SetValue(evt, evt.Translation + GLSEventTranslationCommand.YeetOffset, inPlace) != null;
         }
 
         var value = CMMath.RoundToDecimals(evt.Translation + (context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) * (precision.GetCurrentTranslationPrecision() / 100f)));
-        GLSEventTranslationCommand.SetValue(evt, value);
+        return GLSEventTranslationCommand.SetValue(evt, value, inPlace) != null;
     }
 
     public static void ToggleTranslationYeet(InputAction.CallbackContext context, BaseLightTranslationBase evt)
@@ -258,15 +406,27 @@ public static class GLSEventHoverMutation
         GLSEventTranslationCommand.ToggleYeet(evt);
     }
 
-    public static void AdjustFloatFx(InputAction.CallbackContext context, BaseFxEventFloat evt, ScrollPrecisionController precision)
+    public static bool AdjustFloatFx(
+        InputAction.CallbackContext context,
+        BaseFxEventFloat evt,
+        ScrollPrecisionController precision,
+        bool inPlace = false)
     {
-        if (!context.performed || evt == null || !InputChordOwnership.Owns(context))
+        if (!context.performed || evt == null || (!inPlace && !InputChordOwnership.Owns(context)))
         {
-            return;
+            return false;
+        }
+
+        if (!inPlace && GLSSelectionHoverMutation.TryApply(
+                evt,
+                node => AdjustFloatFx(context, node, precision, inPlace: true),
+                out var selectionChanged))
+        {
+            return selectionChanged;
         }
 
         var value = CMMath.RoundToDecimals(evt.Value + (context.GetScrollDirection(Settings.Instance.InvertScrollEventValue) * (precision.GetCurrentFloatFXPrecision() / 100f)));
-        GLSEventFloatFXCommand.SetValue(evt, value);
+        return GLSEventFloatFXCommand.SetValue(evt, value, inPlace) != null;
     }
 
     // Match the ring zoom precision ladder from the Basic Event zoom tweaks.

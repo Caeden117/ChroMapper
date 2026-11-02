@@ -30,17 +30,16 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void TweakDuration(ObstacleContainer obs, float durationDelta)
     {
-        var original = BeatmapFactory.Clone(obs.ObjectData);
-        var duration = obs.ObstacleData.Duration;
-        var nextDuration = duration + durationDelta;
-        // Normalize decimal-grid edits without rounding away 1/16-beat steps or authored duration remainders.
-        if (duration == CMMath.RoundToDecimals(duration)
-            && durationDelta == CMMath.RoundToDecimals(durationDelta))
+        if (HoverSelectionMutation.TryApply(
+                obs.ObstacleData,
+                data => data.Duration = CalculateDuration(data, durationDelta),
+                out _))
         {
-            nextDuration = CMMath.RoundToDecimals(nextDuration);
+            return;
         }
 
-        obs.ObstacleData.Duration = nextDuration;
+        var original = BeatmapFactory.Clone(obs.ObjectData);
+        obs.ObstacleData.Duration = CalculateDuration(obs.ObstacleData, durationDelta);
         obs.UpdateGridPosition();
         obstacleAppearanceSo.SetObstacleAppearance(obs, beatmapRuntimeContext);
         BeatmapActionContainer.AddAction(
@@ -50,6 +49,19 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
                 original,
                 mergeType: ActionMergeType.WallDurationTweak,
                 preserveSelection: true));
+    }
+
+    private static float CalculateDuration(BaseObstacle data, float durationDelta)
+    {
+        var duration = data.Duration;
+        var nextDuration = duration + durationDelta;
+        if (duration == CMMath.RoundToDecimals(duration)
+            && durationDelta == CMMath.RoundToDecimals(durationDelta))
+        {
+            nextDuration = CMMath.RoundToDecimals(nextDuration);
+        }
+
+        return nextDuration;
     }
 
     public void OnChangeWallLowerBound(InputAction.CallbackContext context)
@@ -65,10 +77,12 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void TweakLowerBound(ObstacleContainer obs, int tweakValue)
     {
+        if (HoverSelectionMutation.TryApply(obs.ObstacleData, data => ApplyTweakLowerBound(data, tweakValue), out _))
+            return;
+
         var original = BeatmapFactory.Clone(obs.ObjectData);
         var data = obs.ObjectData as BaseObstacle;
-        data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
-        data.Height = Mathf.Min(data.Height, 5 - data.PosY);
+        ApplyTweakLowerBound(data, tweakValue);
         if (data.HasSameContent(original))
             return;
         obs.UpdateGridPosition();
@@ -95,9 +109,12 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
 
     public void TweakUpperBound(ObstacleContainer obs, int tweakValue)
     {
+        if (HoverSelectionMutation.TryApply(obs.ObstacleData, data => ApplyTweakUpperBound(data, tweakValue), out _))
+            return;
+
         var original = BeatmapFactory.Clone(obs.ObjectData);
         var data = obs.ObjectData as BaseObstacle;
-        data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
+        ApplyTweakUpperBound(data, tweakValue);
         if (data.HasSameContent(original))
             return;
         obs.UpdateGridPosition();
@@ -109,6 +126,17 @@ public class BeatmapObstacleInputController : BeatmapInputController<ObstacleCon
                 original,
                 mergeType: ActionMergeType.WallUpperBoundTweak,
                 preserveSelection: true));
+    }
+
+    private static void ApplyTweakLowerBound(BaseObstacle data, int tweakValue)
+    {
+        data.PosY = Mathf.Clamp(data.PosY + tweakValue, 0, 2);
+        data.Height = Mathf.Min(data.Height, 5 - data.PosY);
+    }
+
+    private static void ApplyTweakUpperBound(BaseObstacle data, int tweakValue)
+    {
+        data.Height = Mathf.Clamp(data.Height + tweakValue, 1, 5 - data.PosY);
     }
 
     public void OnToggleHyperWall(InputAction.CallbackContext context)

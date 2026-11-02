@@ -159,6 +159,17 @@ public static class RotationCommand
 
     public static BaseRotationEvent ModifyHover(BaseRotationEvent originalObject, int modifier, float prec)
     {
+        if (HoverSelectionMutation.TryApply(
+                originalObject,
+                data => data.Rotation = CMMath.RoundToDecimals(data.Rotation + (modifier * prec)) % 360f,
+                out var edited))
+        {
+            return edited.Count > 0
+                ? (BaseRotationEvent)edited[0]
+                : null;
+        }
+
+
         var newObject = BeatmapFactory.Clone(originalObject);
 
         newObject.Rotation = CMMath.RoundToDecimals(newObject.Rotation + (modifier * prec)) % 360f;

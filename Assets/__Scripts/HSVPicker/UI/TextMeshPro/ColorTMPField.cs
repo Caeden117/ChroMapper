@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -63,7 +62,9 @@ namespace Assets.HSVPicker.UI.TextMeshPro
 
         private void UpdateValue()
         {
-            if (input.isFocused) return;
+            if (input.isFocused)
+                return;
+
             if (picker == null)
             {
                 input.SetTextWithoutNotify("0");
@@ -71,14 +72,15 @@ namespace Assets.HSVPicker.UI.TextMeshPro
             else
             {
                 var scale = DisplayScale;
-                // RGB and alpha need their full display precision so a valid tiny alpha never appears as zero.
                 var value = picker.GetValue(type) * scale;
-                if (type == ColorValues.Hue)
-                    value = (float)Math.Round(value, 2);
+                if (clampToValues)
+                    value = Mathf.Clamp(value, minValue * scale, maxValue * scale);
 
-                if (clampToValues) value = Mathf.Clamp(value, minValue * scale, maxValue * scale);
-
-                input.SetTextWithoutNotify(value.ToString("R"));
+                // Format HSV for display without quantizing its coordinates or hiding precise RGB and tiny alpha values.
+                var format = type is ColorValues.Hue or ColorValues.Saturation or ColorValues.Value
+                    ? "0.###"
+                    : "R";
+                input.SetTextWithoutNotify(value.ToString(format));
             }
         }
 
@@ -87,7 +89,8 @@ namespace Assets.HSVPicker.UI.TextMeshPro
             if (float.TryParse(value, out var v))
             {
                 var scale = DisplayScale;
-                if (clampToValues) v = Mathf.Clamp(v, minValue * scale, maxValue * scale);
+                if (clampToValues)
+                    v = Mathf.Clamp(v, minValue * scale, maxValue * scale);
 
                 picker.AssignColor(type, v / scale);
             }

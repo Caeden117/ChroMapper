@@ -9,9 +9,7 @@ public static class NoteCommand
     public static BaseNote SetCutDirection(BaseNote baseNote, int cutDirection, bool preserveAngleOffset = false)
     {
         var newNote = BeatmapFactory.Clone(baseNote);
-        if (!preserveAngleOffset)
-            ToggleDiagonalAngleOffset(newNote, cutDirection);
-        newNote.CutDirection = cutDirection;
+        ApplyCutDirection(newNote, cutDirection, preserveAngleOffset);
 
         var actions = new List<BeatmapAction>
         {
@@ -40,6 +38,14 @@ public static class NoteCommand
             BeatmapActionContainer.AddAction(actions[0], true);
 
         return newNote;
+    }
+
+    internal static void ApplyCutDirection(BaseNote note, int cutDirection, bool preserveAngleOffset)
+    {
+        if (!preserveAngleOffset)
+            ToggleDiagonalAngleOffset(note, cutDirection);
+
+        note.CutDirection = cutDirection;
     }
 
     private static void ToggleDiagonalAngleOffset(BaseNote note, int newCutDirection)

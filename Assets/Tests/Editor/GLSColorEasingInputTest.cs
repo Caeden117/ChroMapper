@@ -789,6 +789,10 @@ namespace Tests.Editor
         {
             var evt = new BaseLightColorBase { Easing = (int)EaseType.Linear };
             evt.ChromaColorEasing = 4;
+            evt.WriteCustom();
+            Assert.IsTrue(evt.IsChroma(),
+                "customData.colorEasing changes rendering, so the node must count as Chroma content.");
+
             evt.ChromaStrobeColorEasing = 5;
             evt.ChromaStrobeEasing = 16;
             evt.WriteCustom();
@@ -803,18 +807,6 @@ namespace Tests.Editor
             Assert.AreEqual(4, applied.ChromaColorEasing);
             Assert.AreEqual(5, applied.ChromaStrobeColorEasing);
             Assert.AreEqual(16, applied.ChromaStrobeEasing);
-        }
-
-        // V3ColorNodeTrackEasingsMarkIsChroma proves a node carrying only easing metadata still renders custom colors.
-        [Test]
-        public void V3ColorNodeTrackEasingsMarkIsChroma()
-        {
-            var evt = new BaseLightColorBase { Easing = (int)EaseType.Linear };
-            evt.ChromaColorEasing = 4;
-            evt.WriteCustom();
-
-            Assert.IsTrue(evt.IsChroma(),
-                "customData.colorEasing changes rendering, so the node must count as Chroma content.");
         }
 
         // TweenAppliesStrobeColorEasingOnlyToStrobeTrack proves the preview strobe RGB track uses its own curve.
@@ -961,9 +953,9 @@ namespace Tests.Editor
                 "The normalized default must remove easingType so ChromaGLS reads the native RGB path.");
         }
 
-        // V3ColorNodeSerializesHsvEasingType proves the authored HSV state writes the exact serialized value.
+        // HSV metadata must survive serialization, cloning and Apply, and count as Chroma without other custom fields.
         [Test]
-        public void V3ColorNodeSerializesHsvEasingType()
+        public void V3ColorNodePreservesHsvMetadataAcrossSerializationCloneAndApply()
         {
             var evt = new BaseLightColorBase { Easing = (int)EaseType.Linear };
             evt.CustomLerpType = BasicEventColorLerpType.TrueHSV;
@@ -973,15 +965,6 @@ namespace Tests.Editor
                 "The authored HSV state must serialize customData.easingType for ChromaGLS.");
             Assert.AreEqual("HSV", evt.ToJson()["customData"]["easingType"].Value,
                 "The easingType key must survive the node's JSON export.");
-        }
-
-        // V3ColorNodeEasingTypeSurvivesCloneAndApply proves the lerp type survives group cloning and Apply.
-        [Test]
-        public void V3ColorNodeEasingTypeSurvivesCloneAndApply()
-        {
-            var evt = new BaseLightColorBase { Easing = (int)EaseType.Linear };
-            evt.CustomLerpType = BasicEventColorLerpType.TrueHSV;
-            evt.WriteCustom();
 
             var clone = (BaseLightColorBase)evt.Clone();
             Assert.AreEqual(BasicEventColorLerpType.TrueHSV, clone.CustomLerpType);
@@ -989,15 +972,6 @@ namespace Tests.Editor
             var applied = new BaseLightColorBase();
             applied.Apply(clone);
             Assert.AreEqual(BasicEventColorLerpType.TrueHSV, applied.CustomLerpType);
-        }
-
-        // V3ColorNodeEasingTypeMarksIsChroma proves an HSV-only node still counts as Chroma content.
-        [Test]
-        public void V3ColorNodeEasingTypeMarksIsChroma()
-        {
-            var evt = new BaseLightColorBase { Easing = (int)EaseType.Linear };
-            evt.CustomLerpType = BasicEventColorLerpType.TrueHSV;
-            evt.WriteCustom();
 
             Assert.IsTrue(evt.IsChroma(),
                 "customData.easingType changes color interpolation, so the node must count as Chroma content.");
