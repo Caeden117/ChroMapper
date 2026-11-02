@@ -1,5 +1,7 @@
 using Beatmap.Base;
 using Beatmap.Enums;
+using Beatmap.Helper;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using SimpleJSON;
@@ -10,6 +12,29 @@ namespace Tests.Editor
 {
     public class JsonCopyPasteTest : JsonCopyPasteTestBase
     {
+        private sealed class SerializationTrackingEvent : BaseEvent
+        {
+            public int SerializationCount;
+
+            public override JSONNode ToJson()
+            {
+                SerializationCount++;
+                return base.ToJson();
+            }
+        }
+
+        [Test]
+        public void CopiedObjectsAreSerializedOnlyWhenLeavingChroMapper()
+        {
+            var source = new SerializationTrackingEvent { JsonTime = 4, Type = 1, Value = 1 };
+            ClipboardJsonController.CaptureCopiedObjects(new[] { new ClipboardJsonObject(source) });
+            Assert.That(source.SerializationCount, Is.Zero);
+
+            LeaveChroMapperWindow();
+
+            Assert.That(source.SerializationCount, Is.EqualTo(1));
+        }
+
         [Test]
         public void CopyExportsJsonOnlyAfterPointerLeavesChroMapper()
         {
@@ -48,6 +73,265 @@ namespace Tests.Editor
             Assert.That(exported[0]["a"].AsInt, Is.EqualTo(-45));
         }
 
+        [TestCase(3)]
+        [TestCase(4)]
+        public void EditedBoostOnlyJsonArrayImportsAndPastesEditedValues(int mapVersion)
+        {
+            var originalMapVersion = Settings.Instance.MapVersion;
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            try
+            {
+                Settings.Instance.MapVersion = mapVersion;
+                var selectionController = Object.FindAnyObjectByType<SelectionController>();
+                var firstBoost = PlaceUtils.Place(new BaseEvent
+                {
+                    JsonTime = 1,
+                    Type = (int)EventTypeValue.ColorBoostEventType,
+                    Value = 1
+                });
+                var secondBoost = PlaceUtils.Place(new BaseEvent
+                {
+                    JsonTime = 2,
+                    Type = (int)EventTypeValue.ColorBoostEventType,
+                    Value = 0
+                });
+                SelectionController.Select(firstBoost);
+                SelectionController.Select(secondBoost, true);
+                selectionController.Copy();
+                LeaveChroMapperWindow();
+
+                var exported = JSON.Parse(ExternalClipboardText);
+                Assert.That(exported.IsArray, Is.True);
+                Assert.That(exported.Count, Is.EqualTo(2));
+                Assert.That(exported[1]["o"].AsBool, Is.False);
+                exported[1]["o"] = true;
+                ExternalClipboardText = exported.ToString(2);
+                ReturnToChroMapperWindow();
+
+                var imported = SelectionController.CopiedObjects.OfType<BaseEvent>()
+                    .OrderBy(evt => evt.JsonTime)
+                    .ToArray();
+                Assert.That(imported.Length, Is.EqualTo(2));
+                Assert.That(imported.All(evt => evt.IsColorBoostEvent()), Is.True);
+                Assert.That(imported[0].Value, Is.EqualTo(1));
+                Assert.That(imported[1].Value, Is.EqualTo(1));
+
+                editModeContext.EditingMode = EditingMode.BasicEvent;
+                selectionController.Paste();
+                var pasted = SelectionController.SelectedObjects.OfType<BaseEvent>()
+                    .OrderBy(evt => evt.JsonTime)
+                    .ToArray();
+                Assert.That(pasted.Length, Is.EqualTo(2));
+                Assert.That(pasted.All(evt => evt.IsColorBoostEvent() && evt.Value == 1), Is.True);
+            }
+            finally
+            {
+                Settings.Instance.MapVersion = originalMapVersion;
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        [Test]
+        public void PastingEditedBasicEventsOverStackedSourceEventsKeepsUndoAndRedoValid()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var actionContainer = Object.FindAnyObjectByType<BeatmapActionContainer>();
+            var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(ObjectType.Event);
+            var eventPlacement = Object.FindAnyObjectByType<EventPlacement>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var originalMode = editModeContext.EditingMode;
+            var originalPlacementState = eventPlacement.State;
+            var sourceEvents = new[]
+            {
+                new BaseEvent { JsonTime = 2.625f, Type = 8, Value = -79, FloatValue = 1 },
+                new BaseEvent { JsonTime = 3f, Type = (int)EventTypeValue.ColorBoostEventType, Value = 1 },
+                new BaseEvent { JsonTime = 41.5f, Type = 4, Value = 4, FloatValue = 1 },
+                new BaseEvent { JsonTime = 41.5f, Type = 4, Value = 4, FloatValue = 1 }
+            };
+            foreach (var evt in sourceEvents)
+            {
+                eventCollection.SpawnObject(evt, false, false, true);
+                SelectionController.Select(evt, true);
+            }
+
+            Object.FindAnyObjectByType<BasicEventManager>().Refresh();
+            selectionController.Copy();
+            LeaveChroMapperWindow();
+            var editedJson = JSON.Parse(ExternalClipboardText);
+            editedJson["basicBeatmapEvents"][0]["i"] = -78;
+            ExternalClipboardText = editedJson.ToString(2);
+            ReturnToChroMapperWindow();
+            editModeContext.EditingMode = EditingMode.BasicEvent;
+            eventPlacement.State = PlacementState.Idle;
+            atsc.MoveToJsonTime(2.625f);
+
+            try
+            {
+                selectionController.Paste();
+
+                Assert.That(eventCollection.MapObjects.Count, Is.EqualTo(4));
+                Assert.That(SelectionController.SelectedObjects.Count, Is.EqualTo(4));
+                Assert.That(eventCollection.MapObjects.Single(evt => evt.JsonTime == 2.625f).Value, Is.EqualTo(-78));
+                Assert.That(actionContainer.Undo(), Is.TypeOf<SelectionPastedAction>());
+                Assert.That(eventCollection.MapObjects.Count, Is.EqualTo(4));
+                Assert.That(eventCollection.MapObjects.Single(evt => evt.JsonTime == 2.625f).Value, Is.EqualTo(-79));
+                Assert.That(actionContainer.Redo(), Is.TypeOf<SelectionPastedAction>());
+                Assert.That(eventCollection.MapObjects.Count, Is.EqualTo(4));
+                Assert.That(eventCollection.MapObjects.Single(evt => evt.JsonTime == 2.625f).Value, Is.EqualTo(-78));
+            }
+            finally
+            {
+                eventPlacement.State = originalPlacementState;
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        [TestCase("color")]
+        [TestCase("rotation")]
+        [TestCase("translation")]
+        [TestCase("float")]
+        public void OuterGlsGroupsRemoveEachSharedPasteConflictOnlyOnce(string kind)
+        {
+            var group = PlaceGlsGroup(CreateSingleLaneGlsGroup(kind));
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType(group.ObjectType);
+            var firstPaste = BeatmapFactory.Clone(group);
+            var secondPaste = BeatmapFactory.Clone(group);
+
+            collection.RemoveConflictingObjects(new BaseObject[] { firstPaste, secondPaste }, out var conflicts);
+
+            Assert.That(conflicts.Count, Is.EqualTo(1));
+            Assert.That(conflicts[0], Is.SameAs(group));
+        }
+
+        [TestCase("color")]
+        [TestCase("rotation")]
+        [TestCase("translation")]
+        [TestCase("float")]
+        public void InnerGlsEventsRemoveEachSharedPasteConflictOnlyOnce(string kind)
+        {
+            var groupData = CreateSingleLaneGlsGroup(kind);
+            var sourceData = kind switch
+            {
+                "color" => (BaseGLSEvent)new BaseLightColorBase { RelativeJsonTime = 0 },
+                "rotation" => new BaseLightRotationBase { RelativeJsonTime = 0 },
+                "translation" => new BaseLightTranslationBase { RelativeJsonTime = 0 },
+                "float" => new BaseFxEventFloat { RelativeJsonTime = 0 },
+                _ => null
+            };
+            groupData.ReadOnlyBoxes[0].SetEvents(new[] { sourceData });
+            GLSCommonCommand.RebindGroup(groupData);
+            var group = PlaceGlsGroup(groupData);
+            var source = group.ReadOnlyBoxes[0].ReadOnlyEvents[0];
+            var collection = BeatmapObjectContainerCollection.GetCollectionForType<GLSEventGridContainer>(
+                ObjectType.GLSEvent);
+            var firstPaste = BeatmapFactory.Clone(source);
+            var secondPaste = BeatmapFactory.Clone(source);
+
+            collection.RemoveConflictingObjects(new BaseGLSEvent[] { firstPaste, secondPaste }, out var conflicts);
+
+            Assert.That(conflicts.Count, Is.EqualTo(1));
+            Assert.That(conflicts[0], Is.SameAs(source));
+        }
+
+        [TestCase("ClipboardBasicEventsConflictAndTail.json", 446, false)]
+        [TestCase("ClipboardReportedBasicEvents.json", 9046, false)]
+        [TestCase("ClipboardReportedBasicEvents.json", 9046, true)]
+        public void PastingReportedBasicEventTailKeepsEverySelectedEventThroughRecopy(
+            string fixtureName,
+            int basicEventCount,
+            bool replaceOriginalEvents)
+        {
+            var fixturePath = PathUtils.Combine(
+                Application.dataPath,
+                "Tests",
+                "Fixtures",
+                fixtureName);
+            var fixtureText = File.ReadAllText(fixturePath);
+            var fixture = JSON.Parse(fixtureText);
+            Assert.That(fixture["basicBeatmapEvents"].Count, Is.EqualTo(basicEventCount));
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var actionContainer = Object.FindAnyObjectByType<BeatmapActionContainer>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var eventPlacement = Object.FindAnyObjectByType<EventPlacement>();
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var originalMode = editModeContext.EditingMode;
+            var originalPlacementState = eventPlacement.State;
+            if (replaceOriginalEvents)
+            {
+                var eventCollection = BeatmapObjectContainerCollection.GetCollectionForType<EventGridContainer>(
+                    ObjectType.Event);
+                foreach (JSONNode eventJson in fixture["basicBeatmapEvents"])
+                {
+                    eventCollection.SpawnObject(BeatmapFactory.Event(eventJson), false, false, true);
+                }
+
+                foreach (JSONNode boostJson in fixture["colorBoostBeatmapEvents"])
+                {
+                    eventCollection.SpawnObject(BeatmapFactory.Event(boostJson), false, false, true);
+                }
+
+                Object.FindAnyObjectByType<BasicEventManager>().Refresh();
+                foreach (var evt in eventCollection.MapObjects)
+                {
+                    SelectionController.Select(evt, true, false, false);
+                }
+            }
+            else
+            {
+                var note = PlaceUtils.Place(new BaseNote { JsonTime = 1, Type = (int)NoteType.Red });
+                SelectionController.Select(note);
+            }
+
+            selectionController.Copy();
+            LeaveChroMapperWindow();
+            var editedJson = replaceOriginalEvents ? JSON.Parse(ExternalClipboardText) : fixture;
+            editedJson["basicBeatmapEvents"][0]["i"] = -78;
+            ExternalClipboardText = editedJson.ToString(2);
+            ReturnToChroMapperWindow();
+
+            try
+            {
+                Assert.That(SelectionController.CopiedObjects.Count, Is.EqualTo(basicEventCount + 1));
+                editModeContext.EditingMode = EditingMode.BasicEvent;
+                eventPlacement.State = PlacementState.Idle;
+                atsc.MoveToJsonTime(2.625f);
+                selectionController.Paste();
+
+                var selectedEvents = SelectionController.SelectedObjects.OfType<BaseEvent>().ToArray();
+                Assert.That(selectedEvents.Length, Is.EqualTo(basicEventCount + 1));
+                Assert.That(selectedEvents.Count(evt => evt.JsonTime > 596.5f), Is.EqualTo(433));
+                Assert.That(selectedEvents.Max(evt => evt.JsonTime), Is.EqualTo(618.875f).Within(0.001f));
+                Assert.That(BeatSaberSongContainer.Instance.Map.Events.Count, Is.EqualTo(basicEventCount + 1));
+
+                selectionController.Copy();
+                LeaveChroMapperWindow();
+                var recopiedJson = JSON.Parse(ExternalClipboardText);
+                Assert.That(recopiedJson["basicBeatmapEvents"].Count, Is.EqualTo(basicEventCount));
+                Assert.That(recopiedJson["basicBeatmapEvents"][0]["i"].AsInt, Is.EqualTo(-78));
+                Assert.That(recopiedJson["basicBeatmapEvents"][basicEventCount - 1]["b"].AsFloat,
+                    Is.EqualTo(618.875f).Within(0.001f));
+
+                Assert.That(actionContainer.Undo(), Is.TypeOf<SelectionPastedAction>());
+                Assert.That(BeatSaberSongContainer.Instance.Map.Events.Count,
+                    Is.EqualTo(replaceOriginalEvents ? basicEventCount + 1 : 0));
+                if (replaceOriginalEvents)
+                {
+                    Assert.That(BeatSaberSongContainer.Instance.Map.Events
+                        .Single(evt => evt.JsonTime == 2.625f).Value, Is.EqualTo(-79));
+                }
+
+                Assert.That(actionContainer.Redo(), Is.TypeOf<SelectionPastedAction>());
+                Assert.That(BeatSaberSongContainer.Instance.Map.Events.Count, Is.EqualTo(basicEventCount + 1));
+            }
+            finally
+            {
+                eventPlacement.State = originalPlacementState;
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
         [Test]
         public void LeavingWithTwentyThousandBasicEventsFormatsOneClipboardWrite()
         {
@@ -61,7 +345,7 @@ namespace Tests.Editor
                         Value = index % 8,
                         FloatValue = 1
                     };
-                    return new ClipboardJsonObject(evt, evt.ToJson());
+                    return new ClipboardJsonObject(evt);
                 })
                 .ToList();
 
@@ -914,6 +1198,282 @@ namespace Tests.Editor
             Assert.That(copiedGroup.JsonTime, Is.EqualTo(0));
             Assert.That(copiedGroup.Boxes.Count, Is.EqualTo(2));
             Assert.That(copiedGroup.Boxes.All(box => box.Events.Length == 1), Is.True);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PastingCopiedInnerGlsEventsAsOuterGroupRetainsSourceBoxProperties(bool importEditedJson)
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var outerProvider = Object.FindAnyObjectByType<GLSGroupGridProvider>();
+            var runtimeContext = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            var originalMode = editModeContext.EditingMode;
+            var originalPage = outerProvider.CurrentGroup;
+            var originalTrackDefinitions = runtimeContext.TrackDefinitions;
+            var originalMapTrackDefinitions = BeatSaberSongContainer.Instance.Map.RuntimeTrackDefinitions;
+            var originalPaintTrackDefinitions = PaintSelectedObjects.TrackDefinitions;
+            var testTrackDefinitions = ScriptableObject.CreateInstance<TrackDefinitionsSO>();
+            testTrackDefinitions.Register(new TrackDefinitionGLS
+            {
+                ID = 7,
+                Group = "Clipboard GLS test",
+                ColorTrack = true
+            });
+
+            try
+            {
+                runtimeContext.TrackDefinitions = testTrackDefinitions;
+                BeatSaberSongContainer.Instance.Map.RuntimeTrackDefinitions = testTrackDefinitions;
+                PaintSelectedObjects.TrackDefinitions = testTrackDefinitions;
+                runtimeContext.NotifyTrackDefinitions();
+
+                var sourceGroup = CreateTwoLaneColorGroup();
+                sourceGroup.Boxes[0].BeatDistribution = 4.5f;
+                sourceGroup.Boxes[0].BrightnessDistribution = 1.75f;
+                sourceGroup.Boxes[0].Easing = 2;
+                sourceGroup.Boxes[1].BeatDistribution = 3.5f;
+                var source = PlaceGlsGroup(sourceGroup);
+                SelectionController.Select(source.Boxes[0].Events[0]);
+                SelectionController.Select(source.Boxes[1].Events[0], true);
+                selectionController.Copy();
+
+                if (importEditedJson)
+                {
+                    LeaveChroMapperWindow();
+                    var editedJson = JSON.Parse(ExternalClipboardText.Replace(
+                        ClipboardJsonController.GetPartialEventBoxComment(), string.Empty));
+                    editedJson["e"][0]["w"] = 9;
+                    ExternalClipboardText = editedJson.ToString(2)
+                        .Insert(1, $"\n  {ClipboardJsonController.GetPartialEventBoxComment()}");
+                    ReturnToChroMapperWindow();
+                }
+
+                outerProvider.SetGroupPage(testTrackDefinitions.GetGlsOrDefault(source.ID).Group);
+                editModeContext.EditingMode = EditingMode.GLS;
+                selectionController.Paste();
+
+                var pasted = SelectionController.SelectedObjects.OfType<BaseLightColorEventBoxGroup>().Single();
+                Assert.That(pasted.Boxes.Count, Is.EqualTo(2));
+                Assert.That(pasted.Boxes[0].Events.Length, Is.EqualTo(1));
+                Assert.That(pasted.Boxes[1].Events.Length, Is.EqualTo(1));
+                Assert.That(pasted.Boxes[0].BeatDistribution, Is.EqualTo(importEditedJson ? 9 : 4.5f));
+                Assert.That(pasted.Boxes[0].BrightnessDistribution, Is.EqualTo(1.75f));
+                Assert.That(pasted.Boxes[0].Easing, Is.EqualTo(2));
+                Assert.That(pasted.Boxes[0].IndexFilter.Param0, Is.EqualTo(2));
+                Assert.That(pasted.Boxes[1].BeatDistribution, Is.EqualTo(3.5f));
+                Assert.That(pasted.Boxes[1].IndexFilter.Param1, Is.EqualTo(3));
+            }
+            finally
+            {
+                runtimeContext.TrackDefinitions = originalTrackDefinitions;
+                BeatSaberSongContainer.Instance.Map.RuntimeTrackDefinitions = originalMapTrackDefinitions;
+                PaintSelectedObjects.TrackDefinitions = originalPaintTrackDefinitions;
+                runtimeContext.NotifyTrackDefinitions();
+                outerProvider.SetGroupPage(originalPage);
+                editModeContext.EditingMode = originalMode;
+                Object.DestroyImmediate(testTrackDefinitions);
+            }
+        }
+
+        [Test]
+        public void PastingInnerGlsEventsSelectsTheLivePastedNodes()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            var group = PlaceGlsGroup(CreateTwoLaneColorGroup());
+            SelectionController.Select(group.Boxes[0].Events[0]);
+            SelectionController.Select(group.Boxes[1].Events[0], true);
+            selectionController.Copy();
+            editModeContext.EditingMode = EditingMode.EventBox;
+
+            try
+            {
+                selectionController.Paste();
+
+                var pastedGroup = Object.FindAnyObjectByType<GLSEventGridProvider>()
+                    .GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(pastedGroup, Is.Not.Null);
+                Assert.That(SelectionController.SelectedObjects.Count, Is.EqualTo(2));
+                Assert.That(SelectionController.SelectedObjects.All(selected => selected is BaseLightColorBase), Is.True);
+                Assert.That(SelectionController.SelectedObjects.All(selected =>
+                    pastedGroup.Boxes.Any(box => box.Events.Any(evt => ReferenceEquals(evt, selected)))), Is.True);
+            }
+            finally
+            {
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        [Test]
+        public void HoveringInnerGlsLaneOffsetsMultiLanePasteAndDropsEventsPastLastLane()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var placement = Object.FindAnyObjectByType<GLSEventColorPlacement>();
+            var originalMode = editModeContext.EditingMode;
+            var originalState = placement.State;
+            var group = PlaceGlsGroup(CreateColorGroupWithLanes(5));
+            for (var lane = 2; lane < 5; lane++)
+            {
+                SelectionController.Select(group.Boxes[lane].Events[0], true);
+            }
+
+            selectionController.Copy();
+            editModeContext.EditingMode = EditingMode.EventBox;
+            placement.State = PlacementState.Active;
+            placement.QueuedData.BoxIndex = 0;
+            placement.QueuedData.EventBoxData = group.Boxes[0];
+            placement.QueuedData.RelativeJsonTime = 1;
+
+            try
+            {
+                selectionController.Paste();
+
+                var pastedGroup = Object.FindAnyObjectByType<GLSEventGridProvider>()
+                    .GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(pastedGroup, Is.Not.Null);
+                for (var lane = 0; lane < 3; lane++)
+                {
+                    Assert.That(pastedGroup.Boxes[lane].Events.Any(evt =>
+                        evt.RelativeJsonTime == 1 && evt.Brightness == lane + 3), Is.True,
+                        $"Copied lane {lane + 2} did not paste into hovered lane {lane}.");
+                }
+
+                placement.QueuedData.BoxIndex = 4;
+                placement.QueuedData.EventBoxData = pastedGroup.Boxes[4];
+                selectionController.Paste();
+                pastedGroup = Object.FindAnyObjectByType<GLSEventGridProvider>()
+                    .GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(pastedGroup.Boxes[4].Events.Any(evt =>
+                    evt.RelativeJsonTime == 1 && evt.Brightness == 3), Is.True);
+                Assert.That(pastedGroup.Boxes.Sum(box => box.Events.Count(evt =>
+                    evt.RelativeJsonTime == 1 && evt.Brightness >= 4)), Is.EqualTo(2));
+            }
+            finally
+            {
+                placement.State = originalState;
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        [Test]
+        public void ShiftingPastedInnerGlsSelectionCreatesARealUndoStep()
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var actionContainer = Object.FindAnyObjectByType<BeatmapActionContainer>();
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var originalMode = editModeContext.EditingMode;
+            var group = PlaceGlsGroup(CreateColorGroupWithLanes(3));
+            SelectionController.Select(group.Boxes[0].Events[0]);
+            selectionController.Copy();
+            editModeContext.EditingMode = EditingMode.EventBox;
+
+            try
+            {
+                selectionController.Paste();
+                selectionController.ShiftSelection(1, 0);
+
+                var shiftedGroup = provider.GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(shiftedGroup, Is.Not.Null);
+                Assert.That(shiftedGroup.Boxes[1].Events[0].Brightness, Is.EqualTo(1));
+                Assert.That(actionContainer.Undo(), Is.TypeOf<BeatmapGLSEventBoxModifiedAction>());
+                var restoredGroup = provider.GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(restoredGroup.Boxes[1].Events[0].Brightness, Is.EqualTo(2));
+                Assert.That(actionContainer.Undo(), Is.TypeOf<SelectionPastedAction>());
+            }
+            finally
+            {
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PastingInnerGlsEventsIntoAnotherGroupUsesHoveredLane(bool importJson)
+        {
+            var selectionController = Object.FindAnyObjectByType<SelectionController>();
+            var provider = Object.FindAnyObjectByType<GLSEventGridProvider>();
+            var editModeContext = Object.FindAnyObjectByType<EditModeContext>();
+            var placement = Object.FindAnyObjectByType<GLSEventColorPlacement>();
+            var originalMode = editModeContext.EditingMode;
+            var originalState = placement.State;
+            var sourceGroup = CreateColorGroupWithLanes(5);
+            sourceGroup.Boxes[3].Events[0].RelativeJsonTime = 2;
+            sourceGroup.NormalizeLoadedEventConflicts();
+            var source = PlaceGlsGroup(sourceGroup);
+            for (var lane = 2; lane < 5; lane++)
+            {
+                SelectionController.Select(source.Boxes[lane].Events[0], true);
+            }
+
+            selectionController.Copy();
+            if (importJson)
+            {
+                LeaveChroMapperWindow();
+                var importedJson = JSON.Parse(ExternalClipboardText.Replace(
+                    ClipboardJsonController.GetPartialEventBoxComment(), string.Empty));
+                importedJson["e"][0]["w"] = 4;
+                importedJson["e"][0]["e"][0]["s"] = 6;
+                ExternalClipboardText = importedJson.ToString(2)
+                    .Insert(1, $"\n  {ClipboardJsonController.GetPartialEventBoxComment()}");
+                ReturnToChroMapperWindow();
+            }
+
+            var destination = CreateColorGroupWithLanes(5);
+            destination.JsonTime = 32;
+            destination.ID = 8;
+            PlaceGlsGroup(destination);
+            editModeContext.EditingMode = EditingMode.EventBox;
+            placement.State = PlacementState.Active;
+            placement.QueuedData.BoxIndex = 0;
+            placement.QueuedData.EventBoxData = destination.Boxes[0];
+            placement.QueuedData.RelativeJsonTime = 1;
+
+            try
+            {
+                selectionController.Paste();
+
+                var pastedGroup = provider.GroupContext as BaseLightColorEventBoxGroup;
+                Assert.That(pastedGroup, Is.Not.Null);
+                Assert.That(pastedGroup.JsonTime, Is.EqualTo(32));
+                if (importJson)
+                {
+                    Assert.That(pastedGroup.Boxes[0].BeatDistribution, Is.EqualTo(4));
+                    Assert.That(pastedGroup.Boxes[0].IndexFilter.Param0, Is.EqualTo(0));
+                }
+                for (var lane = 0; lane < 3; lane++)
+                {
+                    Assert.That(pastedGroup.Boxes[lane].Events.Any(evt =>
+                        evt.RelativeJsonTime == (lane == 1 ? 3 : 1)
+                        && evt.Brightness == (importJson && lane == 0 ? 6 : lane + 3)), Is.True);
+                }
+
+                Assert.That(SelectionController.SelectedObjects.Count, Is.EqualTo(3));
+            }
+            finally
+            {
+                placement.State = originalState;
+                editModeContext.EditingMode = originalMode;
+            }
+        }
+
+        private static BaseLightColorEventBoxGroup CreateColorGroupWithLanes(int laneCount)
+        {
+            var group = new BaseLightColorEventBoxGroup { JsonTime = 24, ID = 7 };
+            for (var lane = 0; lane < laneCount; lane++)
+            {
+                group.Boxes.Add(new BaseLightColorEventBox
+                {
+                    IndexFilter = new BaseIndexFilter { Type = 1, Param0 = lane },
+                    Events = new[] { new BaseLightColorBase { RelativeJsonTime = 0, Brightness = lane + 1 } }
+                });
+            }
+
+            group.NormalizeLoadedEventConflicts();
+            return group;
         }
 
         private static BaseLightColorEventBoxGroup CreateTwoLaneColorGroup()

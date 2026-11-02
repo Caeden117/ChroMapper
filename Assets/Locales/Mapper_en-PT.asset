@@ -698,7 +698,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 18507054370394112
-    m_Localized: Select stuff first!
+    m_Localized: Select mirrorable stuff first before Mirroring!
     m_Metadata:
       m_Items: []
   - m_Id: 68889908591489024

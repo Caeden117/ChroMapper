@@ -26,15 +26,13 @@ internal sealed class UnityTextClipboard : ITextClipboard
 
 internal readonly struct ClipboardJsonObject
 {
-    internal ClipboardJsonObject(BaseObject source, JSONNode json)
+    internal ClipboardJsonObject(BaseObject source)
     {
         Source = source;
-        Json = json;
         OriginalJsonTime = source.JsonTime;
     }
 
     internal BaseObject Source { get; }
-    internal JSONNode Json { get; }
     internal float OriginalJsonTime { get; }
 }
 
@@ -47,7 +45,9 @@ internal static class ClipboardJsonController
     private const string PartialEventBoxMarker = "//+ ";
 
     private static ITextClipboard textClipboard = new UnityTextClipboard();
-    private static string pendingExportText;
+    private static IReadOnlyList<ClipboardJsonObject> pendingObjects;
+    private static BaseEventBoxGroup pendingPartialGroup;
+    private static List<BpmInfoBpmRegion> pendingBpmRegions;
     private static string lastExportedText;
     private static bool exportedSinceCapture;
     private static bool isChroMapperPresent = true;
@@ -56,18 +56,17 @@ internal static class ClipboardJsonController
 
     internal static BaseEventBoxGroup CaptureCopiedObjects(IReadOnlyList<ClipboardJsonObject> copiedObjects)
     {
-        if (TryCreatePartialGlsGroupJson(
-                copiedObjects,
-                out var partialGlsGroupJson,
-                out var partialGlsGroup))
-        {
-            pendingExportText = partialGlsGroupJson;
-            exportedSinceCapture = false;
-            return partialGlsGroup;
-        }
+        pendingObjects = copiedObjects;
+        pendingBpmRegions = CaptureBpmRegions(copiedObjects);
+        TryCreatePartialGlsGroup(copiedObjects, out pendingPartialGroup);
+        exportedSinceCapture = false;
+        return pendingPartialGroup == null ? null : BeatmapFactory.Clone(pendingPartialGroup);
+    }
 
+    private static string SerializeCopiedObjects(IReadOnlyList<ClipboardJsonObject> copiedObjects)
+    {
         var files = new Dictionary<string, Dictionary<string, JSONArray>>();
-        var bpmRegionsByStartBeat = GetBpmRegionsByStartBeat(copiedObjects);
+        var bpmRegionsByStartBeat = GetBpmRegionsByStartBeat(pendingBpmRegions);
         var copiedVfxGroups = copiedObjects
             .Select(copiedObject => copiedObject.Source)
             .OfType<BaseVfxEventEventBoxGroup>()
@@ -102,18 +101,18 @@ internal static class ClipboardJsonController
             }
             else
             {
-                collection.Add(copiedObject.Json);
+                collection.Add(copiedObject.Source.ToJson());
             }
         }
 
         var collectionCount = files.Values.Sum(collections => collections.Count);
         if (collectionCount == 1 && floatFxEvents == null)
         {
-            pendingExportText = files.Values.First().Values.First().ToString(2);
+            return files.Values.First().Values.First().ToString(2);
         }
         else if (files.Count == 1)
         {
-            pendingExportText = CreateFileJson(files.Values.First(), floatFxEvents).ToString(2);
+            return CreateFileJson(files.Values.First(), floatFxEvents).ToString(2);
         }
         else
         {
@@ -125,19 +124,14 @@ internal static class ClipboardJsonController
                     fileName == DifficultyFileName ? floatFxEvents : null);
             }
 
-            pendingExportText = json.ToString(2);
+            return json.ToString(2);
         }
-
-        exportedSinceCapture = false;
-        return null;
     }
 
-    private static bool TryCreatePartialGlsGroupJson(
+    private static bool TryCreatePartialGlsGroup(
         IReadOnlyList<ClipboardJsonObject> copiedObjects,
-        out string json,
         out BaseEventBoxGroup partialGroup)
     {
-        json = null;
         partialGroup = null;
         if (copiedObjects.Count == 0
             || copiedObjects.Any(copiedObject => copiedObject.Source is not BaseGLSEvent))
@@ -199,6 +193,11 @@ internal static class ClipboardJsonController
         }
 
         GLSCommonCommand.RebindGroup(partialGroup);
+        return true;
+    }
+
+    private static string SerializePartialGlsGroup(BaseEventBoxGroup partialGroup)
+    {
         if (partialGroup is BaseVfxEventEventBoxGroup partialVfxGroup)
         {
             var floatFxEvents = partialVfxGroup.Boxes
@@ -215,13 +214,11 @@ internal static class ClipboardJsonController
             var formattedVfxJson = root.ToString(2);
             var groupsArrayIndex = formattedVfxJson.IndexOf('[', formattedVfxJson.IndexOf("\"vfxEventBoxGroups\""));
             var groupObjectIndex = formattedVfxJson.IndexOf('{', groupsArrayIndex);
-            json = formattedVfxJson.Insert(groupObjectIndex + 1, $"\n      {GetPartialEventBoxComment()}");
-            return true;
+            return formattedVfxJson.Insert(groupObjectIndex + 1, $"\n      {GetPartialEventBoxComment()}");
         }
 
         var formattedJson = partialGroup.ToJson().ToString(2);
-        json = formattedJson.Insert(1, $"\n  {GetPartialEventBoxComment()}");
-        return true;
+        return formattedJson.Insert(1, $"\n  {GetPartialEventBoxComment()}");
     }
 
     internal static string GetPartialEventBoxComment()
@@ -325,7 +322,9 @@ internal static class ClipboardJsonController
     internal static void SetTextClipboardForTests(ITextClipboard clipboard)
     {
         textClipboard = clipboard;
-        pendingExportText = null;
+        pendingObjects = null;
+        pendingPartialGroup = null;
+        pendingBpmRegions = null;
         lastExportedText = null;
         exportedSinceCapture = false;
         isChroMapperPresent = true;
@@ -336,7 +335,9 @@ internal static class ClipboardJsonController
     internal static void ResetTextClipboardAfterTests()
     {
         textClipboard = new UnityTextClipboard();
-        pendingExportText = null;
+        pendingObjects = null;
+        pendingPartialGroup = null;
+        pendingBpmRegions = null;
         lastExportedText = null;
         exportedSinceCapture = false;
         isChroMapperPresent = true;
@@ -346,11 +347,14 @@ internal static class ClipboardJsonController
 
     private static void ExportPendingJson()
     {
-        if (exportedSinceCapture || string.IsNullOrEmpty(pendingExportText))
+        if (exportedSinceCapture || pendingObjects == null || pendingObjects.Count == 0)
         {
             return;
         }
 
+        var pendingExportText = pendingPartialGroup == null
+            ? SerializeCopiedObjects(pendingObjects)
+            : SerializePartialGlsGroup(pendingPartialGroup);
         textClipboard.Text = pendingExportText;
         lastExportedText = pendingExportText;
         exportedSinceCapture = true;
@@ -874,6 +878,11 @@ internal static class ClipboardJsonController
             return "basicBeatmapEvents";
         }
 
+        if (json.HasKey("b") && json.HasKey("o") && json["o"].IsBoolean)
+        {
+            return "colorBoostBeatmapEvents";
+        }
+
         if (json.HasKey("b") && json.HasKey("sb") && json.HasKey("sf") && json.HasKey("s"))
         {
             return "glsColorEvents";
@@ -1015,7 +1024,7 @@ internal static class ClipboardJsonController
     private static IEnumerable<string> GetOrderedFileNames(IEnumerable<string> fileNames) =>
         fileNames.OrderBy(fileName => fileName == BpmInfoFileName ? 0 : 1).ThenBy(fileName => fileName);
 
-    private static Dictionary<float, JSONNode> GetBpmRegionsByStartBeat(
+    private static List<BpmInfoBpmRegion> CaptureBpmRegions(
         IReadOnlyList<ClipboardJsonObject> copiedObjects)
     {
         if (!copiedObjects.Any(copiedObject => copiedObject.Source is BaseBpmEvent))
@@ -1025,11 +1034,18 @@ internal static class ClipboardJsonController
 
         var songContainer = BeatSaberSongContainer.Instance;
         var bpmEvents = BaseObject.InFileOrder(songContainer.Map.BpmEvents).ToList();
-        var regions = BaseBpmInfo.GetBpmInfoRegions(
+        return BaseBpmInfo.GetBpmInfoRegions(
             bpmEvents,
             songContainer.Info.BeatsPerMinute,
             songContainer.LoadedSongSamples - 1,
             songContainer.LoadedSongFrequency);
+    }
+
+    private static Dictionary<float, JSONNode> GetBpmRegionsByStartBeat(List<BpmInfoBpmRegion> regions)
+    {
+        if (regions == null)
+            return null;
+
         var regionsByStartBeat = new Dictionary<float, JSONNode>(regions.Count);
         for (var i = 0; i < regions.Count; i++)
         {
