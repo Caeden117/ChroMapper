@@ -2785,7 +2785,7 @@ namespace Tests.Editor
                 Assert.That(
                     lastStrobe.g,
                     Is.GreaterThan(lastStrobe.r),
-                    "light6's 'hs,0.4,lin'+'v,2,lin' strobe endpoint must differ from light0's, proving per-light strips");
+                    "light6's 'hs,0.4,L'+'v,2,L' strobe endpoint must differ from light0's, proving per-light strips");
                 Assert.That(lastStrobe.g, Is.GreaterThan(lastStrobe.b), "light6 strobe band\n" + lastStrobe);
                 var oddStrip = RenderGradientPixel(sampleMaterial, 0.581f, WaveLaneForLight(1));
                 Assert.That(
