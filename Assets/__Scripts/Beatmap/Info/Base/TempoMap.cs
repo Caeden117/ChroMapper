@@ -36,7 +36,12 @@ namespace Beatmap.Info
 
         public double BeatAt(int sample)
         {
-            var r = Regions[RegionAt(sample)];
+            return BeatAt(RegionAt(sample), sample);
+        }
+
+        public double BeatAt(int index, double sample)
+        {
+            var r = Regions[index];
             return r.StartBeat + (double)(sample - r.StartSampleIndex) / (r.EndSampleIndex - r.StartSampleIndex)
                 * (r.EndBeat - r.StartBeat);
         }

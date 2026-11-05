@@ -36,8 +36,8 @@ public class TempoGridOverlay : MaskableGraphic, IPointerDownHandler, IPointerUp
             {
                 var r = View.Map.Regions[i];
                 if (r.EndSampleIndex < Start || r.StartSampleIndex > End) continue;
-                var first = Math.Max(r.StartBeat, View.Map.BeatAt((int)Math.Max(Start, r.StartSampleIndex)));
-                var last = Math.Min(r.EndBeat, View.Map.BeatAt((int)Math.Min(End, r.EndSampleIndex)));
+                var first = Math.Max(r.StartBeat, View.Map.BeatAt(i, Math.Max(Start, r.StartSampleIndex)));
+                var last = Math.Min(r.EndBeat, View.Map.BeatAt(i, Math.Min(End, r.EndSampleIndex)));
                 var step = GridStep(first, last);
                 for (var b = Math.Ceiling(first / step) * step; b < last; b += step)
                 {

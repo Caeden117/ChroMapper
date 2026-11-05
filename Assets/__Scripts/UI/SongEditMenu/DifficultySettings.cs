@@ -55,6 +55,8 @@ public class DifficultySettings
         }
     }
 
+    internal void InvalidateMap() => map = null;
+
     public List<BaseEnvironmentEnhancement> EnvEnhancements
     {
         get

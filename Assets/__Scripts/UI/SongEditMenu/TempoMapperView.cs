@@ -44,6 +44,7 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     [SerializeField] private TextComponent status;
     [SerializeField] private TextBoxFloatComponent bpm;
     [SerializeField] private TextBoxFloatComponent beats;
+    private int displayedRegion = -1;
     [SerializeField] private TextBoxIntComponent subdivisionField;
     [SerializeField] private Toggle shift;
     [SerializeField] private ButtonComponent play;
@@ -141,8 +142,7 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         overviewMaterial.SetFloat("_ViewEnd", clip.length);
         overviewSpectrogram.material = overviewMaterial;
 
-        bpm.OnEndEdit(value => Edit(map => map.SetBpm(SelectedRegion, value)));
-        beats.OnEndEdit(value => Edit(map => map.SetBeats(SelectedRegion, value)));
+        BindRegionFields();
         subdivisionField.OnEndEdit(SetSubdivision);
         undoButton.OnClick(Undo);
         redoButton.OnClick(Redo);
@@ -257,14 +257,32 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         ResetPlaybackClock(sample);
     }
 
-    private void PausePlayback()
+    private void PausePlayback(bool refresh = true)
     {
         heldPlayback = false;
         music.Pause();
         playbackClockRunning = false;
         Sample = Math.Clamp(music.timeSamples, 0, Map.EndSample);
         SelectedRegion = Map.RegionAt(Sample);
-        Refresh(false);
+        if (refresh) Refresh(false);
+    }
+
+    private void BindRegionFields()
+    {
+        bpm.OnSelect(_ => BeginRegionEdit(bpm));
+        beats.OnSelect(_ => BeginRegionEdit(beats));
+        bpm.OnEndEdit(value => Edit(map => map.SetBpm(SelectedRegion, value)));
+        beats.OnEndEdit(value => Edit(map => map.SetBeats(SelectedRegion, value)));
+    }
+
+    private void BeginRegionEdit(TextBoxFloatComponent field)
+    {
+        PausePlayback(false);
+        RefreshRegionFields(true);
+        // The normal binder intentionally leaves focused text alone. On entering an edit, show
+        // the paused region's value before accepting input so an earlier region cannot be submitted.
+        if (field.Selectable is TMP_InputField input)
+            input.SetTextWithoutNotify(field.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
     }
 
     private void OnApplicationPause(bool paused)
@@ -456,7 +474,6 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         }
         waveform.SetWindow(ViewStart, ViewEnd);
         overviewWaveform.SetWindow(0, Map.EndSample);
-        var r = Map.Regions[SelectedRegion];
         if (inspector || Time.realtimeSinceStartupAsDouble - lastReadoutTime >= 0.05)
         {
             lastReadoutTime = Time.realtimeSinceStartupAsDouble;
@@ -467,10 +484,17 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
             var playTooltip = play.GetComponent<Tooltip>();
             if (playTooltip != null) playTooltip.TooltipOverride = Text(music.isPlaying ? "pause" : "play");
         }
-        if (inspector)
+        RefreshRegionFields(inspector);
+    }
+
+    private void RefreshRegionFields(bool inspector)
+    {
+        if (inspector || displayedRegion != SelectedRegion)
         {
+            displayedRegion = SelectedRegion;
             bpm.SetValueWithoutNotify((float)Map.Bpm(SelectedRegion));
-            beats.SetValueWithoutNotify(r.EndBeat - r.StartBeat);
+            var region = Map.Regions[SelectedRegion];
+            beats.SetValueWithoutNotify(region.EndBeat - region.StartBeat);
             status.Value = "";
             status.gameObject.SetActive(false);
         }
