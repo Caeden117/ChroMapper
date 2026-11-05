@@ -3,10 +3,9 @@ using UnityEngine;
 public class HydraulicCarSuspensionEffectData : EnvironmentComponentData<HydraulicCarSuspension>
 {
     public EnvironmentEventType ContractEventType;
-    public int[] ContractEventValues;
+    public int[] EventValues;
     public EnvironmentEventType ExpandEventType;
-    public int[] ExpandEventValues;
-    public int SpringJoint;
+    public int Joint;
     public float ContractDistance = 0.3f;
     public float ExpandDistance = 0.4f;
     public int Rigidbody;
@@ -24,9 +23,8 @@ public class HydraulicCarSuspensionEffectData : EnvironmentComponentData<Hydraul
                 ExpandEventType);
 
         comp.Rigidbody = container.GetComponentOrNull<Rigidbody>(Rigidbody);
-        comp.SpringJoint = container.GetComponentOrNull<SpringJoint>(SpringJoint);
-        comp.ContractEventValues = ContractEventValues;
-        comp.ExpandEventValues = ExpandEventValues;
+        comp.Joint = container.GetComponentOrNull<ConfigurableJoint>(Joint);
+        comp.EventValues = EventValues;
         comp.ContractDistance = ContractDistance;
         comp.ExpandDistance = ExpandDistance;
     }

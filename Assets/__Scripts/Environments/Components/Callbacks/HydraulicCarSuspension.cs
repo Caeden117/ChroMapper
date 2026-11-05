@@ -4,23 +4,20 @@ using UnityEngine;
 public class HydraulicCarSuspension : MonoBehaviour
 {
     [SerializeField] public GenericCallbackEventEffect ContractEffect;
-    [SerializeField] public int[] ContractEventValues;
     [SerializeField] public GenericCallbackEventEffect ExpandEffect;
-    [SerializeField] public int[] ExpandEventValues;
+    [SerializeField] public int[] EventValues;
 
-    [Space] [SerializeField] public SpringJoint SpringJoint;
-    [SerializeField] public float ContractDistance = 0.3f;
-    [SerializeField] public float ExpandDistance = 0.4f;
+    [Space] [SerializeField] public ConfigurableJoint Joint;
+    [SerializeField] public float ContractDistance;
+    [SerializeField] public float ExpandDistance;
 
     [Space] [SerializeField] public Rigidbody Rigidbody;
 
-    private HashSet<int> contractEventValuesHashSet;
-    private HashSet<int> expandEventValuesHashSet;
+    private HashSet<int> eventValuesHashSet;
 
     protected void Awake()
     {
-        contractEventValuesHashSet = new HashSet<int>(ContractEventValues);
-        expandEventValuesHashSet = new HashSet<int>(ExpandEventValues);
+        eventValuesHashSet = new HashSet<int>(EventValues);
     }
 
     private void Start()
@@ -49,17 +46,15 @@ public class HydraulicCarSuspension : MonoBehaviour
 
     private void HandleContractStateChanged((int index, BasicEventStateData state) data)
     {
-        if (!contractEventValuesHashSet.Contains(data.state.Base.Value)) return;
-        SpringJoint.minDistance = ContractDistance;
-        SpringJoint.maxDistance = ContractDistance;
+        if (!eventValuesHashSet.Contains(data.state.Base.Value)) return;
+        Joint.targetPosition = Vector3.up * ContractDistance;
         Rigidbody.WakeUp();
     }
 
     private void HandleExpandStateChanged((int index, BasicEventStateData state) data)
     {
-        if (!expandEventValuesHashSet.Contains(data.state.Base.Value)) return;
-        SpringJoint.minDistance = ExpandDistance;
-        SpringJoint.maxDistance = ExpandDistance;
+        if (!eventValuesHashSet.Contains(data.state.Base.Value)) return;
+        Joint.targetPosition = Vector3.up * ExpandDistance;
         Rigidbody.WakeUp();
     }
 }
