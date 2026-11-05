@@ -37,29 +37,29 @@ MonoBehaviour:
     Type: 5
     Kind: 3
     Components: 0
-  - Name: Extra 1
+  - Name: Left Lasers
     Type: 6
     Kind: 2
     Components: 0
-  - Name: Extra 2
+  - Name: Right Lasers
     Type: 7
     Kind: 2
     Components: 0
-  - Name: Ring Rotation
+  - Name: Car Bounce
     Type: 8
-    Kind: 1
+    Kind: 5
     Components: 0
-  - Name: Ring Zoom
+  - Name: Laser Spread
     Type: 9
     Kind: 1
     Components: 0
-  - Name: Extra 3
+  - Name: Hydralics Down
     Type: 16
-    Kind: 7
+    Kind: 5
     Components: 0
-  - Name: Extra 4
+  - Name: Hydralics Up
     Type: 17
-    Kind: 7
+    Kind: 5
     Components: 0
   - Name: Left Laser Speed
     Type: 12

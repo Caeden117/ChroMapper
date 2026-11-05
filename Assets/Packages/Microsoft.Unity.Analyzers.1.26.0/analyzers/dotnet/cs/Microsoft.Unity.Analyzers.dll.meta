@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4b4d13f60542d494094fa0ed6b32c136
+guid: fcf52c9b5771a5a728f77af5609534e4
 labels:
 - NuGetForUnity
 - RoslynAnalyzer
@@ -20,13 +20,12 @@ PluginImporter:
         'Exclude ': 0
         Exclude Android: 0
         Exclude CloudRendering: 0
-        Exclude Editor: 1
         Exclude EmbeddedLinux: 0
         Exclude GameCoreScarlett: 0
         Exclude GameCoreXboxOne: 0
         Exclude Kepler: 0
-        Exclude Linux64: 1
-        Exclude OSXUniversal: 1
+        Exclude Linux64: 0
+        Exclude OSXUniversal: 0
         Exclude PS4: 0
         Exclude PS5: 0
         Exclude QNX: 0
@@ -34,42 +33,20 @@ PluginImporter:
         Exclude Switch2: 0
         Exclude VisionOS: 0
         Exclude WebGL: 0
-        Exclude Win: 1
-        Exclude Win64: 1
-        Exclude WindowsStoreApps: 1
+        Exclude Win: 0
+        Exclude Win64: 0
+        Exclude WindowsStoreApps: 0
         Exclude XboxOne: 0
         Exclude iOS: 0
         Exclude tvOS: 0
     Editor:
       enabled: 0
       settings:
-        CPU: AnyCPU
         DefaultValueInitialized: true
-        OS: AnyOS
-    Linux64:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-    OSXUniversal:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-    Win:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-    Win64:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
     WindowsStoreApps:
       enabled: 0
       settings:
         CPU: AnyCPU
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
   userData: 
   assetBundleName: 
   assetBundleVariant: 

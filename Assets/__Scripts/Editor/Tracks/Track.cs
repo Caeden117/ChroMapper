@@ -30,7 +30,7 @@ public class Track : MonoBehaviour
 
     // this number pulled from my ass, but it looks fine
     // oh, it's actually correct
-    const float JUMP_FAR = 500f;
+    public const float JUMP_FAR = 500f;
 
     // this number also pulled from my ass, song bpm time
     public const float JUMP_TIME = 2f;
