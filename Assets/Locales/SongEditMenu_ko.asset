@@ -556,6 +556,131 @@ MonoBehaviour:
     m_Localized: Lightshow.dat
     m_Metadata:
       m_Items: []
+  - m_Id: 645939678474465280
+    m_Localized: Tempo Mapper
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128578
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128579
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128584
+    m_Localized: Region BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128585
+    m_Localized: Region beats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128588
+    m_Localized: Undo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128589
+    m_Localized: Redo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128591
+    m_Localized: Metronome
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128592
+    m_Localized: Playback speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128595
+    m_Localized: Cannot apply this edit. Keep positive region lengths and BPM between
+      1 and 1000.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128597
+    m_Localized: Unsaved timing changes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128598
+    m_Localized: 'Tempo mapping failed: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128599
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128600
+    m_Localized: Back to song setup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128601
+    m_Localized: Discard the unsaved tempo changes and return to song setup?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128602
+    m_Localized: Discard changes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645939678575128603
+    m_Localized: Keep editing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109751558144
+    m_Localized: Shift BPM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027136
+    m_Localized: Beat subdivision
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027137
+    m_Localized: Zoom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027138
+    m_Localized: Music volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109848027139
+    m_Localized: "{0:00}:{1:00.000}  \u2022  Beat {2:F2}  \u2022  Region {3}/{4}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646048450345758720
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238232256512
+    m_Localized: Tempo Mapper settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725504
+    m_Localized: Timeline overview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725505
+    m_Localized: Editing display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725506
+    m_Localized: Waveform
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725507
+    m_Localized: Spectograph
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725508
+    m_Localized: Both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646115238328725515
+    m_Localized: Follow playback
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646214639961305088
+    m_Localized: Rectify peaks
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

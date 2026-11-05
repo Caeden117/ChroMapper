@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,17 +22,39 @@ public class OptionsController : MenuBase
     public List<CanvasGroup> OptionBodyCanvasGroups;
 
     private bool isClosing;
+    public static int StartingGroup { get; private set; }
 
     public static bool IsActive { get; internal set; }
 
     public static void ShowOptions(int loadGroup = 0)
     {
         if (IsActive) return;
-        SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
-        CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController),
-            typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-        OnOptionsLoaded?.Invoke();
+        StartingGroup = loadGroup;
         IsActive = true;
+        try
+        {
+            CMInputCallbackInstaller.DisableActionMaps(typeof(OptionsController),
+                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+            SceneManager.LoadScene("04_Options", LoadSceneMode.Additive);
+            OnOptionsLoaded?.Invoke();
+        }
+        catch
+        {
+            ReleaseInputState();
+            throw;
+        }
+    }
+
+    private static void ReleaseInputState()
+    {
+        CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController),
+            typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
+        IsActive = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (IsActive) ReleaseInputState();
     }
 
     public void Close()
@@ -59,13 +81,12 @@ public class OptionsController : MenuBase
         try
         {
             yield return StartCoroutine(Close(2, optionsCanvasGroup));
-            CMInputCallbackInstaller.ClearDisabledActionMaps(typeof(OptionsController),
-                typeof(CMInput).GetNestedTypes().Where(x => x.IsInterface));
-            IsActive = false;
+            ReleaseInputState();
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("04_Options"));
         }
         finally
         {
+            if (IsActive) ReleaseInputState();
             isClosing = false;
         }
     }

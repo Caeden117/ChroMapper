@@ -31,6 +31,8 @@ public class SongInfoEditUI : MenuBase
     };
 
     [SerializeField] private AudioSource previewAudio;
+    [SerializeField] private AudioPreviewGenerator tempoAudioPreview;
+    [SerializeField] private TempoMapperView tempoMapperPrefab;
 
     [SerializeField] private TextMeshProUGUI songInfoHeaderTitle;
 
@@ -84,6 +86,38 @@ public class SongInfoEditUI : MenuBase
         ContributorWrapper.SetActive(true);
 
         LoadFromSong();
+    }
+
+    private bool openingTempoMapper;
+
+    public void OpenTempoMapper()
+    {
+        if (openingTempoMapper || PersistentUI.Instance.DialogBoxIsEnabled) return;
+        CheckForChanges(result =>
+        {
+            if (result == 2) return;
+            if (result == 0) SaveAllFields();
+            StartCoroutine(LoadTempoMapper());
+        });
+    }
+
+    private IEnumerator LoadTempoMapper()
+    {
+        openingTempoMapper = true;
+        var fullPath = PathUtils.Combine(Info.Directory, Info.SongFilename);
+        if (!File.Exists(fullPath) || !FileContentValidationHelper.IsSupportedAudioFormat(fullPath))
+        {
+            openingTempoMapper = false;
+            PersistentUI.Instance.ShowDialogBox("SongEditMenu", "load.error.audio3", null, PersistentUI.DialogBoxPresetType.Ok);
+            yield break;
+        }
+        BeatSaberSongContainer.Instance.LoadedSong = null;
+        yield return LoadAudio(false);
+        openingTempoMapper = false;
+        var clip = BeatSaberSongContainer.Instance.LoadedSong;
+        if (clip == null) yield break;
+        previewAudio.Stop();
+        TempoMapperView.Open(clip, tempoAudioPreview, difficultySelect, tempoMapperPrefab);
     }
 
     /// <summary>

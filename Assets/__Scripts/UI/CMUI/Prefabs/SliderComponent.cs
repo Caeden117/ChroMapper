@@ -38,7 +38,7 @@ public class SliderComponent : CMUIComponentWithLabel<float>, INavigable
     /// <param name="visible">Visibility of the slider display text.</param>
     public SliderComponent WithDisplay(bool visible)
     {
-        display.gameObject.SetActive(visible);
+        if (display != null) display.gameObject.SetActive(visible);
         return this;
     }
 
@@ -80,9 +80,11 @@ public class SliderComponent : CMUIComponentWithLabel<float>, INavigable
             : value;
 
     private void UpdateText()
-        => display.text = sliderTextFormatter == null
-            ? Value.ToString("F1")
-            : sliderTextFormatter(Value);
+    {
+        // Layouts with an external readout can omit the built-in display.
+        if (display == null) return;
+        display.text = sliderTextFormatter == null ? Value.ToString("F1") : sliderTextFormatter(Value);
+    }
 
     private void OnDestroy() => slider.onValueChanged.RemoveAllListeners();
 }

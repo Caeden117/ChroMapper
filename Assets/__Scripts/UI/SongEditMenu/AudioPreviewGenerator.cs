@@ -19,6 +19,26 @@ public class AudioPreviewGenerator : MonoBehaviour
     private float previewDuration;
     private float previewTime;
 
+    public RectTransform Spectrogram => (RectTransform)transform;
+    public GameObject PreviewSelection => previewSelection.gameObject;
+
+    public void PrepareTempoMapper()
+    {
+        previewGameObject.SetActive(true);
+        if (Application.isBatchMode) return;
+        ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
+        SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
+        audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong,
+            Settings.Instance.SpectrogramSampleSize, Settings.Instance.SpectrogramEditorQuality, true);
+    }
+
+    public void RestorePreviewBounds()
+    {
+        Shader.SetGlobalFloat(viewStart, 0);
+        Shader.SetGlobalFloat(viewEnd, BeatSaberSongContainer.Instance.LoadedSongLength);
+        UpdatePreviewSelection();
+    }
+
     private void Start() => songInfoEditUI.OnTempSongLoaded += TempSongLoaded;
 
     private void OnDestroy() => songInfoEditUI.OnTempSongLoaded -= TempSongLoaded;
