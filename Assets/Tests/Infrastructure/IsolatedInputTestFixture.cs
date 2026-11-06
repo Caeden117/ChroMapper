@@ -17,6 +17,9 @@ namespace Tests.Infrastructure
                 action.Disable();
 
             base.Setup();
+
+            // The runtime reset above drops project interaction registrations.
+            StrobePulseWidthInput.RegisterInteraction();
         }
 
         public override void TearDown()

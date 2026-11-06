@@ -50,6 +50,7 @@ public class GLSEventFloatFXPlacement : GLSEventPlacement<BaseVfxEventEventBoxGr
     private void HandleExtensionChanged(int value)
     {
         QueuedData.UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(QueuedData, EasingInputController);
         GlsEventAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 

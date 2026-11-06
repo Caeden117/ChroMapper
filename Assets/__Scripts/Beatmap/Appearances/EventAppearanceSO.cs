@@ -38,11 +38,11 @@ namespace Beatmap.Appearances
         /// <summary>
         /// Used for clockwise ring rotations and positive step ring zoom, and Y GLS rotation / translations.
         /// </summary>
-        public Color RingEventsClockwiseColor = new(0.75f, 0.75f, 0.75f);
+        public Color RingEventsClockwiseColor = new(0.6f, 0.6f, 0.6f);
         /// <summary>
         /// Used for counter-clockwise ring rotations and positive step ring zoom, and Y GLS rotation / translations.
         /// </summary>
-        public Color RingEventsCounterClockwiseColor = new(0.35f, 0.35f, 0.35f);
+        public Color RingEventsCounterClockwiseColor = new(0.3f, 0.3f, 0.3f);
 
         [Tooltip("Example: Ring rotate/Ring zoom/Light speed change events")]
         public Color OtherColor;
@@ -305,7 +305,6 @@ namespace Beatmap.Appearances
 
             if (Settings.Instance.VisualizeChromaGradients)
             {
-                // LightIdTransitionRibbonStopsAtAllLightsNonTransitionInterrupt keeps color and length on one endpoint.
                 e.UpdateGradientRendering(
                     ribbonStartColor,
                     ribbonEndColor,
@@ -403,8 +402,7 @@ namespace Beatmap.Appearances
             if (data.CustomStep.HasValue) lines.AppendLine($"Z{FormatFloat(data.CustomStep.Value)}");
             // Propagation always retains thousandths because small differences materially alter repeated assignments.
             if (data.CustomProp.HasValue) lines.AppendLine($"P{FormatFloat(data.CustomProp.Value, "0.###")}");
-            // BasicEventAppearanceTest's low/high-propagation speed regressions require
-            // speed precision to depend only on speed magnitude, never propagation.
+            // Display precision follows speed, regardless of propagation.
             if (data.CustomSpeed.HasValue)
             {
                 var speed = FormatRingSpeed(data.CustomSpeed.Value);
@@ -420,18 +418,13 @@ namespace Beatmap.Appearances
                 return $"Z{FormatFloat(data.CustomStep ?? data.Value, "0.###")}";
 
             var lines = new StringBuilder();
-            // Ring zoom step retains thousandths so the node label reflects the dedicated fine precision ladder.
             if (data.CustomStep.HasValue) lines.AppendLine($"Z{FormatFloat(data.CustomStep.Value, "0.###")}");
-            // RingZoomSpeedBelowOneDisplaysThreeDecimals requires zoom and rotation to
-            // share the same magnitude-based ring-speed precision rule.
             if (data.CustomSpeed.HasValue) lines.Append($"S{FormatRingSpeed(data.CustomSpeed.Value)}");
             return lines.ToString().TrimEnd('\r', '\n');
         }
 
         private static string DirectionText(int direction) => direction == 1 ? "CW" : "CCW";
 
-        // Ring speed labels use thousandths below one and hundredths otherwise, avoiding
-        // separate rotation/zoom formatters that can drift back out of sync.
         private static string FormatRingSpeed(float value) =>
             FormatFloat(value, Mathf.Abs(value) < 1f ? "0.###" : "0.##");
 

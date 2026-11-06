@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
@@ -23,6 +24,7 @@ namespace Beatmap.Appearances
             container.transform.localScale = Vector3.one * (final
                 ? EventAppearanceSO.FinalNodeScale
                 : EventAppearanceSO.PreviewNodeScale);
+            container.SetIcons(GLSEventIconResolver.Resolve(container.EventData));
             container.MpbController.Mpb.SetFloat(strobeColorEnabledId, 0f);
             switch (container.EventData)
             {
@@ -45,7 +47,7 @@ namespace Beatmap.Appearances
                             strobeBandEnabled
                                 ? 1f
                                 : 0f);
-                        container.SetText(GLSEventCommon.GetColorInfo(colorEvt));
+                        container.SetText(colorEvt);
                         container.SetText(true);
                     }
 
@@ -54,13 +56,16 @@ namespace Beatmap.Appearances
                     if (rotationEvt.UsePrevious == 1)
                     {
                         container.MpbController.Mpb.SetColor(colorId, eventAppearance.OffColor);
-                        container.SetText(false);
+                        // Rotation extensions can still ease through extra loops while holding the previous
+                        // angle. Show their loop count and easing so these spins are visible in the editor.
+                        container.SetText(rotationEvt);
+                        container.SetText(rotationEvt.Loop != 0);
                     }
                     else
                     {
                         // Encode the event box axis with the same neutral/CW/CCW grays used by Basic Events.
                         container.MpbController.Mpb.SetColor(colorId, GLSEventCommon.GetAxisColor(rotationEvt, eventAppearance));
-                        container.SetText(GLSEventCommon.GetRotationInfo(rotationEvt));
+                        container.SetText(rotationEvt);
                         container.SetText(true);
                     }
 
@@ -75,7 +80,7 @@ namespace Beatmap.Appearances
                     {
                         // Encode the event box axis with the same neutral/CW/CCW grays used by Basic Events.
                         container.MpbController.Mpb.SetColor(colorId, GLSEventCommon.GetAxisColor(translationEvt, eventAppearance));
-                        container.SetText(GLSEventCommon.GetTranslationInfo(translationEvt));
+                        container.SetText(translationEvt);
                         container.SetText(true);
                     }
 
@@ -89,7 +94,7 @@ namespace Beatmap.Appearances
                     else
                     {
                         container.MpbController.Mpb.SetColor(colorId, eventAppearance.RingEventsColor);
-                        container.SetText(GLSEventCommon.GetFloatFXInfo(fxEvt));
+                        container.SetText(fxEvt);
                         container.SetText(true);
                     }
 
@@ -104,16 +109,33 @@ namespace Beatmap.Appearances
         }
 
         // Keep inner GLS color-node ribbons synchronized with the selected group's global color-event timeline.
-        public void UpdateTransitionRibbon(GLSEventContainer container, Func<float, bool> isBoostAt)
+        public void UpdateTransitionRibbon(
+            GLSEventContainer container,
+            Func<float, bool> isBoostAt,
+            ColorBoostEventIndex boostEvents = null)
         {
             if (container.EventData is BaseLightColorBase colorEvent)
+            {
                 GLSEventCommon.UpdateColorTransitionRibbon(
                     container.LightGradientController,
                     colorEvent,
                     eventAppearance,
-                    isBoostAt);
+                    isBoostAt,
+                    container.GlsLightCount,
+                    boostEvents: boostEvents);
+                GLSEventCommon.UpdateIncomingColorTransitionRibbon(
+                    container.IncomingLightGradientController,
+                    colorEvent,
+                    eventAppearance,
+                    isBoostAt,
+                    container.GlsLightCount,
+                    boostEvents: boostEvents);
+            }
             else
+            {
                 container.LightGradientController.SetVisible(false);
+                container.IncomingLightGradientController.SetVisible(false);
+            }
         }
     }
 }

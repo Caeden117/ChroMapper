@@ -1,5 +1,3 @@
-using Beatmap.Enums;
-using Beatmap.Helper;
 using Beatmap.V3;
 using SimpleJSON;
 
@@ -29,18 +27,8 @@ namespace Beatmap.Base
             UsePrevious = usePrevious;
         }
 
-        protected BaseFxEventFloat(BaseFxEventFloat other) : base(other) => Easing = other.Easing;
-
-        public int Easing;
-
-        public override void Apply(BaseObject originalData)
+        protected BaseFxEventFloat(BaseFxEventFloat other) : base(other)
         {
-            base.Apply(originalData);
-
-            if (originalData is not BaseFxEventFloat other)
-                return;
-
-            Easing = other.Easing;
         }
 
         public override JSONNode ToJson() =>
@@ -50,11 +38,6 @@ namespace Beatmap.Base
             };
 
         public override BaseItem Clone() => new BaseFxEventFloat(this);
-
-        // FloatFX nodes live in the shared inner GLS-event collection; Event routes quick-delete to the wrong grid.
-        public override ObjectType ObjectType { get; set; } = ObjectType.GLSEvent;
-        public override string CustomKeyColor => "Unused";
-        public override string CustomKeyTrack => "Unused";
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)
         {

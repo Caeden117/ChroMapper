@@ -34,30 +34,64 @@ public class InputSystemPatch : MonoBehaviour
 
     private static IEnumerable<InputAction> allInputActions;
 
-    private static Dictionary<InputAction, IEnumerable<string>> allInputBindingNames = new();
+    private static Dictionary<InputAction, string[]> allInputBindingNames = new();
 
     private static IEnumerable<InputControl> allControls;
 
+    private static Dictionary<string, InputControl> resolvedPathControls = new();
+
     // Key 1: Interrogated InputAction | Value: InputActions that have the possibility of blocking the interrogated action
     private static readonly ConcurrentDictionary<InputAction, List<InputAction>> inputActionBlockMap = new();
+
+    private static CMInput blockMapInput;
 
     private Harmony inputPatchHarmony;
 
     private void Start()
     {
-        allInputActions = CMInputCallbackInstaller.InputInstance.asset.actionMaps
+        RebuildBlockMap();
+
+        var inputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes()
+            .First(x => x.Name == "InputActionState");
+        var original = inputActionStateType.GetMethod("ChangePhaseOfActionInternal",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
+        inputPatchHarmony = new Harmony(inputPatchID);
+        inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
+    }
+
+    // Rebuild the blocker map from the installed production asset, for example after a hard keybind reset.
+    public static void RebuildBlockMap()
+    {
+        var input = CMInputCallbackInstaller.InputInstance;
+        if (input == null)
+        {
+            return;
+        }
+
+        blockMapInput = input;
+        allInputActions = input.asset.actionMaps
             .SelectMany(x => x.actions)
             .ToList();
         allInputBindingNames = allInputActions
             .ToDictionary(x => x, x => x.bindings
                 .Where(y => !y.isComposite)
-                .Select(y => y.path));
+                .Select(y => y.path)
+                .ToArray());
         allControls = InputSystem.devices
             .SelectMany(d => d.allControls
                 .Where(c => c is KeyControl or ButtonControl));
 
+        // Resolve every binding path once; the pairwise blocker pass would otherwise search for the
+        // same control millions of times.
+        resolvedPathControls = allInputBindingNames.Values
+            .SelectMany(paths => paths)
+            .Distinct()
+            .ToDictionary(path => path, path => InputSystem.FindControl(path));
+
         // I cant believe this actually worked first try
         // I'm pretty much caching a map of actions that can block each other, doing the heavy lifting on separate threads.
+        inputActionBlockMap.Clear();
         Parallel.ForEach(allInputActions, action =>
         {
             if (action is null) return;
@@ -69,14 +103,16 @@ public class InputSystemPatch : MonoBehaviour
             });
             inputActionBlockMap.TryAdd(action, map.ToList());
         });
+    }
 
-        var inputActionStateType = Assembly.GetAssembly(typeof(InputSystem)).GetTypes()
-            .First(x => x.Name == "InputActionState");
-        var original = inputActionStateType.GetMethod("ChangePhaseOfActionInternal",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-
-        inputPatchHarmony = new Harmony(inputPatchID);
-        inputPatchHarmony.Patch(original, null, null, new HarmonyMethod(GetType(), nameof(Transpiler)));
+    // A runtime rebind replaces bindings on the installed asset, so the cached blocker map must be
+    // rebuilt. Temporary assets used by tests and rebind fixtures must not replace the production map.
+    public static void RefreshBlockMap(CMInput changedInput)
+    {
+        if (blockMapInput != null && ReferenceEquals(changedInput, blockMapInput))
+        {
+            RebuildBlockMap();
+        }
     }
 
     private void OnDestroy() => inputPatchHarmony?.UnpatchSelf();
@@ -135,10 +171,15 @@ public class InputSystemPatch : MonoBehaviour
             return false;
         }
 
-        var controlA = InputSystem.FindControl(pathA);
-        var controlB = InputSystem.FindControl(pathB);
+        var controlA = ResolveControl(pathA);
+        var controlB = ResolveControl(pathB);
         return controlA != null && ReferenceEquals(controlA, controlB);
     }
+
+    private static InputControl ResolveControl(string path) =>
+        resolvedPathControls.TryGetValue(path, out var control)
+            ? control
+            : InputSystem.FindControl(path);
 
     private static string StripString(string source, params char[] toRemove)
     {
@@ -151,12 +192,29 @@ public class InputSystemPatch : MonoBehaviour
 
     private static bool WillBeBlockedByAction(InputAction action, InputAction otherAction)
     {
-        if (!action.actionMap.controlSchemes.Any(c => c.name.Contains("ChroMapper")))
+        var schemes = action.actionMap.controlSchemes;
+        var usesChroMapperScheme = false;
+        for (var i = 0; i < schemes.Count && !usesChroMapperScheme; i++)
+        {
+            usesChroMapperScheme = schemes[i].name.Contains("ChroMapper");
+        }
+
+        if (!usesChroMapperScheme)
         {
             return false;
         }
-        
-        if (action.bindings.Any(b => b.action.StartsWith(KeybindsController.PersistentKeybindIdentifier)))
+
+        var bindings = action.bindings;
+        for (var i = 0; i < bindings.Count; i++)
+        {
+            if (bindings[i].action.StartsWith(KeybindsController.PersistentKeybindIdentifier))
+            {
+                return false;
+            }
+        }
+
+        // Pulse width arbitrates timeline scroll ownership per event instead of blocking it globally.
+        if (otherAction.id == StrobePulseWidthInput.PulseWidthActionId)
         {
             return false;
         }
@@ -164,15 +222,27 @@ public class InputSystemPatch : MonoBehaviour
         // Just a whole bunch of conditions to short circuit this particular check
         if (action.id == otherAction.id
             || !allInputBindingNames.TryGetValue(action, out var paths)
-            || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths))
+            || !allInputBindingNames.TryGetValue(otherAction, out var otherPaths)
+            || otherPaths.Length <= paths.Length)
         {
             return false;
         }
 
-        // The other action must contain more bindings than the current action does
-        var moreBindings = otherPaths.Count() > paths.Count();
-        var sameBindings = paths.All(p1 => otherPaths.Any(p2 => CheckEqualPaths(p1, p2)));
+        // The other action must contain every binding the current action does.
+        for (var i = 0; i < paths.Length; i++)
+        {
+            var matched = false;
+            for (var j = 0; j < otherPaths.Length && !matched; j++)
+            {
+                matched = CheckEqualPaths(paths[i], otherPaths[j]);
+            }
 
-        return moreBindings && sameBindings;
+            if (!matched)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -244,6 +244,23 @@ namespace Beatmap.Base
             }
         }
 
+        public void RecomputeGlsSongBpmTimesAfter(float jsonTime)
+        {
+            RecomputeGlsSongBpmTimesAfter(LightColorEventBoxGroups, jsonTime);
+            RecomputeGlsSongBpmTimesAfter(LightRotationEventBoxGroups, jsonTime);
+            RecomputeGlsSongBpmTimesAfter(LightTranslationEventBoxGroups, jsonTime);
+            RecomputeGlsSongBpmTimesAfter(VfxEventBoxGroups, jsonTime);
+        }
+
+        private static void RecomputeGlsSongBpmTimesAfter<TGroup>(List<TGroup> groups, float jsonTime)
+            where TGroup : BaseEventBoxGroup
+        {
+            foreach (var group in groups)
+            {
+                group.RecomputeSongBpmTimesAfter(jsonTime);
+            }
+        }
+
         #endregion
 
         public void ConvertCustomBpmToOfficial()

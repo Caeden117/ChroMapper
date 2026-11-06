@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
@@ -7,17 +7,40 @@ using UnityEngine.InputSystem;
 public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputController<BaseLightColorBase>,
                                                    CMInput.IGLSColorObjectsActions
 {
+    private static BeatmapGLSEventColorInputController activeInstance;
+
+    private void OnEnable() => activeInstance = this;
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (activeInstance == this)
+            activeInstance = null;
+    }
+
+    public static bool IsStrobePulseWidthOwnedByPointer()
+        => activeInstance != null
+            && activeInstance.IsHovering
+            && activeInstance.RaycastFirstObject(out var container)
+            && container != null && !container.Dragged
+            && container.EventData is BaseLightColorBase
+            && !GLSEventCommon.IsColorTransitionRibbonHit(container);
+
     public event Action<int> OnColorChanged;
     public event Action<float> OnBrightnessChanged;
     public event Action<int> OnFadeChanged;
     public event Action<int> OnStrobeFrequencyChanged;
     public event Action<float> OnStrobeBrightnessChanged;
     public event Action<int> OnSoftStrobeChanged;
+    public event Action<string[]> OnColorDistributionsChanged;
+    public event Action<string[]> OnStrobeColorDistributionsChanged;
     private float currentBrightness;
     private int currentFade;
     private int currentStrobeFrequency;
     private float currentStrobeBrightness;
     private int currentSoftStrobe;
+    private string[] currentColorDistributions = Array.Empty<string>();
+    private string[] currentStrobeColorDistributions = Array.Empty<string>();
 
     // Keep the keybind label aligned with the primary light color it selects.
     public void OnPrimaryLightColor(InputAction.CallbackContext context)
@@ -208,11 +231,22 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         if (context.performed) OnSetBrightnessOnlyPerformed(1.5f);
     }
 
+    private bool TryGetRibbonTransition(BaseLightColorBase source, out BaseLightColorBase transition) =>
+        GLSEventCommon.IsColorRibbonHover(HoveredObject, source, out transition);
+
     // Keep hover value mutations under the Tweak prefix in keybind settings.
     public void OnTweakBrightnessHover(InputAction.CallbackContext context)
     {
         TryGetHoveredEvent(context, out var evt);
-        GLSEventHoverMutation.AdjustColorBrightness(context, evt, ScrollPrecisionController);
+        if (TryGetRibbonTransition(evt, out var transition))
+        {
+            GLSEventHoverMutation.CycleColorLerpType(context, transition);
+        }
+        else
+        {
+            GLSEventHoverMutation.AdjustColorBrightness(context, evt, ScrollPrecisionController);
+        }
+
         if (evt != null)
         {
             RefreshHoveredVisualAfterMutation();
@@ -261,6 +295,11 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
     public void OnTweakStrobeFrequencyHover(InputAction.CallbackContext context)
     {
         TryGetHoveredEvent(context, out var evt);
+        if (GLSEventCommon.IsColorTransitionRibbonHit(HoveredObject))
+        {
+            return;
+        }
+
         GLSEventHoverMutation.AdjustColorFrequency(context, evt, ScrollPrecisionController);
         if (evt != null)
         {
@@ -291,6 +330,11 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
     public void OnTweakStrobeBrightnessHover(InputAction.CallbackContext context)
     {
         TryGetHoveredEvent(context, out var evt);
+        if (GLSEventCommon.IsColorTransitionRibbonHit(HoveredObject))
+        {
+            return;
+        }
+
         GLSEventHoverMutation.AdjustColorStrobeBrightness(context, evt, ScrollPrecisionController);
         if (evt != null)
         {
@@ -298,10 +342,24 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         }
     }
 
+    public void OnTweakStrobePulseWidthHover(InputAction.CallbackContext context)
+    {
+        if (!context.performed || !StrobePulseWidthInput.OwnsInput(context))
+            return;
+
+        TryGetHoveredEvent(context, out var evt);
+        if (GLSEventCommon.IsColorTransitionRibbonHit(HoveredObject))
+            return;
+
+        if (GLSEventHoverMutation.AdjustColorStrobePulseWidth(context, evt, ScrollPrecisionController))
+            RefreshHoveredVisualAfterMutation();
+    }
+
     public void OnToggleStrobeFadeHover(InputAction.CallbackContext context)
     {
         TryGetHoveredEvent(context, out var evt);
-        if (GLSEventHoverMutation.ToggleColorStrobeFade(context, evt))
+        var target = TryGetRibbonTransition(evt, out var transition) ? transition : evt;
+        if (GLSEventHoverMutation.CycleColorStrobeFade(context, target))
         {
             RefreshHoveredVisualAfterMutation();
         }
@@ -310,7 +368,19 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
     public void OnTweakEasingHover(InputAction.CallbackContext context)
     {
         TryGetHoveredEvent(context, out var evt);
-        GLSEventHoverMutation.AdjustColorEasing(context, evt);
+        var target = TryGetRibbonTransition(evt, out var transition) ? transition : evt;
+        GLSEventHoverMutation.AdjustColorEasing(context, target);
+        if (evt != null)
+        {
+            RefreshHoveredVisualAfterMutation();
+        }
+    }
+
+    public void OnTweakStrobeColorEasingHover(InputAction.CallbackContext context)
+    {
+        TryGetHoveredEvent(context, out var evt);
+        var target = TryGetRibbonTransition(evt, out var transition) ? transition : evt;
+        GLSEventHoverMutation.AdjustStrobeColorEasing(context, target);
         if (evt != null)
         {
             RefreshHoveredVisualAfterMutation();
@@ -339,6 +409,16 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         }
     }
 
+    public void OnToggleColorLerpTypeHover(InputAction.CallbackContext context)
+    {
+        TryGetHoveredEvent(context, out var evt);
+        if (GLSEventCommon.IsColorTransitionRibbonHit(HoveredObject))
+            return;
+
+        if (GLSEventHoverMutation.ToggleColorLerpType(context, evt))
+            RefreshHoveredVisualAfterMutation();
+    }
+
     public void OnApplyToSelected(InputAction.CallbackContext context) { }
 
     public void NotifySoftStrobeChanged(int value)
@@ -346,6 +426,20 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         currentSoftStrobe = value;
         EasingInputController.NotifyExtensionChanged(0);
         OnSoftStrobeChanged?.Invoke(value);
+    }
+
+    public void NotifyColorDistributionsChanged(string[] value, bool strobe)
+    {
+        if (strobe)
+        {
+            currentStrobeColorDistributions = value;
+            OnStrobeColorDistributionsChanged?.Invoke(value);
+        }
+        else
+        {
+            currentColorDistributions = value;
+            OnColorDistributionsChanged?.Invoke(value);
+        }
     }
 
     // Replay the last provider notification for a GLS view that initialized after map loading.
@@ -356,5 +450,7 @@ public class BeatmapGLSEventColorInputController : BeatmapGLSEventInputControlle
         OnStrobeFrequencyChanged?.Invoke(currentStrobeFrequency);
         OnStrobeBrightnessChanged?.Invoke(currentStrobeBrightness);
         OnSoftStrobeChanged?.Invoke(currentSoftStrobe);
+        OnColorDistributionsChanged?.Invoke(currentColorDistributions);
+        OnStrobeColorDistributionsChanged?.Invoke(currentStrobeColorDistributions);
     }
 }

@@ -545,6 +545,8 @@ public class ParticleSystemData : EnvironmentComponentData<ParticleSystem>
 
         public void CopyTo(ParticleSystemRenderer module, CreateContainer container)
         {
+            // Beat Saber sends particle vertex colors unchanged. Unity 6.3 enabled an extra linear conversion by default, explicitly disable it for world particles to match Beat Saber
+            module.applyActiveColorSpace = false;
             module.renderMode = Enum.Parse<ParticleSystemRenderMode>(RenderMode);
             module.normalDirection = NormalDirection;
             module.material = container.GetMaterialSafe(Material);

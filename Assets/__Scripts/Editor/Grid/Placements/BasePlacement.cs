@@ -127,6 +127,9 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
 
     private Vector2 previousSnappedState;
 
+    private float minimumDraggedJsonTime;
+    private float maximumDraggedJsonTime;
+
     public virtual void Start()
     {
         CreateVisual();
@@ -267,13 +270,15 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
             return false;
         }
 
-        if (hit.GetComponentInParent<ObjectContainer>() != null)
+        // Ribbons support hover editing but must still allow placement ghosts over them.
+        var container = hit.GetComponentInParent<ObjectContainer>();
+        if (container != null)
         {
-            return true;
+            return !GLSEventCommon.IsColorTransitionRibbonHit(container);
         }
 
         var ribbon = hit.GetComponentInParent<LightGradientController>();
-        return ribbon != null && ribbon.IsInteractiveBasicEventRibbon;
+        return ribbon != null && ribbon.IsInteractiveTransitionRibbon;
     }
 
     public override void ShowVisual() => PlacementVisualContainer.SafeSetActive(true);
@@ -312,6 +317,9 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
             * snap;
         if (!Atsc.IsPlaying) jsonTime += offsetJsonTime;
 
+        if (IsDragging)
+            jsonTime = Mathf.Clamp(jsonTime, minimumDraggedJsonTime, maximumDraggedJsonTime);
+
         return (localPoint, jsonTime);
     }
 
@@ -323,9 +331,7 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
             return;
         }
 
-        PlacementVisualContainer = Instantiate(
-                ObjectContainerPrefab,
-                PlacementTrack)
+        PlacementVisualContainer = InstantiateVisual()
             .GetComponent(typeof(TContainer)) as TContainer;
         PlacementVisualContainer.IsPlacementVisual = true;
         PlacementVisualContainer.Setup();
@@ -337,6 +343,16 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
             animator.enabled = false;
 
         PlacementVisualContainer.name = $"Hover {ObjectDataType}";
+    }
+
+    protected virtual GameObject InstantiateVisual() => Instantiate(ObjectContainerPrefab, PlacementTrack);
+
+    // Hidden placement tracks defer Awake, but GLS controls refresh their previews before they become visible.
+    protected GameObject InstantiateVisualBeforeParenting()
+    {
+        var visual = Instantiate(ObjectContainerPrefab);
+        visual.transform.SetParent(PlacementTrack, false);
+        return visual;
     }
 
     private void SetTo360Tracks()
@@ -404,6 +420,18 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
         DraggedObjectContainer = con;
         DraggedObjectContainer.Dragged = true;
 
+        minimumDraggedJsonTime = DraggedObjectData is BaseGLSEvent ? float.NegativeInfinity : 0f;
+        maximumDraggedJsonTime = CommonBeatmapUtils.GetFinalSongJsonTime(Atsc);
+        if (DraggedObjectData is BaseObstacle or BaseEventBoxGroup)
+        {
+            CommonBeatmapUtils.GetJsonTimeRange(DraggedObjectData, out var start, out var end);
+            minimumDraggedJsonTime = OriginalDraggedObjectData.JsonTime - start;
+            maximumDraggedJsonTime -= end - OriginalDraggedObjectData.JsonTime;
+
+            if (minimumDraggedJsonTime > maximumDraggedJsonTime)
+                minimumDraggedJsonTime = maximumDraggedJsonTime = OriginalDraggedObjectData.JsonTime;
+        }
+
         IsDragging = true;
         return con;
     }
@@ -441,7 +469,7 @@ public abstract class BasePlacement<TObject, TContainer, TCollection> : BasePlac
                         "Modified via alt-click and drag."));
             }
 
-            SelectionController.OnSelectionChanged?.Invoke();
+            SelectionController.NotifySelectionChanged();
         }
 
         if (actions.Count == 1)

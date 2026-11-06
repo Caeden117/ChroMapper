@@ -27,7 +27,7 @@ namespace Beatmap.Base
         {
             Rotation = rotation;
             Direction = direction;
-            EaseType = easeType;
+            Easing = easeType;
             Loop = loop;
             UsePrevious = usePrevious;
         }
@@ -36,21 +36,12 @@ namespace Beatmap.Base
         {
             Rotation = other.Rotation;
             Direction = other.Direction;
-            EaseType = other.EaseType;
             Loop = other.Loop;
-            UsePrevious = other.UsePrevious;
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.GLSEvent;
         public float Rotation { get; set; }
         public int Direction { get; set; }
-        public int EaseType { get; set; }
         public int Loop { get; set; }
-        public int UsePrevious { get; set; }
-
-        public override string CustomKeyColor { get; } = "unusedColor";
-
-        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
 
         public override void Apply(BaseObject originalData)
         {
@@ -61,9 +52,7 @@ namespace Beatmap.Base
 
             Rotation = other.Rotation;
             Direction = other.Direction;
-            EaseType = other.EaseType;
             Loop = other.Loop;
-            UsePrevious = other.UsePrevious;
         }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)

@@ -4,6 +4,7 @@ namespace Beatmap.Enums
     {
         In,
         Out,
-        InOut
+        InOut,
+        BeatSaberInOut
     }
 }

@@ -15,6 +15,9 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
     [SerializeField] private Toggle strobeColorToggle;
     [SerializeField] private Toggle pickerTile;
     [SerializeField] private Image pickerTileColor;
+    [SerializeField] private Toggle glsPickerTile;
+    [SerializeField] private Image glsPickerTileColor;
+    [SerializeField] private Image glsPickerTileSelected;
 
     // The persisted state remains authoritative if Unity has not yet resolved the toggle reference.
     public bool IsEnabled => Settings.Instance.PlaceGLSStrobeColor;
@@ -101,6 +104,7 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
 
         // The strobe picker is editor-wired, so startup only needs to attach callbacks to serialized controls.
         InitializeStrobeControls();
+        ((RectTransform)glsPickerTile.transform.parent).sizeDelta = new Vector2(11, 11);
         ReplaceGlobalColorButtons();
         CreateCloseHitTarget();
         UpdatePickerTile();
@@ -141,11 +145,16 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
         }
     }
 
-    public void ToggleFlyout()
+    public void ToggleFlyout(bool disableWhenClosing = false)
     {
         if (dropdown != null && dropdown.Visible)
         {
             Close();
+            if (disableWhenClosing)
+            {
+                SetEnabled(false);
+            }
+
             return;
         }
 
@@ -161,15 +170,9 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
             strobeColorToggle.onValueChanged.AddListener(SetEnabled);
         }
 
-        if (pickerTile != null)
-        {
-            // Tile clicks always open the flyout, even while its backing toggle is already on.
-            pickerTile.onValueChanged = new Toggle.ToggleEvent();
-            if (pickerTile.GetComponent<StrobeColorPickerTileClickHandler>() == null)
-            {
-                pickerTile.gameObject.AddComponent<StrobeColorPickerTileClickHandler>();
-            }
-        }
+        // The flyout tile only controls visibility, while the always-visible GLS tile disables strobe color when it closes an open flyout.
+        InitializePickerTile(pickerTile, false);
+        InitializePickerTile(glsPickerTile, true);
 
         // Synchronize the single editor-wired checkbox after assigning callbacks.
         SyncEnabledUi();
@@ -250,6 +253,11 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
             strobeColorToggle.SetIsOnWithoutNotify(enabled);
         }
 
+        if (pickerTile != null)
+            pickerTile.SetIsOnWithoutNotify(enabled);
+        if (glsPickerTile != null)
+            glsPickerTile.SetIsOnWithoutNotify(enabled);
+
         UpdatePickerTile();
         // Keep routine editor metadata checkbox synchronization silent to avoid flooding the editor log.
     }
@@ -266,12 +274,29 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
 
     private void UpdatePickerTile()
     {
-        if (pickerTileColor == null)
+        var color = CurrentColor.WithAlpha(IsEnabled ? 1f : 0.3f);
+        if (pickerTileColor != null)
+            pickerTileColor.color = color;
+        if (glsPickerTileColor != null)
+            glsPickerTileColor.color = color;
+
+        if (glsPickerTileSelected != null)
+            glsPickerTileSelected.enabled = IsEnabled;
+    }
+
+    private static void InitializePickerTile(Toggle tile, bool disableWhenClosing)
+    {
+        if (tile == null)
         {
             return;
         }
-        var color = CurrentColor;
-        pickerTileColor.color = color.WithAlpha(IsEnabled ? 1f : 0.3f);
+
+        tile.onValueChanged = new Toggle.ToggleEvent();
+        var clickHandler = tile.GetComponent<StrobeColorPickerTileClickHandler>();
+        if (clickHandler == null)
+            clickHandler = tile.gameObject.AddComponent<StrobeColorPickerTileClickHandler>();
+
+        clickHandler.DisableWhenClosing = disableWhenClosing;
     }
 
     private static Color LoadColor()
@@ -288,6 +313,8 @@ public class StrobeColorPickerController : MonoBehaviour, IEditorStateProvider
 
 public class StrobeColorPickerTileClickHandler : MonoBehaviour, IPointerClickHandler
 {
+    public bool DisableWhenClosing { get; set; }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -295,7 +322,7 @@ public class StrobeColorPickerTileClickHandler : MonoBehaviour, IPointerClickHan
             // Unity picker singletons need explicit null checks before routing tile clicks.
             if (StrobeColorPickerController.Instance != null)
             {
-                StrobeColorPickerController.Instance.ToggleFlyout();
+                StrobeColorPickerController.Instance.ToggleFlyout(DisableWhenClosing);
             }
         }
     }

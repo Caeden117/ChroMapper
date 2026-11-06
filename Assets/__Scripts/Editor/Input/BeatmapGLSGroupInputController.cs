@@ -11,6 +11,7 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
 {
     private GLSGroupContainer lastHoveredContainer;
     private bool wasHovering;
+    public bool IsHoveringColorTransitionRibbon { get; private set; }
     [SerializeField] private AudioTimeSyncController atsc;
     [SerializeField] private GLSEventGridProvider eventGridProvider;
     [SerializeField] private BoxSelectionPlacement boxSelectionPlacement;
@@ -21,13 +22,28 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
         && boxSelectionPlacement.LastCompletionFrame != Time.frameCount
         && container.EventBoxGroupData is TData;
 
-    // Resolve the current preview event through the shared beatmap raycast cache.
     protected bool TryGetHoveredPreviewEvent<TEvent>(InputAction.CallbackContext context, out TEvent evt)
+        where TEvent : BaseGLSEvent =>
+        TryGetHoveredPreviewEvent(context, out evt, out _);
+
+    protected bool TryGetHoveredPreviewEvent<TEvent>(
+        InputAction.CallbackContext context,
+        out TEvent evt,
+        out GLSGroupContainer container)
         where TEvent : BaseGLSEvent
     {
         evt = null;
-        if (!context.performed || !IsHovering || !RaycastFirstObject(out var container))
+        container = null;
+        if (!context.performed || !IsHovering || !RaycastFirstObject(out container))
         {
+            return false;
+        }
+
+        // Disabling ghost preview also disables outer-lane scroll edits for primary nodes and ribbons. Check
+        // here as well as the collider state to reject a hit captured before the toggle changed.
+        if (!Settings.Instance.EnableGLSGhostPreview)
+        {
+            container = null;
             return false;
         }
 
@@ -50,15 +66,18 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
 
     protected override void HandleHoverChanged(GLSGroupContainer container)
     {
+        IsHoveringColorTransitionRibbon = GLSEventCommon.IsColorTransitionRibbonHit(container);
         // Keep shared precision from claiming wheel chords while a ghost node owns them.
         // Unity hover containers need explicit null checks before toggling group highlights.
         if (lastHoveredContainer != container && lastHoveredContainer != null)
         {
+            lastHoveredContainer.SetColorHover(false);
             lastHoveredContainer.SetGroupHighlighted(false);
         }
 
         if (container != null)
         {
+            container.SetColorHover(!IsHoveringColorTransitionRibbon);
             container.SetGroupHighlighted(true);
         }
         lastHoveredContainer = container;
@@ -78,6 +97,8 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
 
     protected virtual void OnDisable()
     {
+        HandleHoverChanged(null);
+        IsHoveringColorTransitionRibbon = false;
         // Release shared precision when this outer controller is disabled during a mode or scene transition.
         if (!wasHovering) return;
         wasHovering = false;
@@ -102,7 +123,8 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
             && CanInteract
             && boxSelectionPlacement.LastCompletionFrame != Time.frameCount
             && EditContext.EditingMode.HasFlag(EditingMode.GLS)
-            && IsHovering)
+            && IsHovering
+            && !IsHoveringColorTransitionRibbon)
         {
             var clickedEvent = HoveredObject.PreviewEventData;
             if (atsc.CurrentSongBpmTime < HoveredObject.EventBoxGroupData.SongBpmTime)

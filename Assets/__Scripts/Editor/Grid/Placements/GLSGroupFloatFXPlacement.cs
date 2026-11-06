@@ -57,6 +57,7 @@ public class GLSGroupFloatFXPlacement : GLSGroupPlacement<BaseVfxEventEventBoxGr
     private void HandleExtensionChanged(int value)
     {
         QueuedData.Boxes[0].Events[0].UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(QueuedData.Boxes[0].Events[0], EasingInputController);
         GlsGroupAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 

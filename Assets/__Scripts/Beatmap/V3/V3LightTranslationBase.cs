@@ -15,7 +15,7 @@ namespace Beatmap.V3
 
             lightTranslationBase.JsonTime = lightTranslationBase.RelativeJsonTime = node["b"].AsFloat;
             lightTranslationBase.UsePrevious = node["p"].AsInt;
-            lightTranslationBase.EaseType = node["e"].AsInt;
+            lightTranslationBase.Easing = node["e"].AsInt;
             lightTranslationBase.Translation = node["t"].AsFloat;
             lightTranslationBase.CustomData = node["customData"];
 
@@ -27,7 +27,10 @@ namespace Beatmap.V3
             JSONNode node = new JSONObject();
             node["b"] = JSONNumber.RoundBeat(lightTranslationBase.RelativeJsonTime);
             node["p"] = lightTranslationBase.UsePrevious;
-            node["e"] = lightTranslationBase.EaseType;
+            // Translation extensions hold the previous position. Omit the curve that would interpolate
+            // between identical values.
+            if (lightTranslationBase.UsePrevious == 0)
+                node["e"] = lightTranslationBase.Easing;
             node["t"] = lightTranslationBase.Translation;
             lightTranslationBase.CustomData = lightTranslationBase.SaveCustom();
             if (!lightTranslationBase.CustomData.Children.Any()) return node;

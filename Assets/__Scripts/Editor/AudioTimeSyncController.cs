@@ -62,9 +62,36 @@ public class AudioTimeSyncController : MonoBehaviour,
     public event Action<int> OnGridMeasureSnappingChanged;
     public event Action<bool> OnPlayToggled;
     public event Action<float> OnVisualBeatOriginChanged;
-    public event Action OnTimeChangedEarly;
-    public event Action OnTimeChanged;
-    public event Action OnTimeFlushPending;
+    // Estimated reserves: Early has one listener per animation track, while the later phases include object animators.
+    private readonly FastAction timeChangedEarly = new(1024);
+    private readonly FastAction timeChanged = new(16384);
+    private readonly FastAction timeFlushPending = new(16384);
+
+    public event Action OnTimeChangedEarly
+    {
+        add => timeChangedEarly.Add(value);
+        remove => timeChangedEarly.Remove(value);
+    }
+
+    public event Action OnTimeChanged
+    {
+        add => timeChanged.Add(value);
+        remove => timeChanged.Remove(value);
+    }
+
+    /// <summary>
+    /// For flushing pending animations
+    /// </summary>
+    public event Action OnTimeFlushPending
+    {
+        add => timeFlushPending.Add(value);
+        remove => timeFlushPending.Remove(value);
+    }
+
+    /// <summary>
+    /// Rebuild pool and initialize animators
+    /// </summary>
+    public event Action OnPrepareStoppedSeek;
 
     // Keep the map cursor with the controller that owns song-time conversion and track positioning.
     public string StateKey => "currentJsonTime";
@@ -154,12 +181,17 @@ public class AudioTimeSyncController : MonoBehaviour,
         get => currentSeconds;
         private set
         {
-            currentSeconds = value;
-            currentSongBpmTime = GetBeatFromSeconds(value);
-            currentJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(currentSongBpmTime);
+            SetTimeFieldsFromSeconds(value);
             ValidatePosition();
             UpdateMovables();
         }
+    }
+
+    private void SetTimeFieldsFromSeconds(float seconds)
+    {
+        currentSeconds = seconds;
+        currentSongBpmTime = GetBeatFromSeconds(seconds);
+        currentJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(currentSongBpmTime);
     }
 
     public float CurrentAudioSeconds =>
@@ -221,35 +253,30 @@ public class AudioTimeSyncController : MonoBehaviour,
             if (!levelLoaded) return;
             if (IsPlaying)
             {
-                var time = currentSeconds + (audioLatencyCompensationSeconds * (songSpeed / 10f));
-
-                // Slightly more accurate than songAudioSource.time
+                var playbackSpeed = songSpeed / 10f;
+                var latency = audioLatencyCompensationSeconds * playbackSpeed;
+                var previousTime = currentSeconds + latency;
                 var trackTime = CurrentAudioSeconds;
+                var audioPlaying = SongAudioSource.isPlaying;
+                var correction = audioPlaying && previousTime > 1f ? trackTime / previousTime : 1f;
+                var time = previousTime + (correction * Time.deltaTime * playbackSpeed);
 
-                // Sync correction
-                var correction = time > 1 ? trackTime / time : 1f;
-
-                if (SongAudioSource.isPlaying)
+                if (audioPlaying)
                 {
-                    // Snap forward if we are more than a 2 frames out of sync as we're trying to make it one frame out?
-                    var frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2);
-                    if (Mathf.Abs(trackTime - time) >= frameTime * (songSpeed / 10f))
+                    var frameTime = Mathf.Max(0.04f, Time.smoothDeltaTime * 2) * playbackSpeed;
+                    // Correct existing drift and predictions that would introduce it. The audio sample already includes elapsed time.
+                    if (Mathf.Abs(trackTime - previousTime) >= frameTime || Mathf.Abs(trackTime - time) >= frameTime)
                     {
-                        time = trackTime;
-                        correction = 1;
+                        // Native audio advances in DSP blocks. Hold an ahead-of-audio frame until it catches up instead of rewinding.
+                        time = Mathf.Max(previousTime, trackTime);
                     }
                 }
                 else
                 {
-                    correction = 1;
                     if (!StopScheduled) StartCoroutine(StopPlayingDelayed(audioLatencyCompensationSeconds));
                 }
 
-                // Add frame time to current time
-                CurrentSeconds =
-                    time
-                    + (correction * (Time.deltaTime * (songSpeed / 10f)))
-                    - (audioLatencyCompensationSeconds * (songSpeed / 10f));
+                CurrentSeconds = time - latency;
             }
         }
         catch (Exception e)
@@ -336,9 +363,8 @@ public class AudioTimeSyncController : MonoBehaviour,
             return;
         }
 
-        if (controlSnap
-            && preciselyControlSnap
-            && IsCursorIntervalOwnedByHoveredObject())
+        if ((controlSnap && preciselyControlSnap && IsCursorIntervalOwnedByHoveredObject())
+            || StrobePulseWidthInput.OwnsInput(context))
         {
             return;
         }
@@ -395,7 +421,7 @@ public class AudioTimeSyncController : MonoBehaviour,
         }
 
         // VNJS, GLS and Basic Event hover edits own [Ctrl+]Shift+Scroll instead of the global cursor interval.
-        if (IsCursorIntervalOwnedByHoveredObject())
+        if (IsCursorIntervalOwnedByHoveredObject() || StrobePulseWidthInput.OwnsInput(context))
         {
             return;
         }
@@ -513,10 +539,15 @@ public class AudioTimeSyncController : MonoBehaviour,
         foreach (var track in otherTracks) track.UpdatePosition(-position);
 
         if (!IsPlaying)
-            OnTimeFlushPending?.Invoke();
+        {
+            timeFlushPending.Call();
+            // Order matters here, we need to rebuild the pool AFTER all pending animations are flushed
+            OnPrepareStoppedSeek?.Invoke();
+        }
+
         // TODO(Caeden): what is the difference between these events
-        OnTimeChangedEarly?.Invoke();
-        OnTimeChanged?.Invoke();
+        timeChangedEarly.Call();
+        timeChanged.Call();
     }
 
     private void ResetTime() => CurrentSeconds = 0;
@@ -537,23 +568,24 @@ public class AudioTimeSyncController : MonoBehaviour,
             StopScheduled = false;
         }
 
-        IsPlaying = !IsPlaying;
-        if (IsPlaying)
-        {
-            if (CurrentSeconds >= SongAudioSource.clip.length - 0.1f)
-            {
-                ResetTime();
-            }
+        if (!IsPlaying && CurrentSeconds >= SongAudioSource.clip.length - 0.1f)
+            ResetTime();
 
+        if (!IsPlaying)
+        {
             playStartTime = CurrentSeconds;
             SongAudioSource.time = CurrentSeconds;
-            SongAudioSource.Play();
-
             audioLatencyCompensationSeconds = Settings.Instance.AudioLatencyCompensation / 1000f;
-            CurrentSeconds -= audioLatencyCompensationSeconds * (songSpeed / 10f);
+            // Compensation can move behind the paused node. Seek caches before enabling their forward-only playback cursors.
+            // Bypass paused-position clamping so song-start compensation retains its negative preroll.
+            SetTimeFieldsFromSeconds(CurrentSeconds - (audioLatencyCompensationSeconds * (songSpeed / 10f)));
+            UpdateMovables();
+            IsPlaying = true;
+            SongAudioSource.Play();
         }
         else
         {
+            IsPlaying = false;
             SongAudioSource.Stop();
             SnapToGrid();
         }

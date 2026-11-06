@@ -18,7 +18,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (var obj in Data)
             DeleteObject(obj, false);
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
 
         foreach (var obj in ConflictingData)
             SpawnObject(obj);
@@ -32,7 +32,7 @@ public class StrobeGeneratorGenerationAction : BeatmapAction
         foreach (var obj in ConflictingData)
             DeleteObject(obj, false);
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
 
         foreach (var obj in Data)
             SpawnObject(obj);

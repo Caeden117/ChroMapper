@@ -11,13 +11,22 @@ public static class GLSCommonCommand
     public static void CycleEventAxis(InputAction.CallbackContext context, BaseGLSEvent evt)
     {
         if (!context.performed
-            || evt is not (BaseLightRotationBase or BaseLightTranslationBase))
+            || evt is not (BaseLightRotationBase or BaseLightTranslationBase)
+            || !InputChordOwnership.Owns(context))
         {
             return;
         }
 
         var direction = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
         if (direction == 0)
+        {
+            return;
+        }
+
+        if (GLSSelectionHoverMutation.TryApply(
+                evt,
+                (group, events) => GLSSelectionAxisMutation.Apply(group, events, direction),
+                out _))
         {
             return;
         }
@@ -109,7 +118,7 @@ public static class GLSCommonCommand
                 < BeatmapObjectContainerCollection.Epsilon);
     }
 
-    private static void WarnNoOpenAxis()
+    internal static void WarnNoOpenAxis()
     {
         const string message = "No open axis to shift to on this beat.";
         PersistentUI.Instance.DisplayMessage(message, PersistentUI.DisplayMessageType.Bottom);
@@ -245,6 +254,10 @@ public static class GLSCommonCommand
         }
 
         materializedBox = (BaseEventBox)transformBox.Clone();
+        // A cached phantom is a template for a new box, rather than a duplicate of a saved box.
+        materializedBox.ApplyDefaultAffectFirst();
+        // Editing an automatic lane makes it a saved event box, so it must survive removal of its last node.
+        materializedBox.IsAutomaticAxisLane = false;
         if (!transformGroup.TryAddTransformBox((BaseLightTransformEventBox)materializedBox))
         {
             materializedBox = null;
@@ -268,9 +281,15 @@ public static class GLSCommonCommand
         return false;
     }
 
-    public static (BaseEventBoxGroup group, TEvent evt) CopyGroupFrom<TEvent>(TEvent evt)
+    public static (BaseEventBoxGroup group, TEvent evt) CopyGroupFrom<TEvent>(
+        TEvent evt,
+        bool inPlace = false)
         where TEvent : BaseGLSEvent
     {
+        // Selection hover edits own one clone per group and publish it after every selected child has been adjusted.
+        if (inPlace)
+            return (evt.EventBoxGroupData, evt);
+
         var newEvtIdx = Array.IndexOf((TEvent[])evt.EventBoxData.ReadOnlyEvents, evt);
         var newGroup = BeatmapFactory.Clone(evt.EventBoxGroupData);
         var newEvt = newGroup.ReadOnlyBoxes[evt.BoxIndex].ReadOnlyEvents[newEvtIdx] as TEvent;
@@ -304,9 +323,13 @@ public static class GLSCommonCommand
         BaseEventBoxGroup oldGroup,
         BaseEventBoxGroup newGroup,
         TEvent newEvt,
-        ActionMergeType actionMergeType)
+        ActionMergeType actionMergeType,
+        bool inPlace = false)
         where TEvent : BaseGLSEvent
     {
+        if (inPlace)
+            return newEvt;
+
         var action = new BeatmapGLSEventBoxModifiedAction(
             newGroup,
             oldGroup,

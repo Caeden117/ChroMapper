@@ -319,7 +319,7 @@ public class PlacementInputSystem : MonoBehaviour,
         RefreshGroundGridTargets();
         if (currentProvider == null) return;
 
-        var boundLocal = currentProvider.Lane.XY.Grid.bounds;
+        var boundLocal = currentProvider.Lane.XY.Interface.bounds;
         // Transform the bounds into the pseudo-world space we use for selection
         var localTransform = currentProvider.transform;
         var localScale = localTransform.localScale;

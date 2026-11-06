@@ -48,7 +48,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
             .ToArray();
 
     // Use this for initialization
-    private void Start() => SelectionController.OnSelectionChanged += ObjectWasSelected;
+    private void Start() => SelectionController.SelectionChangedEvent += ObjectWasSelected;
 
     private void Update()
     {
@@ -69,7 +69,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
     private void OnDestroy()
     {
         IsActive = false;
-        SelectionController.OnSelectionChanged -= ObjectWasSelected;
+        SelectionController.SelectionChangedEvent -= ObjectWasSelected;
     }
 
     public void OnToggleNodeEditor(InputAction.CallbackContext context)
@@ -152,6 +152,11 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
         }
 
         UpdateJson();
+
+        // TMP retains the previous text offset when replacing JSON, even when the new text fits in the viewport.
+        nodeEditorInputField.caretPosition = 0;
+        nodeEditorInputField.textComponent.rectTransform.anchoredPosition = Vector2.zero;
+        nodeEditorInputField.verticalScrollbar.value = 0;
     }
 
     private void UpdateJson()
@@ -317,7 +322,7 @@ public class NodeEditorController : MonoBehaviour, CMInput.INodeEditorActions
 
         if (editedSelectedEvents.Count > 0)
         {
-            SelectionController.OnSelectionChanged?.Invoke();
+            SelectionController.NotifySelectionChanged();
         }
     }
 

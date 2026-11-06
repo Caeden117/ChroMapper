@@ -1,4 +1,4 @@
-﻿using Beatmap.Base;
+using Beatmap.Base;
 using Beatmap.Enums;
 using SimpleJSON;
 using UnityEngine;
@@ -25,6 +25,8 @@ public class GLSEventColorPlacement : GLSEventPlacement<BaseLightColorEventBoxGr
         inputController.OnStrobeFrequencyChanged += HandleStrobeFrequencyChanged;
         inputController.OnStrobeBrightnessChanged += HandleStrobeBrightnessChanged;
         inputController.OnSoftStrobeChanged += HandleSoftStrobeChanged;
+        inputController.OnColorDistributionsChanged += HandleColorDistributionsChanged;
+        inputController.OnStrobeColorDistributionsChanged += HandleStrobeColorDistributionsChanged;
         EasingInputController.OnEasingChanged += HandleEasingChanged;
         EasingInputController.OnExtensionChanged += HandleExtensionChanged;
         ColorTypeController.OnColorChanged += HandleColorChanged;
@@ -41,6 +43,8 @@ public class GLSEventColorPlacement : GLSEventPlacement<BaseLightColorEventBoxGr
         inputController.OnStrobeFrequencyChanged -= HandleStrobeFrequencyChanged;
         inputController.OnStrobeBrightnessChanged -= HandleStrobeBrightnessChanged;
         inputController.OnSoftStrobeChanged -= HandleSoftStrobeChanged;
+        inputController.OnColorDistributionsChanged -= HandleColorDistributionsChanged;
+        inputController.OnStrobeColorDistributionsChanged -= HandleStrobeColorDistributionsChanged;
         EasingInputController.OnEasingChanged -= HandleEasingChanged;
         EasingInputController.OnExtensionChanged -= HandleExtensionChanged;
         ColorTypeController.OnColorChanged -= HandleColorChanged;
@@ -131,6 +135,20 @@ public class GLSEventColorPlacement : GLSEventPlacement<BaseLightColorEventBoxGr
         RefreshAppearance();
     }
 
+    private void HandleColorDistributionsChanged(string[] value)
+    {
+        QueuedData.ColorDistributions = value;
+        QueuedData.WriteCustom();
+        RefreshAppearance();
+    }
+
+    private void HandleStrobeColorDistributionsChanged(string[] value)
+    {
+        QueuedData.StrobeColorDistributions = value;
+        QueuedData.WriteCustom();
+        RefreshAppearance();
+    }
+
     private void HandleEasingChanged(int value)
     {
         QueuedData.Easing = (int)(value >= 0 ? EaseType.Linear : EaseType.None);
@@ -140,6 +158,7 @@ public class GLSEventColorPlacement : GLSEventPlacement<BaseLightColorEventBoxGr
     private void HandleExtensionChanged(int value)
     {
         QueuedData.UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(QueuedData, EasingInputController);
         // Remove both custom color channels immediately when this node becomes an extension node.
         if (value != 0)
         {

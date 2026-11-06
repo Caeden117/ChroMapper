@@ -159,8 +159,17 @@ function Invoke-ChroMapperTestPlatform {
     $LogFile = Join-Path $OutputDirectory "$TestPlatform-unity.log"
     $TestResultsFile = Join-Path $OutputDirectory "$TestPlatform-results.xml"
 
-    # EditMode tests live in their own assembly, while IncludeManual extends only the PlayMode assembly selection.
-    $PlatformTestAssemblies = if ($TestPlatform -eq "editmode") {
+    # Positive assembly filters opt into NUnit Explicit fixtures. Default runs use exclusions so only a named
+    # test or IncludeManual can select machine-local diagnostics.
+    $PlatformTestAssemblies = if (-not $IncludeManual -and [string]::IsNullOrWhiteSpace($TestFilter)) {
+        if ($TestPlatform -eq "editmode") {
+            "!Tests;!ManualTests"
+        }
+        else {
+            "!TestsEditMode;!ManualTests"
+        }
+    }
+    elseif ($TestPlatform -eq "editmode") {
         "TestsEditMode"
     }
     else {
@@ -239,7 +248,7 @@ function Invoke-ChroMapperTestPlatform {
 
     [xml]$TestResults = Get-Content -LiteralPath $TestResultsFile -Raw
     $FailedCases = @($TestResults.SelectNodes("//test-case[@result='Failed']"))
-    $FailedSuites = @($TestResults.SelectNodes("//test-suite[@result='Failed' and failure and not(.//test-case[@result='Failed'])]"))
+    $FailedSuites = @($TestResults.SelectNodes("//test-suite[@result='Failed' and failure and not(.//test-case[@result='Failed']) and not(.//test-suite[@result='Failed' and failure])]"))
 
     foreach ($FailedCase in $FailedCases) {
         Write-Host ""
@@ -250,16 +259,7 @@ function Invoke-ChroMapperTestPlatform {
             Write-Host $MessageNode.InnerText.Trim()
         }
 
-        $OutputNode = $FailedCase.SelectSingleNode("output")
-        $CapturedOutput = $null
-        if ($null -ne $OutputNode -and -not [string]::IsNullOrWhiteSpace($OutputNode.InnerText)) {
-            $CapturedOutput = $OutputNode.InnerText.TrimEnd()
-            Write-Host ""
-            Write-Host "Captured output:"
-            Write-Host $CapturedOutput
-        }
-
-        # Avoid duplicating stacks already embedded in captured output.
+        # Full captured diagnostics stay in the XML and Unity log so failures cannot flood the terminal.
         $StackTraceNode = $FailedCase.SelectSingleNode("failure/stack-trace")
         $StackTrace = if ($null -ne $StackTraceNode) {
             $StackTraceNode.InnerText.Trim()
@@ -268,8 +268,7 @@ function Invoke-ChroMapperTestPlatform {
             $null
         }
 
-        if (-not [string]::IsNullOrWhiteSpace($StackTrace) -and
-            ($null -eq $CapturedOutput -or -not $CapturedOutput.Contains($StackTrace))) {
+        if (-not [string]::IsNullOrWhiteSpace($StackTrace)) {
             Write-Host ""
             Write-Host $StackTrace
         }

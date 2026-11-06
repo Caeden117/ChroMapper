@@ -42,7 +42,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         // Refresh the paused spawn window before track values are pushed for a stopped seek. New note
         // animators must exist before OnTimeChangedEarly applies the held values, even when the seek stays
         // inside one chunk.
-        BeatmapContext.Atsc.OnTimeFlushPending += PrepareStoppedSeek;
+        BeatmapContext.Atsc.OnPrepareStoppedSeek += PrepareStoppedSeek;
         BeatmapContext.Atsc.OnPlayToggled += OnPlayToggle;
         UIMode.OnPreviewModeSwitched += OnUIPreviewModeSwitch;
 
@@ -58,7 +58,7 @@ public class NoteGridContainer : BeatmapObjectContainerCollection<BaseNote>
         SpawnCallbackController.OnNotePassedThreshold -= SpawnCallback;
         SpawnCallbackController.OnRecursiveNoteCheckFinished -= OnRecursiveCheckFinished;
         DespawnCallbackController.OnNotePassedThreshold -= DespawnCallback;
-        BeatmapContext.Atsc.OnTimeFlushPending -= PrepareStoppedSeek;
+        BeatmapContext.Atsc.OnPrepareStoppedSeek -= PrepareStoppedSeek;
         BeatmapContext.Atsc.OnPlayToggled -= OnPlayToggle;
         UIMode.OnPreviewModeSwitched -= OnUIPreviewModeSwitch;
 

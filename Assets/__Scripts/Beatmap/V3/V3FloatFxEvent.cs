@@ -19,13 +19,16 @@ namespace Beatmap.V3
 
         public static JSONNode ToJson(BaseFxEventFloat baseFxEventFloat)
         {
-            return new JSONObject
+            var node = new JSONObject
             {
                 ["b"] = JSONNumber.RoundBeat(baseFxEventFloat.RelativeJsonTime),
                 ["p"] = baseFxEventFloat.UsePrevious,
-                ["v"] = baseFxEventFloat.Value,
-                ["i"] = baseFxEventFloat.Easing
+                ["v"] = baseFxEventFloat.Value
             };
+            // Extensions hold the previous value, so only normal nodes export easing.
+            if (baseFxEventFloat.UsePrevious == 0)
+                node["i"] = baseFxEventFloat.Easing;
+            return node;
         }
     }
 }

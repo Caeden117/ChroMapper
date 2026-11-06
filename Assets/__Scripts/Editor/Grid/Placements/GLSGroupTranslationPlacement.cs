@@ -54,13 +54,14 @@ public class
 
     private void HandleEasingChanged(int value)
     {
-        QueuedData.Boxes[0].Events[0].EaseType = value;
+        QueuedData.Boxes[0].Events[0].Easing = value;
         GlsGroupAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 
     private void HandleExtensionChanged(int value)
     {
         QueuedData.Boxes[0].Events[0].UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(QueuedData.Boxes[0].Events[0], EasingInputController);
         GlsGroupAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 
@@ -72,7 +73,6 @@ public class
                 {
                     new BaseLightTranslationEventBox
                     {
-                        IsAutomaticAxisLane = true,
                         Events = new[] { new BaseLightTranslationBase() }
                     }
                 }

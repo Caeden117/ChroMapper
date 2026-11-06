@@ -11,6 +11,7 @@ namespace Beatmap.Base
     {
         public BaseLightRotationEventBox()
         {
+            ApplyDefaultAffectFirst();
             RotationDistributionType = (int)DistributionType.Wave;
             Events = Array.Empty<BaseLightRotationBase>();
         }

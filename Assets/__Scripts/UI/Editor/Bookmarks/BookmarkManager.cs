@@ -23,7 +23,7 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
 
     [SerializeField] private BookmarkRenderingController bookmarkRenderingController;
 
-    public InputAction.CallbackContext ShiftContext;
+    public InputAction.CallbackContext ColorDistributionContext;
 
     internal List<BookmarkContainer> bookmarkContainers = new List<BookmarkContainer>();
 
@@ -281,5 +281,5 @@ public class BookmarkManager : MonoBehaviour, CMInput.IBookmarksActions
         LoadedDifficultySelectController.OnLoadedDifficultyChanged -= RefreshBookmarksFromOnLoadedDifficulty;
     }
 
-    public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ShiftContext = context;
+    public void OnColorBookmarkModifier(InputAction.CallbackContext context) => ColorDistributionContext = context;
 }

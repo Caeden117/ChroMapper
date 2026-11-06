@@ -1,13 +1,19 @@
 using System;
+using System.Collections.Generic;
 using Beatmap.Base;
 using UnityEngine;
+
+public interface IBpmTimingEffect
+{
+    void RecomputeSongBpmTimes();
+}
 
 // Base class for Basic Event effects that produce continuous visual movement
 // (rotations, positions, etc.).  Instead of running live Update/FixedUpdate loops,
 // we store a snapshot at the start of each event node and recompute/lerp on demand
 // in UpdateTime, which keeps the preview static while the editor is paused and lets
 // us resume from the last unaffected node after any edit.
-public abstract class BasicMovementEffect<TState> : BasicEventEffect<TState> where TState : BasicMovementStateData
+public abstract class BasicMovementEffect<TState> : BasicEventEffect<TState>, IBpmTimingEffect where TState : BasicMovementStateData
 {
     protected BasicEventStateChunksContainer<TState> container;
     private TState startSentinel;
@@ -74,6 +80,39 @@ public abstract class BasicMovementEffect<TState> : BasicEventEffect<TState> whe
     {
         // Force a recompute at the current playhead after the state has been rebuilt.
         UpdateTime(false, Atsc.CurrentSongBpmTime);
+    }
+
+    public void RecomputeSongBpmTimes()
+    {
+        if (container == null)
+            return;
+
+        var states = new List<TState>(container.Collection);
+        container.Collection.Clear();
+
+        for (var i = 0; i < states.Count; i++)
+        {
+            var state = states[i];
+            if (ReferenceEquals(state, startSentinel) || ReferenceEquals(state, endSentinel))
+                continue;
+
+            state.StartTime = state.Base.SongBpmTime;
+            state.SnapshotValid = false;
+        }
+
+        for (var i = 0; i + 1 < states.Count; i++)
+        {
+            states[i].EndTime = states[i + 1].StartTime;
+        }
+
+        foreach (var state in states)
+        {
+            container.AddState(state);
+        }
+
+        computedUpToTime = startSentinel.StartTime;
+        InvalidateFrom(startSentinel.StartTime);
+        container.SetStateAt(Atsc.CurrentSongBpmTime);
     }
 
     public override void UpdateTime(bool isPlaying, float currentTime)

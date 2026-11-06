@@ -21,8 +21,84 @@ public class GLSManager : BeatmapObjectManager<BaseEventBoxGroup>
     [SerializeField] private LightshowController lightshowController;
     [SerializeField] private GLSEventGridProvider eventGridProvider;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Context.OnBeatmapTimingChanged += HandleBeatmapTimingChanged;
+    }
+
+    protected override void OnDestroy()
+    {
+        Context.OnBeatmapTimingChanged -= HandleBeatmapTimingChanged;
+        base.OnDestroy();
+    }
+
+    private void HandleBeatmapTimingChanged(float jsonTime)
+    {
+        if (!AllowAction)
+            return;
+
+        var descriptor = Context.Descriptor;
+        var map = BeatSaberSongContainer.Instance.Map;
+        foreach (var effect in descriptor.LightColorGroupEffectManager.IdToEffect.Values)
+            effect.RecomputeSongBpmTimes(jsonTime, map.LightColorEventBoxGroups.Count > 0);
+
+        foreach (var effect in descriptor.LightRotationGroupEffectManager.IdToEffect.Values)
+            effect.RecomputeSongBpmTimes(jsonTime, map.LightRotationEventBoxGroups.Count > 0);
+
+        foreach (var effect in descriptor.LightTranslationGroupEffectManager.IdToEffect.Values)
+            effect.RecomputeSongBpmTimes(jsonTime, map.LightTranslationEventBoxGroups.Count > 0);
+
+        foreach (var effect in descriptor.FloatFxGroupEffectManager.IdToEffect.Values)
+            effect.RecomputeSongBpmTimes(jsonTime, map.VfxEventBoxGroups.Count > 0);
+
+        if (lightshowController.Mode == LightshowMode.None)
+            UpdateTime(false, -1f);
+        else
+            UpdateTime();
+    }
+
     public override void Refresh()
     {
+        var songContainer = BeatSaberSongContainer.Instance;
+        var map = songContainer != null ? songContainer.Map : null;
+        if (map == null)
+            return;
+
+        var descriptor = Context.Descriptor;
+        descriptor.LightColorGroupEffectManager.Reinitialize();
+        descriptor.LightRotationGroupEffectManager.Reinitialize();
+        descriptor.LightTranslationGroupEffectManager.Reinitialize();
+        descriptor.FloatFxGroupEffectManager.Reinitialize();
+
+        foreach (var group in map.LightColorEventBoxGroups)
+        {
+            if (descriptor.LightColorGroupEffectManager.IdToEffect.TryGetValue(group.ID, out var colorEffect))
+                colorEffect.InsertData(group);
+        }
+
+        foreach (var group in map.LightRotationEventBoxGroups)
+        {
+            if (descriptor.LightRotationGroupEffectManager.IdToEffect.TryGetValue(group.ID, out var rotationEffect))
+                rotationEffect.InsertData(group);
+        }
+
+        foreach (var group in map.LightTranslationEventBoxGroups)
+        {
+            if (descriptor.LightTranslationGroupEffectManager.IdToEffect.TryGetValue(group.ID, out var translationEffect))
+                translationEffect.InsertData(group);
+        }
+
+        foreach (var group in map.VfxEventBoxGroups)
+        {
+            if (descriptor.FloatFxGroupEffectManager.IdToEffect.TryGetValue(group.ID, out var floatFxEffect))
+                floatFxEffect.InsertData(group);
+        }
+
+        descriptor.LightColorGroupEffectManager.Refresh();
+        descriptor.LightRotationGroupEffectManager.Refresh();
+        descriptor.LightTranslationGroupEffectManager.Refresh();
+        descriptor.FloatFxGroupEffectManager.Refresh();
     }
 
     public override void UpdateTime()
@@ -33,11 +109,22 @@ public class GLSManager : BeatmapObjectManager<BaseEventBoxGroup>
 
     public override void UpdateTime(bool isPlaying, float time)
     {
-        // A paired movement timeline can appear in three event-type buckets; update
-        // the unique manager list to avoid tripling its snapshot evaluation cost.
-        var effects = Context.Descriptor.BasicEventEffectManager.Effects;
-        for (var i = 0; i < effects.Count; i++)
-            effects[i].UpdateTime(isPlaying, time);
+        foreach (var effect in Context.Descriptor.LightColorGroupEffectManager.IdToEffect.Values)
+        {
+            effect.UpdateTime(isPlaying, time);
+        }
+        foreach (var effect in Context.Descriptor.LightRotationGroupEffectManager.IdToEffect.Values)
+        {
+            effect.UpdateTime(isPlaying, time);
+        }
+        foreach (var effect in Context.Descriptor.LightTranslationGroupEffectManager.IdToEffect.Values)
+        {
+            effect.UpdateTime(isPlaying, time);
+        }
+        foreach (var effect in Context.Descriptor.FloatFxGroupEffectManager.IdToEffect.Values)
+        {
+            effect.UpdateTime(isPlaying, time);
+        }
     }
 
     // TODO: probably do more generic on descriptor side

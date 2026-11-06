@@ -1,14 +1,14 @@
 using Beatmap.Base;
 using Beatmap.Info;
+using Beatmap.Shared;
 
-// BeatToTheFuture owns the flat V3 VNJS runtime path, so preserved events require that capability.
+// V3 variable note jump speed and the V4 wall backport require BeatToTheFuture.
 public class BeatToTheFutureReq : RequirementCheck
 {
     public override string Name => "BeatToTheFuture";
 
     public override RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map)
     {
-        // Saved V3 VNJS and raw y=3/4 walls need the backport, so they remain stronger than the ring-speed suggestion.
         if (Settings.Instance.MapVersion == 3
             && ((map.SaveVNJSEventsInV3 && map.NJSEvents.Count > 0) || map.HasV4UpperWalls()))
         {
@@ -17,13 +17,23 @@ public class BeatToTheFutureReq : RequirementCheck
 
         if (RingPropagationCompatibility.HasOldPropagationDeclaration(infoDifficulty.CustomData)
             || RingPropagationCompatibility.HasOldPropagationDeclaration(map.RuntimeLevelCustomData)
-            || RingPropagationCompatibility.HasOldPropagationDeclaration(map.CustomData))
+            || RingPropagationCompatibility.HasOldPropagationDeclaration(map.CustomData)
+            || HasTrueHsvEvents(map))
         {
-            return infoDifficulty.CustomRequirements.Contains(Name)
-                ? RequirementType.Requirement
-                : RequirementType.Suggestion;
+            return RequirementType.Suggestion;
         }
 
         return RequirementType.None;
+    }
+
+    private static bool HasTrueHsvEvents(BaseDifficulty map)
+    {
+        foreach (var evt in map.Events)
+        {
+            if (BasicEventColorLerp.FromSerializedName(evt.CustomLerpType) == BasicEventColorLerpType.TrueHSV)
+                return true;
+        }
+
+        return false;
     }
 }

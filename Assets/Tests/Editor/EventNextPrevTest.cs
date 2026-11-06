@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using Beatmap.Shared;
@@ -1195,36 +1196,8 @@ namespace Tests.Placement
                 "paste, scrub, and undo");
         }
 
-        // Movement snapshots must match a save/reload-equivalent rebuild after every Shift+Arrow interval crossing.
-        [TestCaseSource(nameof(MovementTimeShiftCases))]
-        public void TimeShiftingMovementNodeMatchesFullPreviewRebuild(
-            BasicMovementPreviewKind kind,
-            bool startsInside,
-            bool movesForward)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var eventType = GetMovementEventType(context, kind);
-            var targets = GetMovementPreviewTargets(context, eventType);
-            PlaceMovementAnchors(eventType, kind);
-
-            var (originalTime, targetTime) = GetMovementTimeShiftTimes(startsInside, movesForward);
-            var moved = PlaceMovementEvent(originalTime, eventType, kind, 4);
-            RebuildBasicMovementPreview(context);
-            // TimeShiftingMovementNodeMatchesFullPreviewRebuild needs the pre-edit future chain cached first.
-            PrimeMovementPreviewCache();
-
-            PrepareBasicEventEditorInput();
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(5.75f);
-            SelectionController.Select(moved);
-            PressTimeShiftKeys(targetTime - originalTime);
-
-            var shifted = SelectionController.SelectedObjects.OfType<BaseEvent>().Single();
-            Assert.That(shifted.JsonTime, Is.EqualTo(targetTime).Within(0.00001f));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
-        }
-
         // A physical time-shift undo must restore the exact pre-action transforms, and redo must rebuild identically.
-        [TestCaseSource(nameof(MovementTimeShiftUndoCases))]
+        [TestCaseSource(nameof(MovementTimeShiftCases))]
         public void TimeShiftingAndUndoingMovementNodeRestoresPreview(
             BasicMovementPreviewKind kind,
             bool startsInside,
@@ -1242,12 +1215,18 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementPreviewSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(5.75f);
             SelectionController.Select(moved);
             var shift = targetTime - originalTime;
             var pressCount = GetTimeShiftPressCount(shift);
             PressTimeShiftKeys(shift);
+            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().JsonTime,
+                Is.EqualTo(targetTime).Within(0.00001f));
+            var edited = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             for (var press = 0; press < pressCount; press++)
             {
                 PressUndoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
@@ -1271,36 +1250,11 @@ namespace Tests.Placement
                 PressRedoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
             }
 
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
-        }
-
-        // Moving one zoom, rotation, or laser-speed node across five existing nodes must invalidate the entire crossed chain.
-        [TestCaseSource(nameof(MovementMultiNodeJumpCases))]
-        public void TimeShiftingMovementNodeAcrossMultipleNodesMatchesFullPreviewRebuild(
-            BasicMovementPreviewKind kind,
-            bool movesForward)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var eventType = GetMovementEventType(context, kind);
-            var targets = GetMovementPreviewTargets(context, eventType);
-            var moved = PlaceMultiNodeMovementJumpSequence(eventType, kind, movesForward);
-            RebuildBasicMovementPreview(context);
-            // TimeShiftingMovementNodeAcrossMultipleNodesMatchesFullPreviewRebuild starts from a fully rendered future chain.
-            PrimeMovementPreviewCache(MovementMultiNodeSampleJsonTimes);
-
-            PrepareBasicEventEditorInput();
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(7.75f);
-            SelectionController.Select(moved);
-            PressTimeShiftKeys(movesForward ? 10f : -10f);
-
-            Assert.That(
-                SelectionController.SelectedObjects.OfType<BaseEvent>().Single().JsonTime,
-                Is.EqualTo(movesForward ? 12f : 2f).Within(0.00001f));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementMultiNodeSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes, edited, editedPlayback);
         }
 
         // Undo/redo of a five-node crossing must restore and then reproduce the same authoritative movement timeline.
-        [TestCaseSource(nameof(MovementMultiNodeJumpUndoCases))]
+        [TestCaseSource(nameof(MovementMultiNodeJumpCases))]
         public void TimeShiftingAndUndoingMovementNodeAcrossMultipleNodesRestoresPreview(
             BasicMovementPreviewKind kind,
             bool movesForward)
@@ -1315,6 +1269,8 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementMultiNodeSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementMultiNodeSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(7.75f);
             SelectionController.Select(moved);
@@ -1322,6 +1278,10 @@ namespace Tests.Placement
             var shift = movesForward ? shiftMagnitude : -shiftMagnitude;
             var pressCount = GetTimeShiftPressCount(shift);
             PressTimeShiftKeys(shift);
+            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().JsonTime,
+                Is.EqualTo(movesForward ? 12f : 2f).Within(0.00001f));
+            var edited = CaptureMovementPreview(targets, MovementMultiNodeSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             for (var press = 0; press < pressCount; press++)
             {
                 PressUndoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
@@ -1345,33 +1305,7 @@ namespace Tests.Placement
                 PressRedoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
             }
 
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementMultiNodeSampleJsonTimes);
-        }
-
-        // Pasting a movement node must invalidate every dependent ring or laser-speed snapshot.
-        [TestCaseSource(nameof(AllMovementPreviewKinds))]
-        public void PastingMovementNodeMatchesFullPreviewRebuild(BasicMovementPreviewKind kind)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var eventType = GetMovementEventType(context, kind);
-            var targets = GetMovementPreviewTargets(context, eventType);
-            PlaceMovementAnchors(eventType, kind);
-            var copied = PlaceMovementEvent(16f, eventType, kind, 4);
-            RebuildBasicMovementPreview(context);
-            // PastingMovementNodeMatchesFullPreviewRebuild reproduces a paste into an already-rendered sequence.
-            PrimeMovementPreviewCache();
-
-            PrepareBasicEventEditorInput();
-            SelectionController.Select(copied);
-            PressKeyboardShortcut(UnityEngine.InputSystem.Key.LeftCtrl, UnityEngine.InputSystem.Key.C);
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(6f);
-            HoverBasicEventLaneAt(6f, eventType);
-            PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
-                UnityEngine.InputSystem.Key.LeftCtrl,
-                UnityEngine.InputSystem.Key.V);
-
-            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().JsonTime, Is.EqualTo(6f));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementMultiNodeSampleJsonTimes, edited, editedPlayback);
         }
 
         // Paste undo/redo must remove and restore movement states without leaving the pasted speed or wave active.
@@ -1389,6 +1323,8 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementPreviewSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             SelectionController.Select(copied);
             PressKeyboardShortcut(UnityEngine.InputSystem.Key.LeftCtrl, UnityEngine.InputSystem.Key.C);
@@ -1397,6 +1333,9 @@ namespace Tests.Placement
             PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
                 UnityEngine.InputSystem.Key.LeftCtrl,
                 UnityEngine.InputSystem.Key.V);
+            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().JsonTime, Is.EqualTo(6f));
+            var edited = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             PressUndoShortcutExpectingAction<SelectionPastedAction>();
 
             AssertMovementPreviewMatchesBaseline(
@@ -1413,7 +1352,7 @@ namespace Tests.Placement
                 "paste undo playback");
 
             PressRedoShortcutExpectingAction<SelectionPastedAction>();
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes, edited, editedPlayback);
         }
 
         // Multi-selection time shifts must invalidate from the earliest edited movement state regardless of hash-set order.
@@ -1449,43 +1388,6 @@ namespace Tests.Placement
             AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
         }
 
-        // Multi-node paste must rebuild from the earliest pasted state even when the copied set enumerates later nodes first.
-        [TestCaseSource(nameof(AllMovementPreviewKinds))]
-        public void PastingMultipleMovementNodesMatchesFullPreviewRebuild(BasicMovementPreviewKind kind)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var eventType = GetMovementEventType(context, kind);
-            var targets = GetMovementPreviewTargets(context, eventType);
-            PlaceMovementEvent(1f, eventType, kind, 0);
-            PlaceMovementEvent(4f, eventType, kind, 1);
-            PlaceMovementEvent(10f, eventType, kind, 2);
-            PlaceMovementEvent(14f, eventType, kind, 0);
-            var copiedFirst = PlaceMovementEvent(16f, eventType, kind, 3);
-            var copiedSecond = PlaceMovementEvent(17f, eventType, kind, 4);
-            RebuildBasicMovementPreview(context);
-            // PastingMultipleMovementNodesMatchesFullPreviewRebuild needs the destination chain cached before paste.
-            PrimeMovementPreviewCache();
-
-            PrepareBasicEventEditorInput();
-            SelectionController.Select(copiedFirst);
-            SelectionController.Select(copiedSecond, true);
-            PressKeyboardShortcut(UnityEngine.InputSystem.Key.LeftCtrl, UnityEngine.InputSystem.Key.C);
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(6f);
-            HoverBasicEventLaneAt(6f, eventType);
-            PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
-                UnityEngine.InputSystem.Key.LeftCtrl,
-                UnityEngine.InputSystem.Key.V);
-
-            Assert.That(
-                SelectionController.SelectedObjects
-                    .OfType<BaseEvent>()
-                    .Select(evt => evt.JsonTime)
-                    .OrderBy(time => time)
-                    .ToArray(),
-                Is.EqualTo(new[] { 6f, 7f }));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
-        }
-
         // Multi-node paste undo/redo must remove and restore the entire dependent movement interval as one action.
         [TestCaseSource(nameof(AllMovementPreviewKinds))]
         public void PastingAndUndoingMultipleMovementNodesRestoresPreview(BasicMovementPreviewKind kind)
@@ -1505,6 +1407,8 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementPreviewSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             SelectionController.Select(copiedFirst);
             SelectionController.Select(copiedSecond, true);
@@ -1514,6 +1418,11 @@ namespace Tests.Placement
             PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
                 UnityEngine.InputSystem.Key.LeftCtrl,
                 UnityEngine.InputSystem.Key.V);
+            Assert.That(
+                SelectionController.SelectedObjects.OfType<BaseEvent>().Select(evt => evt.JsonTime).OrderBy(time => time).ToArray(),
+                Is.EqualTo(new[] { 6f, 7f }));
+            var edited = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             PressUndoShortcutExpectingAction<SelectionPastedAction>();
 
             AssertMovementPreviewMatchesBaseline(
@@ -1530,34 +1439,7 @@ namespace Tests.Placement
                 "multi-node paste undo playback");
 
             PressRedoShortcutExpectingAction<SelectionPastedAction>();
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
-        }
-
-        // A horizontal shift between movement tracks must invalidate both the vacated and destination effect chains.
-        [TestCaseSource(nameof(AllMovementPreviewKinds))]
-        public void ShiftingMovementNodeBetweenTracksMatchesFullPreviewRebuild(
-            BasicMovementPreviewKind sourceKind)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var destinationKind = GetOtherMovementKind(sourceKind);
-            var sourceType = GetMovementEventType(context, sourceKind);
-            var destinationType = GetMovementEventType(context, destinationKind);
-            Assert.That(destinationType, Is.Not.EqualTo(sourceType));
-            var targets = GetMovementPreviewTargets(context, sourceType, destinationType);
-            PlaceMovementAnchors(sourceType, sourceKind);
-            PlaceMovementAnchors(destinationType, destinationKind);
-            var moved = PlaceMovementEvent(6f, sourceType, sourceKind, 4);
-            RebuildBasicMovementPreview(context);
-            // ShiftingMovementNodeBetweenTracksMatchesFullPreviewRebuild primes both source and destination chains.
-            PrimeMovementPreviewCache();
-
-            PrepareBasicEventEditorInput();
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(5.75f);
-            SelectionController.Select(moved);
-            PressTrackShiftKeys(sourceType, destinationType);
-
-            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().Type, Is.EqualTo(destinationType));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes, edited, editedPlayback);
         }
 
         // Undoing and redoing a cross-track shift must restore both movement timelines without a manual preview refresh.
@@ -1580,10 +1462,15 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementPreviewSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(5.75f);
             SelectionController.Select(moved);
             var pressCount = PressTrackShiftKeys(sourceType, destinationType);
+            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().Type, Is.EqualTo(destinationType));
+            var edited = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             for (var press = 0; press < pressCount; press++)
             {
                 PressUndoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
@@ -1607,38 +1494,7 @@ namespace Tests.Placement
                 PressRedoShortcutExpectingAction<BeatmapObjectModifiedCollectionAction>();
             }
 
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
-        }
-
-        // Pasting onto the other movement track must rebuild its scene rings while leaving the copied source timeline intact.
-        [TestCaseSource(nameof(AllMovementPreviewKinds))]
-        public void PastingMovementNodeBetweenTracksMatchesFullPreviewRebuild(
-            BasicMovementPreviewKind sourceKind)
-        {
-            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
-            var destinationKind = GetOtherMovementKind(sourceKind);
-            var sourceType = GetMovementEventType(context, sourceKind);
-            var destinationType = GetMovementEventType(context, destinationKind);
-            Assert.That(destinationType, Is.Not.EqualTo(sourceType));
-            var targets = GetMovementPreviewTargets(context, sourceType, destinationType);
-            PlaceMovementAnchors(sourceType, sourceKind);
-            PlaceMovementAnchors(destinationType, destinationKind);
-            var copied = PlaceMovementEvent(16f, sourceType, sourceKind, 4);
-            RebuildBasicMovementPreview(context);
-            // PastingMovementNodeBetweenTracksMatchesFullPreviewRebuild primes both movement effect chains.
-            PrimeMovementPreviewCache();
-
-            PrepareBasicEventEditorInput();
-            SelectionController.Select(copied);
-            PressKeyboardShortcut(UnityEngine.InputSystem.Key.LeftCtrl, UnityEngine.InputSystem.Key.C);
-            Object.FindAnyObjectByType<AudioTimeSyncController>().MoveToJsonTime(6f);
-            HoverBasicEventLaneAt(6f, destinationType);
-            PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
-                UnityEngine.InputSystem.Key.LeftCtrl,
-                UnityEngine.InputSystem.Key.V);
-
-            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().Type, Is.EqualTo(destinationType));
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes, edited, editedPlayback);
         }
 
         // Cross-track paste undo/redo must remove and restore only the destination movement state.
@@ -1661,6 +1517,8 @@ namespace Tests.Placement
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
             var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
 
+            PrimeMovementPreviewCache(MovementPreviewSampleJsonTimes);
+
             PrepareBasicEventEditorInput();
             SelectionController.Select(copied);
             PressKeyboardShortcut(UnityEngine.InputSystem.Key.LeftCtrl, UnityEngine.InputSystem.Key.C);
@@ -1669,6 +1527,9 @@ namespace Tests.Placement
             PressKeyboardShortcutExpectingAction<SelectionPastedAction>(
                 UnityEngine.InputSystem.Key.LeftCtrl,
                 UnityEngine.InputSystem.Key.V);
+            Assert.That(SelectionController.SelectedObjects.OfType<BaseEvent>().Single().Type, Is.EqualTo(destinationType));
+            var edited = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var editedPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
             PressUndoShortcutExpectingAction<SelectionPastedAction>();
 
             AssertMovementPreviewMatchesBaseline(
@@ -1685,7 +1546,7 @@ namespace Tests.Placement
                 "cross-track paste undo playback");
 
             PressRedoShortcutExpectingAction<SelectionPastedAction>();
-            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes, edited, editedPlayback);
         }
 
         // Repeat Shift+Arrow after normal chunk recycling has removed the selected zoom node's visual container.
@@ -2032,23 +1893,14 @@ namespace Tests.Placement
             }
         }
 
-        // Cover entering and vacating an established interval from both directions for rings and both laser-speed sides.
+        // Each row checks the initial edit, undo, and redo against the same rebuilt timeline.
         private static IEnumerable<TestCaseData> MovementTimeShiftCases =>
-            CreateMovementTimeShiftCases("MatchesFullPreviewRebuild");
+            CreateMovementTimeShiftCases("EditUndoRedoRestoresPreview");
 
-        // Give undo/redo rows distinct NUnit identities while retaining the same directional coverage.
-        private static IEnumerable<TestCaseData> MovementTimeShiftUndoCases =>
-            CreateMovementTimeShiftCases("UndoRedoRestoresPreview");
-
-        // Explicit long jumps cover both timeline directions for ring zoom, ring rotation, and each laser-speed side.
         private static IEnumerable<TestCaseData> MovementMultiNodeJumpCases =>
-            CreateMovementMultiNodeJumpCases("MatchesFullPreviewRebuild");
+            CreateMovementMultiNodeJumpCases("EditUndoRedoRestoresPreview");
 
-        // Give the long-jump undo/redo rows distinct NUnit identities from their direct-action counterparts.
-        private static IEnumerable<TestCaseData> MovementMultiNodeJumpUndoCases =>
-            CreateMovementMultiNodeJumpCases("UndoRedoRestoresPreview");
-
-        // Generate the same five-node crossing matrix for direct actions and complete undo/redo round trips.
+        // Cover five-node crossings in both directions for every movement kind.
         private static IEnumerable<TestCaseData> CreateMovementMultiNodeJumpCases(string expectedBehavior)
         {
             foreach (BasicMovementPreviewKind kind in System.Enum.GetValues(typeof(BasicMovementPreviewKind)))
@@ -2084,7 +1936,7 @@ namespace Tests.Placement
             bool startsInside,
             bool movesForward)
         {
-            // Use the same four-beat crossing for incremental and undo matrices so their only difference is action reversal.
+            // Use symmetric four-beat crossings for entering and vacating the interval.
             if (startsInside)
             {
                 return movesForward ? (6f, 10f) : (6f, 2f);
@@ -2177,6 +2029,177 @@ namespace Tests.Placement
                 SourceNeighborPattern.TransitionTransition => (true, true),
                 _ => throw new System.ArgumentOutOfRangeException(nameof(pattern), pattern, null)
             };
+        }
+
+        [Test]
+        public void BpmChangeUndoRedoRetimesBasicLightPreview()
+        {
+            var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            const int eventType = (int)EventTypeValue.Event2;
+            var previewLight = CreateLivePreviewLight(context, eventType);
+            EnableChromaLitePreview();
+            var previewLights = new[] { previewLight };
+            var sampleJsonTimes = new[] { 6f, 8f, 14f, 20f };
+
+            PlaceUtils.Place(new BaseBpmEvent(0f, 100f));
+            var bpmAtFour = PlaceUtils.Place(new BaseBpmEvent(4f, 100f));
+            PlaceLightEvent(2f, eventType, LightValue.RedOn, Color.red);
+            var greenTransition = PlaceLightEvent(12f, eventType, LightValue.BlueTransition, Color.green);
+            var blueTransition = PlaceLightEvent(16f, eventType, LightValue.BlueTransition, Color.blue);
+
+            Assert.That(
+                greenTransition.SongBpmTime,
+                Is.EqualTo(12f).Within(0.001f),
+                "Green transition at JSON beat 12 before the BPM edit");
+            Assert.That(
+                blueTransition.SongBpmTime,
+                Is.EqualTo(16f).Within(0.001f),
+                "Blue transition at JSON beat 16 before the BPM edit");
+            AssertPreviewColorAt(atsc, previewLight, 7f, new Color(0.5f, 0.5f, 0f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 14f, new Color(0f, 0.5f, 0.5f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 18f, new Color(0f, 0f, 1f, 1f));
+
+            var baseline = CaptureLivePreview(atsc, previewLights, sampleJsonTimes);
+
+            ChangeBpmAtFourTo200(bpmAtFour);
+
+            Assert.That(
+                greenTransition.SongBpmTime,
+                Is.EqualTo(8f).Within(0.001f),
+                "Green transition at JSON beat 12 after the BPM edit");
+            Assert.That(
+                blueTransition.SongBpmTime,
+                Is.EqualTo(10f).Within(0.001f),
+                "Blue transition at JSON beat 16 after the BPM edit");
+            AssertPreviewColorAt(atsc, previewLight, 6f, new Color(0.5f, 0.5f, 0f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 8f, new Color(1f / 3f, 2f / 3f, 0f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 14f, new Color(0f, 0.5f, 0.5f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 20f, new Color(0f, 0f, 1f, 1f));
+            PlaceUtils.Undo();
+            AssertPreviewMatchesBaseline(
+                baseline,
+                CaptureLivePreview(atsc, previewLights, sampleJsonTimes),
+                previewLights,
+                sampleJsonTimes,
+                "undoing the BPM change");
+
+            PlaceUtils.Redo();
+            AssertPreviewColorAt(atsc, previewLight, 6f, new Color(0.5f, 0.5f, 0f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 8f, new Color(1f / 3f, 2f / 3f, 0f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 14f, new Color(0f, 0.5f, 0.5f, 1f));
+            AssertPreviewColorAt(atsc, previewLight, 20f, new Color(0f, 0f, 1f, 1f));
+        }
+
+        [TestCase(BasicMovementPreviewKind.RingZoom)]
+        [TestCase(BasicMovementPreviewKind.RingRotation)]
+        [TestCase(BasicMovementPreviewKind.LaserSpeedLeft)]
+        [TestCase(BasicMovementPreviewKind.LaserSpeedRight)]
+        public void BpmChangeUndoRedoRetimesMovementPreview(BasicMovementPreviewKind kind)
+        {
+            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            var eventType = GetMovementEventType(context, kind);
+            var targets = GetMovementPreviewTargets(context, eventType);
+
+            PlaceUtils.Place(new BaseBpmEvent(0f, 100f));
+            var bpmAtFour = PlaceUtils.Place(new BaseBpmEvent(4f, 100f));
+            PlaceMovementAnchors(eventType, kind);
+            RebuildBasicMovementPreview(context);
+
+            var nodeAtTwelve = GetEventsContainer().MapObjects.OfType<BaseEvent>()
+                .Single(evt => evt.Type == eventType && evt.JsonTime == 12f);
+            Assert.That(nodeAtTwelve.SongBpmTime, Is.EqualTo(12f).Within(0.001f),
+                "Movement event at JSON beat 12 before the BPM edit");
+
+            var playbackJsonTimes = CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes);
+            var baseline = CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes);
+            var baselinePlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
+
+            ChangeBpmAtFourTo200(bpmAtFour);
+            Assert.That(nodeAtTwelve.SongBpmTime, Is.EqualTo(8f).Within(0.001f),
+                "Movement event at JSON beat 12 after the BPM edit");
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+
+            PlaceUtils.Undo();
+            AssertMovementPreviewMatchesBaseline(
+                baseline,
+                CaptureMovementPreview(targets, MovementPreviewSampleJsonTimes),
+                targets,
+                MovementPreviewSampleJsonTimes,
+                "movement preview after undoing the BPM change");
+            AssertMovementPreviewMatchesBaseline(
+                baselinePlayback,
+                CaptureMovementPlayback(targets, playbackJsonTimes),
+                targets,
+                playbackJsonTimes,
+                "movement playback after undoing the BPM change");
+
+            PlaceUtils.Redo();
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+        }
+
+        [TestCase(BasicMovementPreviewKind.RingZoom)]
+        [TestCase(BasicMovementPreviewKind.RingRotation)]
+        [TestCase(BasicMovementPreviewKind.LaserSpeedLeft)]
+        [TestCase(BasicMovementPreviewKind.LaserSpeedRight)]
+        public void BpmEventPlacementDeletionRetimesMovementPreview(BasicMovementPreviewKind kind)
+        {
+            var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
+            var eventType = GetMovementEventType(context, kind);
+            var targets = GetMovementPreviewTargets(context, eventType);
+            var eventsContainer = GetEventsContainer();
+
+            PlaceUtils.Place(new BaseBpmEvent(0f, 100f));
+            PlaceMovementAnchors(eventType, kind);
+            RebuildBasicMovementPreview(context);
+
+            var nodeAtTwelve = eventsContainer.MapObjects
+                .OfType<BaseEvent>()
+                .Single(e => e.Type == eventType && e.JsonTime == 12f);
+            PrimeMovementPreviewCache();
+            CaptureMovementPlayback(
+                targets,
+                CreateMovementPlaybackJsonTimes(MovementPreviewSampleJsonTimes));
+
+            var placedChange = PlaceUtils.Place(new BaseBpmEvent(4f, 200f));
+            Assert.That(
+                nodeAtTwelve.SongBpmTime,
+                Is.EqualTo(8f).Within(0.001f),
+                "Movement event at JSON beat 12 after placing the beat-4 BPM event");
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+
+            PlaceUtils.Delete(placedChange);
+            Assert.That(
+                nodeAtTwelve.SongBpmTime,
+                Is.EqualTo(12f).Within(0.001f),
+                "Movement event at JSON beat 12 after deleting the beat-4 BPM event");
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+
+            PlaceUtils.Undo();
+            Assert.That(
+                nodeAtTwelve.SongBpmTime,
+                Is.EqualTo(8f).Within(0.001f),
+                "Movement event at JSON beat 12 after undoing the BPM deletion");
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+
+            PlaceUtils.Redo();
+            Assert.That(
+                nodeAtTwelve.SongBpmTime,
+                Is.EqualTo(12f).Within(0.001f),
+                "Movement event at JSON beat 12 after redoing the BPM deletion");
+            AssertMovementPreviewMatchesFullRebuild(context, targets, MovementPreviewSampleJsonTimes);
+        }
+
+        private static void ChangeBpmAtFourTo200(BaseBpmEvent bpmEvent)
+        {
+            var bpmCollection = BeatmapObjectContainerCollection
+                .GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+            Assert.That(
+                bpmCollection.LoadedContainers.TryGetValue(bpmEvent, out var container),
+                Is.True,
+                "The placed beat-4 BPM event must expose a loaded container for ChangeBpm.");
+            BeatmapBPMChangeInputController.ChangeBpm((BpmEventContainer)container, "200");
+            Assert.That(bpmEvent.Bpm, Is.EqualTo(200f).Within(0.001f));
         }
 
         private LivePreviewLightController CreateLivePreviewLight(BeatmapRuntimeContext context, int eventType)
@@ -3221,7 +3244,9 @@ namespace Tests.Placement
         private static void AssertMovementPreviewMatchesFullRebuild(
             BeatmapRuntimeContext context,
             IReadOnlyList<MovementPreviewTarget> targets,
-            IReadOnlyList<float> jsonTimes)
+            IReadOnlyList<float> jsonTimes,
+            MovementPreviewFrame[,] edited = null,
+            MovementPreviewFrame[,] editedPlayback = null)
         {
             // Movement preview comparisons include every live callback through the furthest requested scrub beat.
             var playbackJsonTimes = CreateMovementPlaybackJsonTimes(jsonTimes);
@@ -3230,6 +3255,14 @@ namespace Tests.Placement
             RebuildBasicMovementPreview(context);
             var rebuilt = CaptureMovementPreview(targets, jsonTimes);
             var rebuiltPlayback = CaptureMovementPlayback(targets, playbackJsonTimes);
+            // Defer this oracle until after redo so a rebuild cannot repair stale caches before undo is tested.
+            if (edited != null)
+            {
+                AssertMovementPreviewMatchesBaseline(rebuilt, edited, targets, jsonTimes, "initial movement edit");
+                AssertMovementPreviewMatchesBaseline(
+                    rebuiltPlayback, editedPlayback, targets, playbackJsonTimes, "initial movement edit playback");
+            }
+
             AssertMovementPreviewMatchesBaseline(
                 rebuilt,
                 incremental,

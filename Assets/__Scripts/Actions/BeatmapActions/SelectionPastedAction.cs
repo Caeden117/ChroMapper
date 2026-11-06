@@ -19,7 +19,7 @@ public class SelectionPastedAction : BeatmapAction
     public override void Undo(BeatmapActionContainer.BeatmapActionParams param)
     {
         foreach (var obj in Data) DeleteObject(obj, false);
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
 
         // Consume boost and pooled-container invalidations from the removed paste before restoring any conflicts.
         RefreshPools(Data);

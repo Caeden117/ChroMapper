@@ -31,7 +31,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (var obj in Data) DeleteObject(obj, false);
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
         RefreshPools(Data);
 
         foreach (var data in RemovedConflictObjects) SpawnObject(data);
@@ -43,7 +43,7 @@ public class BeatmapObjectPlacementAction : BeatmapAction
     {
         foreach (var obj in RemovedConflictObjects) DeleteObject(obj, false);
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
         RefreshPools(RemovedConflictObjects);
 
         foreach (var obj in Data) SpawnObject(obj);

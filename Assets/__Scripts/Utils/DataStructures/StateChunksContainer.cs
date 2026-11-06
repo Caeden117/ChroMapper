@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using UnityEngine;
 
 public class StateChunksContainer<TState, TData> where TState : StateData<TData> where TData : BaseObject
 {
-    public readonly SortedBucketArray<TState> Collection = new(value => value?.StartTime ?? 0f, 10, 100);
+    public const int ChunkSize = 10;
+
+    public readonly SortedBucketArray<TState> Collection = new(value => value?.StartTime ?? 0f, ChunkSize, 100);
     // GLS group moves can cross a float-derived bucket boundary, so removal must resolve the exact inserted identity directly.
     private readonly Dictionary<TData, TState> statesByBase = new();
     public TState CurrentState;
@@ -14,6 +17,41 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
     private int currLocalIdx;
 
     public void Resize(float max) => Collection.Resize((int)max);
+
+    public void RecomputeTimesAfter(
+        float time,
+        Func<TState, float> getStartTime,
+        Action<TState> onChanged = null)
+    {
+        var previous = GetStateAt(time).state;
+        var suffix = Collection.ExtractAfter(time);
+        foreach (var state in suffix)
+        {
+            // The end sentinel is a structural boundary, not a beat to convert through the map's BPM changes.
+            var start = state.StartTime == float.MaxValue
+                ? float.MaxValue
+                : getStartTime(state);
+            if (state.StartTime != start)
+            {
+                state.StartTime = start;
+                onChanged?.Invoke(state);
+            }
+
+            if (previous.EndTime != start)
+            {
+                previous.EndTime = start;
+                onChanged?.Invoke(previous);
+            }
+
+            Collection.Add(state);
+            previous = state;
+        }
+
+        // Bucket/local cursor indexes also change when a retimed state crosses a bucket boundary.
+        if (CurrentState != null)
+            SetStateAt(CurrentState.StartTime);
+
+    }
 
     // Maintain the identity index alongside the ordered buckets so movement never scans or guesses a removal bucket.
     public void AddState(TState state)
@@ -68,8 +106,8 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
 
     public (int chunkIdx, int localIdx, TState state) GetStateAt(float time)
     {
-        var bucket = Collection.GetBucketFrom(time);
-        var bucketIdx = Collection.Buckets.IndexOf(bucket);
+        var bucketIdx = Collection.GetBucketIndexFrom(time);
+        var bucket = Collection.Buckets[bucketIdx];
         var idx = Collection.BinarySearchRight(bucket, time);
 
         if (idx == -1)
@@ -87,8 +125,8 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
 
     public TState GetPreviousStateFrom(TState state)
     {
-        var bucket = Collection.GetBucketFrom(state.StartTime);
-        var bucketIdx = Collection.Buckets.IndexOf(bucket);
+        var bucketIdx = Collection.GetBucketIndexFrom(state.StartTime);
+        var bucket = Collection.Buckets[bucketIdx];
         var idx = Collection.BinarySearchRight(bucket, state.StartTime) - 1;
 
         if (idx < 0)
@@ -107,8 +145,8 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
 
     public TState GetOverlappingStateFrom(TState state)
     {
-        var bucket = Collection.GetBucketFrom(state.StartTime);
-        var bucketIdx = Collection.Buckets.IndexOf(bucket);
+        var bucketIdx = Collection.GetBucketIndexFrom(state.StartTime);
+        var bucket = Collection.Buckets[bucketIdx];
         var idx = Collection.BinarySearchRight(bucket, state.StartTime);
 
         if (idx < 0)
@@ -127,8 +165,8 @@ public class StateChunksContainer<TState, TData> where TState : StateData<TData>
 
     public TState GetNextStateFrom(TState state)
     {
-        var bucket = Collection.GetBucketFrom(state.StartTime);
-        var bucketIdx = Collection.Buckets.IndexOf(bucket);
+        var bucketIdx = Collection.GetBucketIndexFrom(state.StartTime);
+        var bucket = Collection.Buckets[bucketIdx];
         var idx = Collection.BinarySearchRight(bucket, state.StartTime) + 1;
 
         if (idx == -1 || idx == bucket.Count)

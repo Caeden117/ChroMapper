@@ -301,7 +301,7 @@ namespace Tests.Editor
         // depth (core z~2.755, ~3x too large on screen) instead of z9.355/8.755 — recycled wall
         // animators double-subscribed OnTimeChanged, so a second handler rewrote the preload pose
         // over the pushed track value, and drained aggregators decayed it again on later frames.
-        // The fix refreshes the pool on OnTimeFlushPending, subscribes each animator once, and lets
+        // The fix refreshes the pool on OnPrepareStoppedSeek, subscribes each animator once, and lets
         // gameplay OffsetPosition hold until the next flush.
         [UnityTest]
         public IEnumerator Beat221WallsStayAtAuthoredDepthOnImmediateReverseSeek()

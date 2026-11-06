@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
+// V3ColorConversionToV4DropsGeneratedEasingFromOutputOnly reuses the V3 extension's reserved key/ID contract.
+using Beatmap.V3;
 using SimpleJSON;
 using UnityEngine;
 using LiteNetLib.Utils;
@@ -40,6 +42,7 @@ namespace Beatmap.V4
                     box.BrightnessDistributionType = commonBoxData.BrightnessDistributionType;
                     box.BrightnessAffectFirst = commonBoxData.BrightnessAffectFirst;
                     box.Easing = commonBoxData.Easing;
+                    box.SetCustomData(boxNode["customData"]);
 
                     box.Events = boxNode["l"]
                         .AsArray.Linq.Select(x =>
@@ -111,13 +114,32 @@ namespace Beatmap.V4
                     eventNode["i"] =
                         lightColorEventsCommonData.IndexOf(V4CommonData.LightColorEvent.FromBaseLightColorEvent(evt));
                     evt.CustomData = evt.SaveCustom();
-                    if (evt.CustomData.Children.Any())
-                        eventNode["customData"] = evt.CustomData;
+                    var customData = V3LightColorBase.StripExtensionEasingFromExport(evt, evt.CustomData);
+                    if (customData.HasKey(V3LightColorBase.CustomKeyEasing))
+                    {
+                        var easing = customData[V3LightColorBase.CustomKeyEasing];
+                        if (easing.IsNumber && easing.AsDouble == easing.AsInt
+                            && V3LightColorBase.RequiresCustomEasing(easing.AsInt))
+                        {
+                            customData = customData.Clone();
+                            customData.Remove(V3LightColorBase.CustomKeyEasing);
+                        }
+                    }
+
+                    if (customData.Children.Any())
+                        eventNode["customData"] = customData;
 
                     eventArray.Add(eventNode);
                 }
 
                 boxNode["l"] = eventArray;
+                // V4 common box data can be deduplicated, so customData stays on this authored box instance instead of entering equality keys.
+                // Named boxCustomData because the event loop above declares customData in this same enclosing scope (CS0136).
+                var boxCustomData = boxEvent.SaveCustom();
+                if (boxCustomData.Children.Any())
+                {
+                    boxNode["customData"] = boxCustomData;
+                }
 
                 boxArray.Add(boxNode);
             }

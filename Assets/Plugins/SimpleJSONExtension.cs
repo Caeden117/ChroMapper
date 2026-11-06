@@ -34,11 +34,16 @@ namespace SimpleJSON
 
         public override string Value
         {
-            get => ((float)m_Data).ToString("G9", CultureInfo.InvariantCulture);
+            get => FormatNumber((float)m_Data, floatPrecision: true);
             set => base.Value = value;
         }
 
         public override JSONNode Clone() => new JSONFloatNumber((float)m_Data);
+
+        internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
+        {
+            AppendNumber(aSB, (float)m_Data, floatPrecision: true);
+        }
     }
 
     public class JSONNumberWithOverridenRounding : JSONNumber

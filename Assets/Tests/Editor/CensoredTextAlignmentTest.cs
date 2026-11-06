@@ -254,39 +254,45 @@ namespace Tests.Editor
             var camera = cameraManager.CameraControllers[1].Camera;
             var textCenter = camera.WorldToViewportPoint(bounds.center);
             var backingCenter = camera.WorldToViewportPoint(backing.bounds.center);
-            var tracks = Object.FindAnyObjectByType<TracksManager>();
-            foreach (var name in new[] { "redcen", "back", "censson", "redcen_10_9" })
-            {
-                var track = tracks.GetAnimationTrack(name);
-            }
-
+            var horizontalError = Mathf.Abs(textCenter.x - backingCenter.x);
+            var verticalError = Mathf.Abs(textCenter.y - backingCenter.y);
             var target = new RenderTexture(1024, 512, 24, RenderTextureFormat.ARGB32);
-            var frame = new Texture2D(1024, 512, TextureFormat.RGBA32, false);
             var previousTarget = camera.targetTexture;
             var previousActive = RenderTexture.active;
             try
             {
                 camera.targetTexture = target;
                 camera.Render();
-                RenderTexture.active = target;
-                frame.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
-                frame.Apply();
-                var directory = PathUtils.Combine(Application.dataPath, "..", "TestResults", "CensoredAlignment");
-                Directory.CreateDirectory(directory);
-                var capture = PathUtils.Combine(directory, NUnit.Framework.TestContext.CurrentContext.Test.Name + ".png");
-                File.WriteAllBytes(capture, frame.EncodeToPNG());
+                // The assertions use renderer bounds. Read back a diagnostic image only when alignment fails.
+                if (horizontalError >= 0.02f || verticalError >= 0.02f)
+                {
+                    var frame = new Texture2D(1024, 512, TextureFormat.RGBA32, false);
+                    try
+                    {
+                        RenderTexture.active = target;
+                        frame.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0);
+                        frame.Apply();
+                        var directory = PathUtils.Combine(Application.dataPath, "..", "TestResults", "CensoredAlignment");
+                        Directory.CreateDirectory(directory);
+                        var capture = PathUtils.Combine(directory, TestContext.CurrentContext.Test.Name + ".png");
+                        File.WriteAllBytes(capture, frame.EncodeToPNG());
+                    }
+                    finally
+                    {
+                        Object.DestroyImmediate(frame);
+                    }
+                }
             }
             finally
             {
                 camera.targetTexture = previousTarget;
                 RenderTexture.active = previousActive;
-                Object.Destroy(frame);
                 Object.Destroy(target);
             }
 
-            Assert.That(Mathf.Abs(textCenter.x - backingCenter.x), Is.LessThan(0.02f),
+            Assert.That(horizontalError, Is.LessThan(0.02f),
                 "The CENSORED text must be horizontally centered on its black backing during the first flash.");
-            Assert.That(Mathf.Abs(textCenter.y - backingCenter.y), Is.LessThan(0.02f),
+            Assert.That(verticalError, Is.LessThan(0.02f),
                 "The CENSORED text must be vertically centered on its black backing during the first flash.");
         }
 

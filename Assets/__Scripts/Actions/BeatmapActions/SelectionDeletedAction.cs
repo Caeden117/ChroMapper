@@ -25,7 +25,7 @@ public class SelectionDeletedAction : BeatmapAction
             }
         }
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
         RefreshPools(Data);
         RefreshEventAppearance();
     }
@@ -35,7 +35,7 @@ public class SelectionDeletedAction : BeatmapAction
         foreach (var data in Data)
             DeleteObject(data, false);
 
-        SelectionController.OnSelectionChanged?.Invoke();
+        SelectionController.NotifySelectionChanged();
         RefreshPools(Data);
         RefreshEventAppearance();
     }

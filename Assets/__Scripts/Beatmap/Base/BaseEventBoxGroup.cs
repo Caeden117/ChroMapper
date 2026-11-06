@@ -42,6 +42,18 @@ namespace Beatmap.Base
 
         public abstract void PruneEmptyAutomaticAxisLanes();
 
+        public void RecomputeSongBpmTimesAfter(float jsonTime)
+        {
+            if (JsonTime > jsonTime)
+                base.RecomputeSongBpmTime();
+
+            var events = OrderedEvents.AsSpan();
+            var first = events.UpperBoundBy(jsonTime - JsonTime, evt => evt.RelativeJsonTime);
+            for (var index = first; index < events.Length; index++)
+                events[index].RecomputeSongBpmTime();
+
+        }
+
         // Keep event invocation in the declaring base type so generic groups can invalidate their data-only indexes.
         protected void NotifyOrderedEventsResorted() => OnOrderedEventsResorted?.Invoke(this);
     }
@@ -225,7 +237,7 @@ namespace Beatmap.Base
         bool[] GetEnabledAxes(TrackDefinitionGLS trackDefinition);
         BaseLightTransformEventBox CreateTransformBox(int axis);
         bool TryAddTransformBox(BaseLightTransformEventBox box);
-        void InsertDefaultTransformBox(int index);
+        void InsertTransformBox(int index, int axis);
         void ClearTransformBoxes();
         void RemoveTransformBoxAt(int index);
         void RemoveEmptyTransformBoxes();
@@ -270,7 +282,7 @@ namespace Beatmap.Base
             return true;
         }
 
-        public void InsertDefaultTransformBox(int index) => Boxes.Insert(index, CreateTransformBoxCore((int)Axis.X));
+        public void InsertTransformBox(int index, int axis) => Boxes.Insert(index, CreateTransformBoxCore(axis));
 
         public void ClearTransformBoxes() => Boxes.Clear();
 
@@ -296,6 +308,8 @@ namespace Beatmap.Base
         {
             var duplicate = (TBox)Boxes[index].Clone();
             duplicate.ClearEvents();
+            // A duplicated automatic lane is now a saved lane and must not be pruned.
+            duplicate.IsAutomaticAxisLane = false;
             Boxes.Insert(index + 1, duplicate);
         }
 

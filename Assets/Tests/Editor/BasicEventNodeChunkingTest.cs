@@ -28,6 +28,14 @@ namespace Tests.Editor
         private float? songBpmBeforeTest;
         private Vector2 physicalScrollScreenPosition;
 
+        // Event0's light-ID lanes require DefaultEnvironment. Reload an empty map in that environment so a
+        // previous fixture cannot leave these tests on BillieEnvironment.
+        protected override IEnumerator OnMapLoaded()
+        {
+            yield return TestUtils.ReloadMap(3, null, environmentName: "DefaultEnvironment");
+            TestUtils.CaptureCurrentMapAsSharedBaseline();
+        }
+
         protected override void BeforeCleanup()
         {
             // Physical-wheel chunk tests isolate the Timeline action map; release it before cleanup moves or deletes
@@ -777,7 +785,8 @@ namespace Tests.Editor
             sharedUtilsInputWasEnabled = sharedInput.Utils.enabled;
             sharedInput.Utils.Disable();
 
-            InitializeVirtualInput(false);
+            // Timeline scrolling also reads keyboard modifiers for GLS pulse-width ownership.
+            InitializeVirtualInput(true);
             var atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
             physicalTimelineInput = new CMInput();
             physicalTimelineInput.Timeline.SetCallbacks(atsc);

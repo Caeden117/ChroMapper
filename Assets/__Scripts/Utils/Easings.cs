@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Beatmap.Enums;
 using UnityEngine;
@@ -49,7 +49,10 @@ public static class Easing
         { "easeInBounce", Bounce.In },
         { "easeOutBounce", Bounce.Out },
         { "easeInOutBounce", Bounce.InOut },
-        { "easeStep", Step }
+        { "easeStep", Step },
+        { "easeBeatSaberInOutBack", Back.BeatSaberInOut },
+        { "easeBeatSaberInOutElastic", Elastic.BeatSaberInOut },
+        { "easeBeatSaberInOutBounce", Bounce.BeatSaberInOut }
     };
 
     // Chroma/Heck resolves point-data and light-event easings through its own function table
@@ -121,77 +124,128 @@ public static class Easing
     public static readonly Dictionary<string, string> InternalNameToShortName = new()
     {
         { "easeLinear", "Lin" },
-        { "easeInQuad", "InQ" },
-        { "easeOutQuad", "OutQ" },
-        { "easeInOutQuad", "IOQ" },
-        { "easeInCubic", "InC" },
-        { "easeOutCubic", "OutC" },
-        { "easeInOutCubic", "IOC" },
-        { "easeInQuart", "InQt" },
-        { "easeOutQuart", "OutQt" },
-        { "easeInOutQuart", "IOQt" },
-        { "easeInQuint", "InQn" },
-        { "easeOutQuint", "OutQn" },
-        { "easeInOutQuint", "IOQn" },
-        { "easeInSine", "InS" },
-        { "easeOutSine", "OutS" },
-        { "easeInOutSine", "IOS" },
-        { "easeInExpo", "InE" },
-        { "easeOutExpo", "OutE" },
-        { "easeInOutExpo", "IOE" },
+        { "easeInQuad", "In^2" },
+        { "easeOutQuad", "Out^2" },
+        { "easeInOutQuad", "IO^2" },
+        { "easeInCubic", "In^3" },
+        { "easeOutCubic", "Out^3" },
+        { "easeInOutCubic", "IO^3" },
+        { "easeInQuart", "In^4" },
+        { "easeOutQuart", "Out^4" },
+        { "easeInOutQuart", "IO^4" },
+        { "easeInQuint", "In^5" },
+        { "easeOutQuint", "Out^5" },
+        { "easeInOutQuint", "IO^5" },
+        { "easeInSine", "InSn" },
+        { "easeOutSine", "OutSn" },
+        { "easeInOutSine", "IOSn" },
+        { "easeInExpo", "InEx" },
+        { "easeOutExpo", "OutEx" },
+        { "easeInOutExpo", "IOEx" },
         { "easeInCirc", "InCr" },
         { "easeOutCirc", "OutCr" },
         { "easeInOutCirc", "IOCr" },
-        { "easeInBack", "InB" },
-        { "easeOutBack", "OutB" },
-        { "easeInOutBack", "IOB" },
+        { "easeInBack", "InBk" },
+        { "easeOutBack", "OutBk" },
+        { "easeInOutBack", "IOTBk" },
         { "easeInElastic", "InEl" },
         { "easeOutElastic", "OutEl" },
-        { "easeInOutElastic", "IOEl" },
+        { "easeInOutElastic", "IOTEl" },
         { "easeInBounce", "InBo" },
         { "easeOutBounce", "OutBo" },
-        { "easeInOutBounce", "IOBo" },
-        { "easeStep", "Step" }
+        { "easeInOutBounce", "IOTBo" },
+        { "easeStep", "Step" },
+        { "easeBeatSaberInOutBack", "IOBk" },
+        { "easeBeatSaberInOutElastic", "IOEl" },
+        { "easeBeatSaberInOutBounce", "IOBo" }
     };
 
     public static readonly Dictionary<int, string> IDToShortName = new()
     {
         { (int)EaseType.None, "N" },
         { (int)EaseType.Linear, "L" },
-        { (int)EaseType.InQuadratic, "I2" },
-        { (int)EaseType.OutQuadratic, "O2" },
-        { (int)EaseType.InOutQuadratic, "IO2" },
-        { (int)EaseType.InSinusoidal, "IS" },
-        { (int)EaseType.OutSinusoidal, "OS" },
-        { (int)EaseType.InOutSinusoidal, "IOS" },
-        { (int)EaseType.InCubic, "I3" },
-        { (int)EaseType.OutCubic, "O3" },
-        { (int)EaseType.InOutCubic, "IO3" },
-        { (int)EaseType.InQuartic, "I4" },
-        { (int)EaseType.OutQuartic, "O4" },
-        { (int)EaseType.InOutQuartic, "IO4" },
-        { (int)EaseType.InQuintic, "I5" },
-        { (int)EaseType.OutQuintic, "O5" },
-        { (int)EaseType.InOutQuintic, "IO5" },
+        { (int)EaseType.InQuadratic, "I^2" },
+        { (int)EaseType.OutQuadratic, "O^2" },
+        { (int)EaseType.InOutQuadratic, "IO^2" },
+        { (int)EaseType.InSinusoidal, "ISn" },
+        { (int)EaseType.OutSinusoidal, "OSn" },
+        { (int)EaseType.InOutSinusoidal, "IOSn" },
+        { (int)EaseType.InCubic, "I^3" },
+        { (int)EaseType.OutCubic, "O^3" },
+        { (int)EaseType.InOutCubic, "IO^3" },
+        { (int)EaseType.InQuartic, "I^4" },
+        { (int)EaseType.OutQuartic, "O^4" },
+        { (int)EaseType.InOutQuartic, "IO^4" },
+        { (int)EaseType.InQuintic, "I^5" },
+        { (int)EaseType.OutQuintic, "O^5" },
+        { (int)EaseType.InOutQuintic, "IO^5" },
         { (int)EaseType.InExponential, "IEx" },
         { (int)EaseType.OutExponential, "OEx" },
         { (int)EaseType.InOutExponential, "IOEx" },
-        { (int)EaseType.InCircular, "IC" },
-        { (int)EaseType.OutCircular, "OC" },
-        { (int)EaseType.InOutCircular, "IOC" },
-        { (int)EaseType.InBack, "IBa" },
-        { (int)EaseType.OutBack, "OBa" },
-        { (int)EaseType.InOutBack, "IOBa" },
+        { (int)EaseType.InCircular, "ICr" },
+        { (int)EaseType.OutCircular, "OCr" },
+        { (int)EaseType.InOutCircular, "IOCr" },
+        { (int)EaseType.InBack, "IBk" },
+        { (int)EaseType.OutBack, "OBk" },
+        { (int)EaseType.InOutBack, "IOTBk" },
         { (int)EaseType.InElastic, "IEl" },
         { (int)EaseType.OutElastic, "OEl" },
-        { (int)EaseType.InOutElastic, "IOEl" },
+        { (int)EaseType.InOutElastic, "IOTEl" },
         { (int)EaseType.InBounce, "IBo" },
         { (int)EaseType.OutBounce, "OBo" },
-        { (int)EaseType.InOutBounce, "IOBo" },
-        { (int)EaseType.BeatSaberInOutBack, "IOBa" },
+        { (int)EaseType.InOutBounce, "IOTBo" },
+        { (int)EaseType.BeatSaberInOutBack, "IOBk" },
         { (int)EaseType.BeatSaberInOutElastic, "IOEl" },
         { (int)EaseType.BeatSaberInOutBounce, "IOBo" }
     };
+
+    public static readonly Dictionary<int, string> IDToInternalName = new()
+    {
+        { (int)EaseType.None, "easeStep" },
+        { (int)EaseType.Linear, "easeLinear" },
+        { (int)EaseType.InQuadratic, "easeInQuad" },
+        { (int)EaseType.OutQuadratic, "easeOutQuad" },
+        { (int)EaseType.InOutQuadratic, "easeInOutQuad" },
+        { (int)EaseType.InSinusoidal, "easeInSine" },
+        { (int)EaseType.OutSinusoidal, "easeOutSine" },
+        { (int)EaseType.InOutSinusoidal, "easeInOutSine" },
+        { (int)EaseType.InCubic, "easeInCubic" },
+        { (int)EaseType.OutCubic, "easeOutCubic" },
+        { (int)EaseType.InOutCubic, "easeInOutCubic" },
+        { (int)EaseType.InQuartic, "easeInQuart" },
+        { (int)EaseType.OutQuartic, "easeOutQuart" },
+        { (int)EaseType.InOutQuartic, "easeInOutQuart" },
+        { (int)EaseType.InQuintic, "easeInQuint" },
+        { (int)EaseType.OutQuintic, "easeOutQuint" },
+        { (int)EaseType.InOutQuintic, "easeInOutQuint" },
+        { (int)EaseType.InExponential, "easeInExpo" },
+        { (int)EaseType.OutExponential, "easeOutExpo" },
+        { (int)EaseType.InOutExponential, "easeInOutExpo" },
+        { (int)EaseType.InCircular, "easeInCirc" },
+        { (int)EaseType.OutCircular, "easeOutCirc" },
+        { (int)EaseType.InOutCircular, "easeInOutCirc" },
+        { (int)EaseType.InBack, "easeInBack" },
+        { (int)EaseType.OutBack, "easeOutBack" },
+        { (int)EaseType.InOutBack, "easeInOutBack" },
+        { (int)EaseType.InElastic, "easeInElastic" },
+        { (int)EaseType.OutElastic, "easeOutElastic" },
+        { (int)EaseType.InOutElastic, "easeInOutElastic" },
+        { (int)EaseType.InBounce, "easeInBounce" },
+        { (int)EaseType.OutBounce, "easeOutBounce" },
+        { (int)EaseType.InOutBounce, "easeInOutBounce" },
+        { (int)EaseType.BeatSaberInOutBack, "easeBeatSaberInOutBack" },
+        { (int)EaseType.BeatSaberInOutElastic, "easeBeatSaberInOutElastic" },
+        { (int)EaseType.BeatSaberInOutBounce, "easeBeatSaberInOutBounce" }
+    };
+
+    /// <summary>
+    ///     Maps a numeric easing save ID to its internal <see cref="ByName" /> name.
+    ///     Unknown IDs fall back to linear so stale metadata cannot select an unintended curve.
+    /// </summary>
+    /// <param name="id">The numeric easing ID from the beatmap.</param>
+    /// <returns>The internal easing name used by gradient and ribbon dispatch.</returns>
+    public static string InternalNameForID(int id) =>
+        IDToInternalName.TryGetValue(id, out var name) ? name : "easeLinear";
 
     public static readonly Dictionary<int, string> IDToFullName = new()
     {
@@ -275,6 +329,26 @@ public static class Easing
         { (int)EaseType.BeatSaberInOutBounce, Bounce.BeatSaberInOut }
     };
 
+    private static readonly Dictionary<string, Func<float, float>> byShortName = CreateEasingsByShortName();
+    private static readonly Dictionary<int, int> shaderIdByEaseType = CreateShaderIdByEaseType();
+
+    private static Dictionary<string, Func<float, float>> CreateEasingsByShortName()
+    {
+        var result = new Dictionary<string, Func<float, float>>(IDToShortName.Count, StringComparer.Ordinal);
+        foreach (var entry in IDToShortName)
+        {
+            result.Add(entry.Value, ByID[entry.Key]);
+        }
+
+        return result;
+    }
+
+    public static bool TryGetByNameOrShortName(string name, out Func<float, float> easing)
+    {
+        name = name?.Trim() ?? string.Empty;
+        return byShortName.TryGetValue(name, out easing) || ByName.TryGetValue(name, out easing);
+    }
+
     /// <summary>
     ///     If an easing named <paramref name="name" /> exists, returns it.
     ///     Otherwise, returns <see cref="Linear(float)" />.
@@ -319,6 +393,34 @@ public static class Easing
 
         return 0;
     }
+
+    public static int EasingShaderId(int easeType) => shaderIdByEaseType.GetValueOrDefault(easeType);
+
+    private static Dictionary<int, int> CreateShaderIdByEaseType()
+    {
+        var result = new Dictionary<int, int>();
+        foreach (var easingById in ByID)
+        {
+            var shaderId = 0;
+            foreach (var shaderEasing in ByName)
+            {
+                if (shaderEasing.Value == easingById.Value)
+                {
+                    result[easingById.Key] = shaderId;
+                    break;
+                }
+
+                shaderId++;
+            }
+        }
+
+        return result;
+    }
+
+    public static float StrobeFade(float phase, float pulseWidth, Func<float, float> easing) =>
+        phase < pulseWidth
+            ? easing(phase / pulseWidth)
+            : 1f - easing((phase - pulseWidth) / (1f - pulseWidth));
 
     public static float Linear(float k) => k;
 
@@ -420,25 +522,40 @@ public static class Easing
 
     public static class Elastic
     {
-        public static float In(float k)
+        public static float In(float t)
         {
-            if (k == 0) return 0;
-            if (k == 1) return 1;
-            return -Mathf.Pow(2f, 10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f);
+            if (t == 0f || t == 1f)
+            {
+                return t;
+            }
+
+            return -Mathf.Pow(2f, (10f * t) - 10f)
+                * Mathf.Sin(((10f * t) - 10.75f) * (Mathf.PI * 2f / 3f));
         }
 
-        public static float Out(float k)
+        public static float Out(float t)
         {
-            if (k == 0) return 0;
-            if (k == 1) return 1;
-            return (Mathf.Pow(2f, -10f * k) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f)) + 1f;
+            if (t == 0f || t == 1f)
+            {
+                return t;
+            }
+
+            return (Mathf.Pow(2f, -10f * t)
+                * Mathf.Sin(((10f * t) - 0.75f) * (Mathf.PI * 2f / 3f))) + 1f;
         }
 
-        public static float InOut(float k)
+        public static float InOut(float t)
         {
-            return (k *= 2f) < 1f
-                ? -0.5f * Mathf.Pow(2f, 10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f)
-                : (Mathf.Pow(2f, -10f * (k -= 1f)) * Mathf.Sin((k - 0.1f) * (2f * Mathf.PI) / 0.4f) * 0.5f) + 1f;
+            if (t == 0f || t == 1f)
+            {
+                return t;
+            }
+
+            return t < 0.5f
+                ? -(Mathf.Pow(2f, (20f * t) - 10f)
+                    * Mathf.Sin(((20f * t) - 11.125f) * (Mathf.PI * 4f / 9f))) / 2f
+                : (Mathf.Pow(2f, (-20f * t) + 10f)
+                    * Mathf.Sin(((20f * t) - 11.125f) * (Mathf.PI * 4f / 9f)) / 2f) + 1f;
         }
 
         public static float BeatSaberInOut(float t)

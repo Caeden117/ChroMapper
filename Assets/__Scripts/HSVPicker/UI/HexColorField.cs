@@ -34,7 +34,7 @@ public class HexColorField : DisableActionsField
             newHex = "#" + newHex;
         if (ColorUtility.TryParseHtmlString(newHex, out var color))
         {
-            Hsvpicker.CurrentColor = color;
+            Hsvpicker.AssignRoundedRgb(color);
         }
         else
         {

@@ -5,10 +5,17 @@ public static class BloomRenderUtility
 {
     public const int MaxPyramidSize = 16;
 
-    public static RenderTextureFormat GetBloomTextureFormat() =>
-        SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGB111110Float)
-            ? RenderTextureFormat.RGB111110Float
-            : RenderTextureFormat.ARGBHalf;
+    // Renderer field initializers also call this utility, when Unity forbids device queries.
+    // Keep format initialization separate so the query first runs when a render pass requests it.
+    private static class CachedBloomFormat
+    {
+        internal static readonly RenderTextureFormat Value =
+            SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.RGB111110Float)
+                ? RenderTextureFormat.RGB111110Float
+                : RenderTextureFormat.ARGBHalf;
+    }
+
+    public static RenderTextureFormat GetBloomTextureFormat() => CachedBloomFormat.Value;
 
     public static RenderTextureDescriptor CreateDescriptor(
         int width, int height, RenderTextureFormat format)

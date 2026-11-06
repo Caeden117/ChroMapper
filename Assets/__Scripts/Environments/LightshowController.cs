@@ -8,9 +8,11 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
 {
     public LightshowMode Mode;
     [SerializeField] private BeatmapRuntimeContext context;
+    [SerializeField] private CameraManager cameraManager;
 
     private IBeatmapUpdate[] activeEffects = Array.Empty<IBeatmapUpdate>();
     private IEnvironmentComponentUpdate[] componentUpdates = Array.Empty<IEnvironmentComponentUpdate>();
+    private LightCollision[] lightCollisions = Array.Empty<LightCollision>();
 
     private int activeSize;
     private int componentSize;
@@ -23,8 +25,11 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
         context.OnEnvironmentUnloaded += HandleEnvironmentUnloaded;
     }
 
+    private void Start() => Camera.onPreCull += HandleCameraPreCull;
+
     protected void OnDestroy()
     {
+        Camera.onPreCull -= HandleCameraPreCull;
         LoadInitialMap.OnLevelLoaded -= HandleLevelLoaded;
         LoadedDifficultySelectController.OnLoadedDifficultyChanged -= HandleLevelLoaded;
         context.OnEnvironmentLoaded -= HandleEnvironmentLoaded;
@@ -38,6 +43,7 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
         componentSize = 0;
         activeEffects = Array.Empty<IBeatmapUpdate>();
         componentUpdates = Array.Empty<IEnvironmentComponentUpdate>();
+        lightCollisions = Array.Empty<LightCollision>();
     }
 
     private void HandleEnvironmentLoaded(EnvironmentDescriptor _)
@@ -72,6 +78,27 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
                 componentUpdates[i].Refresh();
     }
 
+    private void HandleCameraPreCull(Camera renderingCamera)
+    {
+        if (renderingCamera != cameraManager.SelectedCameraController.Camera)
+            return;
+
+        var physicsTransformsSynced = false;
+        foreach (var collision in lightCollisions)
+        {
+            if (!collision.isActiveAndEnabled || !collision.ParametricLight.EnabledRenderers)
+                continue;
+
+            if (!physicsTransformsSynced)
+            {
+                Physics.SyncTransforms();
+                physicsTransformsSynced = true;
+            }
+
+            collision.RefreshCollision();
+        }
+    }
+
     public void Refresh()
     {
         foreach (var effect in activeEffects) effect.Refresh();
@@ -94,6 +121,7 @@ public class LightshowController : MonoBehaviour, IBeatmapUpdate
 
         componentUpdates = context.Descriptor.GetComponentUpdates();
         componentSize = componentUpdates.Length;
+        lightCollisions = context.Descriptor.GetComponentsInChildren<LightCollision>(true);
     }
 
     public void PopulateLightshow()

@@ -8,7 +8,37 @@ using UnityEngine;
 // look, i dont know how to explain this cryptic stuff beat games pull, but i understood how it work
 public static class IndexFilterHelper
 {
-    public class IndexFilter : IReadOnlyCollection<(int element, int durationOrder, int distributionOrder)>
+    public readonly struct IndexFilterEntry
+    {
+        public IndexFilterEntry(
+            int element,
+            int durationOrder,
+            int distributionOrder,
+            int affectedChunkOrder,
+            int affectedLightOrder)
+        {
+            Element = element;
+            DurationOrder = durationOrder;
+            DistributionOrder = distributionOrder;
+            AffectedChunkOrder = affectedChunkOrder;
+            AffectedLightOrder = affectedLightOrder;
+        }
+
+        public int Element { get; }
+        public int DurationOrder { get; }
+        public int DistributionOrder { get; }
+        public int AffectedChunkOrder { get; }
+        public int AffectedLightOrder { get; }
+
+        public void Deconstruct(out int element, out int durationOrder, out int distributionOrder)
+        {
+            element = Element;
+            durationOrder = DurationOrder;
+            distributionOrder = DistributionOrder;
+        }
+    }
+
+    public class IndexFilter : IReadOnlyCollection<IndexFilterEntry>
     {
         private readonly RandomType random;
         private readonly int seed;
@@ -19,6 +49,7 @@ public static class IndexFilterHelper
         private readonly int start;
         private readonly int step;
         private readonly int count;
+        private int? affectedLightCount;
         public int Count => count;
 
         public IndexFilter(
@@ -49,6 +80,26 @@ public static class IndexFilterHelper
         public bool LimitsDistribution => limitAlsoAffectType.HasFlag(LimitAlsoAffectType.Distribution);
         public int VisibleCount => visibleCount;
 
+        public int AffectedLightCount
+        {
+            get
+            {
+                if (affectedLightCount.HasValue)
+                {
+                    return affectedLightCount.Value;
+                }
+
+                var result = 0;
+                foreach (var (elementIndex, _) in GetSelectedChunkPairs())
+                {
+                    result += Mathf.Min(chunkSize, groupSize - (elementIndex * chunkSize));
+                }
+
+                affectedLightCount = result;
+                return result;
+            }
+        }
+
         public IndexFilter(
             int start,
             int end,
@@ -71,7 +122,40 @@ public static class IndexFilterHelper
         {
         }
 
-        public IEnumerator<(int element, int durationOrder, int distributionOrder)> GetEnumerator()
+        public IEnumerator<IndexFilterEntry> GetEnumerator()
+        {
+            var limitedOrderIndex = 0;
+            var affectedLightOrder = 0;
+            foreach (var (elementIndex, index) in GetSelectedChunkPairs())
+            {
+                for (var localChunkIndex = 0; localChunkIndex < chunkSize; ++localChunkIndex)
+                {
+                    var element = (elementIndex * chunkSize) + localChunkIndex;
+                    if (element < groupSize)
+                    {
+                        var durationOrder = LimitsDuration ? limitedOrderIndex : index;
+                        var distributionOrder = LimitsDistribution ? limitedOrderIndex : index;
+                        // Lights in one chunk share distribution progress but each selected light also gets
+                        // its own dense index.
+                        yield return new IndexFilterEntry(
+                            element,
+                            durationOrder,
+                            distributionOrder,
+                            limitedOrderIndex,
+                            affectedLightOrder);
+                        ++affectedLightOrder;
+                    }
+                    else
+                        break;
+                }
+
+                ++limitedOrderIndex;
+            }
+
+            affectedLightCount = affectedLightOrder;
+        }
+
+        private IEnumerable<(int elementIndex, int index)> GetSelectedChunkPairs()
         {
             var elements = GetValues();
             if (random != RandomType.NoRandom
@@ -89,25 +173,7 @@ public static class IndexFilterHelper
                     : ids.TakeWithTombstone(visibleCount, -1);
             }
 
-            var elementIdPairs = elements.ZipSkipTombstone(ids, -1);
-            var limitedOrderIndex = 0;
-            foreach (var (elementIndex, index) in elementIdPairs)
-            {
-                for (var localChunkIndex = 0; localChunkIndex < chunkSize; ++localChunkIndex)
-                {
-                    var element = (elementIndex * chunkSize) + localChunkIndex;
-                    if (element < groupSize)
-                    {
-                        var durationOrder = LimitsDuration ? limitedOrderIndex : index;
-                        var distributionOrder = LimitsDistribution ? limitedOrderIndex : index;
-                        yield return (element, durationOrder, distributionOrder);
-                    }
-                    else
-                        break;
-                }
-
-                ++limitedOrderIndex;
-            }
+            return elements.ZipSkipTombstone(ids, -1);
         }
 
         private IEnumerable<int> GetValues()
@@ -125,13 +191,12 @@ public static class IndexFilterHelper
 
     public static IndexFilter Convert(BaseIndexFilter indexFilter, int groupSize)
     {
-        // EmptyGroupReturnsNoFilter prevents missing groups from producing NaN and billion-entry ranges; negative chunks are invalid too.
         if (groupSize <= 0 || indexFilter.Chunks < 0)
         {
             return null;
         }
 
-        // ValidFiltersPreserveSelectedElements keeps chunk counts integral, avoiding float rounding before range construction.
+        // Keep chunk counts integral so rounding cannot change the selected light ranges.
         var chunkSize = indexFilter.Chunks == 0
             ? 1
             : DivideRoundUp(groupSize, indexFilter.Chunks);
@@ -139,22 +204,22 @@ public static class IndexFilterHelper
         switch (indexFilter.Type)
         {
             case (int)IndexFilterType.Division:
-                var section = indexFilter.Param0;
+                // Beat Saber selects the whole group for division 0 / section 0, including chunked filters.
+                var section = indexFilter.Param0 == 0
+                    ? 1
+                    : indexFilter.Param0;
                 var sId = indexFilter.Param1;
-                // InvalidDivisionParametersReturnNoFilter rejects zero divisors and invalid section IDs before arithmetic can overflow.
                 if (section <= 0 || sId < 0 || sId >= section)
                 {
                     return null;
                 }
 
-                // EmptyTrailingDivisionSectionReturnsNoFilter bounds the section before multiplying, so empty slices cannot reverse into valid IDs.
                 var offset = DivideRoundUp(offsetSize, section);
                 if (sId > (offsetSize - 1) / offset)
                 {
                     return null;
                 }
 
-                // ValidFiltersPreserveSelectedElements preserves reverse order and the short final section with an explicitly bounded count.
                 var sectionStart = offset * sId;
                 var sectionCount = Mathf.Min(offset, offsetSize - sectionStart);
                 var reverse = indexFilter.Reverse == 1;
@@ -174,10 +239,8 @@ public static class IndexFilterHelper
             case (int)IndexFilterType.StepAndOffset:
                 var id = indexFilter.Param0;
                 var step = indexFilter.Param1;
-                // InvalidStepAndOffsetParametersReturnNoFilter rejects negative offsets before subtraction and negative iteration counts.
                 if (id < 0 || id >= offsetSize || step < 0)
                 {
-                    // Preserve the invalid-filter skip, but include the serialized values needed to identify the authored GLS box.
                     Debug.LogWarning(
                         $"[GLS IndexFilter] Skipping invalid StepAndOffset filter: groupSize={groupSize}, " +
                         $"chunks={indexFilter.Chunks}, chunkSize={chunkSize}, offsetSize={offsetSize}, " +
@@ -185,7 +248,6 @@ public static class IndexFilterHelper
                     return null;
                 }
 
-                // ValidFiltersPreserveSelectedElements retains zero-step single selection while bounding all other ranges by the available chunks.
                 var count = step == 0
                     ? 1
                     : DivideRoundUp(offsetSize - id, step);

@@ -24,6 +24,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
 
     private static readonly List<EventHandler> allEventHandlers = new();
 
+    // Index callbacks by interface so queued map edits can notify only the relevant controllers.
+    private static readonly Dictionary<Type, List<EventHandler>> eventHandlersByInterface = new();
+
     private static readonly BindingFlags
         bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod;
 
@@ -82,7 +85,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 foreach (var interfaceType in queueInfo.ToChange)
                 {
-                    foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType))
+                    if (!eventHandlersByInterface.TryGetValue(interfaceType, out var eventHandlers))
+                        continue;
+                    foreach (var eventHandler in eventHandlers)
                     {
                         if (eventHandler.Blockers.TryGetValue(queueInfo.Owner, out var count))
                         {
@@ -92,7 +97,9 @@ public class CMInputCallbackInstaller : MonoBehaviour
                         {
                             eventHandler.Blockers[queueInfo.Owner] = 1;
                         }
-                        if (eventHandler.IsDisabled) continue;
+
+                        if (eventHandler.IsDisabled)
+                            continue;
                         eventHandler.DisableEventHandler();
                         disabledEventHandlers.Add(eventHandler);
                     }
@@ -108,8 +115,10 @@ public class CMInputCallbackInstaller : MonoBehaviour
             {
                 foreach (var interfaceType in queueInfo.ToChange)
                 {
-                    foreach (var eventHandler in allEventHandlers.Where(x => x.InterfaceType == interfaceType && x.IsDisabled))
+                    if (!eventHandlersByInterface.TryGetValue(interfaceType, out var eventHandlers)) continue;
+                    foreach (var eventHandler in eventHandlers)
                     {
+                        if (!eventHandler.IsDisabled) continue;
                         if (eventHandler.Blockers.TryGetValue(queueInfo.Owner, out var count))
                         {
                             count--;
@@ -278,23 +287,27 @@ public class CMInputCallbackInstaller : MonoBehaviour
             if (behaviour is null || behaviour.GetType() is null) continue;
             foreach (var interfaceType in behaviour.GetType().GetInterfaces())
             {
-                var eventHandlers = allEventHandlers.FindAll(it => it.InterfaceType == interfaceType);
-
+                if (!eventHandlersByInterface.TryGetValue(interfaceType, out var eventHandlers))
+                    continue;
                 foreach (var eventHandler in eventHandlers)
                 {
                     eventHandler.DisableEventHandler(true);
                     allEventHandlers.Remove(eventHandler);
                 }
+
+                eventHandlersByInterface.Remove(interfaceType);
             }
         }
 
-        foreach (Transform child in obj) FindAndInstallCallbacksRecursive(child);
+        foreach (Transform child in obj)
+            FindAndInstallCallbacksRecursive(child);
     }
 
     private void ClearAllEvents()
     {
         foreach (var handler in allEventHandlers) handler.DisableEventHandler(true);
         allEventHandlers.Clear();
+        eventHandlersByInterface.Clear();
         disabledEventHandlers.Clear();
     }
 
@@ -328,6 +341,12 @@ public class CMInputCallbackInstaller : MonoBehaviour
         eventInfo.AddEventHandler(eventObject, handler);
         var eventHandler = new EventHandler(eventInfo, eventObject, handler, interfaceType);
         allEventHandlers.Add(eventHandler);
+        if (!eventHandlersByInterface.TryGetValue(interfaceType, out var eventHandlers))
+        {
+            eventHandlers = new List<EventHandler>();
+            eventHandlersByInterface.Add(interfaceType, eventHandlers);
+        }
+        eventHandlers.Add(eventHandler);
     }
 
     private class EventHandler

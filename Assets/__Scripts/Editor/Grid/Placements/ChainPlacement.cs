@@ -138,7 +138,7 @@ public class ChainPlacement : BasePlacement<BaseChain, ChainContainer, ChainGrid
             BeatmapObjectContainerCollection.RefreshAllPools();
 
             SelectionController.SelectedObjects = finalSelection;
-            SelectionController.OnSelectionChanged?.Invoke();
+            SelectionController.NotifySelectionChanged();
             SelectionController.RefreshSelectionMaterial(false);
 
             BeatmapActionContainer.AddAction(

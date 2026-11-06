@@ -17,6 +17,7 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
     [SerializeField] private Transform targetGrid;
 
     public readonly List<GLSGroupTrack> ActiveGlsTracks = new();
+    public readonly HashSet<int> ActiveGlsTrackIds = new();
     public readonly Dictionary<int, GLSGroupTrack> IdToTracks = new();
     public readonly Dictionary<string, List<int>> GroupNameToIdList = new();
     public readonly List<string> GroupNameList = new();
@@ -118,9 +119,16 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
 
     private void RefreshGroupPageTrack()
     {
-        if (GroupNameList.Count == 0) return;
         foreach (var track in IdToTracks.Values) track.GridLane.Hide = true;
         ActiveGlsTracks.Clear();
+        ActiveGlsTrackIds.Clear();
+        // Publish an empty active-ID set when the environment has no GLS pages, so old nodes unload.
+        if (GroupNameList.Count == 0)
+        {
+            CurrentGroup = "";
+            OnGroupPageChanged?.Invoke(CurrentGroup);
+            return;
+        }
 
         CurrentGroup = GroupNameList[CurrentGroupIdx];
         if (!GroupNameToIdList.TryGetValue(CurrentGroup, out var idList)) return;
@@ -133,6 +141,7 @@ public class GLSGroupGridProvider : MonoBehaviour, CMInput.IGLSGroupTabsActions,
             IdToTracks[i].GridLane.Order = order++;
             IdToTracks[i].GridLane.Hide = false;
             ActiveGlsTracks.Add(IdToTracks[i]);
+            ActiveGlsTrackIds.Add(i);
         }
 
         OnGroupPageChanged?.Invoke(CurrentGroup);

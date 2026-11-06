@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Beatmap.Appearances;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
+using Beatmap.Shared;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -123,8 +124,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
     public void OnTweakEventMain(InputAction.CallbackContext context)
     {
-        // The authored action and overlap patch resolve the chord; this callback owns only event-editor context.
-        if (!context.performed)
+        // The authored action owns its chord; this callback owns only event-editor context.
+        if (!context.performed || !InputChordOwnership.Owns(context))
             return;
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
@@ -144,7 +145,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
     public void OnTweakEventAlternative(InputAction.CallbackContext context)
     {
-        if (!context.performed)
+        if (!context.performed || !InputChordOwnership.Owns(context))
             return;
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
@@ -219,8 +220,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     {
         if (!context.performed)
             return;
-        // Verify the live keyboard chord because overlapping scroll composites can dispatch the wrong modifier callback.
-        if (!HasExactModifiers(control: true, shift: false, alt: true))
+        // The live chord decides ownership so remapped modifier bindings keep working.
+        if (!InputChordOwnership.Owns(context))
             return;
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
@@ -230,149 +231,51 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         // Alt+Scroll now owns transition-ribbon RGB/HSV toggling; Ctrl+Alt on a ribbon is a no-op.
         if (IsBasicLightTransitionRibbonHit(e))
             return;
-        // Keep modifier-routing evidence until Ctrl+Shift and Ctrl+Alt scrolling are both confirmed.
-        var hasComponents = TryGetEventComponents(e, out var eventComponents);
-        var isLaserSpeed = hasComponents && eventComponents.HasFlag(BasicEventComponent.LightRotation);
-        // Keep dispatch evidence until laser-speed hover routing is confirmed in the mapper.
-        var original = BeatmapFactory.Clone(e.ObjectData);
-
-        if (isLaserSpeed)
+        if (IsRingZoomEvent(e) && IsSmoothStepRingZoomEvent(e))
         {
-            // Chroma implies unlocked rotation when lockRotation is absent, so never serialize false.
-            e.EventData.CustomLockRotation = e.EventData.CustomLockRotation == true ? null : true;
-            e.EventData.WriteCustom();
-            // Keep mutation evidence until lock-direction editing is confirmed in the mapper.
-            FinalizeBasicEventTweak(e, original, ActionMergeType.LaserLockRotationTweak);
-        }
-        else if (IsRingRotationEvent(e))
-        {
-            // Match ring zoom's interval ladder so rotation speed is not tied to degree-sized rotation increments.
-            TweakCustomFloat(
-                e.EventData,
-                modifier,
-                e.EventData.CustomSpeed,
-                GetRingZoomStepPrecision(),
-                0f,
-                false,
-                ScrollPrecisionController.DefaultRingSpeed,
-                v => e.EventData.CustomSpeed = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingSpeedTweak);
-        }
-        else if (IsRingZoomEvent(e))
-        {
-            // SmoothStepRingZoom only applies to The Second's legacy ring right now.
-            if (IsSmoothStepRingZoomEvent(e))
-            {
-                PersistentUI.Instance.ShowDialogBox(
-                    "This environment does not support ring speed. \nInstead place a duplicate step node at the point you want the step to complete",
-                    null,
-                    PersistentUI.DialogBoxPresetType.Ok);
-                return;
-            }
-
-            // Keep ring zoom speed edits on the same zoom-specific precision ladder as the other zoom tweaks.
-            TweakCustomFloat(
-                e.EventData,
-                modifier,
-                e.EventData.CustomSpeed,
-                GetRingZoomStepPrecision(),
-                0f,
-                false,
-                ScrollPrecisionController.DefaultRingSpeed,
-                v => e.EventData.CustomSpeed = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingSpeedTweak);
-        }
-        else if (TrackDefinition.GetBasicOrDefault(e.EventData.Type).Kind == BasicEventKind.Lights)
-        {
-            // Ctrl+Alt cycles the visible node type, including distinct RGB and HSV transition states.
-            TweakLightNodeType(e, modifier);
+            PersistentUI.Instance.ShowDialogBox(
+                "This environment does not support ring speed. \nInstead place a duplicate step node at the point you want the step to complete",
+                null,
+                PersistentUI.DialogBoxPresetType.Ok);
+            return;
         }
 
+        var definitions = GetTrackDefinitions(e);
+        ApplyTweak(e, evt => BasicEventHoverMutation.TweakCtrlAlt(evt, modifier, scrollPrecisionController, definitions));
     }
 
     public void OnTweakEventCtrlShift(InputAction.CallbackContext context)
     {
         if (!context.performed)
             return;
-        // Verify the live keyboard chord because overlapping scroll composites can dispatch the wrong modifier callback.
-        if (!HasExactModifiers(control: true, shift: true, alt: false))
+        // The live chord decides ownership so remapped modifier bindings keep working.
+        if (!InputChordOwnership.Owns(context))
             return;
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
         if (e == null || e.Dragged) return;
 
         var modifier = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
-        var original = BeatmapFactory.Clone(e.ObjectData);
-        var isRingRot = IsRingRotationEvent(e);
-        var isRingZoom = IsRingZoomEvent(e);
-
-        if (isRingRot)
-        {
-            // Use the hardcoded ring-rotation propagation precision ladder so each level stays subtle.
-            // Propagation is a speed/time multiplier and must not go negative.
-            TweakCustomFloat(
-                e.EventData,
-                modifier,
-                e.EventData.CustomProp,
-                GetRingRotationPropagationPrecision(),
-                0f,
-                false,
-                ScrollPrecisionController.DefaultRingPropagation,
-                v => e.EventData.CustomProp = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingPropagationTweak);
-        }
-        else if (isRingZoom)
-        {
-            // Keep ring zoom modifier-step edits on the same precision ladder as the main zoom tweak.
-            // Negative Chroma ring-zoom steps move toward the player, so this path must not clamp at zero.
-            TweakCustomFloat(
-                e.EventData,
-                modifier,
-                e.EventData.CustomStep,
-                GetRingZoomStepPrecision() / 10f, // Second bind with 10x precision because why not.
-                null,
-                false,
-                ScrollPrecisionController.DefaultRingZoomStep,
-                v => e.EventData.CustomStep = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingStepTweak);
-        }
-        else if (IsBasicLightTransitionRibbonHit(e))
-        {
-            // Handle Basic Event transition-ribbon easing on the consistent Ctrl+Shift chord.
-            TweakEasing(e, modifier);
-        }
-        else if (TrackDefinition.GetBasicOrDefault(e.EventData.Type).Kind == BasicEventKind.Lights)
-        {
-            TweakEasing(e, modifier);
-        }
-
+        var definitions = GetTrackDefinitions(e);
+        var easingValues = Easing.DisplayNameToInternalName.Values.ToList();
+        ApplyTweak(
+            e,
+            evt => BasicEventHoverMutation.TweakCtrlShift(evt, modifier, scrollPrecisionController, definitions, easingValues));
     }
 
     public void OnTweakEventCtrlShiftAlt(InputAction.CallbackContext context)
     {
         if (!context.performed)
             return;
-        // Verify the live keyboard chord because overlapping scroll composites can dispatch the wrong modifier callback.
-        if (!HasExactModifiers(control: true, shift: true, alt: true))
+        // The live chord decides ownership so remapped modifier bindings keep working.
+        if (!InputChordOwnership.Owns(context))
             return;
         if (CustomStandaloneInputModule.IsPointerOverGameObject<GraphicRaycaster>(0, true)) return;
         RaycastFirstObject(out var e);
         if (e == null || e.Dragged || !IsRingRotationEvent(e)) return;
 
         var modifier = context.GetScrollDirection(Settings.Instance.InvertScrollEventValue);
-        var original = BeatmapFactory.Clone(e.ObjectData);
-        // Match ring zoom's step ladder and preserve Chroma's valid negative step values.
-        TweakCustomFloat(
-            e.EventData,
-            modifier,
-            e.EventData.CustomStep,
-            GetRingRotationStepPrecision(),
-            null,
-            false,
-            ScrollPrecisionController.DefaultRingRotationStep,
-            v => e.EventData.CustomStep = v);
-        FinalizeBasicEventTweak(e, original, ActionMergeType.RingStepTweak);
-        // This tweak replaces the hovered node before the shared precision callback runs in the same wheel dispatch.
+        ApplyTweak(e, evt => BasicEventHoverMutation.TweakRingStep(evt, modifier, scrollPrecisionController));
         BeatmapRaycastCache.Invalidate();
     }
 
@@ -400,119 +303,25 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
         var ribbon = firstHit.GetComponentInParent<LightGradientController>();
         return ribbon != null
-            && ribbon.IsInteractiveBasicEventRibbon
+            && ribbon.IsInteractiveTransitionRibbon
             && ribbon.transform.IsChildOf(e.transform);
     }
 
     // for event that frequently gets changed
     public void TweakMain(EventContainer e, int modifier)
     {
-        var original = BeatmapFactory.Clone(e.ObjectData);
-
-        var isRingRot = IsRingRotationEvent(e);
-        var isRingZoom = IsRingZoomEvent(e);
-
-        if (IsLaserSpeedEvent(e))
-        {
-            if (KeybindsController.IsSelectKeyHeld) return;
-            // Preserve integer values in i while using custom speed only when fractional precision is required.
-            TweakLaserSpeed(e, modifier, original);
-            return;
-        }
-
-        if (isRingRot)
-        {
-            if (KeybindsController.IsSelectKeyHeld) return;
-            // The first Alt+Scroll establishes a 90-degree magnitude and an explicit direction without also applying precision.
-            if (!e.EventData.CustomRingRotation.HasValue)
-            {
-                e.EventData.CustomRingRotation = ScrollPrecisionController.DefaultRingRotation;
-                e.EventData.CustomDirection = modifier > 0 ? 1 : 0;
-                e.EventData.WriteCustom();
-                FinalizeBasicEventTweak(e, original, ActionMergeType.RingRotationValueTweak);
-                return;
-            }
-
-            // Negative magnitude plus an explicit direction is equivalent to positive magnitude with the direction inverted.
-            if (e.EventData.CustomRingRotation.Value < 0f
-                && e.EventData.CustomDirection.HasValue)
-            {
-                e.EventData.CustomRingRotation = -e.EventData.CustomRingRotation.Value;
-                e.EventData.CustomDirection = e.EventData.CustomDirection.Value == 1 ? 0 : 1;
-            }
-
-            // Rotation custom data is a non-negative magnitude; direction is represented separately by CustomDirection.
-            // Technically it can be negative but that is equivalent to positive + inverted direction, so it makes sense to just maintain positive and flip the direction.
-            // Only on-tweak so we don't modify maps implicitly that saved negative for whatever reason.
-            TweakCustomFloat(
-                e.EventData,
+        var definitions = GetTrackDefinitions(e);
+        var controlHeld = KeybindsController.IsControlKeyHeld;
+        var selectHeld = KeybindsController.IsSelectKeyHeld;
+        ApplyTweak(
+            e,
+            evt => BasicEventHoverMutation.TweakMain(
+                evt,
                 modifier,
-                e.EventData.CustomRingRotation,
-                GetRingRotationPrecision(),
-                0f,
-                false,
-                ScrollPrecisionController.DefaultRingRotation,
-                v => e.EventData.CustomRingRotation = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingRotationValueTweak);
-            return;
-        }
-
-        if (isRingZoom)
-        {
-            if (KeybindsController.IsSelectKeyHeld) return;
-            // SmoothStepRingZoom only applies to The Second's legacy ring right now.
-            if (IsSmoothStepRingZoomEvent(e))
-            {
-                TweakSmoothStepRingZoom(e, modifier, original);
-                return;
-            }
-
-            // Use the requested zoom precision ladder so coarse/fine ring zoom edits follow the precision UI.
-            TweakCustomFloat(
-                e.EventData,
-                modifier,
-                e.EventData.CustomStep,
-                GetRingZoomStepPrecision(),
-                null,
-                false,
-                ScrollPrecisionController.DefaultRingZoomStep,
-                v => e.EventData.CustomStep = v);
-            FinalizeBasicEventTweak(e, original, ActionMergeType.RingZoomStepTweak);
-            return;
-        }
-
-        if (TrackDefinition.GetBasicOrDefault(e.EventData.Type).Kind == BasicEventKind.Lights
-            && !e.EventData.IsColorBoostEvent())
-        {
-            if (KeybindsController.IsControlKeyHeld || KeybindsController.IsSelectKeyHeld) return;
-
-            var prec = scrollPrecisionController.GetCurrentBrightnessPrecision() / 100f;
-            var value = Mathf.Round((e.EventData.FloatValue + (modifier * prec)) * 1_000f) / 1_000f;
-            e.EventData.FloatValue = Mathf.Max(0f, value);
-
-            RefreshPrevEventContainer(e);
-
-            // Alt+scroll changes brightness only and must not fall through into the generic event-value tweak.
-            FinalizeBasicEventTweak(e, original, ActionMergeType.EventMainTweak);
-            return;
-        }
-
-        if (KeybindsController.IsControlKeyHeld || KeybindsController.IsSelectKeyHeld) return;
-
-        if (e.EventData.IsColorBoostEvent())
-            e.EventData.Value = e.EventData.Value == 0 ? 1 : 0;
-        else if (e.EventData.IsBpmEvent())
-        {
-            e.EventData.FloatValue += modifier;
-            if (e.EventData.FloatValue < 1) e.EventData.FloatValue = 1;
-        }
-        else
-        {
-            e.EventData.Value += modifier;
-            if (e.EventData.Value < 0) e.EventData.Value = 0;
-        }
-
-        FinalizeBasicEventTweak(e, original, ActionMergeType.EventMainTweak);
+                scrollPrecisionController,
+                definitions,
+                controlHeld,
+                selectHeld));
     }
 
     // for event that occasionally gets changed
@@ -548,25 +357,6 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
             if (collection.LoadedContainers.TryGetValue(prevEvent, out var container))
                 (container as EventContainer).RefreshAppearance();
         }
-    }
-
-    // Read the physical modifier state so overlapping Input System composites cannot route scroll to a sibling action.
-    private static bool HasExactModifiers(bool control, bool shift, bool alt)
-    {
-        var keyboard = Keyboard.current;
-        return keyboard != null
-            && keyboard.ctrlKey.isPressed == control
-            && keyboard.shiftKey.isPressed == shift
-            && keyboard.altKey.isPressed == alt;
-    }
-
-    // Format the same physical modifier state in retained diagnostics for user runtime verification.
-    private static string GetHeldModifiers()
-    {
-        var keyboard = Keyboard.current;
-        if (keyboard == null) return "<no keyboard>";
-
-        return $"ctrl={keyboard.ctrlKey.isPressed},shift={keyboard.shiftKey.isPressed},alt={keyboard.altKey.isPressed}";
     }
 
     // Guard pooled and cloned hover containers while retaining evidence about whichever initialization field is missing.
@@ -662,69 +452,51 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         TryGetEventComponents(e, out var components)
         && components.HasFlag(BasicEventComponent.LightRotation);
 
-    // Route ring rotation tweaks through the same precision source GLS rotation hover uses.
-    private float GetRingRotationPrecision() => scrollPrecisionController.GetCurrentRotationPrecision();
+    private TrackDefinitionsSO GetTrackDefinitions(EventContainer container) =>
+        container.TrackDefinitions != null
+            ? container.TrackDefinitions
+            : TrackDefinition;
 
-    // Keep the ring/laser tweak precision ladders in ScrollPrecisionController so all tweak constants live in one place.
-    private float GetRingZoomStepPrecision() => scrollPrecisionController.GetCurrentRingZoomStepPrecision();
-    // Keep the ring/laser tweak precision ladders in ScrollPrecisionController so all tweak constants live in one place.
-    private float GetRingRotationStepPrecision() => scrollPrecisionController.GetCurrentRingRotationStepPrecision();
-    private float GetRingRotationPropagationPrecision() => scrollPrecisionController.GetCurrentRingRotationPropagationPrecision();
-    private float GetLaserSpeedPrecision() => scrollPrecisionController.GetCurrentLaserSpeedPrecision();
-
-    private void TweakLaserSpeed(EventContainer e, int modifier, BaseObject original)
+    private void ApplyTweak(EventContainer container, Func<BaseEvent, ActionMergeType?> mutation)
     {
-        var currentSpeed = e.EventData.CustomSpeed ?? e.EventData.Value;
-        var speed = Mathf.Max(0f, Mathf.Round((currentSpeed + (modifier * GetLaserSpeedPrecision())) * 10f) / 10f);
-        var integerSpeed = Mathf.RoundToInt(speed);
+        var definitions = GetTrackDefinitions(container);
+        if (HoverSelectionMutation.TryApply(
+                container.EventData,
+                evt => mutation(evt),
+                out var edited,
+                evt => BasicEventHoverMutation.MatchesType(container.EventData, evt, definitions)))
+        {
+            if (edited.Count > 0)
+            {
+                isScrolling = true;
+                HidePreviewVisual();
+                foreach (var evt in edited)
+                    RefreshEditedEventAppearance(evt);
 
-        e.EventData.Value = integerSpeed;
-        // Integer speed is represented canonically by i; custom speed is reserved for its fractional override.
-        e.EventData.CustomSpeed = Mathf.Approximately(speed, integerSpeed) ? null : speed;
-        e.EventData.WriteCustom();
-        // Keep serialized-state evidence until fractional-to-integer cleanup is confirmed in the node editor.
-        FinalizeBasicEventTweak(e, original, ActionMergeType.LaserSpeedTweak);
+                var collection = (EventGridContainer)BeatmapObjectContainerCollection.GetCollectionForType(ObjectType.Event);
+                if (collection.PropagationEditing == EventGridContainer.PropMode.Light)
+                    StartCoroutine(RefreshEditedEventsNextFrame(edited));
+
+                var descriptor = beatmapRuntimeContext.Descriptor;
+                if (descriptor != null)
+                    descriptor.BasicEventEffectManager.Refresh();
+            }
+
+            return;
+        }
+
+        var original = BeatmapFactory.Clone(container.EventData);
+        var mergeType = mutation(container.EventData);
+        container.EventData.WriteCustom();
+        if (mergeType.HasValue)
+            FinalizeBasicEventTweak(container, original, mergeType.Value);
     }
 
-    private void TweakSmoothStepRingZoom(EventContainer e, int modifier, BaseObject original)
+    private IEnumerator RefreshEditedEventsNextFrame(List<BaseObject> edited)
     {
-        var currentStep = e.EventData.CustomStep ?? e.EventData.Value;
-        // TweakTheSecondRingZoomUsesUltraStepPrecision requires the special path to retain the shared 0.005 Ultra increment and its displayed thousandths.
-        var step = Mathf.Round((currentStep + (modifier * GetRingZoomStepPrecision())) * 1_000f) / 1_000f;
-        var roundedStep = Mathf.RoundToInt(step);
-        // The Second always exports an OEM-compatible nearest-integer fallback even when customData.step carries an extended value.
-        var integerStep = Mathf.Clamp(roundedStep, 0, 9);
-        var isOemInteger = Mathf.Approximately(step, roundedStep)
-            && roundedStep >= 0
-            && roundedStep <= 9;
-
-        e.EventData.Value = integerStep;
-        // Only round integers inside 0..9 are represented by i alone; fractional or out-of-range steps must retain the unclamped override.
-        e.EventData.CustomStep = isOemInteger ? null : step;
-        e.EventData.WriteCustom();
-        // Keep serialized-state evidence until The Second's fractional-to-integer cleanup is confirmed.
-        FinalizeBasicEventTweak(e, original, ActionMergeType.RingZoomStepTweak);
-    }
-
-    private void TweakCustomFloat(BaseEvent evt, int modifier, float? current, float step, float? min, bool logarithmic, float defaultValue, Action<float?> setter)
-    {
-        var value = current ?? defaultValue;
-        if (logarithmic) step = GetLogarithmicStep(value);
-        value += modifier * step;
-        if (min.HasValue) value = Mathf.Max(min.Value, value);
-        setter(value);
-        evt.WriteCustom();
-    }
-
-    private static float GetLogarithmicStep(float value)
-    {
-        var abs = Mathf.Abs(value);
-        if (abs < 0.1f) return 0.02f;
-        if (abs < 0.3f) return 0.04f;
-        if (abs < 1.0f) return 0.1f;
-        if (abs < 2.0f) return 0.2f;
-        if (abs < 5.0f) return 0.5f;
-        return 1.0f;
+        yield return null;
+        foreach (var evt in edited)
+            RefreshEditedEventAppearance(evt);
     }
 
     private void FinalizeBasicEventTweak(EventContainer e, BaseObject original, ActionMergeType mergeType)
@@ -777,53 +549,9 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         var refreshed = RefreshEditedEventAppearance(editedObject);
     }
 
-    private void TweakLightNodeType(EventContainer e, int modifier)
-    {
-        var original = BeatmapFactory.Clone(e.ObjectData);
-        const int nodeTypeCount = 4;
-        var colorBase = e.EventData.Value switch
-        {
-            > 0 and <= 4 => 0,
-            > 4 and <= 8 => 4,
-            > 8 and <= 12 => 8,
-            _ => -1
-        };
-        if (colorBase < 0) return;
-
-        // Node hover cycles the four light values without touching the RGB/HSV interpolation mode.
-        var nodeType = e.EventData.Value - colorBase - 1;
-        var nextNodeType = (nodeType + modifier + nodeTypeCount) % nodeTypeCount;
-        e.EventData.Value = colorBase + nextNodeType + 1;
-
-        e.EventData.WriteCustom();
-
-        FinalizeBasicEventTweak(e, original, ActionMergeType.LightLerpTypeTweak);
-    }
-
     private void TweakLerpType(EventContainer e, int modifier)
     {
-        var original = BeatmapFactory.Clone(e.ObjectData);
-        var current = e.EventData.CustomLerpType == "HSV" ? 1 : 0;
-        var next = (current + modifier + 2) % 2;
-        // Basic Event ribbons serialize RGB as an absent lerpType and HSV as the explicit alternate.
-        e.EventData.CustomLerpType = next == 1 ? "HSV" : null;
-        e.EventData.WriteCustom();
-
-        FinalizeBasicEventTweak(e, original, ActionMergeType.LightLerpTypeTweak);
+        ApplyTweak(e, evt => BasicEventHoverMutation.TweakLerpType(evt, modifier));
     }
 
-    private void TweakEasing(EventContainer e, int modifier)
-    {
-        var original = BeatmapFactory.Clone(e.ObjectData);
-        var easingList = Easing.DisplayNameToInternalName.Values.ToList();
-        var current = e.EventData.CustomEasing ?? "easeLinear";
-        var index = easingList.IndexOf(current);
-        if (index < 0) index = 0;
-        index = (index + modifier + easingList.Count) % easingList.Count;
-        var newEasing = easingList[index];
-        e.EventData.CustomEasing = newEasing == "easeLinear" ? null : newEasing;
-        e.EventData.WriteCustom();
-
-        FinalizeBasicEventTweak(e, original, ActionMergeType.LightEasingTweak);
-    }
 }

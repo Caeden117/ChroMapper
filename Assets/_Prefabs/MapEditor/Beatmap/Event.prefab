@@ -678,6 +678,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 8538710720271473794}
+  meshFilter: {fileID: 1211218263683256254}
+  interactionOwner: {fileID: 114864464667087894}
 --- !u!1 &8436375905551441677
 GameObject:
   m_ObjectHideFlags: 0

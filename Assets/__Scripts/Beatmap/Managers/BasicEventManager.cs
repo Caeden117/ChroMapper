@@ -20,6 +20,35 @@ public class BasicEventManager : BeatmapObjectManager<BaseEvent>
 
     [SerializeField] private LightshowController lightshowController;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        Context.OnBeatmapTimingChanged += HandleBeatmapTimingChanged;
+    }
+
+    protected override void OnDestroy()
+    {
+        Context.OnBeatmapTimingChanged -= HandleBeatmapTimingChanged;
+        base.OnDestroy();
+    }
+
+    private void HandleBeatmapTimingChanged(float _)
+    {
+        if (!AllowAction)
+            return;
+
+        var songContainer = BeatSaberSongContainer.Instance;
+        var map = songContainer != null ? songContainer.Map : null;
+        if (map == null)
+            return;
+
+        Context.Descriptor.BasicEventEffectManager.RecomputeSongBpmTimes(map.Events);
+        if (lightshowController.Mode == LightshowMode.None)
+            UpdateTime(false, -1f);
+        else
+            UpdateTime();
+    }
+
     public override void Refresh()
     {
         // Reserve the O(M * P) rebuild for explicit map/environment refreshes, not ordinary collection actions.

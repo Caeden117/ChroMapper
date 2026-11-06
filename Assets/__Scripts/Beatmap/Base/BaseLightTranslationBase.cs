@@ -24,25 +24,16 @@ namespace Beatmap.Base
             JSONNode customData = null) : base(time, customData)
         {
             Translation = translation;
-            EaseType = easeType;
+            Easing = easeType;
             UsePrevious = usePrevious;
         }
 
         protected BaseLightTranslationBase(BaseLightTranslationBase other) : base(other)
         {
             Translation = other.Translation;
-            EaseType = other.EaseType;
-            UsePrevious = other.UsePrevious;
         }
 
-        public override ObjectType ObjectType { get; set; } = ObjectType.GLSEvent;
         public float Translation { get; set; }
-        public int EaseType { get; set; }
-        public int UsePrevious { get; set; }
-
-        public override string CustomKeyColor { get; } = "unusedColor";
-
-        public override string CustomKeyTrack { get; } = "unusedKeyTrack";
 
         public override void Apply(BaseObject originalData)
         {
@@ -52,8 +43,6 @@ namespace Beatmap.Base
                 return;
 
             Translation = other.Translation;
-            EaseType = other.EaseType;
-            UsePrevious = other.UsePrevious;
         }
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false)

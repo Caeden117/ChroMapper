@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Beatmap.Animations;
 using Beatmap.Base;
 using UnityEngine;
-using Beatmap.Animations;
 
 namespace Beatmap.Containers
 {
@@ -20,6 +20,8 @@ namespace Beatmap.Containers
 
         private Color currentOutlineColor;
         private bool selected;
+
+        public int GlsLightCount { get; set; }
 
         public virtual bool Selected
         {

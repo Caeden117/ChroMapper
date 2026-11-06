@@ -1046,7 +1046,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 618823330992717824
-    m_Localized: Limit
+    m_Localized: Limit %
     m_Metadata:
       m_Items: []
   - m_Id: 618823397669568512
@@ -1137,6 +1137,10 @@ MonoBehaviour:
     m_Localized: Strobe Frequency
     m_Metadata:
       m_Items: []
+  - m_Id: 618833239993974785
+    m_Localized: Color Distribution
+    m_Metadata:
+      m_Items: []
   - m_Id: 618833311213256704
     m_Localized: Fade
     m_Metadata:
@@ -1166,7 +1170,31 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 618845221228871680
-    m_Localized: Section
+    m_Localized: Sections
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871681
+    m_Localized: "Sine\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871682
+    m_Localized: "Cubic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871683
+    m_Localized: "Quartic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871684
+    m_Localized: "Quintic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871685
+    m_Localized: "Exponential\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871686
+    m_Localized: The BPM events in this edit would push objects outside the song.
     m_Metadata:
       m_Items: []
   - m_Id: 619000003509318144
@@ -1207,6 +1235,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 619000074803281920
     m_Localized: "Too close together,\nyour rings / lasers\nwill desync randomly\nin game."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281921
+    m_Localized: Split
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281922
+    m_Localized: When unchecked, the distribution will NOT apply to the first event in this event box.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281923
+    m_Localized: After updating Sections count, click this button to duplicate this event box for each of the other section ids in this split
     m_Metadata:
       m_Items: []
   references:

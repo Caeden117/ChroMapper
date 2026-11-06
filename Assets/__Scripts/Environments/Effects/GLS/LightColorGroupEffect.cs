@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
+using Beatmap.Shared;
 using UnityEngine;
 
 public class
@@ -37,16 +38,13 @@ public class
             var startState = (LightColorEventStateData)(state.UsePrevious ? state.Previous : state);
             var endState = (LightColorEventStateData)(state.Next.UsePrevious ? startState : state.Next);
 
-            // Resolve default GLS colors through the color scheme injected by the dev effect manager.
-            var startColor = startState.Base.CustomColor
-                ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)startState.Base.Color, false);
-            var endColor = endState.Base.CustomColor
-                ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)endState.Base.Color, false);
+            var startColor = ResolveNormalColor(startState);
+            var endColor = ResolveNormalColor(endState);
 
             container.Tween.StartColor = startColor;
             container.Tween.EndColor = endColor;
-            container.Tween.StartStrobeColor = startState.Base.StrobeColor ?? startColor;
-            container.Tween.EndStrobeColor = endState.Base.StrobeColor ?? endColor;
+            container.Tween.StartStrobeColor = ResolveStrobeColor(startState);
+            container.Tween.EndStrobeColor = ResolveStrobeColor(endState);
 
             // A paused preview has no subsequent time tick to apply the retinted GLS tween to its controllers. Apply the color change immediately.
             container.Tween.UpdateTime(time);
@@ -144,51 +142,134 @@ public class
     protected virtual void UpdateObject(LightColorGroupContainer container)
     {
         var state = container.EventContainer.CurrentState;
-        var tween = container.Tween;
+        var start = (LightColorEventStateData)(state.UsePrevious ? state.Previous : state);
+        var end = (LightColorEventStateData)(state.Next.UsePrevious ? start : state.Next);
+        var darkHead = IsPreFirstEventSentinel(state);
+        ConfigureTween(container.Tween, state, ResolveNormalColor(start), ResolveNormalColor(end),
+            ResolveStrobeColor(start), ResolveStrobeColor(end), BeatSaberSongContainer.Instance.Map, darkHead);
+    }
 
+    internal static bool IsPreFirstEventSentinel(LightColorEventStateData state) =>
+        state.StartTime == short.MinValue && state.Next.StartTime != float.MaxValue;
+
+    public static void ConfigureTween(
+        LightColorTween tween,
+        LightColorEventStateData state,
+        Color startColor,
+        Color endColor,
+        Color startStrobeColor,
+        Color endStrobeColor,
+        BaseDifficulty map,
+        bool darkHead = false)
+    {
         tween.StartTimeAlpha = tween.StartTimeColor = state.StartTime;
         var startState = (LightColorEventStateData)(state.UsePrevious ? state.Previous : state);
         tween.StartAlpha = startState.Brightness;
-        tween.StartColor = startState.Base.CustomColor
-            ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)startState.Base.Color, false);
-        tween.StartStrobeFrequency = StrobeFrequencyFor(startState.Base);
+        tween.StartColor = startColor;
+        tween.StartStrobeFrequency = GLSEventCommon.GetStrobeFrequency(startState.Base);
         tween.StartStrobeBrightness = startState.Base.StrobeBrightness;
-        tween.StartStrobeColor = startState.Base.StrobeColor ?? tween.StartColor;
+        tween.StartStrobePulseWidth = startState.Base.ChromaStrobePulseWidth;
+        tween.StartStrobeColor = startStrobeColor;
+        if (tween.StartStrobeFrequency <= 0f)
+        {
+            tween.StartStrobeBrightness = tween.StartAlpha;
+            tween.StartStrobeColor = tween.StartColor;
+        }
 
         tween.EndTimeAlpha = tween.EndTimeColor = state.EndTime;
         var endState = (LightColorEventStateData)(state.Next.UsePrevious ? startState : state.Next);
         tween.EndAlpha = endState.Brightness;
-        tween.EndColor = endState.Base.CustomColor
-            ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)endState.Base.Color, false);
+        // Preserve the independently distributed end color prepared by the shared GLS timeline path.
+        tween.EndColor = endColor;
 
         if (endState.Base.Easing == (int)EaseType.None)
         {
-            tween.EndStrobeFrequency = StrobeFrequencyFor(startState.Base);
+            tween.EndStrobeFrequency = GLSEventCommon.GetStrobeFrequency(startState.Base);
+            tween.EndStrobePulseWidth = tween.StartStrobePulseWidth;
             tween.EndStrobeBrightness = startState.Base.StrobeBrightness;
             tween.EndStrobeColor = tween.StartStrobeColor;
             tween.StrobeFade = startState.Base.StrobeFade == 1;
+            tween.StrobeEasing = EasingFromId(startState.Base.ChromaStrobeEasing);
+            tween.StrobeColorEasing = null;
         }
         else
         {
-            tween.EndStrobeFrequency = StrobeFrequencyFor(endState.Base);
+            tween.EndStrobeFrequency = GLSEventCommon.GetStrobeFrequency(endState.Base);
+            tween.EndStrobePulseWidth = endState.Base.ChromaStrobePulseWidth;
             tween.EndStrobeBrightness = endState.Base.StrobeBrightness;
-            tween.EndStrobeColor = endState.Base.StrobeColor ?? tween.EndColor;
-            // shouldn't we fade between no strobe fade and strobe fade...? What does the game even do?
-            tween.StrobeFade = endState.Base.StrobeFade == 1;
+            tween.EndStrobeColor = endStrobeColor;
+            // Beat Saber switches between hard and faded strobes at the next node; it does not interpolate
+            // the strobe mode.
+            tween.StrobeFade = startState.Base.StrobeFade == 1;
+            tween.StrobeEasing = EasingFromId(startState.Base.ChromaStrobeEasing);
+            tween.StrobeColorEasing = EasingFromId(endState.Base.ChromaStrobeColorEasing);
+        }
+
+        if (tween.EndStrobeFrequency <= 0f)
+        {
+            tween.EndStrobeBrightness = tween.EndAlpha;
+            tween.EndStrobeColor = tween.EndColor;
         }
 
         tween.Easing = Easing.FromID(endState.Base.Easing);
+        tween.ColorEasing = endState.Base.Easing == (int)EaseType.None
+            ? null
+            : EasingFromId(endState.Base.ChromaColorEasing);
+        tween.ColorLerpType = endState.Base.Easing == (int)EaseType.None
+            ? BasicEventColorLerpType.RGB
+            : endState.Base.CustomLerpType;
+
+        var intervalEasingShaderId = Easing.EasingShaderId(endState.Base.Easing);
+        tween.EasingShaderIds = new Vector4(
+            intervalEasingShaderId,
+            tween.ColorEasing != null
+                ? Easing.EasingShaderId(endState.Base.ChromaColorEasing.Value)
+                : intervalEasingShaderId,
+            tween.StrobeColorEasing != null
+                ? Easing.EasingShaderId(endState.Base.ChromaStrobeColorEasing.Value)
+                : intervalEasingShaderId,
+            tween.StrobeEasing != null
+                ? Easing.EasingShaderId(startState.Base.ChromaStrobeEasing.Value)
+                : Easing.EasingShaderId((int)EaseType.InOutCubic));
+
+        var strobeScale = GLSEventCommon.GetStrobeFrequencyScale(map, state.StartTime);
+        tween.StartStrobeFrequency *= strobeScale;
+        tween.EndStrobeFrequency *= strobeScale;
+
+        if (darkHead)
+        {
+            tween.StartAlpha = 0f;
+            tween.EndAlpha = 0f;
+            tween.StartStrobeFrequency = 0f;
+            tween.EndStrobeFrequency = 0f;
+        }
     }
 
-    protected static float StrobeFrequencyFor(BaseLightColorBase lightColorBase)
-    {
-        // A 0-light-level node with no strobe flash is not a strobe, regardless of strobeInterval or strobeColor.
-        if (lightColorBase.Brightness <= 0f && lightColorBase.StrobeBrightness <= 0f) return 0f;
+    private static Func<float, float> EasingFromId(int? id) =>
+        id is { } value ? Easing.FromID(value) : null;
 
-        // customData.strobeInterval is the period in beats per strobe cycle; the in-editor tween expects cycles per beat.
-        return lightColorBase.ChromaStrobeInterval is { } interval && interval > 0f
-            ? 1f / interval
-            : lightColorBase.Frequency;
+    private Color ResolveNormalColor(LightColorEventStateData state)
+    {
+        var color = state.Base.CustomColor
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)state.Base.Color, false);
+        return GLSColorDistribution.ApplyNormal(
+            color,
+            state.Box,
+            state.Base,
+            state.DistributionProgress,
+            state.AffectedLightProgress);
+    }
+
+    private Color ResolveStrobeColor(LightColorEventStateData state)
+    {
+        var mainColor = state.Base.CustomColor
+            ?? ColorSchemeProvider.ColorScheme.GetColorFrom((LightColor)state.Base.Color, false);
+        return GLSColorDistribution.ApplyStrobe(
+            mainColor,
+            state.Box,
+            state.Base,
+            state.DistributionProgress,
+            state.AffectedLightProgress);
     }
 
     protected override LightColorGroupStateData CreateState(BaseLightColorEventBoxGroup data) => new(data);
@@ -216,13 +297,19 @@ public class
         IEnumerable<(StateChunksContainer<LightColorGroupStateData, BaseLightColorEventBoxGroup>
             groupContainer, StateChunksContainer<LightColorEventStateData, BaseLightColorBase> eventContainer)>
         GetContainers() =>
-        idToContainer.Select(x => (x.GroupContainer, x.EventContainer));
+        activeContainers.Select(x => (x.GroupContainer, x.EventContainer));
 
     protected override int GetEventCount(BaseLightColorEventBox box) => box.Events.Length;
 
     protected override float GetLastEventTime(BaseLightColorEventBox box) => box.Events[^1].RelativeJsonTime;
 
     protected override float GetDistribution(
+        IndexFilterHelper.IndexFilter indexFilter,
+        BaseLightColorEventBox box,
+        int order) =>
+        GetBrightnessStep(indexFilter, box, order);
+
+    internal static float GetBrightnessStep(
         IndexFilterHelper.IndexFilter indexFilter,
         BaseLightColorEventBox box,
         int order) =>
@@ -237,22 +324,52 @@ public class
         LightColorGroupStateData state,
         float distributionOffset,
         float maxRelativeJsonTime) =>
-        state
-            .Box
-            .Events
-            .Select((x, i) =>
+        GenerateColorEvents(
+            BeatSaberSongContainer.Instance.Map,
+            state,
+            distributionOffset,
+            maxRelativeJsonTime);
+
+    internal static LightColorEventStateData[] GenerateColorEvents(
+        BaseDifficulty map,
+        LightColorGroupStateData state,
+        float distributionOffset,
+        float maxRelativeJsonTime)
+    {
+        var box = state.Box;
+        var events = box.Events;
+        var durationOffset = state.DurationOrder * state.BeatStep;
+        var affectedChunkProgress = state.AffectedChunkOrder / (float)Mathf.Max(state.AffectedChunkCount - 1, 1);
+        var affectedLightProgress = state.AffectedLightOrder / (float)Mathf.Max(state.AffectedLightCount - 1, 1);
+        var brightnessAffectsFirst = box.BrightnessAffectFirst == 1;
+
+        var count = 0;
+        for (var i = 0; i < events.Length; i++)
+        {
+            if (state.Base.JsonTime + events[i].RelativeJsonTime + durationOffset < maxRelativeJsonTime)
             {
-                var affected = !(i == 0 && state.Box.BrightnessAffectFirst != 1);
-                var d = new LightColorEventStateData(
-                    x,
-                    (float)BeatSaberSongContainer.Instance.Map.JsonTimeToSongBpmTime(
-                        state.Base.JsonTime + x.RelativeJsonTime + (state.DurationOrder * state.BeatStep)),
-                    affected ? distributionOffset : 0f);
-                return d;
-            })
-            .Where(x => state.Base.JsonTime + x.Base.RelativeJsonTime + (state.DurationOrder * state.BeatStep)
-                <= maxRelativeJsonTime)
-            .ToArray();
+                count++;
+            }
+        }
+
+        var generated = new LightColorEventStateData[count];
+        var write = 0;
+        for (var i = 0; i < events.Length; i++)
+        {
+            var x = events[i];
+            if (state.Base.JsonTime + x.RelativeJsonTime + durationOffset >= maxRelativeJsonTime) continue;
+            generated[write++] = new LightColorEventStateData(
+                x,
+                (float)map.JsonTimeToSongBpmTime(
+                    state.Base.JsonTime + x.RelativeJsonTime + durationOffset),
+                i == 0 && !brightnessAffectsFirst ? 0f : distributionOffset,
+                box,
+                affectedChunkProgress,
+                affectedLightProgress);
+        }
+
+        return generated;
+    }
 }
 
 public class LightColorGroupStateData : EventGroupStateData<
@@ -269,13 +386,27 @@ public class LightColorGroupStateData : EventGroupStateData<
 public class LightColorEventStateData : EventGroupEventStateData<BaseLightColorBase>
 {
     public readonly float Brightness;
+    public readonly BaseLightColorEventBox Box;
+    public readonly float DistributionProgress;
+    public readonly float AffectedLightProgress;
 
-    public LightColorEventStateData(BaseLightColorBase data, float startTime, float offset = 0f) : base(
+    public LightColorEventStateData(
+        BaseLightColorBase data,
+        float startTime,
+        float offset = 0f,
+        BaseLightColorEventBox box = null,
+        float distributionProgress = 0f,
+        float affectedLightProgress = 0f) : base(
         data,
         startTime,
         data.Easing,
-        data.UsePrevious) =>
+        data.UsePrevious)
+    {
         Brightness = data.Brightness + offset;
+        Box = box;
+        DistributionProgress = distributionProgress;
+        AffectedLightProgress = affectedLightProgress;
+    }
 }
 
 public record LightColorGroupContainer : EventGroupContainer<

@@ -136,7 +136,7 @@ public class CountersPlusController : MonoBehaviour
 
         vNjsProvider.OnChanged += UpdateNJSEventsStats;
         LoadInitialMap.OnLevelLoaded += OnLevelLoaded;
-        SelectionController.OnSelectionChanged += OnSelectionChanged;
+        SelectionController.SelectionChangedEvent += OnSelectionChanged;
         LoadedDifficultySelectController.OnLoadedDifficultyChanged += OnLoadedDifficultyChanged;
     }
 
@@ -144,7 +144,7 @@ public class CountersPlusController : MonoBehaviour
     {
         Settings.ClearSettingNotifications("CountersPlus");
         vNjsProvider.OnChanged -= UpdateNJSEventsStats;
-        SelectionController.OnSelectionChanged -= OnSelectionChanged;
+        SelectionController.SelectionChangedEvent -= OnSelectionChanged;
         LoadInitialMap.OnLevelLoaded -= OnLevelLoaded;
         LoadedDifficultySelectController.OnLoadedDifficultyChanged -= OnLoadedDifficultyChanged;
     }

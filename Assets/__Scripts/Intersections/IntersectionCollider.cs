@@ -7,6 +7,11 @@ using UnityEngine;
 /// </summary>
 public class IntersectionCollider : MonoBehaviour
 {
+    // Ribbon meshes can change without replacing the Mesh object. Reuse readback lists, but keep each
+    // collider's transformed vertices separate and reread the mesh when the collider refreshes.
+    private static readonly List<Vector3> vertexReadback = new();
+    private static readonly List<int> triangleReadback = new();
+
     /// <summary>
     ///     The collider mesh. A more detailed mesh results in less performance.
     /// </summary>
@@ -84,15 +89,30 @@ public class IntersectionCollider : MonoBehaviour
         if (Mesh == null) return;
 
         CollisionLayer = gameObject.layer;
-        MeshTriangles = Mesh.triangles;
-        MeshVertices = Mesh.vertices;
+        Mesh.GetVertices(vertexReadback);
+        if (MeshVertices == null || MeshVertices.Length != vertexReadback.Count)
+            Array.Resize(ref MeshVertices, vertexReadback.Count);
+
+        var triangleCount = 0;
+        for (var submesh = 0; submesh < Mesh.subMeshCount; submesh++)
+            triangleCount += (int)Mesh.GetIndexCount(submesh);
+
+        if (MeshTriangles == null || MeshTriangles.Length != triangleCount)
+            Array.Resize(ref MeshTriangles, triangleCount);
+
+        var triangleOffset = 0;
+        for (var submesh = 0; submesh < Mesh.subMeshCount; submesh++)
+        {
+            Mesh.GetTriangles(triangleReadback, submesh);
+            triangleReadback.CopyTo(0, MeshTriangles, triangleOffset, triangleReadback.Count);
+            triangleOffset += triangleReadback.Count;
+        }
+
         CollisionBounds = new();
 
         for (var i = 0; i < MeshVertices.Length; i++)
         {
-            MeshVertices[i].x = (MeshVertices[i].x + Center.x) * Size.x;
-            MeshVertices[i].y = (MeshVertices[i].y + Center.y) * Size.y;
-            MeshVertices[i].z = (MeshVertices[i].z + Center.z) * Size.z;
+            MeshVertices[i] = Vector3.Scale(vertexReadback[i] + Center, Size);
 
             CollisionBounds.Encapsulate(MeshVertices[i]);
         }

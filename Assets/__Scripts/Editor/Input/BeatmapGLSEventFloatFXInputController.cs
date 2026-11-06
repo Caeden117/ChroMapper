@@ -66,7 +66,7 @@ public class BeatmapGLSEventFloatFXInputController : BeatmapGLSEventInputControl
     {
         // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
-        GLSEventHoverMutation.AdjustFloatFxEasing(context, evt);
+        GLSEventHoverMutation.AdjustEasing(context, evt);
         if (evt != null)
         {
             RefreshHoveredVisualAfterMutation();

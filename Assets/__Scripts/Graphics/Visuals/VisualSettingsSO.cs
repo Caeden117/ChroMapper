@@ -16,12 +16,51 @@ public class VisualSettingsSO : ScriptableObject
     public VisualModelSO DefaultChainHead;
     public VisualModelSO DefaultChainLink;
 
-    public event Action OnBlockModelChanged;
-    public event Action OnEventModelChanged;
-    public event Action OnNoteModelChanged;
-    public event Action OnBombModelChanged;
-    public event Action OnChainHeadModelChanged;
-    public event Action OnChainLinkModelChanged;
+    // Black Out's capture started with 7,500 loaded Basic Event nodes and created another 5,100. Reserve some headroom.
+    private readonly FastAction blockModelChanged = new(16384);
+    private readonly FastAction eventModelChanged = new(16384);
+
+    // These are estimates for dense note and chain maps. Each NoteContainer subscribes to all three note models.
+    private readonly FastAction noteModelChanged = new(2048);
+    private readonly FastAction bombModelChanged = new(2048);
+    private readonly FastAction chainHeadModelChanged = new(2048);
+    private readonly FastAction chainLinkModelChanged = new(2048);
+
+    public event Action OnBlockModelChanged
+    {
+        add => blockModelChanged.Add(value);
+        remove => blockModelChanged.Remove(value);
+    }
+
+    public event Action OnEventModelChanged
+    {
+        add => eventModelChanged.Add(value);
+        remove => eventModelChanged.Remove(value);
+    }
+
+    public event Action OnNoteModelChanged
+    {
+        add => noteModelChanged.Add(value);
+        remove => noteModelChanged.Remove(value);
+    }
+
+    public event Action OnBombModelChanged
+    {
+        add => bombModelChanged.Add(value);
+        remove => bombModelChanged.Remove(value);
+    }
+
+    public event Action OnChainHeadModelChanged
+    {
+        add => chainHeadModelChanged.Add(value);
+        remove => chainHeadModelChanged.Remove(value);
+    }
+
+    public event Action OnChainLinkModelChanged
+    {
+        add => chainLinkModelChanged.Add(value);
+        remove => chainLinkModelChanged.Remove(value);
+    }
 
     public void OnEnable()
     {
@@ -57,25 +96,25 @@ public class VisualSettingsSO : ScriptableObject
     private void CacheEventModelName() =>
         cachedEventModelName = "CM_Event_" + Settings.Instance.EventModels.Replace(' ', '_');
 
-    private void HandleBlockModelChanged(object _) => OnBlockModelChanged?.Invoke();
+    private void HandleBlockModelChanged(object _) => blockModelChanged.Call();
 
     private void HandleEventModelChanged(object _)
     {
         CacheEventModelName();
-        OnEventModelChanged?.Invoke();
+        eventModelChanged.Call();
     }
 
-    private void HandleNoteModelChanged(object _) => OnNoteModelChanged?.Invoke();
-    private void HandleBombModelChanged(object _) => OnBombModelChanged?.Invoke();
-    private void HandleChainHeadModelChanged(object _) => OnChainHeadModelChanged?.Invoke();
-    private void HandleChainLinkModelChanged(object _) => OnChainLinkModelChanged?.Invoke();
+    private void HandleNoteModelChanged(object _) => noteModelChanged.Call();
+    private void HandleBombModelChanged(object _) => bombModelChanged.Call();
+    private void HandleChainHeadModelChanged(object _) => chainHeadModelChanged.Call();
+    private void HandleChainLinkModelChanged(object _) => chainLinkModelChanged.Call();
 
     private void HandleRepositoryNoteModelChanged()
     {
-        OnNoteModelChanged?.Invoke();
-        OnBombModelChanged?.Invoke();
-        OnChainHeadModelChanged?.Invoke();
-        OnChainLinkModelChanged?.Invoke();
+        noteModelChanged.Call();
+        bombModelChanged.Call();
+        chainHeadModelChanged.Call();
+        chainLinkModelChanged.Call();
     }
 
     public VisualModelSO GetBlockModel() => Repository.ModelsByName.GetValueOrDefault("CM_Block", DefaultBlock);

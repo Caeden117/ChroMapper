@@ -14,15 +14,21 @@ public static class GLSEventTranslationCommand
         evt,
         Mathf.Round((evt.Translation + (IsYeet(evt.Translation) ? YeetOffset : -YeetOffset)) * 100f) / 100f); // Round to prevent float noise because we're outside the range floats can go to 3 decimal places precisely.
 
-    public static BaseLightTranslationBase SetValue(BaseLightTranslationBase evt, float value)
+    public static BaseLightTranslationBase SetValue(
+        BaseLightTranslationBase evt,
+        float value,
+        bool inPlace = false)
     {
-        if (Mathf.Approximately(evt.Translation, value)) return null;
-        var (newGroup, newEvt) = GLSCommonCommand.CopyGroupFrom(evt);
+        if (Mathf.Approximately(evt.Translation, value))
+            return null;
+
+        var (newGroup, newEvt) = GLSCommonCommand.CopyGroupFrom(evt, inPlace);
         newEvt.Translation = value;
         return GLSCommonCommand.TriggerModifyEventAction(
             evt.EventBoxGroupData,
             newGroup,
             newEvt,
-            ActionMergeType.ModifyGLSTranslationValue);
+            ActionMergeType.ModifyGLSTranslationValue,
+            inPlace);
     }
 }

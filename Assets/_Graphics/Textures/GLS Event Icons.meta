@@ -1,0 +1,8 @@
+fileFormatVersion: 2
+guid: 3279e62e1e8f412796f6dc59ebd9cebf
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: OE-style GLS marker sprites are isolated here so their atlas and prefab wiring remain easy to replace.
+  assetBundleName:
+  assetBundleVariant:

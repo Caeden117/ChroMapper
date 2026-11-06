@@ -8,7 +8,14 @@ using UnityEngine;
 [ExecuteAlways]
 public class GridViewController : MonoBehaviour, IEnumerable<GridChild>
 {
-    public event Action OnGridViewUpdated;
+    // Estimated ribbon reserve per grid. Each GridViewController owns its own listener storage.
+    private readonly FastAction gridViewUpdated = new(2048);
+
+    public event Action OnGridViewUpdated
+    {
+        add => gridViewUpdated.Add(value);
+        remove => gridViewUpdated.Remove(value);
+    }
 
     [SerializeField] private GridRenderingController gridRenderingController;
     [SerializeField] private EditModeContext editModeContext;
@@ -203,7 +210,7 @@ public class GridViewController : MonoBehaviour, IEnumerable<GridChild>
     {
         RefreshChildDictionary();
         UpdateGrid();
-        OnGridViewUpdated?.Invoke();
+        gridViewUpdated.Call();
     }
 
     private void RefreshChildDictionary()

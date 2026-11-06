@@ -33,8 +33,8 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
     public int EventTypeToPropagate = (int)EventTypeValue.Event1;
     public int EventTypePropagationSize;
 
-    // Isolate boost ordering and predecessor queries from the grid's rendering and invalidation responsibilities.
-    private readonly ColorBoostEventIndex boostEventIndex = new();
+    // The single index lives on the runtime context so its chunk cursors rebuild before GLS retimes.
+    private ColorBoostEventIndex boostEventIndex => BeatmapContext.ColorBoostEvents;
 
     // Index only rendered Basic Event spans so chunk refreshes never scan the complete light-event map.
     private readonly TransitionIntervalIndex<BaseEvent> transitionRibbonIntervals = new();
@@ -240,6 +240,7 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
         // Give labels their map-scoped index before any environment callback can request a refresh.
         labels.NameFilterIndex = nameFilterIndex;
         BeatmapContext.OnEnvironmentLoaded += HandleEnvironmentLoaded;
+        BeatmapContext.OnBeatmapTimingChanged += HandleBeatmapTimingChanged;
         SpawnCallbackController.OnEventPassedThreshold += SpawnCallback;
         SpawnCallbackController.OnRecursiveEventCheckFinished += OnRecursiveCheckFinished;
         DespawnCallbackController.OnEventPassedThreshold += DespawnCallback;
@@ -251,10 +252,17 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
         // Remove the destroyed grid from save-time EditorData capture.
         EditorStateService.Unregister(this);
         BeatmapContext.OnEnvironmentLoaded -= HandleEnvironmentLoaded;
+        BeatmapContext.OnBeatmapTimingChanged -= HandleBeatmapTimingChanged;
         SpawnCallbackController.OnEventPassedThreshold -= SpawnCallback;
         SpawnCallbackController.OnRecursiveEventCheckFinished -= OnRecursiveCheckFinished;
         DespawnCallbackController.OnEventPassedThreshold -= DespawnCallback;
         BeatmapContext.Atsc.OnPlayToggled -= OnPlayToggle;
+    }
+
+    private void HandleBeatmapTimingChanged(float _)
+    {
+        InitializeTransitionRibbonIntervals();
+        RefreshPool(true);
     }
 
     protected override void HandleObjectDelete(BaseObject obj, bool inCollection = false)
@@ -911,6 +919,9 @@ public class EventGridContainer : BeatmapObjectContainerCollection<BaseEvent>,
     {
         return boostEventIndex.IsBoostAt(jsonTime);
     }
+
+    // The same index instance drives ribbon boundary scans, so no copied list is exposed.
+    public ColorBoostEventIndex BoostEvents => boostEventIndex;
 
     // Keep map-load ownership on the grid while the index owns its data representation.
     public void LoadBoostEvents(IEnumerable<BaseEvent> events)

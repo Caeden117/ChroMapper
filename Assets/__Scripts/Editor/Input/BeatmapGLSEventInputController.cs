@@ -19,6 +19,22 @@ public abstract class BeatmapGLSEventInputController<TData> : BeatmapInputContro
     [SerializeField] protected BeatmapEasingsSelectionInputController EasingInputController;
 
     private bool wasHovering;
+    private GLSEventContainer lastHoverLabelContainer;
+
+    protected override void HandleHoverChanged(GLSEventContainer container)
+    {
+        if (lastHoverLabelContainer != container && lastHoverLabelContainer != null)
+        {
+            lastHoverLabelContainer.SetColorHover(false);
+        }
+
+        if (container != null)
+        {
+            container.SetColorHover(!GLSEventCommon.IsColorTransitionRibbonHit(container));
+        }
+
+        lastHoverLabelContainer = container;
+    }
 
     protected override void LateUpdate()
     {
@@ -33,6 +49,7 @@ public abstract class BeatmapGLSEventInputController<TData> : BeatmapInputContro
 
     protected virtual void OnDisable()
     {
+        HandleHoverChanged(null);
         if (!wasHovering) return;
         wasHovering = false;
         GLSEventInputHoverTracker.SetHovering(false);
@@ -95,10 +112,10 @@ public abstract class BeatmapGLSEventInputController<TData> : BeatmapInputContro
 
         }
 
-        // The pool may have reset this same container during rebinding, so reassert the target outline even when its identity is unchanged.
-        currentContainer.Highlighted = true;
+        currentContainer.Highlighted = ShouldHighlightHoveredObject(currentContainer);
         HoveredObject = currentContainer;
         IsHovering = true;
+        HandleHoverChanged(currentContainer);
     }
 
     protected override bool ValidObject(GLSEventContainer container) => container.ObjectData is TData;

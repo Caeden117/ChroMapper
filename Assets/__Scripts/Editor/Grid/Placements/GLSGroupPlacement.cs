@@ -14,7 +14,12 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
     [SerializeField] private BeatmapRuntimeContext beatmapRuntimeContext;
     [SerializeField] protected BeatmapEasingsSelectionInputController EasingInputController;
 
-    public override bool CanPlace => base.CanPlace && IsInPosition() && !BeatmapRaycastCache.HasHit;
+    public override bool CanPlace =>
+        base.CanPlace
+        && IsInPosition()
+        && (!BeatmapRaycastCache.HasHit || GLSEventCommon.IsColorTransitionRibbonHit());
+
+    protected override GameObject InstantiateVisual() => InstantiateVisualBeforeParenting();
 
     protected override BeatmapAction GenerateAction(BaseObject spawned, IEnumerable<BaseObject> conflicts) =>
         new BeatmapObjectPlacementAction(spawned, conflicts, "Placed a GLS Group.");
@@ -25,6 +30,21 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
         GlsGroupTrack = provider.GetComponent<GLSGroupTrack>();
         PlacementTrack = GlsGroupTrack.Track.ObjectParentTransform;
         QueuedData.ID = GlsGroupTrack.TrackDefinition.ID;
+        // Refresh the hover template when returning to a track after editing options.
+        QueuedData.ReadOnlyBoxes[0].ApplyDefaultAffectFirst();
+        // Placement queues persist between tracks, whose supported transform axes can differ.
+        if (QueuedData is ILightTransformEventBoxGroup transformGroup)
+        {
+            var enabledAxes = transformGroup.GetEnabledAxes(GlsGroupTrack.TrackDefinition);
+            for (var axis = 0; axis < enabledAxes.Length; axis++)
+            {
+                if (enabledAxes[axis])
+                {
+                    ((BaseLightTransformEventBox)QueuedData.ReadOnlyBoxes[0]).Axis = axis;
+                    break;
+                }
+            }
+        }
         PlacementVisualContainer.EventBoxGroupData = QueuedData;
         PlacementVisualContainer.transform.SetParent(PlacementTrack, false);
         PlacementVisualContainer.SafeSetActive(CanPlace);
@@ -53,11 +73,15 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
             Mathf.Floor(PlacementVisualContainer.transform.localPosition.x),
             GLSGroupContainer.GetPositionFromTrackDefinition(beatmapRuntimeContext.TrackDefinitions, QueuedData));
 
-    // Use the event grid's indexed boost state so outer queued GLS groups match their finalized preview node color.
-    protected void RefreshAppearance() => GlsGroupAppearance.SetAppearance(
-        PlacementVisualContainer,
-        false,
-        ObjectContainerCollection.IsBoostAt(QueuedData.JsonTime));
+    // Use the active environment's light count and indexed boost state so queued outer groups match finalized preview nodes.
+    protected void RefreshAppearance()
+    {
+        PlacementVisualContainer.GlsLightCount = beatmapRuntimeContext.GetGlsLightCount(QueuedData.ID);
+        GlsGroupAppearance.SetAppearance(
+            PlacementVisualContainer,
+            false,
+            ObjectContainerCollection.IsBoostAt(QueuedData.JsonTime));
+    }
 
     public override ObjectContainer StartDrag(GameObject draggedObject)
     {
@@ -75,6 +99,15 @@ public abstract class GLSGroupPlacement<TGroup, TCollection> : BasePlacement<TGr
 
     public override void HandleApply()
     {
+        // Options can change while this track remains active, so take the default again when creating the box.
+        QueuedData.ReadOnlyBoxes[0].ApplyDefaultAffectFirst();
+        // Copied groups can bypass Extension callbacks. Normalize each queued node before applying the group.
+        foreach (var box in QueuedData.ReadOnlyBoxes)
+        {
+            foreach (var evt in box.ReadOnlyEvents)
+                GLSPlacementEditorState.ClearExtensionEasing(evt, EasingInputController);
+        }
+
         base.HandleApply();
         PlacementVisualContainer.EventBoxGroupData = QueuedData;
     }

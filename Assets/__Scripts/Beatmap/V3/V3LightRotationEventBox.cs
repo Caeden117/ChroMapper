@@ -35,7 +35,13 @@ namespace Beatmap.V3
             node["d"] = box.BeatDistributionType;
             node["s"] = box.RotationDistribution;
             node["t"] = box.RotationDistributionType;
-            node["b"] = box.RotationAffectFirst;
+            if (box.ShouldSerializeAffectFirst(
+                box.RotationAffectFirst,
+                box.RotationDistribution,
+                box.RotationDistributionType))
+            {
+                node["b"] = box.RotationAffectFirst;
+            }
             node["a"] = box.Axis;
             node["r"] = box.Flip;
             node["i"] = box.Easing;

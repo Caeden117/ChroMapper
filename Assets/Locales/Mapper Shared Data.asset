@@ -1031,6 +1031,10 @@ MonoBehaviour:
     m_Key: place.gls.color.strobefrequency
     m_Metadata:
       m_Items: []
+  - m_Id: 618833239993974785
+    m_Key: place.gls.color.colordistribution
+    m_Metadata:
+      m_Items: []
   - m_Id: 618833311213256704
     m_Key: place.gls.color.fade
     m_Metadata:
@@ -1065,6 +1069,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 618845221228871680
     m_Key: eventbox.filter.sections.section
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871681
+    m_Key: place.gls.easings.sine.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871682
+    m_Key: place.gls.easings.cubic.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871683
+    m_Key: place.gls.easings.quartic.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871684
+    m_Key: place.gls.easings.quintic.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871685
+    m_Key: place.gls.easings.exponential.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871686
+    m_Key: selection.bpmoutside
     m_Metadata:
       m_Items: []
   - m_Id: 619000003509318144
@@ -1105,6 +1133,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 619000074803281920
     m_Key: event.desyncwarning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281921
+    m_Key: eventbox.filter.sections.split
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281922
+    m_Key: eventbox.affectfirst.tooltip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619000074803281923
+    m_Key: eventbox.filter.sections.split.tooltip
     m_Metadata:
       m_Items: []
   m_Metadata:

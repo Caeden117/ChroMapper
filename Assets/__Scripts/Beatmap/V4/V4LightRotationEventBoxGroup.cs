@@ -63,7 +63,7 @@ namespace Beatmap.V4
                             evt.UsePrevious = commonEventData.TransitionType;
                             evt.Direction = commonEventData.Direction;
                             evt.Loop = commonEventData.Loop;
-                            evt.EaseType = commonEventData.Easing;
+                            evt.Easing = commonEventData.Easing;
 
                             return evt;
                         })

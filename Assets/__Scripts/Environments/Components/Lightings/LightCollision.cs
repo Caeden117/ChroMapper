@@ -15,7 +15,6 @@ public class LightCollision : MonoBehaviour
     public AnimationCurve HitPointDistanceToAlphaCurve;
 
     private Transform tr;
-    private bool hasHit;
 
     private void Start()
     {
@@ -23,9 +22,11 @@ public class LightCollision : MonoBehaviour
         tr = transform;
     }
 
-    private void Update()
+    public void RefreshCollision()
     {
-        if (!ParametricLight.EnabledRenderers) return;
+        if (!ParametricLight.EnabledRenderers)
+            return;
+
         var scale = 1f;
         var len = ParametricLight.Length;
         var maxDistance = len;
@@ -41,23 +42,26 @@ public class LightCollision : MonoBehaviour
             out var hitInfo,
             maxDistance,
             EnvironmentLayerMask);
-        if (ShowHitPoint && hasHit != flag)
+        if (ShowHitPoint && HitPointGameObject.activeSelf != flag)
         {
-            hasHit = flag;
-            HitPointGameObject.SetActive(hasHit);
+            HitPointGameObject.SetActive(flag);
         }
 
         if (flag)
         {
             ParametricLight.CollisionLength = hitInfo.distance * scale;
-            if (!ShowHitPoint) return;
-            HitPointTransform.position = tr.position + (tr.up * hitInfo.distance);
-            HitPointTransform.rotation = Quaternion.FromToRotation(HitPointTransform.forward, hitInfo.normal)
-                * HitPointTransform.rotation;
-            HitPointLightWithId.Intensity = HitPointDistanceToAlphaCurve.Evaluate(
-                Mathf.InverseLerp(0f, len, hitInfo.distance * scale));
+            if (ShowHitPoint)
+            {
+                HitPointTransform.position = tr.position + (tr.up * hitInfo.distance);
+                HitPointTransform.rotation = Quaternion.FromToRotation(HitPointTransform.forward, hitInfo.normal)
+                    * HitPointTransform.rotation;
+                HitPointLightWithId.Intensity = HitPointDistanceToAlphaCurve.Evaluate(
+                    Mathf.InverseLerp(0f, len, hitInfo.distance * scale));
+            }
         }
         else
             ParametricLight.CollisionLength = float.MaxValue;
+
+        ParametricLight.Refresh();
     }
 }

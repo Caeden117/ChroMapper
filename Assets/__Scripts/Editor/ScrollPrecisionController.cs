@@ -70,6 +70,14 @@ public class ScrollPrecisionController : MonoBehaviour, CMInput.IScrollPrecision
         }
     }
 
+    public float GetCurrentStrobePulseWidthPrecision() => CurrentPrecision switch
+    {
+        ScrollPrecision.Low => 0.25f,
+        ScrollPrecision.Medium => 0.1f,
+        ScrollPrecision.High => 0.05f,
+        _ => 0.01f
+    };
+
     public float GetCurrentBrightnessPrecision() => BrightnessPrecision[(int)CurrentPrecision];
     public float GetCurrentRotationPrecision() => RotationPrecision[(int)CurrentPrecision];
     public float GetCurrentTranslationPrecision() => TranslationPrecision[(int)CurrentPrecision];
