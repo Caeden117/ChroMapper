@@ -45,6 +45,93 @@ namespace Tests.Editor
         public enum BoxKind { Color, Rotation, Translation, FloatFX }
         public enum UnavailableSplit { Default, Complete, StepFilter }
 
+        [Test]
+        public void DistributionEasingDisplaysStoredValue([Values] BoxKind kind, [Values] EaseType easing)
+        {
+            var group = CreateSplitGroup(kind, 1, 0);
+            group.ReadOnlyBoxes[0].Easing = (int)easing;
+            OpenSplitGroup(group);
+
+            var dropdown = (TMP_Dropdown)ReadField<DropdownComponent>(view, "easeTypeDropdown").Selectable;
+            Assert.That(dropdown.captionText.text, Is.EqualTo(Easing.IDToFullName[(int)easing]));
+            Assert.That(provider.GroupContext, Is.SameAs(group), "Displaying a box must not change its easing.");
+        }
+
+        [Test]
+        public void DistributionEasingSelectionStoresNamedValueAndSupportsUndo(
+            [Values] BoxKind kind, [Values] EaseType easing)
+        {
+            var group = CreateSplitGroup(kind, 1, 0);
+            var originalEasing = easing == EaseType.Linear ? EaseType.InQuadratic : EaseType.Linear;
+            group.ReadOnlyBoxes[0].Easing = (int)originalEasing;
+            OpenSplitGroup(group);
+            var dropdown = (TMP_Dropdown)ReadField<DropdownComponent>(view, "easeTypeDropdown").Selectable;
+            var label = Easing.IDToFullName[(int)easing];
+            var optionIndex = dropdown.options.FindIndex(option => option.text == label);
+            Assert.That(optionIndex, Is.GreaterThanOrEqualTo(0), "The named easing must be selectable.");
+
+            dropdown.value = optionIndex;
+
+            Assert.That(provider.GroupContext.ReadOnlyBoxes[0].Easing, Is.EqualTo((int)easing), label);
+            Assert.That(provider.GroupContext.ToJson()["e"][0]["i"].AsInt, Is.EqualTo((int)easing));
+            Assert.That(dropdown.captionText.text, Is.EqualTo(label));
+            var actions = Object.FindAnyObjectByType<BeatmapActionContainer>();
+            actions.Undo();
+            Assert.That(provider.GroupContext.ReadOnlyBoxes[0].Easing, Is.EqualTo((int)originalEasing));
+            Assert.That(dropdown.captionText.text, Is.EqualTo(Easing.IDToFullName[(int)originalEasing]));
+            actions.Redo();
+            Assert.That(provider.GroupContext.ReadOnlyBoxes[0].Easing, Is.EqualTo((int)easing));
+            Assert.That(dropdown.captionText.text, Is.EqualTo(label));
+        }
+
+        [Test]
+        public void InOutQuadraticDistributionUsesQuadraticTranslationSpacing()
+        {
+            var group = new BaseLightTranslationEventBoxGroup { ID = GroupId };
+            group.Boxes.Add(new BaseLightTranslationEventBox
+            {
+                Axis = (int)Axis.X,
+                IndexFilter = new BaseIndexFilter { Type = (int)IndexFilterType.Division, Param0 = 1 },
+                TranslationDistribution = -475f,
+                TranslationDistributionType = (int)DistributionType.Wave,
+                TranslationAffectFirst = 1,
+                Events = new[] { new BaseLightTranslationBase() }
+            });
+            OpenSplitGroup(group);
+            var dropdown = (TMP_Dropdown)ReadField<DropdownComponent>(view, "easeTypeDropdown").Selectable;
+            dropdown.value = dropdown.options.FindIndex(option => option.text == "In Out Quadratic");
+
+            var root = new GameObject("Distribution easing regression");
+            try
+            {
+                var effect = root.AddComponent<LightTranslationGroupEffect>();
+                effect.Atsc = Object.FindAnyObjectByType<AudioTimeSyncController>();
+                effect.Count = 5;
+                var normalizedLimits = new[] { new Vector2(-1f, 1f), new Vector2(-1f, 1f), new Vector2(-1f, 1f) };
+                effect.TranslationLimits = normalizedLimits;
+                effect.DistributionLimits = normalizedLimits;
+                var targets = new Transform[effect.Count];
+                for (var index = 0; index < targets.Length; index++)
+                {
+                    targets[index] = new GameObject($"Light {index}").transform;
+                    targets[index].SetParent(root.transform);
+                    effect.Register(index, Axis.X, false, targets[index]);
+                }
+                effect.Initialize();
+                effect.InsertData((BaseLightTranslationEventBoxGroup)provider.GroupContext);
+                effect.UpdateTime(false, 1f);
+
+                var expectedPositions = new[] { 0f, -59.375f, -237.5f, -415.625f, -475f };
+                for (var index = 0; index < targets.Length; index++)
+                    Assert.That(targets[index].localPosition.x, Is.EqualTo(expectedPositions[index]).Within(0.001f),
+                        $"Light {index} must follow the selected In Out Quadratic distribution.");
+            }
+            finally
+            {
+                Object.DestroyImmediate(root);
+            }
+        }
+
         [UnityTest]
         public IEnumerator SplitCanBeClickedDirectlyAfterTypingSections([ValueSource(nameof(SplitBoxKinds))] BoxKind kind)
         {
@@ -821,7 +908,8 @@ namespace Tests.Editor
                     ReadField<TextBoxFloatComponent>(view, "valueDistributionInput").Value = 30f;
                     break;
                 case BoxOption.Easing:
-                    ReadField<DropdownComponent>(view, "easeTypeDropdown").Value = 1;
+                    var dropdown = (TMP_Dropdown)ReadField<DropdownComponent>(view, "easeTypeDropdown").Selectable;
+                    dropdown.value = dropdown.options.FindIndex(option => option.text == "In Quadratic");
                     break;
                 default:
                     var field = option switch

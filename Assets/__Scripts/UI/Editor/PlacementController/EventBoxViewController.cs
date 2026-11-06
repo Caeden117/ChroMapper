@@ -86,6 +86,9 @@ public class EventBoxViewController : MonoBehaviour
     [SerializeField] private ToggleComponent affectFirstToggle;
     [SerializeField] private DropdownComponent easeTypeDropdown;
 
+    // Easing IDs include -1 and 100–102, so dropdown positions are not their serialized values.
+    private static readonly int[] DistributionEaseIds = Easing.IDToFullName.Keys.ToArray();
+
     [SerializeField] private GLSColorDistributionArrayViewController colorDistributionsView;
     [SerializeField] private GLSColorDistributionArrayViewController strobeColorDistributionsView;
 
@@ -196,7 +199,8 @@ public class EventBoxViewController : MonoBehaviour
             .OnEndEdit(HandleValueDistributionValueChanged)
             .OnValueChanged(HandleValueDistributionValueChanged);
         affectFirstToggle.OnValueChanged(HandleAffectFirstValueChanged);
-        easeTypeDropdown.WithOptions(Easing.IDToFullName.Values).OnValueChanged(HandleEaseTypeValueChanged);
+        easeTypeDropdown.WithOptions(DistributionEaseIds.Select(id => Easing.IDToFullName[id]))
+            .OnValueChanged(HandleEaseTypeValueChanged);
 
         colorDistributionsView.Initialize(colorDistributions =>
             GLSEventBoxCommand.SetColorDistributions(colorDistributions, false, groupContext, boxIndex));
@@ -687,7 +691,7 @@ public class EventBoxViewController : MonoBehaviour
         limitDistributionToggle.SetValueWithoutNotify(
             (box.IndexFilter.LimitAffectsType & (int)LimitAlsoAffectType.Distribution) > 0);
 
-        easeTypeDropdown.SetValueWithoutNotify(box.Easing);
+        easeTypeDropdown.SetValueWithoutNotify(Array.IndexOf(DistributionEaseIds, box.Easing));
         var isColorBox = box is BaseLightColorEventBox;
         colorDistributionsView.gameObject.SetActive(isColorBox);
         strobeColorDistributionsView.gameObject.SetActive(isColorBox);
@@ -919,7 +923,8 @@ public class EventBoxViewController : MonoBehaviour
     private void HandleAffectFirstValueChanged(bool value) =>
         ApplyBoxOption(value ? 1 : 0, GLSEventBoxCommand.SetAffectFirst);
 
-    private void HandleEaseTypeValueChanged(int value) => ApplyBoxOption(value, GLSEventBoxCommand.SetEasing);
+    private void HandleEaseTypeValueChanged(int value) =>
+        ApplyBoxOption(DistributionEaseIds[value], GLSEventBoxCommand.SetEasing);
 
     // Keep the local tooltip draft self-contained until its text is moved into localized string tables.
     private static void AddTooltip(ButtonComponent button, string text, string advancedText = null,
