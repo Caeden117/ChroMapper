@@ -356,6 +356,17 @@ public class DifficultySelect : MonoBehaviour
                 V4Difficulty.LoadBpmFromAudioData(map, mapInfo);
                 V4Difficulty.LoadLightsFromLightshowFile(map, mapInfo, diff);
             }
+            else
+            {
+                // A song can be tempo-mapped before its first difficulty is created.
+                var tempoPath = PathUtils.Combine(mapInfo.Directory, V2BpmInfo.FileName);
+                if (File.Exists(tempoPath))
+                {
+                    var tempo = V2BpmInfo.GetFromJson(BeatSaberSongUtils.GetNodeFromFile(tempoPath));
+                    map.BpmEvents = BaseBpmInfo.GetBpmEvents(tempo.BpmRegions, tempo.AudioFrequency);
+                    map.BootstrapBpmEvents(mapInfo.BeatsPerMinute);
+                }
+            }
         }
 
         var oldPath = map.DirectoryAndFile;

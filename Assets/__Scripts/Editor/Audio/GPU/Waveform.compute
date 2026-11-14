@@ -1,0 +1,37 @@
+#pragma kernel GeneratePeaks
+#pragma kernel ReducePeaks
+
+StructuredBuffer<float> Samples;
+StructuredBuffer<float2> Input;
+RWStructuredBuffer<float2> Output;
+uint Channels;
+uint SamplesPerPeak;
+uint FrameCount;
+uint OutputOffset;
+uint InputCount;
+
+[numthreads(64, 1, 1)]
+void GeneratePeaks(uint3 id : SV_DispatchThreadID)
+{
+    uint first = id.x * SamplesPerPeak;
+    if (first >= FrameCount) return;
+    float2 peak = 0;
+    uint last = min(first + SamplesPerPeak, FrameCount) * Channels;
+    for (uint sample = first * Channels; sample < last; sample++)
+    {
+        float value = Samples[sample];
+        if (!isfinite(value)) continue;
+        peak = float2(min(peak.x, value), max(peak.y, value));
+    }
+    Output[OutputOffset + id.x] = peak;
+}
+
+[numthreads(64, 1, 1)]
+void ReducePeaks(uint3 id : SV_DispatchThreadID)
+{
+    uint first = id.x * 2;
+    if (first >= InputCount) return;
+    float2 left = Input[first];
+    float2 right = Input[min(first + 1, InputCount - 1)];
+    Output[id.x] = float2(min(left.x, right.x), max(left.y, right.y));
+}

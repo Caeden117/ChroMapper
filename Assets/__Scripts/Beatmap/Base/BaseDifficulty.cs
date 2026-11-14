@@ -251,130 +251,114 @@ namespace Beatmap.Base
             var songBpm = BeatSaberSongContainer.Instance.Info.BeatsPerMinute;
             var customData = BeatSaberSongContainer.Instance.MapDifficultyInfo.CustomData;
 
-            // Replace editor offset with equivalent bpm change if it exists
-            if ((customData?.HasKey("_editorOffset") ?? false) && customData["_editorOffset"] > 0f)
-            {
-                float offset = customData["_editorOffset"];
-                customData.Remove("_editorOffset");
-                customData.Remove("_editorOldOffset");
-                BpmChanges.Insert(0, new BaseBpmChange { JsonTime = songBpm / 60 * (offset / 1000f), Bpm = songBpm });
-                Debug.Log($"Editor offset detected: {songBpm / 60 * (offset / 1000f)}s");
-            }
-
-            if (BpmChanges.Count == 0)
-            {
-                return;
-            }
+            if (!ConvertCustomBpmToOfficial(songBpm, customData)) return;
 
             PersistentUI.Instance.ShowDialogBox(
-                "Mapper",
-                "custom.bpm.convert",
-                null,
-                PersistentUI.DialogBoxPresetType.Ok);
-            BpmEvents.Clear(); // If for some reason we have both official and old custom bpm changes, we'll overwrite official bpm events
+                "Mapper", "custom.bpm.convert", null, PersistentUI.DialogBoxPresetType.Ok);
+        }
 
-            BaseBpmEvent nextBpmChange;
-            for (var i = 0; i < BpmChanges.Count; i++)
+        internal bool ConvertCustomBpmToOfficial(float songBpm, JSONObject customData)
+        {
+            if (!HasLegacyTempo(BpmChanges, customData)) return false;
+
+            BpmEvents.Clear();
+            ConvertLegacyTempo(songBpm, BpmChanges, customData, BpmEvents, (shift, scale) =>
             {
-                var bpmChange = BpmChanges[i];
-                var prevBpmChange = (i > 0)
-                    ? BpmChanges[i - 1]
-                    : new BaseBpmChange { JsonTime = 0, Bpm = songBpm };
-
-                // Account for custom bpm change original grid behaviour
-                var distanceToNearestInt = Mathf.Abs(bpmChange.JsonTime - Mathf.Round(bpmChange.JsonTime));
-                if (distanceToNearestInt > 0.01f)
-                {
-                    var oldTime = bpmChange.JsonTime;
-                    var jsonTimeOffset = 1 - bpmChange.JsonTime % 1;
-
-                    foreach (var objList in AllBaseObjectProperties())
-                    {
-                        if (objList == null) continue;
-
-                        foreach (BaseObject obj in objList)
-                        {
-                            if (obj.JsonTime >= oldTime)
-                            {
-                                obj.JsonTime += jsonTimeOffset;
-                            }
-
-                            // assuming there's mapper who messed up with slider tail time
-                            // or beat games non truncate float:tm: is lower than head time
-                            if (obj is BaseSlider slider && slider.TailJsonTime >= oldTime)
-                            {
-                                slider.TailJsonTime += jsonTimeOffset;
-                            }
-                        }
-                    }
-
-                    for (var j = i; j < BpmChanges.Count; j++)
-                    {
-                        BpmChanges[j].JsonTime += jsonTimeOffset;
-                    }
-
-                    // Place a very fast bpm event slighty behind the original event to account for drift
-                    var aVeryLargeBpm = 100000f;
-                    var offsetRequiredInBeats =
-                        jsonTimeOffset * prevBpmChange.Bpm / (aVeryLargeBpm - prevBpmChange.Bpm);
-                    BpmEvents.Add(new BaseBpmEvent(oldTime - offsetRequiredInBeats, aVeryLargeBpm));
-                }
-
-                BpmEvents.Add(new BaseBpmEvent(bpmChange.JsonTime, bpmChange.Bpm));
-
-                // Adjust all the objects after the bpm change accordingly
-                if (i + 1 < BpmChanges.Count)
-                    nextBpmChange = BpmChanges[i + 1];
-                else
-                    nextBpmChange = null;
-
-                var bpmSectionJsonTimeDiff = (nextBpmChange != null) ? nextBpmChange.JsonTime - bpmChange.JsonTime : 0;
-                var scale = (bpmChange.Bpm / songBpm) - 1;
-
                 foreach (var objList in AllBaseObjectProperties())
                 {
                     if (objList == null) continue;
-
                     foreach (BaseObject obj in objList)
                     {
-                        if (bpmChange.JsonTime < obj.JsonTime)
+                        obj.JsonTime = (float)shift(obj.JsonTime);
+                        if (obj is BaseObstacle obstacle && scale != null && scale(obj.JsonTime) != obj.JsonTime)
                         {
-                            var jsonTimeBeforeScale = obj.JsonTime;
-                            if (nextBpmChange == null || obj.JsonTime < nextBpmChange.JsonTime)
-                                obj.JsonTime += (obj.JsonTime - bpmChange.JsonTime) * scale;
-                            else
-                                obj.JsonTime += bpmSectionJsonTimeDiff * scale;
-
-                            if (obj is BaseObstacle obstacle)
-                            {
-                                var endJsonTime = jsonTimeBeforeScale + obstacle.Duration;
-                                if (nextBpmChange == null || endJsonTime < nextBpmChange.JsonTime)
-                                    endJsonTime += (endJsonTime - bpmChange.JsonTime) * scale;
-                                else
-                                    endJsonTime += bpmSectionJsonTimeDiff * scale;
-                                obstacle.Duration = endJsonTime - obj.JsonTime;
-                            }
+                            var start = obj.JsonTime;
+                            var end = start + obstacle.Duration;
+                            obstacle.Duration = (float)scale(end) - (float)scale(start);
                         }
-
-                        if (obj is BaseSlider slider && bpmChange.JsonTime < slider.TailJsonTime)
+                        if (scale != null) obj.JsonTime = (float)scale(obj.JsonTime);
+                        if (obj is BaseSlider slider)
                         {
-                            if (nextBpmChange == null || slider.TailJsonTime < nextBpmChange.JsonTime)
-                                slider.TailJsonTime += (slider.TailJsonTime - bpmChange.JsonTime) * scale;
-                            else
-                                slider.TailJsonTime += bpmSectionJsonTimeDiff * scale;
+                            slider.TailJsonTime = (float)shift(slider.TailJsonTime);
+                            if (scale != null) slider.TailJsonTime = (float)scale(slider.TailJsonTime);
                         }
                     }
                 }
+            });
+            CustomData[BookmarksUseOfficialBpmEventsKey] = true;
+            BpmChanges.Clear();
+            return true;
+        }
 
-                for (var j = i + 1; j < BpmChanges.Count; j++)
-                {
-                    BpmChanges[j].JsonTime += bpmSectionJsonTimeDiff * scale;
-                }
+        internal static bool HasLegacyTempo(List<BaseBpmChange> changes, JSONObject customData) =>
+            changes.Count > 0 || GetLegacyEditorOffset(customData) > 0f;
+
+        internal static float GetLegacyEditorOffset(JSONObject customData) =>
+            customData != null && customData.HasKey("_editorOffset") ? customData["_editorOffset"].AsFloat : 0f;
+
+        internal static void ConvertLegacyTempo(float songBpm, List<BaseBpmChange> changes, JSONObject customData,
+            List<BaseBpmEvent> events, Action<Func<double, double>, Func<double, double>> apply, List<double> boundaries = null)
+        {
+            var offset = GetLegacyEditorOffset(customData);
+            if (offset > 0f)
+            {
+                customData.Remove("_editorOffset");
+                customData.Remove("_editorOldOffset");
+                changes.Insert(0, new BaseBpmChange { JsonTime = songBpm / 60 * (offset / 1000f), Bpm = songBpm });
             }
 
-            CustomData[BookmarksUseOfficialBpmEventsKey] = true;
+            // Track breakpoints in original beat coordinates for JSON lighting distributions.
+            var steps = new List<(Func<double, double> ShiftBack, Func<double, double> ScaleBack)>();
+            void AddBoundary(double beat)
+            {
+                if (boundaries == null) return;
+                for (var i = steps.Count - 1; i >= 0; i--)
+                    beat = steps[i].ShiftBack(steps[i].ScaleBack(beat));
+                boundaries.Add(beat);
+            }
 
-            BpmChanges.Clear();
+            for (var i = 0; i < changes.Count; i++)
+            {
+                var change = changes[i];
+                var previousBpm = i > 0 ? changes[i - 1].Bpm : songBpm;
+                var oldTime = change.JsonTime;
+                var padding = 0f;
+                if (Mathf.Abs(oldTime - Mathf.Round(oldTime)) > 0.01f)
+                {
+                    padding = 1 - oldTime % 1;
+                    AddBoundary(oldTime);
+                    for (var j = i; j < changes.Count; j++) changes[j].JsonTime += padding;
+
+                    const float correctionBpm = 100000f;
+                    var correction = padding * previousBpm / (correctionBpm - previousBpm);
+                    events.Add(new BaseBpmEvent(oldTime - correction, correctionBpm));
+                }
+
+                var start = change.JsonTime;
+                events.Add(new BaseBpmEvent(start, change.Bpm));
+                var next = i + 1 < changes.Count ? changes[i + 1].JsonTime : float.PositiveInfinity;
+                var span = float.IsPositiveInfinity(next) ? 0f : next - start;
+                var scale = change.Bpm / songBpm - 1;
+                if (scale != 0)
+                {
+                    AddBoundary(oldTime);
+                    if (!float.IsPositiveInfinity(next)) AddBoundary(next - padding);
+                }
+                double Shift(double beat) => beat >= oldTime ? beat + padding : beat;
+                double Scale(double beat) => beat <= start ? beat :
+                    beat + (beat < next ? (beat - start) * scale : span * scale);
+
+                apply(Shift, scale == 0 ? null : Scale);
+                for (var j = i + 1; j < changes.Count; j++) changes[j].JsonTime += span * scale;
+
+                if (boundaries != null)
+                {
+                    var scaledEnd = next + span * scale;
+                    steps.Add((beat => beat < oldTime ? beat : Math.Max(oldTime, beat - padding),
+                        beat => scale == 0 || beat <= start ? beat :
+                            beat < scaledEnd ? start + (beat - start) / (1 + scale) : beat - span * scale));
+                }
+            }
         }
 
         public void ConvertCustomDataVersion(int fromVersion, int toVersion)

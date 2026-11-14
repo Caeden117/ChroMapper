@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +18,19 @@ public class AudioPreviewGenerator : MonoBehaviour
     
     private float previewDuration;
     private float previewTime;
+
+    public RectTransform Spectrogram => (RectTransform)transform;
+    public GameObject PreviewSelection => previewSelection.gameObject;
+
+    public void PrepareTempoMapper()
+    {
+        previewGameObject.SetActive(true);
+        if (Application.isBatchMode) return;
+        ColorBufferManager.GenerateBuffersForGradient(spectrogramGradient2d);
+        SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
+        audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong,
+            Settings.Instance.SpectrogramSampleSize, Settings.Instance.SpectrogramEditorQuality, true);
+    }
 
     private void Start() => songInfoEditUI.OnTempSongLoaded += TempSongLoaded;
 
@@ -68,7 +81,7 @@ public class AudioPreviewGenerator : MonoBehaviour
         if (float.TryParse(duration, out previewDuration)) UpdatePreviewSelection();
     }
 
-    private void UpdatePreviewSelection()
+    public void UpdatePreviewSelection()
     {
         if (BeatSaberSongContainer.Instance.LoadedSong == null) return;
         var length = BeatSaberSongContainer.Instance.LoadedSong.length;

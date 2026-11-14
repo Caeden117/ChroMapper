@@ -8,6 +8,10 @@ Shader "ChroMapper/Editor/Spectrogram"
         [Toggle] _FlipY ("Flip Y", float) = 0.0
         _OutlineWidth ("Outline Width", float) = 0.1
         _ValueCutoff ("Value Cutoff", float) = 0
+
+        [HideInInspector] _UseLocalSpectrogram ("Use Local Spectrogram Parameters", Float) = 0
+        [HideInInspector] _LocalSpectrogramBounds ("Local View Bounds", Vector) = (0, 1, 0, 0)
+        [HideInInspector] _LocalSpectrogramSettings ("Local Shift and Filtering", Vector) = (1, 0, 0, 0)
     }
     SubShader
     {
@@ -48,6 +52,10 @@ Shader "ChroMapper/Editor/Spectrogram"
             float _FlipY = 0;
             float _OutlineWidth = 0;
             float _ValueCutoff = 0;
+
+            float _UseLocalSpectrogram;
+            float4 _LocalSpectrogramBounds;
+            float4 _LocalSpectrogramSettings;
 
             // Global variables
             uniform float _Spectrogram_Shift = 1;
@@ -106,13 +114,15 @@ Shader "ChroMapper/Editor/Spectrogram"
             float calculateSpectrogramValue(float currentSeconds, float2 uv)
             {
                 // Single sample
-                if (_Spectrogram_BilinearFiltering <= 0.5)
+                float shift = _UseLocalSpectrogram > 0.5 ? _LocalSpectrogramSettings.x : _Spectrogram_Shift;
+                float filtering = _UseLocalSpectrogram > 0.5 ? _LocalSpectrogramSettings.y : _Spectrogram_BilinearFiltering;
+                if (filtering <= 0.5)
                 {
                     // Convert our X location to the nearest chunk of FFT data
                     uint fftSampleLocation = (uint)((currentSeconds * FFTFrequency) / FFTSize) * FFTSize;
 
                     // Calculate our Y position within the view
-                    uint fftSampleOffset = (uint)(lerp(0, FFTSize, uv.y * pow(_Spectrogram_Shift, uv.y - 1)));
+                    uint fftSampleOffset = (uint)(lerp(0, FFTSize, uv.y * pow(shift, uv.y - 1)));
 
                     // Map Y position to ignore lowest and highest band
                     fftSampleOffset = round(1.0 + fftSampleOffset * ((FFTSize - 2.0) / FFTSize));
@@ -129,7 +139,7 @@ Shader "ChroMapper/Editor/Spectrogram"
                     float x = currentSeconds * FFTFrequency / FFTSize;
 
                     // Grab our offset location as a float
-                    float y = lerp(0, FFTSize, uv.y * pow(_Spectrogram_Shift, uv.y - 1));
+                    float y = lerp(0, FFTSize, uv.y * pow(shift, uv.y - 1));
 
                     // Map Y position to ignore lowest and highest band
                     y = 1.0 + y * ((FFTSize - 2.0) / FFTSize);
@@ -186,7 +196,8 @@ Shader "ChroMapper/Editor/Spectrogram"
                 float2 uv = float2(_FlipX > 0.5 ? 1 - i.uv.x : i.uv.x, _FlipY > 0.5 ? 1 - i.uv.y : i.uv.y);
 
                 // Calculate our X position within the view in seconds
-                float currentSeconds = lerp(_ViewStart, _ViewEnd, uv.x);
+                float2 bounds = _UseLocalSpectrogram > 0.5 ? _LocalSpectrogramBounds.xy : float2(_ViewStart, _ViewEnd);
+                float currentSeconds = lerp(bounds.x, bounds.y, uv.x);
 
                 // fix shimmering pixels by saturating our spectrogram value between [0,1]
                 //   I guess when interpolating between pixels, the above math can produce values slightly out of intended range.
