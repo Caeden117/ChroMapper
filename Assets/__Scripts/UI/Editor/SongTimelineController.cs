@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -68,7 +69,7 @@ public class SongTimelineController : MonoBehaviour, IPointerEnterHandler, IPoin
     public void UpdateSongTimelineSlider(float sliderValue)
     {
         if (!IsClicked) ClickedSliderValue = sliderValue;
-        if (atsc.IsPlaying || Input.GetAxis("Mouse ScrollWheel") != 0 || !IsClicked)
+        if (atsc.IsPlaying || Mouse.current.scroll.ReadValue().y != 0 || !IsClicked)
             return; //Don't modify ATSC if some other things are happening.
 
         if (NodeEditorController.IsActive)

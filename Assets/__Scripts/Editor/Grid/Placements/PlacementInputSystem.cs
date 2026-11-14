@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
 
 public class PlacementInputSystem : MonoBehaviour,
@@ -35,7 +34,7 @@ public class PlacementInputSystem : MonoBehaviour,
     private readonly HashSet<GameObject> groundGridTargets = new();
 
     private bool CanInteract =>
-        !Input.GetMouseButton((int)MouseButton.Right)
+        !Mouse.current.rightButton.isPressed
         && KeybindsController.IsMouseInWindow
         && !SongTimelineController.IsHovering
         && !SceneTransitionManager.IsLoading
@@ -53,8 +52,8 @@ public class PlacementInputSystem : MonoBehaviour,
 
     private void Update()
     {
-        if (((inputState == PlacementInputState.Drag && !Input.GetMouseButton((int)MouseButton.Left))
-                || (inputState == PlacementInputState.DragAtTime && !Input.GetMouseButton((int)MouseButton.Right)))
+        if (((inputState == PlacementInputState.Drag && !Mouse.current.leftButton.isPressed)
+                || (inputState == PlacementInputState.DragAtTime && !Mouse.current.rightButton.isPressed))
             && currentProvider != null)
         {
             currentProvider.Lane.MoveXYGridByZ(0f);
