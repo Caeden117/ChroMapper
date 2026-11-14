@@ -16,7 +16,11 @@ public class TabManager : MonoBehaviour
 
     private void Start()
     {
-        if (tabs.Count == 0) return;
+        if (tabs == null || tabs.Count == 0)
+        {
+            Debug.LogError("TabManager has no tabs assigned. Populate the Tabs list in the Inspector.", this);
+            return;
+        }
         OnTabSelected(tabs[Mathf.Clamp(OptionsController.StartingGroup, 0, tabs.Count - 1)]);
     }
 

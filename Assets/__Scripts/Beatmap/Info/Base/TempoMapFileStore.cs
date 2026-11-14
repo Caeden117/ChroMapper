@@ -3,96 +3,44 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Beatmap.Base;
+using Beatmap.Base.Customs;
 using SimpleJSON;
 
 namespace Beatmap.Info
 {
     public static class TempoMapFileStore
     {
-        // Migrate legacy object timing once; official tempo edits retain stored object beats.
-        public static JSONNode WithTempo(JSONNode node, TempoMap tempo, float songBpm = 0)
+        // Migrate against the original grid before replacing the official events with the edited grid.
+        public static JSONNode WithTempo(JSONNode node, TempoMap tempo, float songBpm = 0,
+            JSONObject difficultyCustomData = null)
         {
             var version = node[node.HasKey("version") ? "version" : "_version"].Value;
-            var v4 = version.StartsWith("4.");
-            if (!v4 && !version.StartsWith("2.") && !version.StartsWith("3."))
-                throw new InvalidDataException("Unsupported difficulty version: " + version);
-            if (v4) return node;
             var v2 = version.StartsWith("2.");
-            var custom = node[v2 ? "_customData" : "customData"];
-            var hasLegacy = v2
-                ? node["_BPMChanges"].Count > 0 || node["_bpmChanges"].Count > 0 ||
-                  custom["_BPMChanges"].Count > 0 || custom["_bpmChanges"].Count > 0
-                : custom["BPMChanges"].Count > 0;
-            if (hasLegacy && (songBpm <= 0 || float.IsNaN(songBpm) || float.IsInfinity(songBpm)))
-                throw new InvalidDataException("The original song BPM is required to preserve object timing.");
+            if (version.StartsWith("4.")) return node;
+            if (!v2 && !version.StartsWith("3."))
+                throw new InvalidDataException("Unsupported difficulty version: " + version);
 
-            // Migrate against each difficulty's original legacy grid, before applying edits.
-            // Read only BPM fields, independently of the global selected format and object-load settings.
-            var targetEvents = new List<BaseBpmEvent>();
-            if (hasLegacy)
+            var changes = ReadLegacyChanges(node, v2);
+            if (BaseDifficulty.HasLegacyTempo(changes, difficultyCustomData))
             {
-                var changes = new List<BaseBpmEvent>();
-                void ReadChanges(JSONNode array)
+                if (songBpm <= 0 || float.IsNaN(songBpm) || float.IsInfinity(songBpm))
+                    throw new InvalidDataException("The original song BPM is required to migrate legacy tempo.");
+
+                var steps = new List<(Func<double, double> Shift, Func<double, double> Scale)>();
+                var breaks = new List<double>();
+                BaseDifficulty.ConvertLegacyTempo(songBpm, changes, difficultyCustomData, new List<BaseBpmEvent>(),
+                    (shift, scale) => steps.Add((shift, scale)), breaks);
+
+                double Convert(double beat)
                 {
-                    foreach (JSONNode change in array)
+                    foreach (var (shift, scale) in steps)
                     {
-                        var timeKey = v2 ? "_time" : "b";
-                        var bpmKey = v2 ? "_BPM" : "m";
-                        if (!change.HasKey(timeKey) || !change.HasKey(bpmKey))
-                            throw new InvalidDataException("Cannot read the original legacy BPM grid. No files were saved.");
-                        changes.Add(new BaseBpmEvent(change[timeKey].AsFloat, change[bpmKey].AsFloat));
+                        beat = shift(beat);
+                        if (scale != null) beat = scale(beat);
                     }
+                    return beat;
                 }
-                foreach (var entry in node)
-                {
-                    if (v2 && (entry.Key == "_BPMChanges" || entry.Key == "_bpmChanges")) ReadChanges(entry.Value);
-                    if (entry.Key != (v2 ? "_customData" : "customData")) continue;
-                    foreach (var field in entry.Value)
-                        if (v2 ? field.Key == "_BPMChanges" || field.Key == "_bpmChanges" : field.Key == "BPMChanges")
-                            ReadChanges(field.Value);
-                }
-                targetEvents.Add(new BaseBpmEvent(0, songBpm));
-                double previousTime = 0, previousBeat = 0, previousBpm = songBpm;
-                foreach (var change in changes.GroupBy(change => change.JsonTime).Select(group => group.First())
-                             .Where(change => change.JsonTime >= 0 && change.Bpm > 0)
-                             .OrderBy(change => change.JsonTime))
-                {
-                    var beat = previousBeat + (change.JsonTime - previousTime) * previousBpm / songBpm;
-                    var evt = new BaseBpmEvent((float)beat, change.Bpm);
-                    if (targetEvents[targetEvents.Count - 1].JsonTime == evt.JsonTime)
-                        targetEvents[targetEvents.Count - 1] = evt;
-                    else targetEvents.Add(evt);
-                    previousTime = change.JsonTime;
-                    previousBeat = beat;
-                    previousBpm = change.Bpm;
-                }
-            }
-            var targetSeconds = new double[targetEvents.Count];
-            for (var i = 1; i < targetSeconds.Length; i++)
-                targetSeconds[i] = targetSeconds[i - 1] + (targetEvents[i].JsonTime - targetEvents[i - 1].JsonTime) * 60d / targetEvents[i - 1].Bpm;
 
-            double BeatAtSeconds(double time)
-            {
-                var low = 0;
-                var high = targetSeconds.Length - 1;
-                while (low < high)
-                {
-                    var middle = (low + high + 1) / 2;
-                    if (targetSeconds[middle] <= time) low = middle;
-                    else high = middle - 1;
-                }
-                return targetEvents[low].JsonTime + (time - targetSeconds[low]) * targetEvents[low].Bpm / 60;
-            }
-
-            double Convert(double beat)
-            {
-                return BeatAtSeconds(beat * 60 / songBpm);
-            }
-            if (hasLegacy)
-            {
-                // Distribution widths can be scaled exactly wherever this conversion is affine.
-                // Keep every slope change, including those introduced by the target audio grid.
-                var breaks = targetSeconds.Skip(1).Select(time => time * songBpm / 60).ToList();
                 ConvertObjectTimes(node, v2, Convert, Convert, breaks);
             }
             var events = new JSONArray();
@@ -126,6 +74,31 @@ namespace Beatmap.Info
             }
             else throw new InvalidDataException("Unsupported difficulty version: " + version);
             return node;
+        }
+
+        private static List<BaseBpmChange> ReadLegacyChanges(JSONNode node, bool v2)
+        {
+            var changes = new List<BaseBpmChange>();
+            void ReadChanges(JSONNode array)
+            {
+                foreach (JSONNode change in array)
+                {
+                    var time = v2 ? "_time" : "b";
+                    var bpm = v2 ? "_BPM" : "m";
+                    if (!change.HasKey(time) || !change.HasKey(bpm))
+                        throw new InvalidDataException("Cannot read the original legacy BPM grid. No files were saved.");
+                    changes.Add(new BaseBpmChange { JsonTime = change[time].AsFloat, Bpm = change[bpm].AsFloat });
+                }
+            }
+            foreach (var entry in node)
+            {
+                if (v2 && (entry.Key == "_BPMChanges" || entry.Key == "_bpmChanges")) ReadChanges(entry.Value);
+                if (entry.Key != (v2 ? "_customData" : "customData")) continue;
+                foreach (var field in entry.Value)
+                    if (v2 ? field.Key == "_BPMChanges" || field.Key == "_bpmChanges" : field.Key == "BPMChanges")
+                        ReadChanges(field.Value);
+            }
+            return changes.DistinctBy(change => change.JsonTime).ToList();
         }
 
         private static void ConvertObjectTimes(JSONNode node, bool v2, Func<double, double> convert,
@@ -253,83 +226,166 @@ namespace Beatmap.Info
             }
         }
 
-        public static TempoMap Load(BaseInfo info, BaseDifficulty map, int samples, int frequency)
+        private static TempoMap LoadSharedGrid(BaseInfo info, int samples, int frequency)
         {
             var path = PathUtils.Combine(info.Directory, BaseBpmInfo.GetOutputFileName(info.MajorVersion, info));
-            List<BpmInfoBpmRegion> regions = null;
-            if (File.Exists(path) && (map == null ||
-                    (map.BpmChanges.Count == 0 && (info.MajorVersion == 4 || map.BpmEvents.Count == 0))))
+            if (!File.Exists(path)) return null;
+            var node = JSON.Parse(File.ReadAllText(path));
+            if (node == null) throw new InvalidDataException("Unable to read the saved tempo map.");
+            var data = info.MajorVersion == 4 ? V4AudioData.GetFromJson(node) : V2BpmInfo.GetFromJson(node);
+
+            var regions = data.BpmRegions;
+            // Accept the official editor's one-sample-separated endpoints into our shared-endpoint model.
+            for (var i = 0; i < regions.Count - 1; i++)
             {
-                var node = JSON.Parse(File.ReadAllText(path));
-                var data = info.MajorVersion == 4 ? V4AudioData.GetFromJson(node) : V2BpmInfo.GetFromJson(node);
-                if (data.AudioFrequency != frequency || Math.Abs(data.AudioSamples - samples) > 1)
-                    throw new InvalidDataException("Audio sample count/frequency differs from the saved tempo map.");
-                regions = data.BpmRegions;
-                // Accept the official editor's one-sample-separated endpoints into our shared-endpoint model.
-                for (var i = 0; i < regions.Count - 1; i++)
-                {
-                    var r = regions[i];
-                    if (regions[i + 1].StartSampleIndex - r.EndSampleIndex == 1)
-                        r.EndSampleIndex = regions[i + 1].StartSampleIndex;
-                    regions[i] = r;
-                }
+                var r = regions[i];
+                if (regions[i + 1].StartSampleIndex - r.EndSampleIndex == 1)
+                    r.EndSampleIndex = regions[i + 1].StartSampleIndex;
+                regions[i] = r;
             }
-            if (regions == null)
+            var original = new TempoMap(regions, data.AudioFrequency);
+            if (Math.Abs((long)original.EndSample - data.AudioSamples) > 1)
+                throw new InvalidDataException("Saved tempo regions do not cover the original audio clip.");
+
+            var events = BaseBpmInfo.GetBpmEvents(regions, data.AudioFrequency);
+            if (data.AudioFrequency == frequency && Math.Abs((long)original.EndSample - samples) <= 1
+                && Math.Abs((long)data.AudioSamples - samples) <= 1)
+                return new TempoMap(regions, frequency, events);
+
+            if (samples <= 0 || frequency <= 0) throw new ArgumentException("Invalid replacement audio.");
+
+            // Keep anchors at their original elapsed times. The final surviving region covers the new tail.
+            var recovered = new List<BpmInfoBpmRegion>();
+            var recoveredEvents = new List<BaseBpmEvent>();
+            for (var i = 0; i < regions.Count; i++)
             {
-                if (map != null && map.BpmChanges.Count > 0)
+                var region = regions[i];
+                var start = Math.Round(region.StartSampleIndex * (double)frequency / data.AudioFrequency);
+                if (start >= samples) break;
+                region.StartSampleIndex = (int)start;
+                if (recovered.Count > 0 && recovered[^1].StartSampleIndex == region.StartSampleIndex)
                 {
-                    // Legacy custom BPM timestamps are in the original song-BPM grid, rather than the changing beat grid.
-                    var changes = map.BpmChanges.Where(change => change.JsonTime >= 0 && change.Bpm > 0)
-                        .OrderBy(change => change.JsonTime).ToList();
-                    regions = new List<BpmInfoBpmRegion>();
-                    var start = 0;
-                    var beat = 0f;
-                    var bpm = info.BeatsPerMinute;
-                    foreach (var change in changes)
-                    {
-                        var end = (int)Math.Round(change.JsonTime * frequency * 60d / info.BeatsPerMinute);
-                        if (end >= samples) break;
-                        if (end > start)
-                        {
-                            var endBeat = beat + (end - start) * bpm / (frequency * 60f);
-                            regions.Add(new BpmInfoBpmRegion { StartSampleIndex = start, EndSampleIndex = end, StartBeat = beat, EndBeat = endBeat });
-                            start = end;
-                            beat = endBeat;
-                        }
-                        bpm = change.Bpm;
-                    }
-                    regions.Add(new BpmInfoBpmRegion { StartSampleIndex = start, EndSampleIndex = samples,
-                        StartBeat = beat, EndBeat = beat + (samples - start) * bpm / (frequency * 60f) });
+                    // Multiple anchors can land on the same sample at a lower rate.
+                    if (region.StartSampleIndex == 0) region.StartBeat = 0;
+                    recovered[^1] = region;
+                    recoveredEvents[^1] = events[i];
+                    continue;
                 }
-                else
-                {
-                    map?.BootstrapBpmEvents(info.BeatsPerMinute);
-                    regions = BaseBpmInfo.GetBpmInfoRegions(map?.BpmEvents ?? new List<BaseBpmEvent>(),
-                        info.BeatsPerMinute, samples, frequency);
-                }
+                recovered.Add(region);
+                recoveredEvents.Add(events[i]);
             }
-            return new TempoMap(regions, frequency);
+
+            for (var i = 0; i < recovered.Count; i++)
+            {
+                var region = recovered[i];
+                region.EndSampleIndex = i + 1 < recovered.Count ? recovered[i + 1].StartSampleIndex : samples;
+                region.EndBeat = i + 1 < recovered.Count ? recovered[i + 1].StartBeat :
+                    region.StartBeat + (region.EndSampleIndex - region.StartSampleIndex) *
+                    recoveredEvents[i].Bpm / (60f * frequency);
+                recovered[i] = region;
+            }
+            return new TempoMap(recovered, frequency, recoveredEvents) { RecoveredFromAudioChange = true };
         }
 
-        public static void Save(BaseInfo info, TempoMap tempo, IEnumerable<DifficultySettings> difficulties)
+        public static TempoMap LoadWithoutDifficulty(BaseInfo info, bool hasDifficulties, int samples, int frequency)
+        {
+            try
+            {
+                var shared = LoadSharedGrid(info, samples, frequency);
+                if (shared != null) return shared;
+            }
+            catch (Exception exception) when (exception is IOException || exception is UnauthorizedAccessException
+                || exception is InvalidDataException || exception is JSONParseException || exception is ArgumentException)
+            {
+                // Unusable shared metadata cannot be the source for a song-wide edit.
+            }
+
+            return hasDifficulties ? null : FromEvents(info, new List<BaseBpmEvent>(), samples, frequency);
+        }
+
+        public static TempoMap Load(BaseInfo info, BaseDifficulty map, int samples, int frequency, JSONObject difficultyCustomData = null)
+        {
+            if (map == null) return LoadWithoutDifficulty(info, false, samples, frequency);
+            if (map.MajorVersion != 4 && BaseDifficulty.HasLegacyTempo(map.BpmChanges, difficultyCustomData))
+            {
+                var migrated = new BaseDifficulty();
+                var changes = map.BpmChanges.Select(change =>
+                    new BaseBpmChange { JsonTime = change.JsonTime, Bpm = change.Bpm }).ToList();
+                BaseDifficulty.ConvertLegacyTempo(info.BeatsPerMinute, changes,
+                    difficultyCustomData?.Clone().AsObject, migrated.BpmEvents, (_, __) => { });
+                map = migrated;
+            }
+            else if (info.MajorVersion == 4 || map.BpmEvents.Count == 0)
+            {
+                var shared = LoadSharedGrid(info, samples, frequency);
+                if (shared != null) return shared;
+            }
+
+            map.BootstrapBpmEvents(info.BeatsPerMinute);
+            return FromEvents(info, map.BpmEvents, samples, frequency);
+        }
+
+        private static TempoMap FromEvents(BaseInfo info, List<BaseBpmEvent> events, int samples, int frequency)
+        {
+            var visibleEvents = events.TakeWhile(evt => BaseBpmInfo.GetEventSample(evt,
+                info.BeatsPerMinute, frequency) < samples).ToList();
+            var regions = BaseBpmInfo.GetBpmInfoRegions(visibleEvents, info.BeatsPerMinute, samples, frequency);
+            var sourceEvents = visibleEvents.Count > 0 ? visibleEvents : new List<BaseBpmEvent> { new(0, info.BeatsPerMinute) };
+            return new TempoMap(regions, frequency, sourceEvents);
+        }
+
+        public static bool Save(BaseInfo info, TempoMap tempo, IEnumerable<DifficultySettings> difficulties)
         {
             tempo.Validate();
             var settings = difficulties.ToList();
             var writes = new Dictionary<string, string>();
             var dataPath = PathUtils.Combine(info.Directory, BaseBpmInfo.GetOutputFileName(info.MajorVersion, info));
-            void Prepare(string path)
-            {
-                if (writes.ContainsKey(path) || !File.Exists(path)) return;
-                writes[path] = WithTempo(JSON.Parse(File.ReadAllText(path)), tempo, info.BeatsPerMinute).ToString(2);
-            }
+            var formatJson = Settings.Instance.FormatJson;
+            string Serialize(JSONNode json) => formatJson ? json.ToString(2) : json.ToString();
+
+            var migrated = false;
+            var migratedOffsets = new HashSet<string>();
+            var offsets = new Dictionary<string, float>();
             foreach (var difficulty in settings)
             {
                 var path = PathUtils.Combine(info.Directory, difficulty.InfoDifficulty.BeatmapFileName);
                 if (!File.Exists(path)) continue;
-                if (difficulty.Map == null) throw new InvalidDataException("Cannot parse " + path);
-                // V4 object files retain stored timestamps; only AudioData contains its tempo grid.
-                if (difficulty.Map.MajorVersion != 4) Prepare(path);
+                var map = difficulty.Map;
+                if (map == null) throw new InvalidDataException("Cannot parse " + path);
+                if (map.MajorVersion == 4) continue;
+
+                var customData = difficulty.InfoDifficulty.CustomData?.Clone().AsObject;
+                var offset = Math.Max(0, BaseDifficulty.GetLegacyEditorOffset(customData));
+                if (offsets.TryGetValue(path, out var previousOffset))
+                {
+                    if (previousOffset != offset)
+                        throw new InvalidDataException("A shared difficulty file has conflicting legacy editor offsets.");
+                    continue;
+                }
+                offsets.Add(path, offset);
+                migrated |= BaseDifficulty.HasLegacyTempo(map.BpmChanges, customData);
+                if (offset > 0) migratedOffsets.Add(difficulty.InfoDifficulty.BeatmapFileName);
+                writes[path] = Serialize(WithTempo(JSON.Parse(File.ReadAllText(path)), tempo, info.BeatsPerMinute, customData));
             }
+
+            if (migratedOffsets.Count > 0)
+            {
+                // Update only the legacy fields in Info.dat, preserving unrelated on-disk metadata.
+                var infoPath = PathUtils.Combine(info.Directory, "Info.dat");
+                var infoNode = JSON.Parse(File.ReadAllText(infoPath));
+                var v4 = info.MajorVersion == 4;
+                var entries = v4 ? infoNode["difficultyBeatmaps"].Children :
+                    infoNode["_difficultyBeatmapSets"].Children.SelectMany(set => set["_difficultyBeatmaps"].Children);
+                foreach (var entry in entries)
+                {
+                    if (!migratedOffsets.Contains(entry[v4 ? "beatmapDataFilename" : "_beatmapFilename"].Value)) continue;
+                    var custom = entry[v4 ? "customData" : "_customData"];
+                    custom.Remove("_editorOffset");
+                    custom.Remove("_editorOldOffset");
+                }
+                writes[infoPath] = Serialize(infoNode);
+            }
+
             var data = new BaseBpmInfo
             {
                 Version = info.MajorVersion == 4 ? "4.0.0" : "2.0.0",
@@ -346,7 +402,7 @@ namespace Beatmap.Info
                     if (output.HasKey(key)) existing[key] = output[key];
                 output = existing;
             }
-            writes[dataPath] = output.ToString(2);
+            writes[dataPath] = Serialize(output);
 
             var originals = writes.Keys.ToDictionary(p => p, p => File.Exists(p) ? File.ReadAllText(p) : null);
 
@@ -381,9 +437,15 @@ namespace Beatmap.Info
 
             foreach (var difficulty in settings)
             {
+                if (migratedOffsets.Contains(difficulty.InfoDifficulty.BeatmapFileName))
+                {
+                    difficulty.InfoDifficulty.CustomData?.Remove("_editorOffset");
+                    difficulty.InfoDifficulty.CustomData?.Remove("_editorOldOffset");
+                }
                 // Reload on next access to use the saved official grid and any migrated object timestamps.
                 difficulty.InvalidateMap();
             }
+            return migrated;
         }
     }
 }

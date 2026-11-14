@@ -10,6 +10,7 @@ namespace Beatmap.Info
     {
         public List<BpmInfoBpmRegion> Regions { get; private set; }
         public int Frequency { get; }
+        public bool RecoveredFromAudioChange { get; internal set; }
         public int EndSample => Regions[^1].EndSampleIndex;
 
         public TempoMap(IEnumerable<BpmInfoBpmRegion> regions, int frequency)
@@ -19,7 +20,23 @@ namespace Beatmap.Info
             Validate();
         }
 
-        public TempoMap Copy() => new(Regions, Frequency);
+        private readonly BpmInfoBpmRegion[] sourceRegions;
+        private readonly float[] sourceBpms;
+
+        internal TempoMap(List<BpmInfoBpmRegion> regions, int frequency, List<BaseBpmEvent> sourceEvents)
+            : this(regions, frequency)
+        {
+            sourceRegions = Regions.ToArray();
+            sourceBpms = sourceEvents.Select(evt => evt.Bpm).ToArray();
+        }
+
+        private TempoMap(TempoMap other) : this(other.Regions, other.Frequency)
+        {
+            sourceRegions = other.sourceRegions;
+            sourceBpms = other.sourceBpms;
+        }
+
+        public TempoMap Copy() => new(this);
 
         public int RegionAt(int sample)
         {
@@ -155,7 +172,10 @@ namespace Beatmap.Info
             return true;
         }
 
-        public List<BaseBpmEvent> ToEvents() => Regions.Select((r, i) => new BaseBpmEvent(r.StartBeat, (float)Bpm(i))).ToList();
+        public List<BaseBpmEvent> ToEvents() => Regions.Select((region, index) => new BaseBpmEvent(region.StartBeat,
+            sourceBpms != null && index < sourceBpms.Length && region.Equals(sourceRegions[index])
+                ? sourceBpms[index]
+                : (float)Bpm(index))).ToList();
 
         private void Rebase()
         {

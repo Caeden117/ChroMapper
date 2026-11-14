@@ -109,8 +109,6 @@ public class Settings
     public bool TempoWaveformRectifyPeaks = false;
     public bool TempoFollowPlayback = true;
     public bool TempoPulsePlayhead = true;
-    public int TempoWaveformSamplesPerPeak = 64;
-    public int TempoWaveformMaxColumns = 2048;
     public float SongVolume = 1;
     public float MetronomeVolume = 0;
     public float NoteHitVolume = 0.5f;

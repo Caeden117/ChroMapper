@@ -9,6 +9,7 @@ public class TempoBeatRuler : MonoBehaviour
     public TempoMapperView View;
     [SerializeField] private TextMeshProUGUI labelPrefab;
     private readonly List<TextMeshProUGUI> labels = new();
+    private readonly double[] displayedBeats = new double[128];
     private bool dirty = true;
     private float previousWidth;
 
@@ -37,17 +38,25 @@ public class TempoBeatRuler : MonoBehaviour
             if (region.EndSampleIndex < View.ViewStart || region.StartSampleIndex > View.ViewEnd) continue;
 
             for (var beat = Math.Ceiling(Math.Max(first, region.StartBeat) / stride) * stride;
-                 beat < Math.Min(last + 0.0001, region.EndBeat) && count < 128; beat += stride)
+                 beat < Math.Min(last + 0.0001, region.EndBeat) && count < displayedBeats.Length; beat += stride)
             {
                 var sample = View.Map.SampleAt(index, beat);
                 var x = (float)((sample - View.ViewStart) / (View.ViewEnd - View.ViewStart)) * previousWidth;
                 if (x < previousX + 55 || x > previousWidth - 25) continue;
 
                 // Pool prefab instances; changing the viewport only updates text and positions.
-                if (count == labels.Count) labels.Add(Instantiate(labelPrefab, transform));
+                if (count == labels.Count)
+                {
+                    labels.Add(Instantiate(labelPrefab, transform));
+                    displayedBeats[count] = double.NaN;
+                }
 
                 labels[count].gameObject.SetActive(true);
-                labels[count].text = beat.ToString("0");
+                if (displayedBeats[count] != beat)
+                {
+                    labels[count].SetText("{0:0}", (float)beat);
+                    displayedBeats[count] = beat;
+                }
                 labels[count].rectTransform.anchoredPosition = new Vector2(x + 2, 0);
                 previousX = x;
                 count++;

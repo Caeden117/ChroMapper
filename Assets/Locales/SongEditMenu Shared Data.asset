@@ -613,6 +613,14 @@ MonoBehaviour:
     m_Key: tempo.pulse.playhead
     m_Metadata:
       m_Items: []
+  - m_Id: 645953109751558200
+    m_Key: tempo.source.required
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109751558201
+    m_Key: tempo.audio.recovered
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

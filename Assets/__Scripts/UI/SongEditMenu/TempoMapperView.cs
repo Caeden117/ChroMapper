@@ -20,7 +20,7 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     public double ViewStart { get; private set; }
     public double ViewEnd { get; private set; }
     public int Subdivision { get; private set; }
-    public bool ShiftTimeline => shift.isOn;
+    public bool ShiftTimeline => false;
     public float PlaybackMarkerPulse => Settings.Instance.TempoPulsePlayhead && music != null && music.isPlaying && Map != null
         ? (float)Math.Exp(-(Map.BeatAt(Sample) - Math.Floor(Map.BeatAt(Sample))) * 4)
         : 0;
@@ -71,6 +71,9 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     private Coroutine waveformGeneration;
     private bool initialized;
     private bool confirmationOpen;
+    private Tooltip playTooltip;
+    private bool? displayedPlaying;
+    private UnityEngine.Localization.Locale playTooltipLocale;
     private bool playbackClockRunning;
     private double playbackClockTime;
     private double playbackClockSample;
@@ -87,7 +90,7 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     private static readonly string[] displaySettings =
     {
         nameof(Settings.TempoOverviewDisplay), nameof(Settings.TempoEditorDisplay),
-        nameof(Settings.TempoWaveformRectifyPeaks), nameof(Settings.TempoWaveformMaxColumns),
+        nameof(Settings.TempoWaveformRectifyPeaks),
         nameof(Settings.SpectrogramBilinearFiltering),
         nameof(Settings.SpectrogramShift)
     };
@@ -95,8 +98,15 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     private static readonly Type[] blockedInputs = typeof(CMInput).GetNestedTypes()
         .Where(type => type.IsInterface && type != typeof(CMInput.IUtilsActions)).ToArray();
 
-    private static string Text(string key, params object[] args) =>
-        LocalizationSettings.StringDatabase.GetLocalizedString("SongEditMenu", "tempo." + key, args);
+    private static string Text(string key, params object[] args)
+    {
+        const string table = "SongEditMenu";
+        var entryKey = "tempo." + key;
+        var database = LocalizationSettings.StringDatabase;
+        var entry = database.GetTableEntry(table, entryKey);
+        var locale = entry.Entry == null ? LocalizationSettings.AvailableLocales.GetLocale("en") : null;
+        return database.GetLocalizedString(table, entryKey, args, locale);
+    }
 
     public static TempoMapperView Open(AudioClip clip, AudioPreviewGenerator preview,
         DifficultySelect difficulties, TempoMapperView prefab)
@@ -104,11 +114,24 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         TempoMapperView view = null;
         try
         {
-            var map = TempoMapFileStore.Load(BeatSaberSongContainer.Instance.Info,
-                difficulties.CurrentDiff, clip.samples - 1, clip.frequency);
+            var info = BeatSaberSongContainer.Instance.Info;
+            var source = difficulties.CurrentDiff;
+            var map = source != null
+                ? TempoMapFileStore.Load(info, source, clip.samples - 1, clip.frequency,
+                    BeatSaberSongContainer.Instance.MapDifficultyInfo?.CustomData)
+                : TempoMapFileStore.LoadWithoutDifficulty(info,
+                    difficulties.Characteristics.Values.Any(characteristic => characteristic.Count > 0),
+                    clip.samples - 1, clip.frequency);
+            if (map == null)
+            {
+                PersistentUI.Instance.ShowDialogBox(Text("source.required"), null, PersistentUI.DialogBoxPresetType.Ok);
+                return null;
+            }
             // A root canvas keeps this workspace independent of the persistent UI width-based scale.
             view = Instantiate(prefab);
             view.Initialize(clip, preview, difficulties, map);
+            if (map.RecoveredFromAudioChange)
+                PersistentUI.Instance.ShowDialogBox(Text("audio.recovered"), null, PersistentUI.DialogBoxPresetType.Ok);
             return view;
         }
         catch (Exception exception)
@@ -136,20 +159,23 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         // RawImage must not query _MainTex on the shared buffer-driven shader.
         mainSpectrogram.texture = overviewSpectrogram.texture = Texture2D.whiteTexture;
         scrollingSpectrogramMaterial = new Material(mainSpectrogram.material);
+        scrollingSpectrogramMaterial.SetFloat("_UseLocalSpectrogram", 1);
         mainSpectrogram.material = scrollingSpectrogramMaterial;
         overviewMaterial = new Material(overviewSpectrogram.material);
-        overviewMaterial.SetFloat("_ViewStart", 0);
-        overviewMaterial.SetFloat("_ViewEnd", clip.length);
+        overviewMaterial.SetFloat("_UseLocalSpectrogram", 1);
+        overviewMaterial.SetVector("_LocalSpectrogramBounds", new Vector4(0, clip.length, 0, 0));
         overviewSpectrogram.material = overviewMaterial;
 
         BindRegionFields();
         subdivisionField.OnEndEdit(SetSubdivision);
         undoButton.OnClick(Undo);
         redoButton.OnClick(Redo);
+        playTooltip = play.GetComponent<Tooltip>();
         play.OnClick(TogglePlaying);
         saveButton.OnClick(Save);
         settingsButton.onClick.AddListener(OpenSettings);
         backButton.onClick.AddListener(RequestClose);
+        shift.gameObject.SetActive(false);
 
         zoom.Initialize((float)(Math.Log(Math.Max(1, Map.EndSample / (Map.Frequency * 12d)), 2) / 8),
             SetZoom, value => $"{Math.Pow(2, value * 8):F1}x");
@@ -159,7 +185,6 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         volume.Initialize(music.volume, value => music.volume = value, value => $"{value:P0}");
 
         foreach (var setting in displaySettings) Settings.NotifyBySettingName(setting, DisplaySettingChanged);
-        Settings.NotifyBySettingName(nameof(Settings.TempoWaveformSamplesPerPeak), WaveformResolutionChanged);
         initialized = true;
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
         InstallInput();
@@ -168,12 +193,11 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     }
 
     private void DisplaySettingChanged(object value) => ApplyDisplaySettings();
-    private void WaveformResolutionChanged(object value) => RebuildWaveform();
 
     private void RebuildWaveform()
     {
         StopWaveformGeneration();
-        waveformRoutine = TempoWaveformData.Generate(music.clip, Settings.Instance.TempoWaveformSamplesPerPeak, waveformShader, data =>
+        waveformRoutine = TempoWaveformData.Generate(music.clip, waveformShader, data =>
         {
             var previous = waveformData;
             waveformData = data;
@@ -205,10 +229,10 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         waveSize.flexibleHeight = spectrogramLayout.flexibleHeight = 1;
         overviewWaveform.enabled = settings.TempoOverviewDisplay == 0;
         overviewSpectrogram.enabled = settings.TempoOverviewDisplay == 1;
-        waveform.MaximumColumns = overviewWaveform.MaximumColumns = settings.TempoWaveformMaxColumns;
         waveform.RectifyPeaks = overviewWaveform.RectifyPeaks = settings.TempoWaveformRectifyPeaks;
-        Shader.SetGlobalFloat("_Spectrogram_BilinearFiltering", settings.SpectrogramBilinearFiltering ? 1 : 0);
-        Shader.SetGlobalFloat("_Spectrogram_Shift", settings.SpectrogramShift);
+        var spectrogramSettings = new Vector4(settings.SpectrogramShift, settings.SpectrogramBilinearFiltering ? 1 : 0, 0, 0);
+        scrollingSpectrogramMaterial.SetVector("_LocalSpectrogramSettings", spectrogramSettings);
+        overviewMaterial.SetVector("_LocalSpectrogramSettings", spectrogramSettings);
         if (spectrumVisible || settings.TempoOverviewDisplay == 1) preview.PrepareTempoMapper();
         Refresh();
     }
@@ -224,8 +248,6 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     private void SetSubdivision(int value)
     {
         Subdivision = Math.Clamp(value, 1, 64);
-        Settings.Instance.CursorPrecisionA = Subdivision;
-        Settings.ManuallyNotifySettingUpdatedEvent(AudioTimeSyncController.PrecisionSnapName, Subdivision);
         subdivisionField.SetValueWithoutNotify(Subdivision);
         Refresh();
     }
@@ -389,15 +411,25 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     {
         if (music.isPlaying) PausePlayback();
         else { if (Sample >= Map.EndSample) Seek(0); music.Play(); ResetPlaybackClock(Sample); }
-        if (playIcon != null)
-            playIcon.sprite = music.isPlaying ? pauseSprite : playSprite;
-        var playTooltip = play.GetComponent<Tooltip>();
-        if (playTooltip != null) playTooltip.TooltipOverride = Text(music.isPlaying ? "pause" : "play");
+        RefreshPlayButton();
+    }
+
+    private void RefreshPlayButton()
+    {
+        var playing = music.isPlaying;
+        var locale = LocalizationSettings.SelectedLocale;
+        if (displayedPlaying == playing && playTooltipLocale == locale) return;
+        if (displayedPlaying != playing && playIcon != null)
+            playIcon.sprite = playing ? pauseSprite : playSprite;
+        if (playTooltip != null) playTooltip.TooltipOverride = Text(playing ? "pause" : "play");
+        displayedPlaying = playing;
+        playTooltipLocale = locale;
     }
 
     private void Update()
     {
-        if (music == null || grid == null) return;
+        if (!initialized || music == null || grid == null) return;
+        RefreshPlayButton();
         if (music.isPlaying)
         {
             if (!playbackClockRunning) ResetPlaybackClock(music.timeSamples);
@@ -456,8 +488,8 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
     private void Refresh(bool inspector = true)
     {
         SelectedRegion = Math.Clamp(SelectedRegion, 0, Map.Regions.Count - 1);
-        Shader.SetGlobalFloat("_ViewStart", (float)(ViewStart / Map.Frequency));
-        Shader.SetGlobalFloat("_ViewEnd", (float)(ViewEnd / Map.Frequency));
+        scrollingSpectrogramMaterial.SetVector("_LocalSpectrogramBounds",
+            new Vector4((float)(ViewStart / Map.Frequency), (float)(ViewEnd / Map.Frequency), 0, 0));
         grid.SetVerticesDirty();
         overview.SetVerticesDirty();
         waveformGrid.SetVerticesDirty();
@@ -479,10 +511,6 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
             lastReadoutTime = Time.realtimeSinceStartupAsDouble;
             var seconds = Sample / (double)Map.Frequency;
             position.Value = Text("statistics", (int)(seconds / 60), seconds % 60, Map.BeatAt(Sample), SelectedRegion + 1, Map.Regions.Count);
-            if (playIcon != null)
-                playIcon.sprite = music.isPlaying ? pauseSprite : playSprite;
-            var playTooltip = play.GetComponent<Tooltip>();
-            if (playTooltip != null) playTooltip.TooltipOverride = Text(music.isPlaying ? "pause" : "play");
         }
         RefreshRegionFields(inspector);
     }
@@ -505,10 +533,13 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         try
         {
             EndGesture();
-            TempoMapFileStore.Save(BeatSaberSongContainer.Instance.Info, Map,
+            var migrated = TempoMapFileStore.Save(BeatSaberSongContainer.Instance.Info, Map,
                 difficulties.Characteristics.Values.SelectMany(c => c.Values));
             saved = Map.Copy();
             Refresh();
+            if (migrated)
+                PersistentUI.Instance.ShowDialogBox("Mapper", "custom.bpm.convert", null,
+                    PersistentUI.DialogBoxPresetType.Ok);
         }
         catch (Exception exception) { Debug.LogException(exception); status.gameObject.SetActive(true); status.Value = Text("error", exception.Message); }
     }
@@ -560,7 +591,6 @@ public partial class TempoMapperView : MonoBehaviour, CMInput.ITimelineActions, 
         if (!initialized) return;
         UninstallInput();
         foreach (var setting in displaySettings) Settings.StopNotifyingBySettingName(setting, DisplaySettingChanged);
-        Settings.StopNotifyingBySettingName(nameof(Settings.TempoWaveformSamplesPerPeak), WaveformResolutionChanged);
-        if (preview != null) preview.RestorePreviewBounds();
+        if (preview != null) preview.UpdatePreviewSelection();
     }
 }

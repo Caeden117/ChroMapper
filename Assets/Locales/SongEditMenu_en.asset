@@ -684,6 +684,14 @@ MonoBehaviour:
     m_Localized: Pulse playhead
     m_Metadata:
       m_Items: []
+  - m_Id: 645953109751558200
+    m_Localized: Select a difficulty to use as the starting tempo grid, then reopen the Tempo Mapper.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 645953109751558201
+    m_Localized: The audio changed. Tempo anchors kept their original times where possible. Check alignment before saving, especially if silence was added or removed at the start.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

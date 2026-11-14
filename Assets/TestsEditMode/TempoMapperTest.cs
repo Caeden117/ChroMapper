@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace TestsEditMode
 {
-    public class TempoMapperReviewTest
+    public class TempoMapperTest
     {
         private int previousMapVersion;
         private BeatSaberSongContainer previousContainer;
@@ -128,6 +128,193 @@ namespace TestsEditMode
             finally { System.IO.Directory.Delete(directory, true); }
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LoadingWithoutSelectionUsesSharedGridOrRequiresSourceForExistingDifficulties(bool hasDifficulties)
+        {
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                var info = new BaseInfo { Version = "2.1.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+
+                void AssertFallback()
+                {
+                    var map = TempoMapFileStore.LoadWithoutDifficulty(info, hasDifficulties, 12000, 1000);
+                    if (hasDifficulties) Assert.That(map, Is.Null);
+                    else
+                    {
+                        Assert.That(map.Regions.Count, Is.EqualTo(1));
+                        Assert.That(map.Bpm(0), Is.EqualTo(120).Within(0.001));
+                    }
+                }
+
+                AssertFallback();
+                TempoMapFileStore.Save(info, Tempo(), Array.Empty<DifficultySettings>());
+                var shared = TempoMapFileStore.LoadWithoutDifficulty(info, hasDifficulties, 12000, 1000);
+                Assert.That(shared.Regions.Count, Is.EqualTo(2));
+                Assert.That(shared.Bpm(1), Is.EqualTo(240).Within(0.001));
+
+                var path = System.IO.Path.Combine(folder.FullName, V2BpmInfo.FileName);
+                var metadata = JSON.Parse(System.IO.File.ReadAllText(path));
+                metadata["_songSampleCount"] = 2000;
+                System.IO.File.WriteAllText(path, metadata.ToString());
+                AssertFallback();
+
+                System.IO.File.WriteAllText(path, "}");
+                AssertFallback();
+            }
+            finally { folder.Delete(true); }
+        }
+
+        [TestCase(2)]
+        [TestCase(3)]
+        public void SelectedDifficultyLoadsWhenTrimmedAudioEndsBeforeBpmEvent(int version)
+        {
+            Settings.Instance.MapVersion = version;
+            var map = new BaseDifficulty
+            {
+                Version = version == 2 ? "2.6.0" : "3.3.0",
+                BpmEvents = new() { new(0, 120), new(4, 180), new(10, 240) }
+            };
+            var info = new BaseInfo { Version = "2.1.0", BeatsPerMinute = 120 };
+
+            var tempo = TempoMapFileStore.Load(info, map, 3000, 1000);
+
+            Assert.That(tempo.EndSample, Is.EqualTo(3000));
+            Assert.That(tempo.Regions.Count, Is.EqualTo(2));
+            Assert.That(tempo.Regions[1].StartSampleIndex, Is.EqualTo(2000));
+            Assert.That(tempo.Regions[1].EndBeat, Is.EqualTo(7));
+            Assert.That(tempo.ToEvents()[1].Bpm, Is.EqualTo(180));
+            Assert.That(map.BpmEvents.Count, Is.EqualTo(3));
+        }
+
+        [TestCase(24000, 2000, 8000, 40f)] // Resampled
+        [TestCase(6000, 1000, 4000, 16f)] // Trimmed within the final region
+        [TestCase(3000, 1000, 0, 6f)] // Trimmed before the second anchor
+        [TestCase(14000, 1000, 4000, 48f)] // Padded
+        public void SharedGridRecoversAfterAudioReplacement(int samples, int frequency, int anchor, float endBeat)
+        {
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                var info = new BaseInfo { Version = "4.0.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+                TempoMapFileStore.Save(info, Tempo(), Array.Empty<DifficultySettings>());
+                var path = System.IO.Path.Combine(folder.FullName, V4AudioData.FileName);
+                var original = System.IO.File.ReadAllText(path);
+
+                var recovered = TempoMapFileStore.LoadWithoutDifficulty(info, true, samples, frequency);
+
+                Assert.That(recovered.RecoveredFromAudioChange, Is.True);
+                Assert.That(recovered.Frequency, Is.EqualTo(frequency));
+                Assert.That(recovered.EndSample, Is.EqualTo(samples));
+                Assert.That(recovered.Regions.Count, Is.EqualTo(anchor == 0 ? 1 : 2));
+                Assert.That(recovered.Regions[^1].StartSampleIndex, Is.EqualTo(anchor));
+                Assert.That(recovered.Regions[^1].StartBeat, Is.EqualTo(anchor == 0 ? 0 : 8));
+                Assert.That(recovered.Regions[^1].EndBeat, Is.EqualTo(endBeat).Within(0.0001));
+                Assert.That(System.IO.File.ReadAllText(path), Is.EqualTo(original));
+
+                TempoMapFileStore.Save(info, recovered, Array.Empty<DifficultySettings>());
+                var reloaded = TempoMapFileStore.LoadWithoutDifficulty(info, true, samples, frequency);
+                Assert.That(reloaded.RecoveredFromAudioChange, Is.False);
+                Assert.That(reloaded.Regions, Is.EqualTo(recovered.Regions));
+            }
+            finally { folder.Delete(true); }
+        }
+
+        [TestCase(120f)]
+        [TestCase(120.001f)]
+        public void UneditedTempoSavePreservesExactSourceBpm(float bpm)
+        {
+            Settings.Instance.MapVersion = 3;
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                var info = new BaseInfo { Version = "2.1.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+                const string filename = "Expert.dat";
+                var path = System.IO.Path.Combine(folder.FullName, filename);
+                var node = JSON.Parse(@"{""version"":""3.3.0"",""bpmEvents"":[{""b"":0,""m"":120},{""b"":1.00002,""m"":150}]}");
+                node["bpmEvents"][0]["m"] = bpm;
+                System.IO.File.WriteAllText(path, node.ToString());
+                var difficulty = new DifficultySettings(new InfoDifficulty(new InfoDifficultySet { Characteristic = "Standard" })
+                    { Difficulty = "Expert", BeatmapFileName = filename });
+
+                var tempo = TempoMapFileStore.Load(info, difficulty.Map, 48000, 48000).Copy();
+                Assert.That((float)tempo.Bpm(0), Is.Not.EqualTo(bpm), "The fixture must exercise sample quantization.");
+                TempoMapFileStore.Save(info, tempo, new[] { difficulty });
+
+                var saved = JSON.Parse(System.IO.File.ReadAllText(path));
+                Assert.That(saved["bpmEvents"][0]["m"].AsFloat, Is.EqualTo(bpm));
+            }
+            finally { folder.Delete(true); }
+        }
+
+        [Test]
+        public void SharedGridRecoversIntegerBpmFromSampleQuantization()
+        {
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                var info = new BaseInfo { Version = "2.1.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+                var original = new TempoMap(new[]
+                {
+                    new BpmInfoBpmRegion { EndSampleIndex = 24000, EndBeat = 1.00002f },
+                    new BpmInfoBpmRegion { StartSampleIndex = 24000, EndSampleIndex = 48000,
+                        StartBeat = 1.00002f, EndBeat = 2.25252f }
+                }, 48000);
+                TempoMapFileStore.Save(info, original, Array.Empty<DifficultySettings>());
+
+                var loaded = TempoMapFileStore.LoadWithoutDifficulty(info, true, 48000, 48000);
+                var events = loaded.ToEvents();
+                Assert.That(events[0].Bpm, Is.EqualTo(120f));
+                Assert.That(events[1].Bpm, Is.EqualTo(150.3f).Within(0.0001));
+            }
+            finally { folder.Delete(true); }
+        }
+
+        [Test]
+        public void SavingWithFormatJsonDisabledWritesCompactDifficultyAndSharedGrid()
+        {
+            var previousFormatJson = Settings.Instance.FormatJson;
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                Settings.Instance.FormatJson = false;
+                Settings.Instance.MapVersion = 3;
+                var info = new BaseInfo { Version = "2.1.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+                const string difficultyFile = "Expert.dat";
+                var difficultyPath = System.IO.Path.Combine(folder.FullName, difficultyFile);
+                System.IO.File.WriteAllText(difficultyPath, @"{""version"":""3.3.0""}");
+                var difficulty = new DifficultySettings(new InfoDifficulty(new InfoDifficultySet { Characteristic = "Standard" })
+                    { Difficulty = "Expert", BeatmapFileName = difficultyFile });
+
+                TempoMapFileStore.Save(info, Tempo(), new[] { difficulty });
+
+                var difficultyJson = System.IO.File.ReadAllText(difficultyPath);
+                var sharedJson = System.IO.File.ReadAllText(System.IO.Path.Combine(folder.FullName, V2BpmInfo.FileName));
+                var difficultyNode = JSON.Parse(difficultyJson);
+                var sharedNode = JSON.Parse(sharedJson);
+                Assert.That(difficultyNode["bpmEvents"].Count, Is.EqualTo(2));
+                Assert.That(sharedNode["_regions"].Count, Is.EqualTo(2));
+                Assert.That(difficultyJson, Is.EqualTo(difficultyNode.ToString()));
+                Assert.That(sharedJson, Is.EqualTo(sharedNode.ToString()));
+            }
+            finally
+            {
+                Settings.Instance.FormatJson = previousFormatJson;
+                folder.Delete(true);
+            }
+        }
+
         [Test]
         public void SavingDoesNotCreatePermanentBackupDirectories()
         {
@@ -198,6 +385,53 @@ namespace TestsEditMode
                 Assert.That(System.IO.Directory.GetDirectories(directory), Is.Empty);
             }
             finally { System.IO.Directory.Delete(directory, true); }
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void TempoSaveMatchesMapperLegacyStoredBeatsAndConsumesEditorOffset(bool includeBpmChange)
+        {
+            Settings.Instance.MapVersion = 2;
+            var folder = System.IO.Directory.CreateDirectory(System.IO.Path.Combine(
+                System.IO.Path.GetTempPath(), "ChroMapper-Tempo-" + Guid.NewGuid().ToString("N")));
+            try
+            {
+                var info = new BaseInfo { Version = "2.1.0", Directory = folder.FullName, BeatsPerMinute = 120 };
+                SetSongInfo(info);
+                var infoDifficulty = new InfoDifficulty(new InfoDifficultySet { Characteristic = "Standard" })
+                    { Difficulty = "Expert", BeatmapFileName = "Expert.dat" };
+                infoDifficulty.CustomData["_editorOffset"] = 125;
+                infoDifficulty.CustomData["_editorOldOffset"] = 100;
+                infoDifficulty.CustomData["keep"] = true;
+                var infoPath = System.IO.Path.Combine(folder.FullName, "Info.dat");
+                System.IO.File.WriteAllText(infoPath,
+                    @"{""_difficultyBeatmapSets"":[{""_difficultyBeatmaps"":[{""_beatmapFilename"":""Expert.dat"",""_customData"":{""_editorOffset"":125,""_editorOldOffset"":100,""keep"":true}}]}]}");
+
+                var node = JSON.Parse(@"{""_version"":""2.6.0"",""_notes"":[{""_time"":0.25,""_lineIndex"":0,""_lineLayer"":0,""_type"":0,""_cutDirection"":1},{""_time"":2.5,""_lineIndex"":1,""_lineLayer"":0,""_type"":1,""_cutDirection"":1},{""_time"":4,""_lineIndex"":0,""_lineLayer"":0,""_type"":0,""_cutDirection"":1}]}");
+                if (includeBpmChange)
+                    node["_customData"]["_BPMChanges"] = JSON.Parse(@"[{""_time"":2.5,""_BPM"":180}]");
+                var path = System.IO.Path.Combine(folder.FullName, "Expert.dat");
+                System.IO.File.WriteAllText(path, node.ToString());
+                var mapper = V2Difficulty.GetFromJson(node.Clone(), "Expert.dat");
+                var mapperCustomData = infoDifficulty.CustomData.Clone().AsObject;
+                Assert.That(mapper.ConvertCustomBpmToOfficial(120, mapperCustomData), Is.True);
+                Assert.That(mapper.Notes[0].JsonTime, Is.EqualTo(1));
+                if (includeBpmChange) Assert.That(mapper.Notes[1].JsonTime, Is.EqualTo(4));
+
+                var difficulty = new DifficultySettings(infoDifficulty);
+                var tempo = TempoMapFileStore.Load(info, difficulty.Map, 480000, 48000, infoDifficulty.CustomData);
+                Assert.That(TempoMapFileStore.Save(info, tempo, new[] { difficulty }), Is.True);
+                var saved = difficulty.Map;
+                for (var i = 0; i < mapper.Notes.Count; i++)
+                    Assert.That(saved.Notes[i].JsonTime, Is.EqualTo(mapper.Notes[i].JsonTime).Within(0.00001));
+
+                var persistedCustomData = JSON.Parse(System.IO.File.ReadAllText(infoPath))
+                    ["_difficultyBeatmapSets"][0]["_difficultyBeatmaps"][0]["_customData"];
+                Assert.That(persistedCustomData.ToString(), Is.EqualTo(mapperCustomData.ToString()));
+                Assert.That(infoDifficulty.CustomData.ToString(), Is.EqualTo(mapperCustomData.ToString()));
+                Assert.That(TempoMapFileStore.Save(info, tempo, new[] { difficulty }), Is.False);
+            }
+            finally { folder.Delete(true); }
         }
 
         [TestCase(125)]

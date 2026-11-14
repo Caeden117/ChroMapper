@@ -7,12 +7,14 @@ public class TempoWaveformGraphic : MaskableGraphic
 {
     [SerializeField] private Material waveformTemplate;
     public TempoWaveformData Data;
-    public int MaximumColumns = 2048;
+    private const int MaximumColumns = 2048;
     public bool RectifyPeaks;
     private double start;
     private double end;
     private Material waveformMaterial;
     private bool wasReady;
+    private (TempoWaveformData Data, double Start, double End, float Columns, bool Rectify) materialInputs;
+    private float Columns => Math.Clamp(rectTransform.rect.width * canvas.scaleFactor, 1, MaximumColumns);
     private bool IsReady => waveformTemplate != null && Data != null && Data.LevelCount > 0 && end > start;
 
     public void SetWindow(double firstSample, double lastSample)
@@ -35,7 +37,12 @@ public class TempoWaveformGraphic : MaskableGraphic
             SetVerticesDirty();
             SetMaterialDirty();
         }
-        if (ready) SetMaterialDirty();
+        if (!ready) return;
+
+        var inputs = (Data, start, end, Columns, RectifyPeaks);
+        if (materialInputs == inputs) return;
+        materialInputs = inputs;
+        SetMaterialDirty();
     }
 
     protected override void UpdateMaterial()
@@ -51,8 +58,7 @@ public class TempoWaveformGraphic : MaskableGraphic
         var target = materialForRendering;
         target.SetInt("_Ready", 1);
 
-        var columns = Math.Clamp(rectTransform.rect.width * canvas.scaleFactor, 1, Math.Clamp(MaximumColumns, 128, 8192));
-        var desiredSamples = (end - start) / columns;
+        var desiredSamples = (end - start) / Columns;
         var level = Math.Clamp((int)Math.Ceiling(Math.Log(Math.Max(1, desiredSamples / Data.SamplesPerPeak), 2) - 0.000001), 0, Data.LevelCount - 1);
         var peaks = Data.GetLevel(level);
         target.SetBuffer("_Peaks", peaks);

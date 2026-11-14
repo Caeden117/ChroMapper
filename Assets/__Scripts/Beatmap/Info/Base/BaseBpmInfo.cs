@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 
@@ -61,6 +61,9 @@ namespace Beatmap.Info
             return bpmEvents;
         }
 
+        internal static double GetEventSample(BaseBpmEvent bpmEvent, float songBpm, int frequency) =>
+            Math.Round(bpmEvent.SongBpmTime * (60f / songBpm) * frequency, MidpointRounding.AwayFromZero);
+
         public static List<BpmInfoBpmRegion> GetBpmInfoRegions(List<BaseBpmEvent> bpmEvents, float songBpm, int audioSamples, int audioFrequency)
         {
             var regions = new List<BpmInfoBpmRegion>();
@@ -78,13 +81,13 @@ namespace Beatmap.Info
             else
             {
                 // This SHOULD be 0, since the fist BpmEvent is supposed to be at beat 0
-                var previousEndSampleIndex = (int)Math.Round(bpmEvents[0].SongBpmTime * (60f / songBpm) * audioFrequency, MidpointRounding.AwayFromZero);
+                var previousEndSampleIndex = (int)GetEventSample(bpmEvents[0], songBpm, audioFrequency);
 
                 for (var i = 0; i < bpmEvents.Count - 1; i++)
                 {
                     var currentBpmEvent = bpmEvents[i];
                     var nextBpmEvent = bpmEvents[i + 1];
-                    var endSampleIndex = (int)Math.Round(nextBpmEvent.SongBpmTime * (60f / songBpm) * audioFrequency, MidpointRounding.AwayFromZero);
+                    var endSampleIndex = (int)GetEventSample(nextBpmEvent, songBpm, audioFrequency);
 
                     regions.Add(new BpmInfoBpmRegion
                     {

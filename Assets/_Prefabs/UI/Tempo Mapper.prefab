@@ -1554,7 +1554,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   waveformTemplate: {fileID: 2100000, guid: 9a10c60f2b404a04c963852e065733c6, type: 2}
-  MaximumColumns: 2048
   RectifyPeaks: 0
 --- !u!222 &6793084926117128668
 CanvasRenderer:
@@ -2800,7 +2799,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   waveformTemplate: {fileID: 2100000, guid: 9a10c60f2b404a04c963852e065733c6, type: 2}
-  MaximumColumns: 2048
   RectifyPeaks: 0
 --- !u!222 &1176159851557218459
 CanvasRenderer:
@@ -9867,7 +9865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6150270211410579735
 RectTransform:
   m_ObjectHideFlags: 0

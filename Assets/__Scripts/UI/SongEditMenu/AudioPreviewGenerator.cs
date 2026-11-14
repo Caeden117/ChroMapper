@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,13 +30,6 @@ public class AudioPreviewGenerator : MonoBehaviour
         SampleBufferManager.GenerateSamplesBuffer(BeatSaberSongContainer.Instance.LoadedSong);
         audioManager.GenerateFFT(BeatSaberSongContainer.Instance.LoadedSong,
             Settings.Instance.SpectrogramSampleSize, Settings.Instance.SpectrogramEditorQuality, true);
-    }
-
-    public void RestorePreviewBounds()
-    {
-        Shader.SetGlobalFloat(viewStart, 0);
-        Shader.SetGlobalFloat(viewEnd, BeatSaberSongContainer.Instance.LoadedSongLength);
-        UpdatePreviewSelection();
     }
 
     private void Start() => songInfoEditUI.OnTempSongLoaded += TempSongLoaded;
@@ -88,7 +81,7 @@ public class AudioPreviewGenerator : MonoBehaviour
         if (float.TryParse(duration, out previewDuration)) UpdatePreviewSelection();
     }
 
-    private void UpdatePreviewSelection()
+    public void UpdatePreviewSelection()
     {
         if (BeatSaberSongContainer.Instance.LoadedSong == null) return;
         var length = BeatSaberSongContainer.Instance.LoadedSong.length;

@@ -9,13 +9,14 @@ using UnityEngine;
 /// </summary>
 public sealed class TempoWaveformData : IDisposable
 {
+    private const int MinimumSamplesPerPeak = 64;
     private readonly List<ComputeBuffer> levels = new();
     public int SamplesPerPeak { get; private set; }
     public int SampleCount { get; private set; }
     internal int LevelCount => levels.Count;
     internal ComputeBuffer GetLevel(int index) => levels[index];
 
-    public static IEnumerator Generate(AudioClip clip, int samplesPerPeak, ComputeShader shader,
+    public static IEnumerator Generate(AudioClip clip, ComputeShader shader,
         Action<TempoWaveformData> completed)
     {
         if (!SystemInfo.supportsComputeShaders)
@@ -27,7 +28,7 @@ public sealed class TempoWaveformData : IDisposable
 
         var result = new TempoWaveformData
         {
-            SamplesPerPeak = Math.Max(Math.Clamp(samplesPerPeak, 8, 8192), (int)Math.Ceiling(clip.samples / 1048576d)),
+            SamplesPerPeak = Math.Max(MinimumSamplesPerPeak, (int)Math.Ceiling(clip.samples / 1048576d)),
             SampleCount = clip.samples
         };
         var transferred = false;
