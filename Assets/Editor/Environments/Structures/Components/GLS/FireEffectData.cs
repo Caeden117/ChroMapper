@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class FireEffectData<T> : EnvironmentComponentData<T> where T : FireEffect
 {
     [JsonProperty("lightId")] public int Id;
+    [JsonProperty("groupId")] public int GroupId;
+    [JsonProperty("elementId")] public int ElementId;
 
     public int FlipBookPropertyBlockController;
     public int BloomPropertyBlockController;

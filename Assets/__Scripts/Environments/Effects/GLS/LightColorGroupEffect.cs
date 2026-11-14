@@ -58,7 +58,7 @@ public class
     public override void Initialize()
     {
         idToContainer = new LightColorGroupContainer[Count];
-        foreach (var elementId in lightEntries.Select(x => x.ID).Distinct())
+        foreach (var elementId in GetElementIds().Distinct())
         {
             if (elementId < 0 || elementId >= Count)
             {
@@ -116,6 +116,9 @@ public class
 
         activeContainers = idToContainer.Where(x => x is not null).ToArray();
     }
+
+    /// <summary>Gets element IDs requiring event containers; variants can include non-light targets.</summary>
+    protected virtual IEnumerable<int> GetElementIds() => lightEntries.Select(x => x.ID);
 
     public override void Refresh()
     {
