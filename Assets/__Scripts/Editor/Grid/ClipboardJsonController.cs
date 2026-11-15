@@ -320,6 +320,7 @@ internal static class ClipboardJsonController
         HandleChroMapperPresenceChanged(isPointerInside && hasApplicationFocus);
     }
 
+#if UNITY_EDITOR
     internal static void SetTextClipboardForTests(ITextClipboard clipboard)
     {
         textClipboard = clipboard;
@@ -345,6 +346,7 @@ internal static class ClipboardJsonController
         isPointerInside = true;
         hasApplicationFocus = true;
     }
+#endif
 
     private static void ExportPendingJson()
     {
