@@ -44,6 +44,9 @@ namespace Tests.Editor
                 environmentName: "ColliderEnvironment",
                 forceSceneReload: true);
 
+            // Finish scene-load input callbacks before swapping runtimes so shared actions do not retain removed devices.
+            yield return new WaitUntil(() => CMInputCallbackInstaller.InputInstance.asset.actionMaps.All(map => map.enabled));
+
             var context = Object.FindAnyObjectByType<BeatmapRuntimeContext>();
             var lights = context.Descriptor.GetComponentsInChildren<LightController>(true)
                 .Where(light => light.Kind == LightController.LightKind.Group && light.Type == 23)
