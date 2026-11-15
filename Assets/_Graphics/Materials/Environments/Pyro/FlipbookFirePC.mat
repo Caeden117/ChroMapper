@@ -266,7 +266,7 @@ Material:
     - _UseMainTex: 1
     - _UseMotionVectors: 0
     - _UseSpectrogram: 0
-    - _UseTextureFlipbook: 0
+    - _SpecialSamplingMode: 1
     - _UsesParticleVertexStream: 0
     - _VertexChannels: 1
     - _VertexDisplacement: 0

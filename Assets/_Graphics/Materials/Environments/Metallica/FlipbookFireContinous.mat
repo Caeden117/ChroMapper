@@ -259,6 +259,7 @@ Material:
     - _RotateUV: 0
     - _Secondary_UVs: 0
     - _SoftFactor: 0
+    - _SpecialSamplingMode: 1
     - _Spectrogram: 0
     - _SpectrogramBaseValue: 0.2
     - _SpectrogramRange: 0.2
@@ -281,7 +282,6 @@ Material:
     - _UseMainTex: 1
     - _UseMotionVectors: 0
     - _UseSpectrogram: 0
-    - _UseTextureFlipbook: 1
     - _UsesParticleVertexStream: 0
     - _VertexChannels: 1
     - _VertexDisplacement: 0

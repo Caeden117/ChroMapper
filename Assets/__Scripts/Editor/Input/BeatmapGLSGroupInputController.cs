@@ -2,8 +2,6 @@
 using Beatmap.Containers;
 using UnityEngine;
 using UnityEngine.InputSystem;
-// MouseButton is in the LowLevel namespace of the new Input System.
-using UnityEngine.InputSystem.LowLevel;
 
 public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputController<GLSGroupContainer>,
                                                               CMInput.IGLSGroupSelectActions
@@ -106,7 +104,7 @@ public abstract class BeatmapGLSGroupInputController<TData> : BeatmapInputContro
     }
 
     private bool CanInteract =>
-        !Input.GetMouseButton((int)MouseButton.Right)
+        !Mouse.current.rightButton.isPressed
         && KeybindsController.IsMouseInWindow
         && !SongTimelineController.IsHovering
         && !SceneTransitionManager.IsLoading
