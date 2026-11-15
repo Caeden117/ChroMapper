@@ -36354,6 +36354,7 @@ MonoBehaviour:
   - {fileID: 1726669027}
   - {fileID: 530421788}
   - {fileID: 966958171}
+  - {fileID: 2147000102}
   - {fileID: 4895064087318174777}
   - {fileID: 24680021}
   - {fileID: 562783205}
@@ -84659,6 +84660,117 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1001 &2147000100
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1047697274}
+    m_Modifications:
+    - target: {fileID: 1718806963576593950, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: BindedSetting
+      value: SyncCopiedObjectsWithSystemClipboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 2031430479489877711, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2031430479489877711, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 781108813288137152
+      objectReference: {fileID: 0}
+    - target: {fileID: 2031430479489877711, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:3d3fb288927a2264891ce15662e46756
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143766582454679845, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: IsOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143766582454679867, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_Name
+      value: Clipboard JSON Sync Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4143766582547552333, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: m_text
+      value: Sync copied objects with clipboard JSON
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440394529351571253, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: tooltip
+      value: Export copied objects as JSON when leaving ChroMapper and import recognized clipboard JSON when returning.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440394529351571253, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: tooltip.m_TableEntryReference.m_KeyId
+      value: 781108813288137153
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440394529351571253, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: LocalizedTooltip.m_TableEntryReference.m_KeyId
+      value: 781108813288137153
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440394529351571253, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: tooltip.m_TableReference.m_TableCollectionName
+      value: GUID:3d3fb288927a2264891ce15662e46756
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440394529351571253, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      propertyPath: LocalizedTooltip.m_TableReference.m_TableCollectionName
+      value: GUID:3d3fb288927a2264891ce15662e46756
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4143766582454679867, guid: b9c90f90d2774a745b8640678e8f78df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2147000102}
+  m_SourcePrefab: {fileID: 100100000, guid: b9c90f90d2774a745b8640678e8f78df, type: 3}
+--- !u!1 &2147000101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4143766582454679867, guid: b9c90f90d2774a745b8640678e8f78df,
+    type: 3}
+  m_PrefabInstance: {fileID: 2147000100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2147000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147000101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb2a8adee904bd894bfe1936410f850, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  Keywords:
+  - clipboard
+  - json
+  - copy
+  - paste
+--- !u!224 &2147000103 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4143766582454679844, guid: b9c90f90d2774a745b8640678e8f78df,
+    type: 3}
+  m_PrefabInstance: {fileID: 2147000100}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

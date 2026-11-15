@@ -1493,6 +1493,14 @@ MonoBehaviour:
     m_Key: map.glsinnerpreviewshrink.tooltip
     m_Metadata:
       m_Items: []
+  - m_Id: 781108813288137152
+    m_Key: map.clipboardjsonsync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137153
+    m_Key: map.clipboardjsonsync.tooltip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

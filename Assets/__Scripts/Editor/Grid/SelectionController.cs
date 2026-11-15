@@ -103,6 +103,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
     private void OnDestroy() => editModeContext.OnEditModeChanged -= HandleEditModeChanged;
 
+    private void OnApplicationFocus(bool hasFocus) => ClipboardJsonController.HandleApplicationFocusChanged(hasFocus);
+
     private void HandleEditModeChanged(EditingMode mode)
     {
         if (!editModeContext.IsTemporaryModeChange)
@@ -439,10 +441,14 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// <param name="cut">Whether or not to delete the original selection after copying them.</param>
     public void Copy(bool cut = false)
     {
-        if (!HasSelectedObjects()) return;
+        if (!HasSelectedObjects())
+            return;
+
         CopiedObjects.Clear();
-        var firstJsonTime = SelectedObjects.AsValueEnumerable().OrderBy(x => x.JsonTime).First().JsonTime;
-        foreach (var data in SelectedObjects)
+        var orderedSelection = BaseObject.InFileOrder(SelectedObjects).ToList();
+        var firstJsonTime = orderedSelection.AsValueEnumerable().Min(x => x.JsonTime);
+        var clipboardJson = new List<ClipboardJsonObject>(orderedSelection.Count);
+        foreach (var data in orderedSelection)
         {
             var collection = BeatmapObjectContainerCollection.GetCollectionForType(data.ObjectType);
             if (collection.LoadedContainers.TryGetValue(data, out var con))
@@ -452,14 +458,25 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             }
 
             var copy = BeatmapFactory.Clone(data);
+            clipboardJson.Add(new ClipboardJsonObject(BeatmapFactory.Clone(data)));
 
             copy.JsonTime -= firstJsonTime;
-            if (copy is BaseSlider slider) slider.TailJsonTime -= firstJsonTime;
+            if (copy is BaseSlider slider)
+                slider.TailJsonTime -= firstJsonTime;
 
             CopiedObjects.Add(copy);
         }
 
-        if (cut) Delete();
+        var partialGlsGroup = ClipboardJsonController.CaptureCopiedObjects(clipboardJson);
+        if (partialGlsGroup != null)
+        {
+            partialGlsGroup.JsonTime = 0;
+            GLSCommonCommand.RebindGroup(partialGlsGroup);
+            CopiedObjects.Add(partialGlsGroup);
+        }
+
+        if (cut)
+            Delete();
     }
 
     /// <summary>
@@ -467,8 +484,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     /// </summary>
     public void Paste(bool triggersAction = true, bool overwriteSection = false)
     {
-        var newObjects = GetNewObjects(CopiedObjects);
+        var newObjects = GetNewObjects(CopiedObjects, out var pastedInnerEvents);
         if (newObjects.Count == 0) return; // nothing to paste, nothing to execute
+        var pastesInnerEvents = pastedInnerEvents is { Count: > 0 };
         DeselectAll();
 
         // Set up stuff that we need
@@ -549,7 +567,23 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         foreach (var data in pasted)
         {
             collections[data.ObjectType].SpawnObject(data, false, false, true);
-            Select(data, true, false, false);
+            if (!pastesInnerEvents)
+                Select(data, true, false, false);
+        }
+
+        // Replacing the open group can clear the provider context, so make the new one the current context if so.
+        if (editModeContext.EditingMode == EditingMode.EventBox)
+        {
+            var pastedGroup = pasted.OfType<BaseEventBoxGroup>().FirstOrDefault();
+            if (pastedGroup != null)
+            {
+                glsEventGridProvider.GroupContext = pastedGroup;
+                if (pastesInnerEvents)
+                {
+                    foreach (var pastedInnerEvent in pastedInnerEvents)
+                        Select(pastedInnerEvent, true, false, false);
+                }
+            }
         }
 
         RefreshMovedEventsAppearance(SelectedObjects.OfType<BaseEvent>());
@@ -576,8 +610,11 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     }
 
     // not so elegant but this will do for now
-    private HashSet<BaseObject> GetNewObjects(HashSet<BaseObject> copiedObjects)
+    private HashSet<BaseObject> GetNewObjects(
+        HashSet<BaseObject> copiedObjects,
+        out List<BaseGLSEvent> pastedInnerEvents)
     {
+        pastedInnerEvents = null;
         var selectedType = 0;
         var newObjects = copiedObjects
             .Where(x => x != null)
@@ -606,7 +643,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
         if ((selectedType & (int)ObjectType.GLSEvent) > 0)
         {
-            return TryGetModifiedGLSEventOnLanePaste(newObjects);
+            pastedInnerEvents = new List<BaseGLSEvent>();
+            return TryGetModifiedGLSEventOnLanePaste(newObjects, pastedInnerEvents);
         }
 
         return newObjects;
@@ -887,7 +925,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         return newGls;
     }
 
-    private HashSet<BaseObject> TryGetModifiedGLSEventOnLanePaste(HashSet<BaseObject> newObjects)
+    private HashSet<BaseObject> TryGetModifiedGLSEventOnLanePaste(
+        HashSet<BaseObject> newObjects,
+        List<BaseGLSEvent> pastedInnerEvents)
     {
         var firstObject = newObjects.First();
 
@@ -941,6 +981,24 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             return new HashSet<BaseObject>();
         }
 
+        var sourceGroups = newObjects
+            .Cast<BaseGLSEvent>()
+            .Select(evt => evt.EventBoxGroupData)
+            .Distinct()
+            .ToList();
+        if (sourceGroups.Count == 1
+            && sourceGroups[0] != null
+            && newObjects.Cast<BaseGLSEvent>().Select(evt => evt.BoxIndex).Distinct().Count() > 1)
+        {
+            return MergeGLSEventsByFilter(
+                newObjects,
+                newGroup,
+                sourceGroups[0],
+                offsetTime,
+                pastePlacement != null ? destinationBoxIndex : null,
+                pastedInnerEvents);
+        }
+
         var offsetOrder = destinationBoxIndex - minOrder;
 
         var sourceJsonTime = newObjects.AsValueEnumerable().Cast<BaseGLSEvent>().Min(x => x.JsonTime);
@@ -965,56 +1023,184 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             if (obj.JsonTime < newGroup.JsonTime)
                 continue;
 
-            switch (newGroup)
-            {
-                case BaseLightColorEventBoxGroup lcebg:
-                    if (boxIndex >= lcebg.Boxes.Count) continue;
-                    lcebg.Boxes[boxIndex].Events =
-                        lcebg
-                            .Boxes[boxIndex]
-                            .Events.Where(x => !x.HasSameContent(obj))
-                            .Append(obj as BaseLightColorBase)
-                            .OrderBy(x => x.RelativeJsonTime)
-                            .ToArray();
-                    break;
-                case BaseLightRotationEventBoxGroup lrebg:
-                    if (boxIndex >= lrebg.Boxes.Count) continue;
-                    lrebg.Boxes[boxIndex].Events =
-                        lrebg
-                            .Boxes[boxIndex]
-                            .Events.Where(x => !x.HasSameContent(obj))
-                            .Append(obj as BaseLightRotationBase)
-                            .OrderBy(x => x.RelativeJsonTime)
-                            .ToArray();
-                    break;
-                case BaseLightTranslationEventBoxGroup ltebg:
-                    if (boxIndex >= ltebg.Boxes.Count) continue;
-                    ltebg.Boxes[boxIndex].Events =
-                        ltebg
-                            .Boxes[boxIndex]
-                            .Events.Where(x => !x.HasSameContent(obj))
-                            .Append(obj as BaseLightTranslationBase)
-                            .OrderBy(x => x.RelativeJsonTime)
-                            .ToArray();
-                    break;
-                case BaseVfxEventEventBoxGroup ffebg:
-                    if (boxIndex >= ffebg.Boxes.Count)
-                        continue;
-                    ffebg.Boxes[boxIndex].Events =
-                        ffebg
-                            .Boxes[boxIndex]
-                            .Events.Where(x => !x.HasSameContent(obj))
-                            .Append(obj as BaseFxEventFloat)
-                            .OrderBy(x => x.RelativeJsonTime)
-                            .ToArray();
-                    break;
-            }
+            var destinationBox = newGroup.ReadOnlyBoxes[boxIndex];
+            destinationBox.SetEvents(destinationBox.ReadOnlyEvents
+                .Where(existing => Mathf.Abs(existing.RelativeJsonTime - obj.RelativeJsonTime)
+                    >= BeatmapObjectContainerCollection.Epsilon)
+                .Append(obj)
+                .OrderBy(evt => evt.RelativeJsonTime)
+                .ToArray());
+            pastedInnerEvents.Add(obj);
         }
 
         newGroup.JsonTime = context.JsonTime - atsc.CurrentJsonTime;
         GLSCommonCommand.RebindGroup(newGroup);
-        var result = new HashSet<BaseObject> { BeatmapFactory.Clone(newGroup) };
+        var result = new HashSet<BaseObject> { newGroup };
         return result;
+    }
+
+    private HashSet<BaseObject> MergeGLSEventsByFilter(
+        HashSet<BaseObject> newObjects,
+        BaseEventBoxGroup destinationGroup,
+        BaseEventBoxGroup sourceGroup,
+        float pasteRelativeJsonTime,
+        int? hoveredDestinationBoxIndex,
+        List<BaseGLSEvent> pastedInnerEvents)
+    {
+        var selectedEvents = newObjects.Cast<BaseGLSEvent>().ToList();
+        var sourceJsonTime = selectedEvents.Min(evt => evt.JsonTime);
+        destinationGroup.CustomData = sourceGroup.CustomData?.Clone();
+
+        switch (destinationGroup)
+        {
+            case BaseLightColorEventBoxGroup destinationColor
+                when sourceGroup is BaseLightColorEventBoxGroup:
+                destinationColor.Boxes = MergeEventBoxes<BaseLightColorEventBox>(
+                    destinationColor.Boxes,
+                    sourceGroup,
+                    selectedEvents,
+                    sourceJsonTime,
+                    pasteRelativeJsonTime,
+                    hoveredDestinationBoxIndex,
+                    pastedInnerEvents);
+                break;
+            case BaseLightRotationEventBoxGroup destinationRotation
+                when sourceGroup is BaseLightRotationEventBoxGroup:
+                destinationRotation.Boxes = MergeEventBoxes<BaseLightRotationEventBox>(
+                    destinationRotation.Boxes,
+                    sourceGroup,
+                    selectedEvents,
+                    sourceJsonTime,
+                    pasteRelativeJsonTime,
+                    hoveredDestinationBoxIndex,
+                    pastedInnerEvents);
+                break;
+            case BaseLightTranslationEventBoxGroup destinationTranslation
+                when sourceGroup is BaseLightTranslationEventBoxGroup:
+                destinationTranslation.Boxes = MergeEventBoxes<BaseLightTranslationEventBox>(
+                    destinationTranslation.Boxes,
+                    sourceGroup,
+                    selectedEvents,
+                    sourceJsonTime,
+                    pasteRelativeJsonTime,
+                    hoveredDestinationBoxIndex,
+                    pastedInnerEvents);
+                break;
+            case BaseVfxEventEventBoxGroup destinationVfx
+                when sourceGroup is BaseVfxEventEventBoxGroup sourceVfx:
+                destinationVfx.Type = sourceVfx.Type;
+                destinationVfx.Boxes = MergeEventBoxes<BaseVfxEventEventBox>(
+                    destinationVfx.Boxes,
+                    sourceGroup,
+                    selectedEvents,
+                    sourceJsonTime,
+                    pasteRelativeJsonTime,
+                    hoveredDestinationBoxIndex,
+                    pastedInnerEvents);
+                break;
+            default:
+                return new HashSet<BaseObject>();
+        }
+
+        destinationGroup.JsonTime = glsEventGridProvider.GroupContext.JsonTime - atsc.CurrentJsonTime;
+        GLSCommonCommand.RebindGroup(destinationGroup);
+        return new HashSet<BaseObject> { destinationGroup };
+    }
+
+    private static List<TBox> MergeEventBoxes<TBox>(
+        List<TBox> destinationBoxes,
+        BaseEventBoxGroup sourceGroup,
+        IReadOnlyList<BaseGLSEvent> selectedEvents,
+        float sourceJsonTime,
+        float pasteRelativeJsonTime,
+        int? hoveredDestinationBoxIndex,
+        List<BaseGLSEvent> pastedInnerEvents)
+        where TBox : BaseEventBox
+    {
+        var laneOffset = hoveredDestinationBoxIndex.HasValue
+            ? hoveredDestinationBoxIndex.Value - selectedEvents.Min(evt => evt.BoxIndex)
+            : 0;
+        foreach (var selectedBoxEvents in selectedEvents.GroupBy(evt => evt.BoxIndex).OrderBy(group => group.Key))
+        {
+            if (selectedBoxEvents.Key < 0 || selectedBoxEvents.Key >= sourceGroup.ReadOnlyBoxes.Count)
+            {
+                continue;
+            }
+
+            var sourceBox = sourceGroup.ReadOnlyBoxes[selectedBoxEvents.Key] as TBox;
+            if (sourceBox == null)
+            {
+                continue;
+            }
+
+            var destinationBoxIndex = hoveredDestinationBoxIndex.HasValue
+                ? selectedBoxEvents.Key + laneOffset
+                : destinationBoxes.FindIndex(box => HaveSameFilterLane(box, sourceBox));
+            if (hoveredDestinationBoxIndex.HasValue
+                && (destinationBoxIndex < 0 || destinationBoxIndex >= destinationBoxes.Count))
+            {
+                continue;
+            }
+
+            var pastedEvents = selectedBoxEvents.ToArray();
+            pastedInnerEvents.AddRange(pastedEvents);
+            for (var eventIndex = 0; eventIndex < pastedEvents.Length; eventIndex++)
+            {
+                var pastedEvent = pastedEvents[eventIndex];
+                pastedEvent.RelativeJsonTime = Mathf.Max(
+                    0f,
+                    pasteRelativeJsonTime + pastedEvent.JsonTime - sourceJsonTime);
+            }
+
+            var mergedBox = (TBox)sourceBox.Clone();
+            if (hoveredDestinationBoxIndex.HasValue)
+            {
+                // A hover changes the target lane, while the destination filter and axis still define that lane.
+                mergedBox.IndexFilter = (BaseIndexFilter)destinationBoxes[destinationBoxIndex].IndexFilter.Clone();
+                if (mergedBox is BaseLightTransformEventBox mergedTransform
+                    && destinationBoxes[destinationBoxIndex] is BaseLightTransformEventBox destinationTransform)
+                {
+                    mergedTransform.Axis = destinationTransform.Axis;
+                }
+            }
+            var mergedEvents = destinationBoxIndex >= 0
+                ? destinationBoxes[destinationBoxIndex].ReadOnlyEvents
+                    .Where(existingEvent => !pastedEvents.Any(pastedEvent =>
+                        Mathf.Abs(existingEvent.RelativeJsonTime - pastedEvent.RelativeJsonTime)
+                        < BeatmapObjectContainerCollection.Epsilon))
+                    .Concat(pastedEvents)
+                    .OrderBy(evt => evt.RelativeJsonTime)
+                    .ToArray()
+                : pastedEvents.OrderBy(evt => evt.RelativeJsonTime).ToArray();
+            mergedBox.SetEvents(mergedEvents);
+
+            if (destinationBoxIndex >= 0)
+            {
+                destinationBoxes[destinationBoxIndex] = mergedBox;
+            }
+            else
+            {
+                destinationBoxes.Add(mergedBox);
+            }
+        }
+
+        return destinationBoxes;
+    }
+
+    private static bool HaveSameFilterLane(BaseEventBox left, BaseEventBox right)
+    {
+        var leftFilter = left.IndexFilter;
+        var rightFilter = right.IndexFilter;
+        return left.GetAxis() == right.GetAxis()
+            && leftFilter.Type == rightFilter.Type
+            && leftFilter.Param0 == rightFilter.Param0
+            && leftFilter.Param1 == rightFilter.Param1
+            && leftFilter.Reverse == rightFilter.Reverse
+            && leftFilter.Chunks == rightFilter.Chunks
+            && leftFilter.Random == rightFilter.Random
+            && leftFilter.Seed == rightFilter.Seed
+            && Mathf.Approximately(leftFilter.Limit, rightFilter.Limit)
+            && leftFilter.LimitAffectsType == rightFilter.LimitAffectsType;
     }
 
     public void MoveSelection(float beats, bool snapObjects = false)
