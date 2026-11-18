@@ -1,7 +1,6 @@
 using System.Reflection;
 using Beatmap.Base;
 using Beatmap.Containers;
-using Beatmap.Enums;
 // The regression fixture creates authoritative GLS groups through the same factory used by loaded maps.
 using Beatmap.Helper;
 using NUnit.Framework;
@@ -51,17 +50,15 @@ namespace Tests.Editor
         }
 
         // OuterPrimaryGlsColorNodeShiftScrollTogglesStrobeFade protects the collection-owned outer preview node path;
-        // the strobe fade cycle turns off when scrolling down from its first enabled IOCr state.
+        // the strobe fade cycle turns off when scrolling down from its first enabled InOutCubic state.
         [Test]
         public void OuterPrimaryGlsColorNodeShiftScrollTogglesStrobeFade()
         {
             SetEditingMode(EditingMode.GLS);
             var group = PlaceColorGroup(primaryStrobeFade: 1, ghostStrobeFade: 0);
             var primaryEvent = group.Boxes[0].Events[0];
-            // GlsEasingCycleMatchesEditorOrder starts the enabled cycle at IOCr, so scrolling down from that
-            // authored override is the single step that returns to fade off.
-            primaryEvent.ChromaStrobeEasing = (int)EaseType.InOutCircular;
-            primaryEvent.WriteCustom();
+            // GlsEasingCycleMatchesEditorOrder starts the enabled cycle at native InOutCubic, so scrolling down
+            // from that unset-key state is the single step that returns to fade off.
             var containerObject = new GameObject("Outer primary GLS color Strobe Fade test container");
             var controllerObject = new GameObject("Outer primary GLS color Strobe Fade test controller");
             try

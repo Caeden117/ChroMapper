@@ -472,9 +472,9 @@ public static class GLSEventHoverMutation
     private static readonly EaseType[] StrobeFadeEasingValues = new[]
         {
             EaseType.None,
-            EaseType.InOutCircular
+            EaseType.InOutCubic
         }
-        .Concat(AllEasingValues.Where(v => v != EaseType.None && v != EaseType.InOutCircular))
+        .Concat(AllEasingValues.Where(v => v != EaseType.None && v != EaseType.InOutCubic))
         .ToArray();
 
     private static int GetNextEasingValue(

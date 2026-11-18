@@ -5,7 +5,9 @@ using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Shared;
+using Beatmap.V3;
 using NUnit.Framework;
+using SimpleJSON;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -205,6 +207,95 @@ namespace Tests.Editor
 
             Assert.AreEqual(GLSEventIconType.NoEasingStep, state.Primary);
             Assert.AreEqual(GLSEventIconType.EaseInOutCubic, state.Secondary);
+        }
+
+        [Test]
+        public void NativeStrobeFadeResolvesInOutCubicSecondary()
+        {
+            var evt = ParseNativeStrobeFadeEvent();
+
+            Assert.IsNull(
+                evt.ChromaStrobeEasing,
+                "The ordinary node must carry no authored strobeEasing override.");
+            Assert.AreEqual(
+                GLSEventIconType.EaseInOutCubic,
+                GLSEventIconResolver.Resolve(evt).Secondary,
+                "An unset strobeEasing must resolve to the native InOutCubic strobe icon.");
+        }
+
+        [Test]
+        public void NativeStrobeFadeHoverLabelReadsInOutCubic()
+        {
+            var evt = ParseNativeStrobeFadeEvent();
+            var instance = InstantiateStrobeNode(evt, out var container);
+            try
+            {
+                container.SetColorHover(true);
+                var hover = GetHoverDisplay(instance, "Strobe Ease Hover Side");
+                Assert.AreEqual("Strobe Ease\n0.5 IO^3", GetParsedLabel(hover));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
+        [Test]
+        public void NativeStrobeFadeSdfCurveMatchesInOutCubic()
+        {
+            var evt = ParseNativeStrobeFadeEvent();
+            var instance = InstantiateStrobeNode(evt, out _);
+            try
+            {
+                var strobe = instance.transform.Find("Secondary Icon Side").GetComponent<SpriteRenderer>();
+                var renderer = strobe.transform.Find("Strobe Icon Surface").GetComponent<GLSStrobeIconRenderer>();
+                Assert.That(
+                    renderer.CurveParameters.x,
+                    Is.EqualTo(Easing.EasingShaderId((int)EaseType.InOutCubic)).Within(0.0001f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
+        [TestCase(9, -1, GLSEventIconType.EaseInOutCubic, "IO^3")]
+        [TestCase(21, 21, GLSEventIconType.EaseInOutCircular, "IOCr")]
+        [TestCase(0, 0, GLSEventIconType.EaseLinear, "L")]
+        public void AuthoredStrobeEasingMapsToIconHoverAndSdfCurve(
+            int strobeEasing,
+            int expectedSerializedEasing,
+            GLSEventIconType expectedIcon,
+            string expectedShortName)
+        {
+            var evt = V3LightColorBase.GetFromJson(JSON.Parse(
+                "{ \"b\": 0, \"i\": 1, \"c\": 0, \"s\": 1, \"f\": 1, \"sb\": 1, \"sf\": 1, \"customData\": { \"strobeEasing\": " +
+                strobeEasing + " } }"));
+            Assert.AreEqual(
+                expectedSerializedEasing < 0 ? (int?)null : expectedSerializedEasing,
+                evt.ChromaStrobeEasing);
+            evt.WriteCustom();
+            if (expectedSerializedEasing < 0)
+                Assert.IsFalse(evt.CustomData.HasKey("strobeEasing"));
+            else
+                Assert.AreEqual(expectedSerializedEasing, evt.CustomData["strobeEasing"].AsInt);
+
+            Assert.AreEqual(expectedIcon, GLSEventIconResolver.Resolve(evt).Secondary);
+            var instance = InstantiateStrobeNode(evt, out var container);
+            try
+            {
+                var strobe = instance.transform.Find("Secondary Icon Side").GetComponent<SpriteRenderer>();
+                var renderer = strobe.transform.Find("Strobe Icon Surface").GetComponent<GLSStrobeIconRenderer>();
+                var expectedShaderId = Easing.EasingShaderId(GLSStrobeIconRenderer.EaseTypeForIcon(expectedIcon));
+                Assert.That(renderer.CurveParameters.x, Is.EqualTo(expectedShaderId).Within(0.0001f));
+                container.SetColorHover(true);
+                var hover = GetHoverDisplay(instance, "Strobe Ease Hover Side");
+                Assert.AreEqual($"Strobe Ease\n0.5 {expectedShortName}", GetParsedLabel(hover));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
         }
 
         // NoEasingStepMarkerIsAGeneratedRightAngle verifies the generated step glyph reaches both no-easing
@@ -1319,6 +1410,19 @@ namespace Tests.Editor
             {
                 Object.DestroyImmediate(texture);
             }
+        }
+
+        private static BaseLightColorBase ParseNativeStrobeFadeEvent() =>
+            V3LightColorBase.GetFromJson(JSON.Parse(
+                "{ \"b\": 0, \"i\": 1, \"c\": 0, \"s\": 1, \"f\": 1, \"sb\": 1, \"sf\": 1 }"));
+
+        private static GameObject InstantiateStrobeNode(BaseLightColorBase evt, out GLSEventContainer container)
+        {
+            var instance = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(GlsPrefabPath));
+            container = instance.GetComponent<GLSEventContainer>();
+            container.EventData = evt;
+            container.SetIcons(GLSEventIconResolver.Resolve(evt));
+            return instance;
         }
 
         private static string GetParsedLabel(TextMeshPro display)
