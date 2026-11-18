@@ -31,6 +31,14 @@ public class BeatSaberSongContainer : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        if (ReferenceEquals(Instance, this))
+        {
+            Instance = null;
+        }
+    }
     
     public void SelectSongForEditing(BaseInfo info)
     {

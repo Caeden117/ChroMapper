@@ -17,7 +17,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static HashSet<BaseObject> CopiedObjects = new();
 
     public static Action<BaseObject> OnObjectWasSelected;
-    public static Action OnSelectionChanged;
+    // Estimate for visible GLS groups. Their preview ghosts do not subscribe separately.
+    private static readonly FastAction selectionChanged = new(2048);
+
+    // PropEdit is compiled against this Action field. Its initial callback forwards invocations to the fast subscribers.
+    public static Action OnSelectionChanged = selectionChanged.Call;
+
+    public static event Action SelectionChangedEvent
+    {
+        add => selectionChanged.Add(value);
+        remove => selectionChanged.Remove(value);
+    }
+
+    public static void NotifySelectionChanged() => OnSelectionChanged?.Invoke();
+
     public static Action<IEnumerable<BaseObject>> OnSelectionPasted;
 
     private static SelectionController instance;
@@ -296,7 +309,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (addActionEvent)
         {
             OnObjectWasSelected?.Invoke(obj);
-            OnSelectionChanged?.Invoke();
+            NotifySelectionChanged();
         }
     }
 
@@ -333,7 +346,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
 
                 if (addActionEvent) OnObjectWasSelected?.Invoke(beatmapObject);
             });
-        if (addActionEvent) OnSelectionChanged?.Invoke();
+        if (addActionEvent)
+            NotifySelectionChanged();
     }
 
     /// <summary>
@@ -349,7 +363,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             && container != null)
             container.Selected = false;
 
-        if (removeActionEvent) OnSelectionChanged?.Invoke();
+        if (removeActionEvent)
+            NotifySelectionChanged();
     }
 
     /// <summary>
@@ -358,7 +373,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     public static void DeselectAll(bool removeActionEvent = true)
     {
         foreach (var obj in SelectedObjects.AsValueEnumerable().ToArray()) Deselect(obj, false);
-        if (removeActionEvent) OnSelectionChanged?.Invoke();
+        if (removeActionEvent)
+            NotifySelectionChanged();
     }
 
     /// <summary>
@@ -469,6 +485,16 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         var newObjects = GetNewObjects(CopiedObjects);
         if (newObjects.Count == 0) return; // nothing to paste, nothing to execute
+        var pasteOffset = atsc.CurrentJsonTime;
+        if (editModeContext.EditingMode != EditingMode.EventBox
+            && !CommonBeatmapUtils.TryClampTimeOffset(newObjects, pasteOffset,
+                CommonBeatmapUtils.GetFinalSongJsonTime(atsc), out pasteOffset))
+        {
+            return;
+        }
+        // A pasted BPM can shorten the remaining song; validate its projected timeline before conflicts or source data are changed.
+        if (!CommonBeatmapUtils.TryClampOffsetWhenMovingBpmEvents(newObjects, atsc, true, overwriteSection, ref pasteOffset, out _))
+            return;
         DeselectAll();
 
         // Set up stuff that we need
@@ -478,9 +504,8 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         // This first loop creates copy of the data to be pasted.
         foreach (var data in newObjects)
         {
-            var currentJsonTime = atsc.CurrentJsonTime;
-            data.JsonTime = currentJsonTime + data.JsonTime;
-            if (data is BaseSlider slider) slider.TailJsonTime = currentJsonTime + slider.TailJsonTime;
+            data.JsonTime = pasteOffset + data.JsonTime;
+            if (data is BaseSlider slider) slider.TailJsonTime = pasteOffset + slider.TailJsonTime;
 
             // Generic paste shifts the group but not its owned GLS nodes; recompute node times from the shifted group.
             if (data is BaseEventBoxGroup eventBoxGroup)
@@ -564,7 +589,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         if (newObjects.AsValueEnumerable().Any(x => x is BaseRotationEvent)) tracksManager.RefreshTracks();
         if (triggersAction) BeatmapActionContainer.AddAction(new SelectionPastedAction(pasted, totalRemoved));
         OnSelectionPasted?.Invoke(pasted);
-        OnSelectionChanged?.Invoke();
+        NotifySelectionChanged();
 
         if (eventPlacement.ObjectContainerCollection.PropagationEditing != EventGridContainer.PropMode.Off)
         {
@@ -616,34 +641,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
     {
         if (eventPlacement.IsIdle || eventPlacement.QueuedData == null)
         {
-            // Keep runtime evidence for any remaining cases that cannot acquire a Basic Events hover anchor.
             return newObjects;
         }
 
-        // HoverPastingBasicEventsAtSongEndAnchorsLatestAtFinalBeat and
-        // HoverPastingLightIdEventsAtSongEndAnchorsLatestAtFinalBeat clamp the complete clipboard range once per
-        // paste so its latest Basic Event cannot cross the audio boundary in ordinary or propagated lane modes.
-        var latestCopiedJsonTime = 0f;
-        foreach (var obj in newObjects)
-        {
-            if (obj is not BaseEvent evt)
-            {
-                return newObjects;
-            }
-
-            latestCopiedJsonTime = Mathf.Max(latestCopiedJsonTime, evt.JsonTime);
-        }
-
-        var finalSongBpmTime = atsc.GetBeatFromSeconds(atsc.SongAudioSource.clip.length);
-        var finalJsonTime = (float)BeatSaberSongContainer.Instance.Map.SongBpmTimeToJsonTime(finalSongBpmTime);
-        if (latestCopiedJsonTime > finalJsonTime)
-        {
-            return new HashSet<BaseObject>();
-        }
-
-        var maximumPasteAnchor = finalJsonTime - latestCopiedJsonTime;
-        var pasteAnchor = Mathf.Clamp(eventPlacement.QueuedData.JsonTime, 0f, maximumPasteAnchor);
-        var offsetTime = pasteAnchor - atsc.CurrentJsonTime;
+        if (newObjects.AsValueEnumerable().Any(obj => obj is not BaseEvent))
+            return newObjects;
+        var offsetTime = eventPlacement.QueuedData.JsonTime - atsc.CurrentJsonTime;
 
         // Ordinary Basic Events lanes may contain different event types and must retain their lane spacing.
         if (eventGridContainer.PropagationEditing == EventGridContainer.PropMode.Off)
@@ -944,6 +947,12 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         var offsetOrder = destinationBoxIndex - minOrder;
 
         var sourceJsonTime = newObjects.AsValueEnumerable().Cast<BaseGLSEvent>().Min(x => x.JsonTime);
+        var latestJsonTime = newObjects.AsValueEnumerable().Max(obj => obj.JsonTime);
+        var maximumAnchor = CommonBeatmapUtils.GetFinalSongJsonTime(atsc) - context.JsonTime
+            - (latestJsonTime - sourceJsonTime);
+        if (maximumAnchor < 0f)
+            return new HashSet<BaseObject>();
+        offsetTime = Mathf.Min(offsetTime, maximumAnchor);
 
         // i have never been so disgusted by this
         foreach (var obj in newObjects.Cast<BaseGLSEvent>())
@@ -1025,10 +1034,20 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             return;
         }
 
+        var finalJsonTime = CommonBeatmapUtils.GetFinalSongJsonTime(atsc);
+        if (!CommonBeatmapUtils.TryClampTimeOffset(SelectedObjects, beats, finalJsonTime, out var boundedBeats)
+            || boundedBeats == 0f)
+        {
+            return;
+        }
+        if (!CommonBeatmapUtils.TryClampOffsetWhenMovingBpmEvents(SelectedObjects, atsc, false, false, ref boundedBeats, out var changesTempo))
+            return;
+        snapObjects &= boundedBeats == beats && !changesTempo;
+        beats = boundedBeats;
+
         var actions = new List<BeatmapAction>();
         var originalObjects = new List<BaseObject>();
         var editedObjects = new List<BaseObject>();
-        var editedSelectedGlsEvents = new List<BaseGLSEvent>();
 
         // GLS inner events are owned by their parent group; index source references once before cloning that group.
         var selectedGlsGroups = GLSEventLookupIndex.GroupSelectedEvents(SelectedObjects);
@@ -1038,6 +1057,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             var groupEvents = groupEntry.Value;
             var editedGroup = BeatmapFactory.Clone(originalGroup);
             var sourceIndex = new GLSEventLookupIndex(originalGroup);
+            var editedSelectedGlsEvents = new List<BaseGLSEvent>(groupEvents.Count);
 
             foreach (var originalEvent in groupEvents)
             {
@@ -1051,17 +1071,26 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 }
 
                 editedEvent.RelativeJsonTime += beats;
+                // A near-grid audio endpoint must not snap an otherwise valid GLS node beyond the song.
                 if (snapObjects)
-                    editedEvent.RelativeJsonTime = SnapTimeToCurrentGridWithinJsonPrecision(editedEvent.RelativeJsonTime);
+                    editedEvent.RelativeJsonTime = SnapTimeToCurrentGridWithinJsonPrecision(
+                        editedEvent.RelativeJsonTime, 0f, finalJsonTime - editedGroup.JsonTime);
                 editedEvent.JsonTime = editedGroup.JsonTime + editedEvent.RelativeJsonTime;
                 editedSelectedGlsEvents.Add(editedEvent);
             }
 
+            // Shifting selected nodes can change overall order or create equal-beat conflicts.
+            // SetEvents resolves both before the modified group is applied.
+            foreach (var box in editedGroup.ReadOnlyBoxes)
+            {
+                box.SetEvents(box.ReadOnlyEvents.ToArray());
+            }
             actions.Add(new BeatmapGLSEventBoxModifiedAction(
                 editedGroup,
                 originalGroup,
                 "Shifted GLS events.",
-                ActionMergeType.None));
+                originalSelectedEvents: groupEvents,
+                editedSelectedEvents: editedSelectedGlsEvents));
         }
 
         foreach (var original in SelectedObjects.AsValueEnumerable().Where(obj => obj is not BaseGLSEvent))
@@ -1073,7 +1102,9 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
             // Snap the destination; snapping the delta preserves source-time drift.
             if (snapObjects)
             {
-                edited.JsonTime = SnapTimeToCurrentGridWithinJsonPrecision(edited.JsonTime);
+                CommonBeatmapUtils.GetJsonTimeRange(original, out var start, out var end);
+                edited.JsonTime = SnapTimeToCurrentGridWithinJsonPrecision(edited.JsonTime,
+                    original.JsonTime - start, finalJsonTime - (end - original.JsonTime));
             }
 
             if (edited is BaseSlider slider)
@@ -1081,7 +1112,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 slider.TailJsonTime += beats;
                 if (snapObjects)
                 {
-                    slider.TailJsonTime = SnapTimeToCurrentGridWithinJsonPrecision(slider.TailJsonTime);
+                    slider.TailJsonTime = SnapTimeToCurrentGridWithinJsonPrecision(slider.TailJsonTime, 0f, finalJsonTime);
                 }
             }
 
@@ -1108,25 +1139,18 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                 new ActionCollectionAction(actions, true, true, "Shifted a selection of objects."),
                 true);
         }
-
-        // Group replacement recreates GLS inner events and the action redo clears selection; restore the shifted node selection without adding selection actions.
-        foreach (var editedSelectedGlsEvent in editedSelectedGlsEvents)
-        {
-            Select(editedSelectedGlsEvent, true, false, false);
-        }
-
-        if (editedSelectedGlsEvents.Count > 0) OnSelectionChanged?.Invoke();
     }
 
     // Snap only offsets representable by the configured JSON precision.
-    private float SnapTimeToCurrentGridWithinJsonPrecision(float jsonTime)
+    private float SnapTimeToCurrentGridWithinJsonPrecision(float jsonTime, float minimumJsonTime, float maximumJsonTime)
     {
         // Authored objects break exact ties backward; this runtime lacks MidpointRounding.ToZero.
         var scaledGridTime = jsonTime * (double)atsc.GridMeasureSnapping;
         var roundedGridIndex = Math.Sign(scaledGridTime)
             * Math.Ceiling(Math.Abs(scaledGridTime) - 0.5d);
         var snappedJsonTime = (float)(roundedGridIndex / atsc.GridMeasureSnapping);
-        return Mathf.Abs(jsonTime - snappedJsonTime) <= BeatmapObjectContainerCollection.Epsilon
+        return snappedJsonTime >= minimumJsonTime && snappedJsonTime <= maximumJsonTime
+            && Mathf.Abs(jsonTime - snappedJsonTime) <= BeatmapObjectContainerCollection.Epsilon
             ? snappedJsonTime
             : jsonTime;
     }
@@ -1197,6 +1221,21 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
                         }
                         else
                             obstacle.PosX += leftRight;
+                    }
+                }
+                else if (edited is BaseLightColorEventBoxGroup colorGroup)
+                {
+                    var sourceTrack = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(colorGroup.ID);
+                    var colorTrackIds = beatmapRuntimeContext.TrackDefinitions.Gls
+                        .Where(entry => entry.Value.ColorTrack && entry.Value.Group == sourceTrack.Group)
+                        .Select(entry => entry.Key)
+                        .ToArray();
+                    var sourceIndex = Array.IndexOf(colorTrackIds, colorGroup.ID);
+                    if (sourceIndex >= 0 && colorTrackIds.Length > 0)
+                    {
+                        var destinationIndex = Mathf.Clamp(sourceIndex + leftRight, 0, colorTrackIds.Length - 1);
+                        colorGroup.ID = colorTrackIds[destinationIndex];
+                        GLSCommonCommand.RebindGroup(colorGroup);
                     }
                 }
                 else if (edited is BaseEvent e)
@@ -1373,7 +1412,7 @@ public class SelectionController : MonoBehaviour, CMInput.ISelectingActions, CMI
         }
 
         if (shiftedGlsEvents.Count > 0)
-            OnSelectionChanged?.Invoke();
+            NotifySelectionChanged();
         // Spatial lane shifts do not change object time or rotation, so existing track attachments remain valid.
     }
 

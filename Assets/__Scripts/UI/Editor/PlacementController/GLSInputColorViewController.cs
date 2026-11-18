@@ -1,3 +1,4 @@
+using Beatmap.Base;
 using UnityEngine;
 
 public class GLSInputColorViewController : ToggleableViewController
@@ -13,6 +14,9 @@ public class GLSInputColorViewController : ToggleableViewController
     [SerializeField] private TextBoxIntComponent strobeFrequencyInputField;
     [SerializeField] private ToggleComponent fadeToggle;
     [SerializeField] private ToggleComponent strobeFadeToggle;
+
+    [SerializeField] private ButtonComponent colorDistributionPickerButton;
+    [SerializeField] private GLSColorDistributionPicker colorDistributionPicker;
 
     public void Start()
     {
@@ -31,11 +35,26 @@ public class GLSInputColorViewController : ToggleableViewController
         inputController.OnStrobeBrightnessChanged += HandleStrobeBrightnessChanged;
         strobeFrequencyInputField.OnValueChanged(HandleStrobeFrequencyInputChanged);
         inputController.OnSoftStrobeChanged += HandleSoftStrobeChanged;
+        inputController.OnColorDistributionsChanged += HandleColorDistributionsChanged;
+        inputController.OnStrobeColorDistributionsChanged += HandleStrobeColorDistributionsChanged;
         fadeToggle.OnValueChanged(HandleFadeInputChanged);
         easingInputController.OnEasingChanged += HandleEasingChanged;
         strobeFadeToggle.OnValueChanged(HandleStrobeFadeInputChanged);
+
         // Replay the placement owner's cached values after this inactive tab view has subscribed.
         inputController.RefreshViews();
+
+        colorDistributionPicker.OnColorDistributionsChanged += s =>
+        {
+            inputController.NotifyColorDistributionsChanged(s, false);
+            UpdateButtonText();
+        };
+        colorDistributionPicker.OnStrobeColorDistributionsChanged += s =>
+        {
+            inputController.NotifyColorDistributionsChanged(s, true);
+            UpdateButtonText();
+        };
+        colorDistributionPickerButton.OnClick(() => colorDistributionPicker.Open());
     }
 
     public void OnDestroy()
@@ -46,6 +65,8 @@ public class GLSInputColorViewController : ToggleableViewController
         inputController.OnStrobeFrequencyChanged -= HandleStrobeFrequencyChanged;
         inputController.OnStrobeBrightnessChanged -= HandleStrobeBrightnessChanged;
         inputController.OnSoftStrobeChanged -= HandleSoftStrobeChanged;
+        inputController.OnColorDistributionsChanged -= HandleColorDistributionsChanged;
+        inputController.OnStrobeColorDistributionsChanged -= HandleStrobeColorDistributionsChanged;
         easingInputController.OnEasingChanged -= HandleEasingChanged;
     }
 
@@ -75,10 +96,29 @@ public class GLSInputColorViewController : ToggleableViewController
 
     private void HandleStrobeFadeInputChanged(bool value) => inputController.NotifySoftStrobeChanged(value ? 1 : 0);
 
+    private void HandleColorDistributionsChanged(string[] value)
+    {
+        colorDistributionPicker.SetColorDistributions(value, null);
+        UpdateButtonText();
+    }
+
+    private void HandleStrobeColorDistributionsChanged(string[] value)
+    {
+        colorDistributionPicker.SetColorDistributions(null, value);
+        UpdateButtonText();
+    }
+
     private void HandleEasingChanged(int value) => fadeToggle.SetValueWithoutNotify(value >= 0);
 
     // Cache every GLS color control so opening its tab cannot repaint saved values with component defaults.
-    public void ApplyEditorState(float brightness, float strobeBrightness, int strobeFrequency, int easing, int strobeFade)
+    public void ApplyEditorState(
+        float brightness,
+        float strobeBrightness,
+        int strobeFrequency,
+        int easing,
+        int strobeFade,
+        string[] colorDistributions = null,
+        string[] strobeColorDistributions = null)
     {
         brightnessInputField.SetValueWithoutNotify(brightness * 100f);
         strobeBrightnessInputField.SetValueWithoutNotify(strobeBrightness * 100f);
@@ -86,6 +126,16 @@ public class GLSInputColorViewController : ToggleableViewController
         // Cache the CMUI values too, otherwise ToggleComponent.Start redraws its default false state after load.
         fadeToggle.SetValueWithoutNotify(easing >= 0);
         strobeFadeToggle.SetValueWithoutNotify(strobeFade == 1);
+
+        colorDistributionPicker.SetColorDistributions(colorDistributions, strobeColorDistributions);
+        UpdateButtonText();
+    }
+
+    private void UpdateButtonText()
+    {
+        var numColorDistributions = colorDistributionPicker.ColorDistributions.Length;
+        var numStrobeColorDistributions = colorDistributionPicker.StrobeColorDistributions.Length;
+        colorDistributionPickerButton.SetLabelText($"{numColorDistributions} : {numStrobeColorDistributions}");
     }
 
     // Fade must notify the GLS color owner directly because generic easing suppresses an unchanged cached Linear value.

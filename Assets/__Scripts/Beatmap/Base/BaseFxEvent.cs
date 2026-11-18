@@ -21,11 +21,12 @@ namespace Beatmap.Base
         protected BaseFxEvent(BaseFxEvent<T> other) : base(other)
         {
             Value = other.Value;
-            UsePrevious = other.UsePrevious;
         }
 
-        public int UsePrevious;
         public T Value;
+
+        public override string CustomKeyColor => "Unused";
+        public override string CustomKeyTrack => "Unused";
 
         public override void Apply(BaseObject originalData)
         {
@@ -35,7 +36,6 @@ namespace Beatmap.Base
                 return;
 
             Value = other.Value;
-            UsePrevious = other.UsePrevious;
         }
     }
 }

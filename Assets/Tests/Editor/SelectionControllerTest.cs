@@ -15,15 +15,90 @@ namespace Tests.Editor
     public class SelectionControllerTest : TestBase
     {
         private SelectionFixture _fixture;
+        // These tests use beats up to 152, beyond the shared clip's 100-beat limit.
+        private AudioClip originalClip;
+        private AudioClip selectionTestClip;
+        private AudioTimeSyncController audioTime;
 
         [SetUp]
-        public void PlaceObjects() => _fixture = new SelectionFixture();
+        public void PlaceObjects()
+        {
+            audioTime = Object.FindAnyObjectByType<AudioTimeSyncController>();
+            originalClip = audioTime.SongAudioSource.clip;
+            if (selectionTestClip == null)
+                selectionTestClip = AudioClip.Create("Selection regression song", 44100 * 120, 1, 44100, false);
+            audioTime.SongAudioSource.clip = selectionTestClip;
+            _fixture = new SelectionFixture();
+        }
+
+        protected override void BeforeCleanup()
+        {
+            audioTime.SongAudioSource.clip = originalClip;
+            base.BeforeCleanup();
+        }
+
+        protected override void OnReturnSettings()
+        {
+            Object.DestroyImmediate(selectionTestClip);
+            base.OnReturnSettings();
+        }
 
         [Test]
         public void SelectBetweenNotes()
         {
             SelectionController.SelectBetween(_fixture.Note1, _fixture.Note3);
             AssertSelectedObjects(_fixture.ExpectedSelectBetweenNotes());
+        }
+
+        [Test]
+        public void LegacyPluginSelectionFieldForwardsToFastSubscribers()
+        {
+            // PropEdit's compiled code reads and writes a field, so an event with the same name is incompatible.
+            var legacyField = typeof(SelectionController).GetField("OnSelectionChanged", BindingFlags.Public | BindingFlags.Static);
+            Assert.That(legacyField, Is.Not.Null, "PropEdit requires the public static Action field OnSelectionChanged.");
+            var fastEvent = typeof(SelectionController).GetEvent("SelectionChangedEvent", BindingFlags.Public | BindingFlags.Static);
+            Assert.That(fastEvent, Is.Not.Null);
+
+            var originalCallback = (System.Action)legacyField.GetValue(null);
+            var legacyCalls = 0;
+            var fastCalls = 0;
+            System.Action legacyCallback = () => legacyCalls++;
+            System.Action fastCallback = () => fastCalls++;
+            fastEvent.AddEventHandler(null, fastCallback);
+            legacyField.SetValue(null, System.Delegate.Combine(originalCallback, legacyCallback));
+
+            try
+            {
+                SelectionController.Select(_fixture.Note1, addsToSelection: true);
+                Assert.That(legacyCalls, Is.EqualTo(1));
+                Assert.That(fastCalls, Is.EqualTo(1));
+
+                SelectionController.Deselect(_fixture.Note1);
+                Assert.That(legacyCalls, Is.EqualTo(2));
+                Assert.That(fastCalls, Is.EqualTo(2));
+
+                SelectionController.NotifySelectionChanged();
+                Assert.That(legacyCalls, Is.EqualTo(3));
+                Assert.That(fastCalls, Is.EqualTo(3));
+
+                ((System.Action)legacyField.GetValue(null)).Invoke();
+                Assert.That(legacyCalls, Is.EqualTo(4));
+                Assert.That(fastCalls, Is.EqualTo(4));
+
+                legacyField.SetValue(null, System.Delegate.Remove((System.Action)legacyField.GetValue(null), legacyCallback));
+                SelectionController.NotifySelectionChanged();
+                Assert.That(legacyCalls, Is.EqualTo(4));
+                Assert.That(fastCalls, Is.EqualTo(5));
+
+                fastEvent.RemoveEventHandler(null, fastCallback);
+                SelectionController.NotifySelectionChanged();
+                Assert.That(fastCalls, Is.EqualTo(5));
+            }
+            finally
+            {
+                legacyField.SetValue(null, originalCallback);
+                fastEvent.RemoveEventHandler(null, fastCallback);
+            }
         }
 
         // Copy/paste must preserve sub-beat spacing when the source selection is anchored at an
@@ -200,6 +275,50 @@ namespace Tests.Editor
                 BeatmapRaycastCache.Invalidate();
                 Object.DestroyImmediate(inputControllerObject);
                 Object.DestroyImmediate(arcContainerObject);
+            }
+        }
+
+        // GlsPlacementGhostCannotBecomeShiftSelectionEndpoint prevents a queued event from selecting authored lane nodes.
+        [Test]
+        public void GlsPlacementGhostCannotBecomeShiftSelectionEndpoint()
+        {
+            var placement = Object.FindAnyObjectByType<GLSEventColorPlacement>();
+            var inputControllerObject = new GameObject("GLS placement selection resolver test");
+            var inputController = inputControllerObject.AddComponent<TestGlsEventInputController>();
+            Transform placementVisualParent = null;
+            var placementVisualWasActive = false;
+            var placementVisualSiblingIndex = 0;
+
+            try
+            {
+                Assert.NotNull(placement);
+                Assert.NotNull(placement.PlacementVisualContainer);
+                placement.CreateVisual();
+                placementVisualParent = placement.PlacementVisualContainer.transform.parent;
+                placementVisualWasActive = placement.PlacementVisualContainer.gameObject.activeSelf;
+                placementVisualSiblingIndex = placement.PlacementVisualContainer.transform.GetSiblingIndex();
+                placement.PlacementVisualContainer.transform.SetParent(null, true);
+                placement.PlacementVisualContainer.gameObject.SetActive(true);
+                BeatmapRaycastCache.FirstHit = placement.PlacementVisualContainer.gameObject;
+                BeatmapRaycastCache.HasHit = true;
+                BeatmapRaycastCache.HasRaycastThisFrame = true;
+
+                var resolved = inputController.ResolveRaycast(out var resolvedContainer);
+
+                Assert.IsFalse(resolved,
+                    "The queued GLS placement ghost must not resolve as an authored selection endpoint.");
+                Assert.IsNull(resolvedContainer);
+            }
+            finally
+            {
+                BeatmapRaycastCache.Invalidate();
+                if (placement != null && placement.PlacementVisualContainer != null)
+                {
+                    placement.PlacementVisualContainer.gameObject.SetActive(placementVisualWasActive);
+                    placement.PlacementVisualContainer.transform.SetParent(placementVisualParent, true);
+                    placement.PlacementVisualContainer.transform.SetSiblingIndex(placementVisualSiblingIndex);
+                }
+                Object.DestroyImmediate(inputControllerObject);
             }
         }
 
@@ -727,37 +846,93 @@ namespace Tests.Editor
                     BeatmapObjectContainerCollection.Epsilon));
         }
 
-        // Verify time shifts replace the owning GLS group and retain a valid selected child instance.
-        [Test]
-        public void MoveSelectionRebindsSelectedGlsEventToReplacementGroup()
+        // Time shifts must retain exactly the selected children when the owning group is replaced.
+        [TestCase(0.5f, 0.25f, 1, false)]
+        [TestCase(2f, 0.25f, 1, false)]
+        [TestCase(2f, -0.25f, 1, false)]
+        [TestCase(2f, 2f, 1, false)]
+        [TestCase(2f, -2f, 1, false)]
+        [TestCase(0f, 0.25f, 1, false)]
+        [TestCase(2f, 0.25f, 1, true)]
+        [TestCase(2f, 0.25f, 2, false)]
+        [TestCase(2f, -0.25f, 2, false)]
+        [TestCase(2f, 0.25f, 3, false)]
+        [TestCase(2f, -0.25f, 3, false)]
+        [TestCase(2f, 2f, 3, false)]
+        [TestCase(2f, -2f, 3, false)]
+        [TestCase(0f, 0.25f, 3, false)]
+        [TestCase(2f, 0.25f, 3, true)]
+        [TestCase(2f, 0.25f, 4, false)]
+        [TestCase(2f, -0.25f, 4, false)]
+        public void MoveSelectionRebindsSelectedGlsEventToReplacementGroup(
+            float relativeTime,
+            float beats,
+            int selectedEventCount,
+            bool includeNote)
         {
             var selectionController = Object.FindAnyObjectByType<SelectionController>();
-            var group = PlaceGlsGroup(CreateTwoLaneColorGroup());
-            var selectedEvent = group.ReadOnlyBoxes[0].ReadOnlyEvents[0];
-            SelectionController.Select(selectedEvent);
+            var group = CreateTwoLaneColorGroup();
+            foreach (var box in group.ReadOnlyBoxes)
+            {
+                var first = box.ReadOnlyEvents[0];
+                first.RelativeJsonTime = relativeTime;
+                var second = BeatmapFactory.Clone(first);
+                second.RelativeJsonTime = relativeTime + 4f;
+                box.SetEvents(new[] { first, second });
+            }
 
-            selectionController.MoveSelection(0.25f);
+            PlaceGlsGroup(group);
+            var originalEvents = group.ReadOnlyBoxes.SelectMany(box => box.ReadOnlyEvents).ToArray();
+            for (var index = 0; index < selectedEventCount; index++)
+                SelectionController.Select(originalEvents[index], index > 0);
 
-            var movedEvent = SelectionController.SelectedObjects.OfType<BaseGLSEvent>().Single();
-            Assert.AreEqual(0.75f, movedEvent.RelativeJsonTime);
-            Assert.AreEqual(2.75f, movedEvent.JsonTime);
-            Assert.AreEqual(0, movedEvent.BoxIndex);
-            Assert.AreSame(movedEvent.EventBoxGroupData.ReadOnlyBoxes[0], movedEvent.EventBoxData);
-            Assert.AreSame(
-                Object.FindAnyObjectByType<GLSEventGridProvider>().GroupContext,
-                movedEvent.EventBoxGroupData);
+            var originalNoteTime = _fixture.Note1.JsonTime;
+            if (includeNote)
+                SelectionController.Select(_fixture.Note1, true);
 
-            // Verify both action directions retain the correct parent-owned relative time.
+            selectionController.MoveSelection(beats, true);
+
+            AssertMovedSelection(beats);
             PlaceUtils.Undo();
-            Assert.AreEqual(
-                0.5f,
-                Object.FindAnyObjectByType<GLSEventGridProvider>()
-                    .GroupContext.ReadOnlyBoxes[0].ReadOnlyEvents[0].RelativeJsonTime);
+            AssertMovedSelection(0f);
             PlaceUtils.Redo();
-            Assert.AreEqual(
-                0.75f,
-                Object.FindAnyObjectByType<GLSEventGridProvider>()
-                    .GroupContext.ReadOnlyBoxes[0].ReadOnlyEvents[0].RelativeJsonTime);
+            AssertMovedSelection(beats);
+
+            void AssertMovedSelection(float timeOffset)
+            {
+                var currentGroup = Object.FindAnyObjectByType<GLSEventGridProvider>().GroupContext;
+                var expectedSelection = new List<BaseObject>();
+                for (var boxIndex = 0; boxIndex < currentGroup.ReadOnlyBoxes.Count; boxIndex++)
+                {
+                    var box = currentGroup.ReadOnlyBoxes[boxIndex];
+                    Assert.AreEqual(2, box.ReadOnlyEvents.Count);
+                    for (var eventIndex = 0; eventIndex < box.ReadOnlyEvents.Count; eventIndex++)
+                    {
+                        var sourceIndex = (boxIndex * 2) + eventIndex;
+                        var shouldBeSelected = sourceIndex < selectedEventCount;
+                        var evt = box.ReadOnlyEvents[eventIndex];
+                        var expectedRelativeTime = originalEvents[sourceIndex].RelativeJsonTime
+                            + (shouldBeSelected ? timeOffset : 0f);
+                        Assert.AreEqual(expectedRelativeTime, evt.RelativeJsonTime);
+                        Assert.AreEqual(currentGroup.JsonTime + expectedRelativeTime, evt.JsonTime);
+                        Assert.AreEqual(boxIndex, evt.BoxIndex);
+                        Assert.AreSame(box, evt.EventBoxData);
+                        Assert.AreSame(currentGroup, evt.EventBoxGroupData);
+                        Assert.AreEqual(shouldBeSelected, SelectionController.IsObjectSelected(evt));
+                        if (shouldBeSelected)
+                            expectedSelection.Add(evt);
+                    }
+                }
+
+                if (includeNote)
+                {
+                    var selectedNote = SelectionController.SelectedObjects.OfType<BaseNote>().Single();
+                    Assert.AreEqual(originalNoteTime + timeOffset, selectedNote.JsonTime);
+                    expectedSelection.Add(selectedNote);
+                }
+
+                AssertSelectedObjects(expectedSelection);
+            }
         }
 
         // Verify lane shifts rebuild child ownership and preserve boundary-node selection in the same group action.
@@ -822,7 +997,7 @@ namespace Tests.Editor
             var editedGroup = provider.GroupContext as BaseLightTranslationEventBoxGroup;
             Assert.AreEqual(1, editedGroup.Boxes.Count);
             Assert.AreEqual(1, editedGroup.Boxes[0].Axis);
-            Assert.True(editedGroup.Boxes[0].IsAutomaticAxisLane);
+            Assert.False(editedGroup.Boxes[0].IsAutomaticAxisLane);
             Assert.AreEqual(1, editedGroup.Boxes[0].Events.Length);
             Assert.AreEqual(25, editedGroup.Boxes[0].Events[0].Translation);
             Assert.AreEqual(0, editedGroup.Boxes[0].Events[0].BoxIndex);
@@ -1207,6 +1382,22 @@ namespace Tests.Editor
             Assert.AreEqual(1, movedEvents.Length);
             Assert.True(movedEvents.All(evt => Mathf.Approximately(evt.RelativeJsonTime, 0.75f)));
             Assert.AreEqual(1, movedEvents[0].EventBoxData.ReadOnlyEvents.Count);
+            AssertSelectedObjects(new BaseObject[]
+            {
+                Object.FindAnyObjectByType<GLSEventGridProvider>().GroupContext.ReadOnlyBoxes[0].ReadOnlyEvents[0]
+            });
+
+            PlaceUtils.Undo();
+            var restoredEvent = Object.FindAnyObjectByType<GLSEventGridProvider>()
+                .GroupContext.ReadOnlyBoxes[0].ReadOnlyEvents[0];
+            Assert.AreEqual(0.5f, restoredEvent.RelativeJsonTime);
+            AssertSelectedObjects(new BaseObject[] { restoredEvent });
+
+            PlaceUtils.Redo();
+            var redoneEvent = Object.FindAnyObjectByType<GLSEventGridProvider>()
+                .GroupContext.ReadOnlyBoxes[0].ReadOnlyEvents[0];
+            Assert.AreEqual(0.75f, redoneEvent.RelativeJsonTime);
+            AssertSelectedObjects(new BaseObject[] { redoneEvent });
         }
 
         // Same-lane same-beat GLS nodes normalize before a lane replacement moves the surviving node.
@@ -1504,6 +1695,12 @@ namespace Tests.Editor
         private class TestArcInputController : BeatmapInputController<ArcContainer>
         {
             public bool ResolveRaycast(out ArcContainer container) => RaycastFirstObject(out container);
+        }
+
+        // Expose the shared GLS resolver so the placement-ghost regression exercises production hit ownership.
+        private class TestGlsEventInputController : BeatmapInputController<GLSEventContainer>
+        {
+            public bool ResolveRaycast(out GLSEventContainer container) => RaycastFirstObject(out container);
         }
     }
 }

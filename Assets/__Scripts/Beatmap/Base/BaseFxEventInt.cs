@@ -31,8 +31,6 @@ namespace Beatmap.Base
         public override BaseItem Clone() => new BaseFxEventInt(this);
 
         public override ObjectType ObjectType { get; set; } = ObjectType.Event;
-        public override string CustomKeyColor => "Unused";
-        public override string CustomKeyTrack => "Unused";
 
         protected override bool IsConflictingWithObjectAtSameTime(BaseObject other, bool deletion = false) =>
             GetHashCode() == other.GetHashCode();

@@ -77,7 +77,7 @@ public class BeatmapGLSEventTranslationInputController : BeatmapGLSEventInputCon
     {
         // Re-resolve after every clone-producing wheel tick so pooled containers cannot redirect the next mutation.
         TryGetHoveredEvent(context, out var evt);
-        GLSEventHoverMutation.AdjustTranslationEasing(context, evt);
+        GLSEventHoverMutation.AdjustEasing(context, evt);
         if (evt != null)
         {
             RefreshHoveredVisualAfterMutation();

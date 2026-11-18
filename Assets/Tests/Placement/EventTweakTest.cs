@@ -1,18 +1,30 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Containers;
 using Beatmap.Enums;
 using Beatmap.Helper;
 using NUnit.Framework;
+using SimpleJSON;
 using Tests.Infrastructure;
 using UnityEngine;
+using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
 namespace Tests.Placement
 {
     public class EventTweakTest : TestBase
     {
+        protected override EditingMode InitialEditingMode => EditingMode.BasicEvent;
+
+        [UnitySetUp]
+        public IEnumerator EnableBasicEventGrid()
+        {
+            Object.FindAnyObjectByType<EditModeContext>().EditingMode = EditingMode.BasicEvent;
+            yield return null;
+        }
+
         [Test]
         public void TweakLaserSpeedMainValue()
         {
@@ -162,6 +174,32 @@ namespace Tests.Placement
                 2.1f,
                 e => e.CustomStep,
                 "Ring zoom main value");
+        }
+
+        [Test]
+        public void TweakRingZoomStepAccumulatesOnDecimalGrid()
+        {
+            var eventA = PlaceEvent(5.125f, EventTypeValue.Event9);
+            eventA.CustomStep = 0f;
+            eventA.WriteCustom();
+            var controller = Object.FindAnyObjectByType<BeatmapEventInputController>();
+            var precision = Object.FindAnyObjectByType<ScrollPrecisionController>();
+
+            // Medium ring zoom steps are 0.1; repeated ticks must snap back onto the decimal grid
+            // instead of accumulating binary error (0.1 x7 drifts to 0.700000048 unrounded).
+            precision.CurrentPrecision = ScrollPrecision.Medium;
+            for (var i = 0; i < 7; i++)
+            {
+                controller.TweakMain(GetContainer(eventA), 1);
+                eventA = Refresh(eventA);
+            }
+
+            Assert.AreEqual(0.7f, eventA.CustomStep ?? float.NaN, "Seven 0.1 scroll ticks must land on 0.7");
+            eventA.WriteCustom();
+            Assert.AreEqual(
+                new JSONFloatNumber(0.7f).Value,
+                eventA.CustomData[eventA.CustomKeyStep].Value,
+                "customData.step must preserve the rounded float without accumulated error");
         }
 
         [Test]

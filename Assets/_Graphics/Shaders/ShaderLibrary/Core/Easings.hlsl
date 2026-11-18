@@ -129,33 +129,44 @@ inline float Circular_InOut(float k)
                : 0.5 * (sqrt(1 - ((k -= 2) * k)) + 1);
 }
 
-inline float Elastic_In(float k)
+inline float Elastic_In(float t)
 {
-    if (k <= 0 || k >= 1) return k;
-    return -pow(2, 10 * (k -= 1)) * sin((k - 0.1) * (2 * 3.141592654) / 0.4);
-}
-
-inline float Elastic_Out(float k)
-{
-    if (k <= 0 || k >= 1) return k;
-    return (pow(2, -10 * k) * sin((k - 0.1) * (2 * 3.141592654) / 0.4f)) + 1;
-}
-
-inline float Elastic_InOut(float k)
-{
-    if ((k *= 2) < 1)
+    if (t == 0 || t == 1)
     {
-        float val = pow(2, 10 * (k -= 1));
-        val *= sin((k - 0.1) * (2 * 3.141592654) / 0.4);
-        return val * -0.5;
+        return t;
     }
-    float val = pow(2, -10 * (k -= 1));
-    val *= sin((k - 0.1) * (2 * 3.141592654) / 0.4) * 0.5;
-    return val + 1;
+
+    return -pow(2, 10 * t - 10) * sin((10 * t - 10.75) * (2 * 3.141592654 / 3));
 }
 
-const float s = 1.70158;
-const float s2 = 2.5949095;
+inline float Elastic_Out(float t)
+{
+    if (t == 0 || t == 1)
+    {
+        return t;
+    }
+
+    return (pow(2, -10 * t) * sin((10 * t - 0.75) * (2 * 3.141592654 / 3))) + 1;
+}
+
+inline float Elastic_InOut(float t)
+{
+    if (t == 0 || t == 1)
+    {
+        return t;
+    }
+
+    if (t < 0.5)
+    {
+        return -(pow(2, 20 * t - 10) * sin((20 * t - 11.125) * (4 * 3.141592654 / 9))) / 2;
+    }
+
+    return (pow(2, -20 * t + 10) * sin((20 * t - 11.125) * (4 * 3.141592654 / 9)) / 2) + 1;
+}
+
+// Keep shader constants static; non-static globals can be read as zero.
+static const float s = 1.70158;
+static const float s2 = 2.5949095;
 
 inline float Back_In(float k)
 {
@@ -196,6 +207,111 @@ inline float Bounce_InOut(float k)
     return k < 0.5
                ? Bounce_In(k * 2) * 0.5
                : (Bounce_Out((k * 2) - 1) * 0.5) + 0.5;
+}
+
+inline float BeatSaberInOutBack(float t)
+{
+    if (t < 0.517)
+        return 5.014 * t * t * t;
+    float k = (1.665 * (t - 0.4)) - 1;
+    return 1 + (2.70158 * k * k * k) + (1.70158 * k * k);
+}
+
+inline float BeatSaberInOutElastic(float t)
+{
+    if (t < 0.3)
+        return 37.037 * t * t * t;
+    return (pow(2, -10 * (t - 0.2)) * sin(t * 10 * (2 * 3.141592654 / 3))) + 1;
+}
+
+inline float BeatSaberInOutBounce(float t)
+{
+    if (t < 0.36363637)
+        return 20.796 * t * t * t;
+    if (t < 0.72727275)
+        return (7.5625 * (t - 0.54545456) * (t - 0.54545456)) + 0.75;
+    if (t < 0.90909094)
+        return (7.5625 * (t - 0.8181818) * (t - 0.8181818)) + 0.9375;
+    return (7.5625 * (t - 0.95454545) * (t - 0.95454545)) + 0.984375;
+}
+
+float EvaluateEasing(float t, int id)
+{
+    // Keep these IDs aligned with Easing.EasingShaderId when uploading ribbon easings.
+    switch (id)
+    {
+    // 0 = linear, which is the default at the end
+    case 1:
+        return Quadratic_In(t);
+    case 2:
+        return Quadratic_Out(t);
+    case 3:
+        return Quadratic_InOut(t);
+    case 4:
+        return Cubic_In(t);
+    case 5:
+        return Cubic_Out(t);
+    case 6:
+        return Cubic_InOut(t);
+    case 7:
+        return Quartic_In(t);
+    case 8:
+        return Quartic_Out(t);
+    case 9:
+        return Quartic_InOut(t);
+    case 10:
+        return Quintic_In(t);
+    case 11:
+        return Quintic_Out(t);
+    case 12:
+        return Quintic_InOut(t);
+    case 13:
+        return Sinusoidal_In(t);
+    case 14:
+        return Sinusoidal_Out(t);
+    case 15:
+        return Sinusoidal_InOut(t);
+    case 16:
+        return Exponential_In(t);
+    case 17:
+        return Exponential_Out(t);
+    case 18:
+        return Exponential_InOut(t);
+    case 19:
+        return Circular_In(t);
+    case 20:
+        return Circular_Out(t);
+    case 21:
+        return Circular_InOut(t);
+    case 22:
+        return Back_In(t);
+    case 23:
+        return Back_Out(t);
+    case 24:
+        return Back_InOut(t);
+    case 25:
+        return Elastic_In(t);
+    case 26:
+        return Elastic_Out(t);
+    case 27:
+        return Elastic_InOut(t);
+    case 28:
+        return Bounce_In(t);
+    case 29:
+        return Bounce_Out(t);
+    case 30:
+        return Bounce_InOut(t);
+    case 31:
+        return Step(t);
+    case 32:
+        return BeatSaberInOutBack(t);
+    case 33:
+        return BeatSaberInOutElastic(t);
+    case 34:
+        return BeatSaberInOutBounce(t);
+    default:
+        return t; // 0 is linear, but also fall back to anything unknown as linear
+    }
 }
 
 #endif // CHROMAPPER_EASINGS_INCLUDED

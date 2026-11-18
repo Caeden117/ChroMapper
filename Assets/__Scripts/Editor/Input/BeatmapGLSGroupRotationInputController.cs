@@ -24,7 +24,7 @@ public class BeatmapGLSGroupRotationInputController : BeatmapGLSGroupInputContro
     public void OnTweakEasingHover(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         var resolved = TryGetHoveredEvent(context, out var evt) ? evt : null;
-        GLSEventHoverMutation.AdjustRotationEasing(context, resolved);
+        GLSEventHoverMutation.AdjustEasing(context, resolved);
     }
 
     // Name the scroll-wheel axis mutation consistently with the concise keybind label.

@@ -943,6 +943,26 @@ MonoBehaviour:
     m_Localized: Static Lightshow
     m_Metadata:
       m_Items: []
+  - m_Id: 618845221228871681
+    m_Localized: "Sine\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871682
+    m_Localized: "Cubic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871683
+    m_Localized: "Quartic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871684
+    m_Localized: "Quintic\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618845221228871685
+    m_Localized: "Exponential\nUsing this will cause a suggestion for ChromaGLS to be added if used."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

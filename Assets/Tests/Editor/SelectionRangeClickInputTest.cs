@@ -35,7 +35,7 @@ namespace Tests.Editor
 
             var noteInput = Object.FindAnyObjectByType<BeatmapNoteInputController>();
             selectionChanged = false;
-            SelectionController.OnSelectionChanged += FlagSelectionChanged;
+            SelectionController.SelectionChangedEvent += FlagSelectionChanged;
 
             PressCtrlShift();
             var massSelectAction = isolatedInput.BeatmapObjects.Get().FindAction("Mass Select Modifier", false);
@@ -62,7 +62,7 @@ namespace Tests.Editor
                 "The Select Objects action never reached BeatmapInputController.OnSelectObjects.");
             ReleaseVirtualButton(VirtualMouse.leftButton, queueEventOnly: true);
             InputSystem.Update();
-            SelectionController.OnSelectionChanged -= FlagSelectionChanged;
+            SelectionController.SelectionChangedEvent -= FlagSelectionChanged;
 
             Assert.That(
                 selectionChanged,

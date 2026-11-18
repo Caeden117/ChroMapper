@@ -38,13 +38,13 @@ namespace Tests.Editor
         }
 
         [UnityTest]
-        public IEnumerator FullMapResetUsesEachPairsPositionAtTheCallback()
+        public IEnumerator FullMapSeekAndPlaybackResetUseEachPairsPositionAtTheCallback()
         {
             yield return CheckReset("CensoredFullMapFixture.json");
         }
 
         [UnityTest]
-        public IEnumerator ReducedResetUsesEachPairsPositionAtTheCallback()
+        public IEnumerator ReducedSeekAndPlaybackResetUseEachPairsPositionAtTheCallback()
         {
             yield return CheckReset("CensoredLaserResetFixture.json");
         }
@@ -55,19 +55,7 @@ namespace Tests.Editor
             yield return CheckReset("CensoredLaserResetFixture.json", true);
         }
 
-        [UnityTest]
-        public IEnumerator FullMapPlaybackPreservesResetAndReverseSeek()
-        {
-            yield return CheckReset("CensoredFullMapFixture.json", playback: true);
-        }
-
-        [UnityTest]
-        public IEnumerator ReducedPlaybackPreservesResetAndReverseSeek()
-        {
-            yield return CheckReset("CensoredLaserResetFixture.json", playback: true);
-        }
-
-        private IEnumerator CheckReset(string fixture, bool transformParent = false, bool playback = false)
+        private IEnumerator CheckReset(string fixture, bool transformParent = false)
         {
             Settings.Instance.Animations = true;
             Settings.Instance.PlayerCameraFOV = 90;
@@ -100,58 +88,64 @@ namespace Tests.Editor
             var pairs = Object.FindObjectsByType<LightPairRotation>(FindObjectsSortMode.None)
                 .Where(pair => pair.name.StartsWith("RotatingLasersPair")).OrderBy(pair => pair.name).ToArray();
             Assert.That(pairs.Length, Is.EqualTo(8));
-            if (playback)
+            foreach (var playback in transformParent ? new[] { false } : new[] { false, true })
             {
-                playbackClock = atsc;
-                previousClockEnabled = atsc.enabled;
-                atsc.enabled = false;
-                TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, 147.906f);
-            }
-
-            foreach (var beat in new[] { 147.906f, 159.8f, 159.9f, 159.96f, 163.9f, 164.031f, 147.906f, 164.031f })
-            {
+                TestContext.WriteLine($"Laser reset: {fixture}, playback={playback}, transformParent={transformParent}");
+                atsc.MoveToJsonTime(0f);
                 if (playback)
                 {
-                    currentSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(beat));
-                }
-                else
-                {
-                    atsc.MoveToJsonTime(beat);
+                    playbackClock = atsc;
+                    previousClockEnabled = atsc.enabled;
+                    atsc.enabled = false;
+                    TestUtils.StartDeterministicPlaybackAtSongBpmTime(atsc, 147.906f);
                 }
 
-                yield return null;
-                yield return null;
-                if (beat != 147.906f && beat != 163.9f && beat != 164.031f)
-                    continue;
-
-                // Native FitBeat pairs start at Z=44,40,...16 with offset scale 10.
-                // The parent has returned to scale one at 163.875 before this unlocked reset.
-                for (var i = 0; i < pairs.Length; i++)
+                foreach (var beat in new[] { 147.906f, 159.8f, 159.9f, 159.96f, 163.9f, 164.031f, 147.906f, 164.031f })
                 {
-                    var pair = pairs[i];
-                    var nativeZ = 44f - i * 4f;
-                    if (transformParent && i < 2 && beat >= 163.875f)
+                    if (playback)
                     {
-                        nativeZ = (Quaternion.Euler(0, 30, 0) * new Vector3(0, -5, nativeZ) * 2f).z + 7f;
+                        currentSecondsProperty.SetValue(atsc, atsc.GetSecondsFromBeat(beat));
+                    }
+                    else
+                    {
+                        atsc.MoveToJsonTime(beat);
                     }
 
-                    Assert.That(pair.transform.position.z, Is.EqualTo(nativeZ).Within(0.001f));
-                    for (var sideIndex = 0; sideIndex < 2; sideIndex++)
+                    yield return null;
+                    yield return null;
+                    if (beat != 147.906f && beat != 163.9f && beat != 164.031f)
                     {
-                        var side = pair.Transforms[sideIndex];
-                        var angle = GetNativeAngle(oracleData, sideIndex, beat, 44f - i * 4f,
-                            fixture == "CensoredFullMapFixture.json" || i < 2);
-                        var expected = side.Start * Quaternion.Euler(pair.RotationVector * angle);
-                        var error = Quaternion.Angle(side.Transform.localRotation, expected);
-                        Debug.Log($"[CensoredLaserReset] {fixture} beat={beat} pair={i} side={sideIndex} z={nativeZ} angle={angle} error={error}");
-                        Assert.That(error, Is.LessThan(0.1f),
-                            $"{fixture}: {pair.name} side {sideIndex} reset lost its callback-time Z offset.");
+                        continue;
                     }
-                }
 
-                if (fixture == "CensoredFullMapFixture.json" && !playback)
-                {
-                    Capture(cameraManager.CameraControllers[1].Camera, beat);
+                    // Native FitBeat pairs start at Z=44,40,...16 with offset scale 10.
+                    // The parent has returned to scale one at 163.875 before this unlocked reset.
+                    for (var i = 0; i < pairs.Length; i++)
+                    {
+                        var pair = pairs[i];
+                        var nativeZ = 44f - i * 4f;
+                        if (transformParent && i < 2 && beat >= 163.875f)
+                        {
+                            nativeZ = (Quaternion.Euler(0, 30, 0) * new Vector3(0, -5, nativeZ) * 2f).z + 7f;
+                        }
+
+                        Assert.That(pair.transform.position.z, Is.EqualTo(nativeZ).Within(0.001f));
+                        for (var sideIndex = 0; sideIndex < 2; sideIndex++)
+                        {
+                            var side = pair.Transforms[sideIndex];
+                            var angle = GetNativeAngle(oracleData, sideIndex, beat, 44f - i * 4f,
+                                fixture == "CensoredFullMapFixture.json" || i < 2);
+                            var expected = side.Start * Quaternion.Euler(pair.RotationVector * angle);
+                            var error = Quaternion.Angle(side.Transform.localRotation, expected);
+                            Assert.That(error, Is.LessThan(0.1f),
+                                $"{fixture}: {pair.name} side {sideIndex} reset lost its callback-time Z offset.");
+                        }
+                    }
+
+                    if (fixture == "CensoredFullMapFixture.json" && !playback)
+                    {
+                        Capture(cameraManager.CameraControllers[1].Camera, beat);
+                    }
                 }
             }
         }

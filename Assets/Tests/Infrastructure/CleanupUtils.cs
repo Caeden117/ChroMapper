@@ -18,6 +18,24 @@ namespace Tests.Infrastructure
                 CleanupType(objectType);
         }
 
+        // Clean only collections modified by the case, removing GLS children before their parents.
+        public static void CleanupObjects(System.Collections.Generic.IEnumerable<ObjectType> touchedTypes)
+        {
+            var types = touchedTypes.Distinct().ToArray();
+            if (types.Contains(ObjectType.GLSEvent))
+            {
+                CleanupType(ObjectType.GLSEvent);
+            }
+
+            foreach (var objectType in types)
+            {
+                if (objectType != ObjectType.GLSEvent)
+                {
+                    CleanupType(objectType);
+                }
+            }
+        }
+
         private static void CleanupBookmarks()
         {
             var bookmarkManager = Object.FindAnyObjectByType<BookmarkManager>();

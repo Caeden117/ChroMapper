@@ -33,4 +33,7 @@ public abstract class RequirementCheck
 
     public static void RegisterRequirement(RequirementCheck req) => requirementsAndSuggestions.Add(req);
     public abstract RequirementType IsRequiredOrSuggested(InfoDifficulty infoDifficulty, BaseDifficulty map);
+
+    public virtual bool IsSuggestionCoveredByRequirements(InfoDifficulty infoDifficulty) =>
+        infoDifficulty.CustomRequirements.Contains(Name);
 }

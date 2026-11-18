@@ -364,8 +364,10 @@ namespace Tests.Editor
         // bruhwork fake wall (njsOff5 njs17, d0.5, no track events) rides along the same playback
         // pass; its membership at each sample is playback-defined.
         [UnityTest]
-        public IEnumerator Beat529TimingWindowAndBeat609WallsMatchPlaybackAfterScrubs()
+        public IEnumerator Beat529TimingWindowAndBeat609WallsMatchPlaybackAfterScrubs(
+            [Values(0, 32)] int audioLatency)
         {
+            Settings.Instance.AudioLatencyCompensation = audioLatency;
             var authored = BeatSaberSongContainer.Instance.Map.Obstacles
                 .Where(o => o.CustomFake
                     && (Mathf.Approximately(o.JsonTime, 529f) || Mathf.Approximately(o.JsonTime, 609f)))

@@ -243,12 +243,8 @@ public class BasicLightEffect : BasicEventEffect<BasicLightStateData>
         }
     }
 
-    // Environment enhancements register their generated ILightWithId lights during 
-    // HardRefresh, which runs AFTER Descriptor.Initialize built lightIDToController
-    // from the scene's serialized lights. Every customData.lightID-filtered event targeting a generated light
-    // then resolved to nothing and the light never received a color (unlit TransparentLight geometry renders
-    // nothing). Rebuild the ID mapping and adopt post-initialize registrations once, after the enhancement
-    // load has finished, so lightID routing covers the full registered light set.
+    // Environment enhancements can add lights after Descriptor.Initialize builds the light-ID lookup. Rebuild
+    // that lookup after enhancements finish so lightID-filtered events reach the new lights.
     public void RebuildLightIdMapping()
     {
         CalculateMapping();

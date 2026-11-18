@@ -121,7 +121,6 @@ public static class IEnumerableExtensions
         return ~min;
     }
 
-    // ContainerCollectionTest.GetBetween requires the first stacked item at an inclusive lower range boundary.
     public static int LowerBoundBy<TValue, TComparison>(
         this Span<TValue> span,
         TComparison value,
@@ -147,7 +146,6 @@ public static class IEnumerableExtensions
         return min;
     }
 
-    // ContainerCollectionTest.GetBetween requires the position after the final stacked item at an inclusive upper boundary.
     public static int UpperBoundBy<TValue, TComparison>(
         this Span<TValue> span,
         TComparison value,

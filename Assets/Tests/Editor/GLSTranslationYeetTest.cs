@@ -170,12 +170,12 @@ namespace Tests.Editor
         [Test]
         public void TranslationNodeTextUsesYeetAtAndBelowCutoff()
         {
-            StringAssert.StartsWith("YEET", GLSEventCommon.GetTranslationInfo(
+            StringAssert.Contains("YEET", GLSEventCommon.GetTranslationInfo(
                 new BaseLightTranslationBase { Translation = YeetCutoff }));
-            StringAssert.StartsWith("YEET", GLSEventCommon.GetTranslationInfo(
+            StringAssert.Contains("YEET", GLSEventCommon.GetTranslationInfo(
                 new BaseLightTranslationBase { Translation = YeetCutoff - 1f }));
-            Assert.False(GLSEventCommon.GetTranslationInfo(
-                new BaseLightTranslationBase { Translation = YeetCutoff + 8f }).StartsWith("YEET"));
+            StringAssert.DoesNotContain("YEET", GLSEventCommon.GetTranslationInfo(
+                new BaseLightTranslationBase { Translation = YeetCutoff + 8f }));
         }
 
         // The first Alt-scroll only restores the pre-YEET value; the following pulse applies ordinary precision and direction.

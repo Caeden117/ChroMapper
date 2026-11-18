@@ -11,8 +11,15 @@ public class ArcPlacement : BasePlacement<BaseArc, ArcContainer, ArcGridContaine
 {
     private static HashSet<BaseObject> SelectedObjects => SelectionController.SelectedObjects;
 
-    [NonSerialized] public float HeadMultiplier = Settings.Instance.DefaultArcHeadMultiplier;
-    [NonSerialized] public float TailMultiplier = Settings.Instance.DefaultArcTailMultiplier;
+    // Read arc defaults in Awake; Settings.Instance cannot be initialized from a MonoBehaviour constructor.
+    [NonSerialized] public float HeadMultiplier;
+    [NonSerialized] public float TailMultiplier;
+
+    private void Awake()
+    {
+        HeadMultiplier = Settings.Instance.DefaultArcHeadMultiplier;
+        TailMultiplier = Settings.Instance.DefaultArcTailMultiplier;
+    }
 
     public void OnSpawnArc(InputAction.CallbackContext context)
     {
@@ -50,7 +57,7 @@ public class ArcPlacement : BasePlacement<BaseArc, ArcContainer, ArcGridContaine
 
             SelectionController.DeselectAll();
             SelectionController.SelectedObjects = new HashSet<BaseObject>(generatedObjects);
-            SelectionController.OnSelectionChanged?.Invoke();
+            SelectionController.NotifySelectionChanged();
             SelectionController.RefreshSelectionMaterial(false);
             BeatmapActionContainer.AddAction(
                 new BeatmapObjectPlacementAction(

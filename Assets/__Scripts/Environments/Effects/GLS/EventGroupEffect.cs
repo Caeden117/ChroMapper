@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
 using UnityEngine;
@@ -29,20 +28,54 @@ public abstract class
 {
     [SerializeField] public int Count;
 
+    private static bool IsAuthoredBox(TBox box) => !box.IsAutomaticAxisLane || box.ReadOnlyEvents.Count > 0;
+
+    public void RecomputeSongBpmTimes(float jsonTime, bool hasGroups)
+    {
+        // Clear cached per-light states when this GLS event type is removed from the map.
+        if (!hasGroups)
+        {
+            Initialize();
+            Refresh();
+            return;
+        }
+
+        var map = BeatSaberSongContainer.Instance.Map;
+        var boundary = (float)map.JsonTimeToSongBpmTime(jsonTime);
+        Func<TGroupState, float> groupTime = state => state.Base.SongBpmTime;
+        Func<TEventState, float> eventTime = state => (float)map.JsonTimeToSongBpmTime(state.JsonTime);
+        foreach (var (groups, events) in GetContainers())
+        {
+            groups.RecomputeTimesAfter(boundary, groupTime);
+            events.RecomputeTimesAfter(boundary, eventTime);
+        }
+
+        Refresh();
+    }
+
+    // Beat Saber processes boxes in serialized order. The first valid box to select a light wins, even if it
+    // has no events. Rotation and translation axes are independent. A later group interrupts that light at
+    // its distributed start beat.
     public override void InsertData(TGroup data)
     {
         var taken = new HashSet<(Axis, int)>();
-        foreach (var box in data.Boxes.Where(b => GetEventCount(b) > 0))
+        foreach (var box in data.Boxes)
         {
+            if (!IsAuthoredBox(box))
+                continue;
             var indexFilter = IndexFilterHelper.Convert(box.IndexFilter, Count);
             if (indexFilter == null) continue; // i pretend to not see
+            var lastEventTime = GetEventCount(box) > 0
+                ? GetLastEventTime(box)
+                : 0f;
             var beatStep = DistributionHelper.GetBeatStep(
                 DistributionHelper.GetDurationCount(indexFilter),
                 (DistributionType)box.BeatDistributionType,
                 box.BeatDistribution,
-                GetLastEventTime(box));
-            foreach (var (element, durationOrder, distributionOrder) in indexFilter)
+                lastEventTime);
+            foreach (var entry in indexFilter)
             {
+                var (element, durationOrder, distributionOrder) = entry;
                 var key = (box.GetAxis(), element);
                 var container = GetGroupContainer(key);
                 if (!taken.Add(key) || container is null) continue;
@@ -58,6 +91,11 @@ public abstract class
                 state.ElementID = element;
                 state.DurationOrder = durationOrder;
                 state.DistributionOrder = distributionOrder;
+                state.AffectedChunkOrder = entry.AffectedChunkOrder;
+                state.AffectedChunkCount = indexFilter.VisibleCount;
+                state.AffectedLightOrder = entry.AffectedLightOrder;
+                state.AffectedLightCount = indexFilter.AffectedLightCount;
+                state.ConvertedIndexFilter = indexFilter;
 
                 HandleInsertState(container, state);
             }
@@ -83,19 +121,24 @@ public abstract class
         var container = GetEventContainer(key);
         if (container is null) return;
 
-        var indexFilter = IndexFilterHelper.Convert(state.Box.IndexFilter, Count);
+        // The claim pass already converted this box's filter; re-converting here is O(lights) per edit.
+        var indexFilter = state.ConvertedIndexFilter
+            ?? IndexFilterHelper.Convert(state.Box.IndexFilter, Count);
         var distributionOffset = GetDistribution(indexFilter, state.Box, state.DistributionOrder);
         var events = GenerateEvents(state, distributionOffset, maxRelativeJsonTime);
-        foreach (var data in events) HandleInsertEventState(container, data);
-        state.Events = events;
+        foreach (var data in events)
+            HandleInsertEventState(container, data, out _, out _);
+        state.SetEvents(events);
     }
 
-    private static void HandleInsertEventState(
+    internal static void HandleInsertEventState(
         StateChunksContainer<TEventState, TEvent> container,
-        TEventState newState)
+        TEventState newState,
+        out TEventState prevState,
+        out TEventState nextState)
     {
-        var prevState = container.GetOverlappingStateFrom(newState);
-        var nextState = container.GetNextStateFrom(newState);
+        prevState = container.GetOverlappingStateFrom(newState);
+        nextState = container.GetNextStateFrom(newState);
 
         prevState.EndTime = newState.StartTime;
         prevState.Next = newState;
@@ -116,8 +159,10 @@ public abstract class
         TGroup original)
     {
         var taken = new HashSet<(Axis, int)>();
-        foreach (var box in original.Boxes.Where(b => GetEventCount(b) > 0))
+        foreach (var box in original.Boxes)
         {
+            if (!IsAuthoredBox(box))
+                continue;
             var indexFilter = IndexFilterHelper.Convert(box.IndexFilter, Count);
             if (indexFilter == null) continue; // i also pretend to not see
             foreach (var (element, _, _) in indexFilter)
@@ -137,7 +182,8 @@ public abstract class
         var container = GetEventContainer(key);
         if (container is null) return;
 
-        foreach (var evt in state.Events) HandleRemoveEventState(container, evt as TEventState);
+        foreach (var evt in state.Events)
+            HandleRemoveEventState(container, evt as TEventState, out _, out _);
     }
 
     protected override void OnRemoveUpdatePreviousAndNextState(
@@ -153,12 +199,14 @@ public abstract class
         RegenerateEvents(prevState, nextState.LocalJsonTime);
     }
 
-    private void HandleRemoveEventState(
+    internal static void HandleRemoveEventState(
         StateChunksContainer<TEventState, TEvent> container,
-        TEventState stateToRemove)
+        TEventState stateToRemove,
+        out TEventState prevState,
+        out TEventState nextState)
     {
-        var prevState = container.GetPreviousStateFrom(stateToRemove);
-        var nextState = container.GetNextStateFrom(stateToRemove);
+        prevState = container.GetPreviousStateFrom(stateToRemove);
+        nextState = container.GetNextStateFrom(stateToRemove);
 
         prevState.EndTime = nextState.StartTime;
         prevState.Next = nextState;
@@ -199,9 +247,25 @@ public abstract class EventGroupStateData<TGroup, TBox, TEvent> : StateData<TGro
     public int ElementID;
     public int DurationOrder;
     public int DistributionOrder;
+    public int AffectedChunkOrder;
+    public int AffectedChunkCount;
+    public int AffectedLightOrder;
+    public int AffectedLightCount;
 
     public TBox Box;
+    // RegenerateEvents runs once per claimed element, so keep the claim-time conversion rather than
+    // re-parsing the same box filter for every light.
+    public IndexFilterHelper.IndexFilter ConvertedIndexFilter;
     public EventGroupEventStateData<TEvent>[] Events = Array.Empty<EventGroupEventStateData<TEvent>>();
+
+    public void SetEvents(EventGroupEventStateData<TEvent>[] events)
+    {
+        // Generated beats include the per-element distribution offset, which authored node times do not contain.
+        foreach (var evt in events)
+            evt.JsonTime = LocalJsonTime + evt.Base.RelativeJsonTime;
+
+        Events = events;
+    }
 
     protected EventGroupStateData(TGroup data) : base(data)
     {
@@ -215,6 +279,7 @@ public abstract class EventGroupEventStateData<T> : StateData<T> where T : BaseG
 
     public readonly EaseType EaseType;
     public readonly bool UsePrevious;
+    public float JsonTime;
 
     protected EventGroupEventStateData(T data, float startTime, int easeType, int usePrevious) : base(data)
     {

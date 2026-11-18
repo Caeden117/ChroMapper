@@ -292,7 +292,7 @@ public class LightTranslationEventStateData : EventGroupEventStateData<BaseLight
         BaseLightTranslationBase data,
         float startTime,
         int direction = 1,
-        float offset = 0f) : base(data, startTime, data.EaseType, data.UsePrevious)
+            float offset = 0f) : base(data, startTime, data.Easing, data.UsePrevious)
     {
         Translation = data.Translation * direction;
         Distribution = offset * direction;

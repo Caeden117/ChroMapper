@@ -93,9 +93,9 @@ namespace Tests.Editor
                 "Alt+Scroll over a transition ribbon must remain editable when its source is an Off event.");
         }
 
-        // trueHSV remains authored-data-only, so one Alt+Scroll from legacy HSV must return directly to RGB.
+        // AltScrollOnTransitionRibbonCyclesThroughTrueHSV exposes the supported angular mode instead of skipping back to RGB.
         [UnityTest]
-        public IEnumerator AltScrollOnTransitionRibbonDoesNotCycleThroughTrueHSV()
+        public IEnumerator AltScrollOnTransitionRibbonCyclesThroughTrueHSV()
         {
             PrepareRibbonAppearance();
             var sourceData = CreateLightEvent(2f, LightValue.RedOn, EventTypeValue.Event2);
@@ -107,10 +107,50 @@ namespace Tests.Editor
             PrepareRibbonShortcutInput(source, transition);
             ScrollRibbonWithModifiers(UnityEngine.InputSystem.Key.LeftAlt);
             source = RefreshLightEvent(source);
-            Assert.That(
-                source.CustomLerpType,
-                Is.Null,
-                "Alt+Scroll from legacy HSV must return to RGB without exposing trueHSV.");
+            // Verify the authored spelling as well as the typed field so save metadata and playback can detect the same mode.
+            Assert.That(source.CustomLerpType, Is.EqualTo("TrueHSV"),
+                "Alt+Scroll from legacy HSV must select the angular TrueHSV mode.");
+            Assert.That(source.CustomData[source.CustomKeyLerpType].Value, Is.EqualTo("TrueHSV"));
+            // The new mode must travel through the normal undo action rather than mutate the ribbon's visual state alone.
+            PlaceUtils.Undo();
+            source = RefreshLightEvent(source);
+            Assert.That(source.CustomLerpType, Is.EqualTo("HSV"));
+            PlaceUtils.Redo();
+            source = RefreshLightEvent(source);
+            Assert.That(source.CustomLerpType, Is.EqualTo("TrueHSV"));
+        }
+
+        // ReverseAltScrollOnTransitionRibbonSelectsTrueHSV catches two-state or one-direction-only cycling from default RGB.
+        [UnityTest]
+        public IEnumerator ReverseAltScrollOnTransitionRibbonSelectsTrueHSV()
+        {
+            PrepareRibbonAppearance();
+            var source = PlaceLightEvent(2f, LightValue.RedOn);
+            var transition = PlaceLightEvent(4f, LightValue.BlueTransition);
+            yield return null;
+
+            PrepareRibbonShortcutInput(source, transition);
+            ScrollRibbonWithModifiers(-1f, UnityEngine.InputSystem.Key.LeftAlt);
+            source = RefreshLightEvent(source);
+            Assert.That(source.CustomLerpType, Is.EqualTo("TrueHSV"));
+        }
+
+        // AltScrollFromTrueHSVReturnsToRGB keeps the default compact by removing lerpType when cycling past the new mode.
+        [UnityTest]
+        public IEnumerator AltScrollFromTrueHSVReturnsToRGB()
+        {
+            PrepareRibbonAppearance();
+            var sourceData = CreateLightEvent(2f, LightValue.RedOn, EventTypeValue.Event2);
+            sourceData.CustomLerpType = "TrueHSV";
+            var source = PlaceUtils.Place(sourceData);
+            var transition = PlaceLightEvent(4f, LightValue.BlueTransition);
+            yield return null;
+
+            PrepareRibbonShortcutInput(source, transition);
+            ScrollRibbonWithModifiers(UnityEngine.InputSystem.Key.LeftAlt);
+            source = RefreshLightEvent(source);
+            Assert.That(source.CustomLerpType, Is.Null);
+            Assert.That(source.CustomData?.HasKey(source.CustomKeyLerpType) ?? false, Is.False);
         }
 
         // Chroma always evaluates legacy lightGradient payloads in RGB, so their ribbon must not accept transition-only lerpType edits.
@@ -382,6 +422,174 @@ namespace Tests.Editor
                 "after deleting the coincident alpha-zero event while its source gradient remained authored");
         }
 
+        // Basic Event ribbons must match the preview light's premultiplied color and white boost after
+        // compensating for SrcColor blending.
+        [UnityTest]
+        public IEnumerator BasicEventRibbonPixelsMatchPreviewLight()
+        {
+            PrepareRibbonAppearance();
+            var sourceData = CreateLightEvent(2f, LightValue.RedOn, EventTypeValue.Event2);
+            sourceData.CustomColor = new Color(1f, 0.05f, 0.55f, 1f);
+            var source = PlaceUtils.Place(sourceData);
+            var targetData = CreateLightEvent(4f, LightValue.BlueTransition, EventTypeValue.Event2);
+            targetData.CustomColor = new Color(0f, 0.25f, 1f, 1f);
+            var target = PlaceUtils.Place(targetData);
+            yield return null;
+
+            AssertVisibleRibbon(source, target, "before sampling ribbon pixels");
+            var container = (EventContainer)GetEventsContainer().LoadedContainers[source];
+            var ribbon = container.GetComponentInChildren<LightGradientController>(true);
+            var renderer = ribbon.GetComponentInChildren<MeshRenderer>(true);
+            var properties = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(properties);
+            var stripMaterial = GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties);
+            try
+            {
+                var startColor = properties.GetColor(Shader.PropertyToID("_ColorA"));
+                var endColor = properties.GetColor(Shader.PropertyToID("_ColorB"));
+                var lerpType = (BasicEventColorLerpType)properties.GetInt(Shader.PropertyToID("_UseHSV"));
+                // _EasingID is an index into Easing.ByName, not the serialized Beat Saber easing ID.
+                var easing = Easing.ByName.Values.ElementAt(properties.GetInt(Shader.PropertyToID("_EasingID")));
+                foreach (var progress in new[] { 0.25f, 0.5f, 0.75f })
+                {
+                    // Compare against the light's displayed color, including alpha premultiplication and the
+                    // boost toward white.
+                    var expected = BasicEventColorLerp.Interpolate(startColor, endColor, easing(progress), lerpType);
+                    var expectedPixel = GLSColorTransitionCacheTest.CalculateExpectedRibbonPixel(expected);
+                    var presented = GLSColorTransitionCacheTest.RenderGradientPixel(stripMaterial, progress, 0.5f).gamma;
+                    Assert.That(
+                        presented.r,
+                        Is.EqualTo(expectedPixel.r).Within(0.02f),
+                        $"progress={progress} red channel: {presented} vs {expectedPixel}");
+                    Assert.That(
+                        presented.g,
+                        Is.EqualTo(expectedPixel.g).Within(0.02f),
+                        $"progress={progress} green channel: {presented} vs {expectedPixel}");
+                    Assert.That(
+                        presented.b,
+                        Is.EqualTo(expectedPixel.b).Within(0.02f),
+                        $"progress={progress} blue channel: {presented} vs {expectedPixel}");
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(stripMaterial);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator LegacyGradientRibbonPixelsMatchPreviewLight()
+        {
+            PrepareRibbonAppearance();
+            var source = PlaceUtils.Place(new BaseEvent
+            {
+                JsonTime = 2f,
+                Type = (int)EventTypeValue.Event2,
+                Value = (int)LightValue.BlueOn,
+                FloatValue = 1f,
+                CustomLightGradient = new ChromaLightGradient(
+                    new Color(0.298f, 1f, 0.584f, 1f),
+                    new Color(0.298f, 1f, 0.584f, 0f),
+                    2f,
+                    "easeLinear")
+            });
+            var target = PlaceLightEvent(6f, LightValue.BlueTransition);
+            yield return null;
+
+            var eventsContainer = GetEventsContainer();
+            Assert.That(
+                eventsContainer.LoadedContainers.TryGetValue(source, out var objectContainer),
+                Is.True,
+                "The legacy gradient source was not loaded.");
+            var ribbon = objectContainer.GetComponentInChildren<LightGradientController>(true);
+            Assert.That(ribbon, Is.Not.Null, "The legacy gradient source had no ribbon controller.");
+            var renderer = ribbon.GetComponentInChildren<MeshRenderer>(true);
+            Assert.That(renderer, Is.Not.Null, "The legacy gradient source had no ribbon renderer.");
+            Assert.That(ribbon.gameObject.activeInHierarchy, Is.True, "The legacy gradient ribbon was hidden.");
+            Assert.That(renderer.enabled, Is.True, "The legacy gradient ribbon renderer was disabled.");
+            var properties = new MaterialPropertyBlock();
+            renderer.GetPropertyBlock(properties);
+            var stripMaterial = GLSColorTransitionCacheTest.CreateWaveSampleMaterial(properties);
+            try
+            {
+                var startColor = properties.GetColor(Shader.PropertyToID("_ColorA"));
+                var endColor = properties.GetColor(Shader.PropertyToID("_ColorB"));
+                var lerpType = (BasicEventColorLerpType)properties.GetInt(Shader.PropertyToID("_UseHSV"));
+                var easing = Easing.ByName.Values.ElementAt(properties.GetInt(Shader.PropertyToID("_EasingID")));
+                foreach (var progress in new[] { 0.25f, 0.5f, 0.75f })
+                {
+                    var expected = BasicEventColorLerp.Interpolate(startColor, endColor, easing(progress), lerpType);
+                    var expectedPixel = GLSColorTransitionCacheTest.CalculateExpectedRibbonPixel(expected);
+                    var presented = GLSColorTransitionCacheTest.RenderGradientPixel(stripMaterial, progress, 0.5f).gamma;
+                    Assert.That(
+                        presented.r,
+                        Is.EqualTo(expectedPixel.r).Within(0.02f),
+                        $"progress={progress} red channel: {presented} vs {expectedPixel}");
+                    Assert.That(
+                        presented.g,
+                        Is.EqualTo(expectedPixel.g).Within(0.02f),
+                        $"progress={progress} green channel: {presented} vs {expectedPixel}");
+                    Assert.That(
+                        presented.b,
+                        Is.EqualTo(expectedPixel.b).Within(0.02f),
+                        $"progress={progress} blue channel: {presented} vs {expectedPixel}");
+                }
+            }
+            finally
+            {
+                Object.DestroyImmediate(stripMaterial);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator BpmChangeRetimesLoadedTransitionRibbon()
+        {
+            PrepareRibbonAppearance();
+            PlaceUtils.Place(new BaseBpmEvent(0f, 100f));
+            var bpmEventAtChange = PlaceUtils.Place(new BaseBpmEvent(4f, 100f));
+            var source = PlaceLightEvent(2f, LightValue.RedOn);
+            var transition = PlaceLightEvent(12f, LightValue.BlueTransition);
+            yield return null;
+
+            AssertVisibleRibbon(source, transition, "before the BPM edit");
+            AssertLoadedRibbonDuration(source, 10f, "before the BPM edit");
+
+            var bpmCollection = BeatmapObjectContainerCollection
+                .GetCollectionForType<BPMChangeGridContainer>(ObjectType.BpmChange);
+            Assert.That(
+                bpmCollection.LoadedContainers.TryGetValue(bpmEventAtChange, out var bpmContainer),
+                Is.True,
+                "The placed beat-4 BPM event must expose a loaded container for ChangeBpm.");
+            BeatmapBPMChangeInputController.ChangeBpm((BpmEventContainer)bpmContainer, "200");
+            yield return null;
+
+            AssertVisibleRibbon(source, transition, "after the BPM edit");
+            AssertLoadedRibbonDuration(source, 6f, "after the BPM edit");
+
+            PlaceUtils.Undo();
+            yield return null;
+            AssertLoadedRibbonDuration(source, 10f, "after undoing the BPM edit");
+
+            PlaceUtils.Redo();
+            yield return null;
+            AssertLoadedRibbonDuration(source, 6f, "after redoing the BPM edit");
+        }
+
+        private static void AssertLoadedRibbonDuration(BaseEvent source, float expectedDuration, string operation)
+        {
+            var eventsContainer = GetEventsContainer();
+            Assert.That(
+                eventsContainer.LoadedContainers.TryGetValue(source, out var objectContainer),
+                Is.True,
+                $"The transition ribbon source at beat {source.JsonTime} was not loaded {operation}.");
+            var ribbon = objectContainer.GetComponentInChildren<LightGradientController>(true);
+            Assert.That(ribbon, Is.Not.Null, $"The loaded source had no ribbon controller {operation}.");
+            Assert.That(
+                ribbon.transform.localScale.x,
+                Is.EqualTo(expectedDuration * EditorScaleController.EditorScale * (4f / 3f)).Within(0.001f),
+                $"The loaded transition ribbon {operation} must span {expectedDuration} song beats.");
+        }
+
         private void PrepareRibbonAppearance()
         {
             // Enable ribbon rendering before placement so the source container builds the same appearance as the editor.
@@ -454,7 +662,7 @@ namespace Tests.Editor
             var sourceContainer = (EventContainer)GetEventsContainer().LoadedContainers[source];
             var ribbon = sourceContainer.GetComponentInChildren<LightGradientController>(true);
             var renderer = ribbon.GetComponentInChildren<MeshRenderer>(true);
-            Assert.That(ribbon.IsInteractiveBasicEventRibbon, Is.True, "The visible transition ribbon had no hover collider.");
+            Assert.That(ribbon.IsInteractiveTransitionRibbon, Is.True, "The visible transition ribbon had no hover collider.");
 
             // Resolve the actual closest custom collider from the editor camera instead of assuming the ribbon wins hover picking.
             var camera = Object.FindAnyObjectByType<CameraManager>().SelectedCameraController.Camera;
@@ -488,12 +696,16 @@ namespace Tests.Editor
             ribbonShortcutInput.EventObjects.Enable();
         }
 
-        private void ScrollRibbonWithModifiers(params UnityEngine.InputSystem.Key[] modifiers)
+        // ReverseAltScrollOnTransitionRibbonSelectsTrueHSV shares the isolated input lifecycle with positive wheel tests.
+        private void ScrollRibbonWithModifiers(params UnityEngine.InputSystem.Key[] modifiers) =>
+            ScrollRibbonWithModifiers(1f, modifiers);
+
+        private void ScrollRibbonWithModifiers(float direction, params UnityEngine.InputSystem.Key[] modifiers)
         {
             try
             {
                 PressVirtualKeys(modifiers);
-                SetVirtualMouseState(ribbonShortcutScreenPosition, new Vector2(0f, 1f));
+                SetVirtualMouseState(ribbonShortcutScreenPosition, new Vector2(0f, direction));
             }
             finally
             {

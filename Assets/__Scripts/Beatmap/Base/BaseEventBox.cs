@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Beatmap.Enums;
+using Beatmap.Shared;
 using UnityEngine;
 
 namespace Beatmap.Base
@@ -35,6 +36,73 @@ namespace Beatmap.Base
         public int BeatDistributionType { get; set; }
 
         public int Easing { get; set; }
+
+        public void ApplyDefaultAffectFirst()
+        {
+            var value = Settings.Instance.DefaultGLSAffectFirst ? 1 : 0;
+            switch (this)
+            {
+                case BaseLightColorEventBox color:
+                    color.BrightnessAffectFirst = value;
+                    break;
+                case BaseLightTransformEventBox transform:
+                    transform.AffectFirst = value;
+                    break;
+                case BaseVfxEventEventBox fx:
+                    fx.VfxAffectFirst = value;
+                    break;
+            }
+        }
+
+        public bool ShouldSerializeAffectFirst(int value, float distribution, int distributionType)
+        {
+            // Exact zero checks retain even tiny offsets. Unknown custom data may also change distribution behavior.
+            if (value != 1
+                || BeatDistribution != 0f
+                || BeatDistributionType != (int)DistributionType.Wave
+                || distribution != 0f
+                || distributionType != (int)DistributionType.Wave
+                || Easing != 0
+                || IndexFilter.LimitAffectsType != 0)
+            {
+                return true;
+            }
+
+            if (this is BaseLightColorEventBox color
+                && (color.ColorDistributions.Length > 0
+                    || color.StrobeColorDistributions.Length > 0
+                    || color.CustomData.Count > 0))
+            {
+                return true;
+            }
+
+            var events = ReadOnlyEvents;
+            for (var index = 0; index < events.Count; index++)
+            {
+                var evt = events[index];
+                if ((evt.CustomData != null && evt.CustomData.Count > 0)
+                    || evt.CustomColor.HasValue
+                    || evt.CustomTrack != null)
+                {
+                    return true;
+                }
+                // Color controls can hold changes that SaveCustom has not written into the JSON payload yet.
+                if (evt is BaseLightColorBase colorEvent
+                    && (colorEvent.ColorDistributions.Length > 0
+                        || colorEvent.StrobeColorDistributions.Length > 0
+                        || colorEvent.StrobeColor.HasValue
+                        || colorEvent.ChromaColorEasing.HasValue
+                        || colorEvent.ChromaStrobeColorEasing.HasValue
+                        || colorEvent.ChromaStrobeEasing.HasValue
+                        || colorEvent.ChromaStrobeInterval.HasValue
+                        || colorEvent.ChromaStrobePulseWidth != 0.5f
+                        || colorEvent.CustomLerpType != BasicEventColorLerpType.RGB))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         /// Is it a temp ghost lane for ease of placement for rotation / translation XYZ?
@@ -95,15 +163,13 @@ namespace Beatmap.Base
                     && Math.Abs(resolved[resolved.Count - 1].RelativeJsonTime - evt.RelativeJsonTime)
                     < BeatmapObjectContainerCollection.Epsilon)
                 {
-                    // Preserve normal replacement semantics and identify every discarded node precisely enough to repair the source JSON.
                     var deletedEvent = resolved[resolved.Count - 1];
                     var outerBeat = evt.EventBoxGroupData != null
                         ? evt.EventBoxGroupData.JsonTime
                         : evt.JsonTime - evt.RelativeJsonTime;
                     Debug.LogWarning(
                         $"[GLSEventConflict] Deleted duplicate GLS node outerGroupBeat={outerBeat:R} " +
-                        $"innerBeatOffset={deletedEvent.RelativeJsonTime:R} filterLane={deletedEvent.BoxIndex} " +
-                        $"deleted={GLSEventCommon.DescribeEvent(deletedEvent)} kept={GLSEventCommon.DescribeEvent(evt)}.");
+                        $"innerBeatOffset={deletedEvent.RelativeJsonTime:R} filterLane={deletedEvent.BoxIndex}.");
                     resolved[resolved.Count - 1] = evt;
                 }
                 else

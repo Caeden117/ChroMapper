@@ -79,6 +79,7 @@ public class OptionsKeybindsLoader : MonoBehaviour
             
             LoadKeybindsController.AllOverrides.Clear();
             CMInputCallbackInstaller.InputInstance = new CMInput();
+            InputSystemPatch.RebuildBlockMap();
             
             OnTabSelected();
         }

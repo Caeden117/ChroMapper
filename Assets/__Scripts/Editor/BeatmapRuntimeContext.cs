@@ -12,6 +12,8 @@ public class BeatmapRuntimeContext : MonoBehaviour
     [Header("Runtime")] public EnvironmentDescriptor Descriptor;
     public ColorSchemeSO ColorScheme;
     public TrackDefinitionsSO TrackDefinitions;
+    // Owned on the context so boost boundary cursors rebuild before GLS timelines retime on BPM edits.
+    public ColorBoostEventIndex ColorBoostEvents { get; } = new();
 
     public event Action OnEnvironmentUnloaded;
     public event Action<EnvironmentDescriptor> OnEnvironmentLoaded;
@@ -20,6 +22,7 @@ public class BeatmapRuntimeContext : MonoBehaviour
     public event Action<BloomFogParams> OnBloomFogParamsChanged;
     public event Action<ColorSchemeSO> OnColorSchemeChanged;
     public event Action<TrackDefinitionsSO> OnTrackDefinitionsChanged;
+    public event Action<float> OnBeatmapTimingChanged;
 
     public void Start()
     {
@@ -68,10 +71,36 @@ public class BeatmapRuntimeContext : MonoBehaviour
 
     public void NotifyEnvironment()
     {
+        // Collider ribbon retention needs physical counts before its offscreen sources have visual containers.
+        GLSEventCommon.ResetColorTransitionLightCounts();
         if (Descriptor != null)
+        {
+            var manager = Descriptor.LightColorGroupEffectManager;
+            if (manager != null)
+            {
+                foreach (var entry in manager.IdToEffect)
+                {
+                    if (entry.Value != null)
+                        GLSEventCommon.SetColorTransitionLightCount(entry.Key, entry.Value.Count);
+                }
+            }
             OnEnvironmentLoaded?.Invoke(Descriptor);
+        }
         else
             OnEnvironmentUnloaded?.Invoke();
+    }
+
+    public int GetGlsLightCount(int groupId)
+    {
+        if (Descriptor == null
+            || Descriptor.LightColorGroupEffectManager == null
+            || !Descriptor.LightColorGroupEffectManager.IdToEffect.TryGetValue(groupId, out var effect)
+            || effect == null)
+        {
+            return 0;
+        }
+
+        return effect.Count;
     }
 
     private static bool MapDeclaresChromaFamily()
@@ -88,7 +117,8 @@ public class BeatmapRuntimeContext : MonoBehaviour
     public void SetColorScheme(ColorSchemeSO colorScheme)
     {
         ColorScheme.Copy(colorScheme);
-        // TODO: make a class that handles no event class that require direct assignment
+        // Map overrides mutate this active color-scheme copy. Point-definition bases must reference it to
+        // observe those overrides.
         PointDataParsers.ColorScheme = ColorScheme;
         NotifyColorScheme();
     }
@@ -105,4 +135,12 @@ public class BeatmapRuntimeContext : MonoBehaviour
     }
 
     public void NotifyTrackDefinitions() => OnTrackDefinitionsChanged?.Invoke(TrackDefinitions);
+
+    public void NotifyBeatmapTimingChanged(float jsonTime)
+    {
+        // Objects were retimed before this notification, so cached SongBpmTimes are already authoritative.
+        ColorBoostEvents.RecomputeSongBpmTimes();
+        GLSEventCommon.RecomputeColorTransitionTimings(jsonTime);
+        OnBeatmapTimingChanged?.Invoke(jsonTime);
+    }
 }

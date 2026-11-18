@@ -43,7 +43,13 @@ namespace Beatmap.V3
             node["d"] = vfxBox.BeatDistributionType;
             node["s"] = vfxBox.VfxDistribution;
             node["t"] = vfxBox.VfxDistributionType;
-            node["b"] = vfxBox.VfxAffectFirst;
+            if (vfxBox.ShouldSerializeAffectFirst(
+                vfxBox.VfxAffectFirst,
+                vfxBox.VfxDistribution,
+                vfxBox.VfxDistributionType))
+            {
+                node["b"] = vfxBox.VfxAffectFirst;
+            }
             node["i"] = vfxBox.Easing;
 
             node["l"] = new JSONArray();

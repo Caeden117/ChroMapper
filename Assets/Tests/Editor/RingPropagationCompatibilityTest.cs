@@ -14,7 +14,8 @@ namespace Tests.Editor
             var infoDifficulty = new InfoDifficulty(new InfoDifficultySet());
             var requirement = new BeatToTheFutureReq();
 
-            // The compatibility flag needs BeatToTheFuture at runtime, but automatic metadata must not downgrade an explicit dependency.
+            // The compatibility flag needs BeatToTheFuture at runtime, but only V4 upper walls declare a
+            // requirement; everything else stays advisory and a stale declaration demotes to a suggestion.
             difficulty.CustomData[RingPropagationCompatibility.MappedForOldPropagationKey] = true;
             Assert.AreEqual(
                 RequirementCheck.RequirementType.Suggestion,
@@ -22,7 +23,7 @@ namespace Tests.Editor
 
             infoDifficulty.CustomRequirements.Add("BeatToTheFuture");
             Assert.AreEqual(
-                RequirementCheck.RequirementType.Requirement,
+                RequirementCheck.RequirementType.Suggestion,
                 requirement.IsRequiredOrSuggested(infoDifficulty, difficulty));
         }
 

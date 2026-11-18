@@ -129,6 +129,13 @@ namespace Beatmap.Info
                         break;
                 }
             }
+
+            // Check which suggestions are covered only after all requirements have been recalculated.
+            foreach (var req in RequirementCheck.requirementsAndSuggestions)
+            {
+                if (req.IsSuggestionCoveredByRequirements(this))
+                    CustomSuggestions.RemoveAll(x => x.Equals(req.Name));
+            }
         }
     }
 }

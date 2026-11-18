@@ -18,8 +18,7 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
 
     private void Awake()
     {
-        // TheSecondRingZoomZeroIntegerRetainsSerializedPositiveSpacing replaces the omitted serialized Z value
-        // instead of adding an offset, so a future EnvironmentData baseOffset.z=1 remains one rather than becoming two.
+        // The fallback Z replaces the missing serialized value. Adding it as an offset would move rings twice when EnvironmentData already supplies Z.
         BaseOffset.z = 1f;
 
         // The Second uses a plain ordered child group rather than TrackLaneRingsManager/TrackLaneRing components.
@@ -31,9 +30,7 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
             initialPositions[i] = children[i].localPosition;
         }
 
-        // TheSecondRingZoomKeepsRingElementsInBakedSlotOrder: serialized Elements shipped empty and the exported
-        // sibling order is scrambled, so recover the OEM slot order from authored offsets along the movement axis
-        // or the first zoom teleports each ring's baked lights into the wrong slot.
+        // Sort The Second's rings along the movement axis; their hierarchy order does not match their depth.
         var elementOrder = Enumerable.Range(0, children.Length)
             .OrderBy(i => Vector3.Dot(initialPositions[i], MovementVector))
             .ToArray();
@@ -49,7 +46,7 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
         SmoothStepPositionGroupStateData previous,
         SmoothStepPositionGroupStateData current)
     {
-        // TheSecondRingZoomNegativeCustomFloatStepUsesSerializedOffsetAndBypassesIntegerClamp requires Chroma steps to bypass the OEM integer clamp.
+        // Chroma steps bypass the OEM integer clamp.
         var hasCustomStep = current.Base.CustomStep.HasValue;
         var value = hasCustomStep
             ? current.Base.CustomStep.Value
@@ -89,7 +86,6 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
     // The negative-step regressions keep i inside OEM bounds and reserve the extended signed domain for customData.step.
     private Vector3 GetPositionForValue(float value, bool applyIntegerClamp)
     {
-        // TheSecondRingZoomNegativeIntegerValueRespectsClampWithoutCustomStep requires every i value to use the serialized 0..9 clamp.
         if (ClampValue && applyIntegerClamp)
         {
             value = Mathf.Clamp(value, MinValue, MaxValue);
@@ -115,7 +111,6 @@ public class SmoothStepPositionGroupEventEffect : BasicMovementEffect<SmoothStep
     }
 }
 
-// TheSecondRingZoom* stores the exact per-node spacing vector used by deterministic scrubbing.
 public class SmoothStepPositionGroupStateData : BasicMovementStateData
 {
     public Vector3 Position;

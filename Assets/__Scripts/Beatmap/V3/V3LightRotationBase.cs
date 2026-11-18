@@ -16,7 +16,7 @@ namespace Beatmap.V3
             lightRotationBase.JsonTime = lightRotationBase.RelativeJsonTime = node["b"].AsFloat;
             lightRotationBase.Rotation = node["r"].AsFloat;
             lightRotationBase.Direction = node["o"].AsInt;
-            lightRotationBase.EaseType = node["e"].AsInt;
+            lightRotationBase.Easing = node["e"].AsInt;
             lightRotationBase.Loop = node["l"].AsInt;
             lightRotationBase.UsePrevious = node["p"].AsInt;
             lightRotationBase.CustomData = node["customData"];
@@ -30,7 +30,7 @@ namespace Beatmap.V3
             node["b"] = JSONNumber.RoundBeat(lightRotationBase.RelativeJsonTime);
             node["r"] = lightRotationBase.Rotation;
             node["o"] = lightRotationBase.Direction;
-            node["e"] = lightRotationBase.EaseType;
+            node["e"] = lightRotationBase.Easing;
             node["l"] = lightRotationBase.Loop;
             node["p"] = lightRotationBase.UsePrevious;
             lightRotationBase.CustomData = lightRotationBase.SaveCustom();

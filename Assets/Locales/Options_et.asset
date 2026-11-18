@@ -1466,6 +1466,14 @@ MonoBehaviour:
     m_Localized: Solid Chain Link
     m_Metadata:
       m_Items: []
+  - m_Id: 618900100000000001
+    m_Localized: Visualize GLS Light Transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618900100000000002
+    m_Localized: Shows GLS light color event tween ribbons on the editor grid.
+    m_Metadata:
+      m_Items: []
   - m_Id: 664292683443568643
     m_Localized: Edit Mode World Particles
     m_Metadata:

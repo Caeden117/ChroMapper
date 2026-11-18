@@ -19,5 +19,5 @@ MonoBehaviour:
   BlueBoostColor: {r: 0.10196079, g: 0.5372549, b: 0.882353, a: 0}
   WhiteBoostColor: {r: 1, g: 1, b: 1, a: 1}
   OffColor: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 0}
-  RingEventsColor: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 0}
+  RingEventsColor: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 1}
   OtherColor: {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 0}

@@ -46,7 +46,11 @@ namespace Tests.Editor
             // Load the real 1,235-event beat-450..610 slice instead of reconstructing placement callbacks or selecting a
             // presumed failing node; the production loader establishes its collection order, links, and pooled visuals.
             var difficulty = LoadReportedDifficulty();
-            yield return TestUtils.ReloadMap(3, difficulty, beatsPerMinute: ScaledBaseBpm);
+            yield return TestUtils.ReloadMap(
+                3,
+                difficulty,
+                beatsPerMinute: ScaledBaseBpm,
+                forceSceneReload: true);
 
             var editModeContext = UnityEngine.Object.FindAnyObjectByType<EditModeContext>();
             editModeContext.EditingMode = EditingMode.BasicEvent;
