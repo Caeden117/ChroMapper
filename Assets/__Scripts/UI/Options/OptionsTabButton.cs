@@ -46,10 +46,12 @@ public class
         discordPopoutCoroutine = StartCoroutine(SlideText());
     }
 
-    public void RefreshWidth()
+    public void OnTabNameLocalized()
     {
         var discordPopoutSize = DiscordPopout.sizeDelta;
         DiscordPopout.sizeDelta = new Vector2(TextMeshTabName.preferredWidth + 5, discordPopoutSize.y);
+        if (tabManager != null)
+            tabManager.OnTabNameLocalized(this);
     }
 
     public void ChangeTab() => tabManager.OnTabSelected(this);

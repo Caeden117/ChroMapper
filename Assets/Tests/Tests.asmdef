@@ -7,6 +7,8 @@
     "Plugins",
     "Unity.TextMeshPro",
     "Unity.Localization",
+    "Unity.ResourceManager",
+    "UnityEngine.UI",
     "Unity.InputSystem",
     "Unity.InputSystem.TestFramework",
     "LiteNetLib",

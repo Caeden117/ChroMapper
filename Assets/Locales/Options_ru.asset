@@ -1652,6 +1652,125 @@ MonoBehaviour:
     m_Localized: Enables or disables obstacle screen displacement.
     m_Metadata:
       m_Items: []
+  - m_Id: 600253739467243520
+    m_Localized: Set planar reflection visual quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 600578224938516480
+    m_Localized: Mirror Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 603916992827326464
+    m_Localized: Extend lane on both side for wall placement.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 603917705401827328
+    m_Localized: Wall Extend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 607229076554088448
+    m_Localized: Change note, chain and bomb models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 607229419425857536
+    m_Localized: Note Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 607546429884039168
+    m_Localized: Fix shader issue due to incompatible or missing platform support
+      with built-in shader, this will cause some asset to look incorrect and other
+      graphical issue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 607546596444045312
+    m_Localized: Shader Compatibility
+    m_Metadata:
+      m_Items: []
+  - m_Id: 616901396273004544
+    m_Localized: Displays information on the note, arc and chain.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 617996906622844928
+    m_Localized: Display Note Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646563635363807232
+    m_Localized: Reduced 360/90 Rotation Motion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646563496784003072
+    m_Localized: Use linear motion instead of smoothed rotation.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646564095910969344
+    m_Localized: Follow Note Lane Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646563993301516288
+    m_Localized: Follow note rotation in preview.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646564964433887232
+    m_Localized: Follow bomb rotation in preview.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565121904836608
+    m_Localized: Follow arc rotation in preview.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565327744499712
+    m_Localized: Follow chain rotation in preview.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565356051857408
+    m_Localized: Follow wall rotation in preview.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565442844590080
+    m_Localized: Follow Wall Lane Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565287793754112
+    m_Localized: Follow Chain Lane Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565061242617856
+    m_Localized: Follow Arc Lane Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 646565238300966912
+    m_Localized: Follow Bomb Lane Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618900100000000003
+    m_Localized: Enable GLS Ghost Preview
+    m_Metadata:
+      m_Items: []
+  - m_Id: 618900100000000004
+    m_Localized: Disabling this will stop rendering GLS event box inner events as ghosts, and will prevent you from using\nCtrl / Alt / Shift + Scroll Mouse Hover combinations to tweak inner events in the outer track lane view.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 439117794545255041
+    m_Localized: Shrink GLS Event Preview %
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137151
+    m_Localized: '{TextValue}'
+    m_Metadata:
+      m_Items:
+      - rid: 2707327089558421565
+  - m_Id: 627154617426568411
+    m_Localized: Change how much smaller transparent preview nodes appear in the main GLS track lanes for events nested inside a GLS group.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619100100000000001
+    m_Localized: '"Affect First" default to on?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 619100100000000002
+    m_Localized: By default new event boxes will have Affect First defaulted to on, when this is enabled. Disable this if you prefer the Original Editor behavior. This value will not be serialized in your json unless the event box has some distribution related settings.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -1681,3 +1800,4 @@ MonoBehaviour:
         - id: 67494721340747776
         - id: 300618005946236928
         - id: 535382867704209408
+        - id: 781108813288137151

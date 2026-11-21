@@ -328,7 +328,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1224618600555167803}
         m_TargetAssemblyTypeName: 
-        m_MethodName: RefreshWidth
+        m_MethodName: OnTabNameLocalized
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
