@@ -6,7 +6,7 @@ using Beatmap.Enums;
 using UnityEngine;
 
 /// <summary>
-///     Indexes authored color-boost events by JSON time for allocation-free palette-state queries.
+///     Indexes color-boost events by JSON time for allocation-free palette-state queries.
 /// </summary>
 /// <remarks>
 ///     Basic-event appearance and preview updates need the last boost at or before a time and the next boost after a
@@ -16,11 +16,36 @@ using UnityEngine;
 ///     boost events in maps with lots of boost events takes noticeable processing time,
 ///     but these seem several orders of magnitude less common than EG light events.
 /// </remarks>
-internal sealed class ColorBoostEventIndex
+public sealed class ColorBoostEventIndex
 {
+    private const int ChunkSize = StateChunksContainer<LightColorEventStateData, BaseLightColorBase>.ChunkSize;
+
     // One event per timestamp is authoritative; the timestamp list supports allocation-free predecessor searches.
     private readonly List<float> eventTimes = new();
     private readonly Dictionary<float, BaseEvent> eventsByTime = new();
+
+    // Rendering reads each boundary's cached SongBpmTime and palette state directly instead of
+    // converting JSON time or re-resolving boost state per ribbon.
+    private readonly List<BoostSnapshot> boostSnapshots = new();
+
+    // Each chunk serves its requests from a retained cursor: a forward request continues where the
+    // last one stopped and an earlier request rewinds to that chunk's head. Chunks own the state of
+    // boosts at their start, so a head is the first boundary strictly after the chunk start. The
+    // terminal chunk after the last boost's chunk clamps far-future lookups to head == Count.
+    private readonly List<BoostChunk> boostChunks = new() { new BoostChunk() };
+
+    private struct BoostSnapshot
+    {
+        public float SongBpmTime;
+        public bool Boost;
+    }
+
+    private struct BoostChunk
+    {
+        public int Head;
+        public int Next;
+        public float Time;
+    }
 
     // Coalesce boost mutations into the exact light-event interval whose palette can have changed.
     private float appearanceStartTime = float.PositiveInfinity;
@@ -40,12 +65,14 @@ internal sealed class ColorBoostEventIndex
                 continue;
             }
 
-            Add(evt);
+            InsertEvent(evt);
         }
+
+        RecomputeSongBpmTimes();
     }
 
     // Insert at the binary-search insertion point so time queries remain logarithmic.
-    public void Add(BaseEvent evt)
+    private void InsertEvent(BaseEvent evt)
     {
         var search = BinarySearchTime(evt.JsonTime);
         if (search < 0)
@@ -54,6 +81,12 @@ internal sealed class ColorBoostEventIndex
         }
 
         eventsByTime[evt.JsonTime] = evt;
+    }
+
+    public void Add(BaseEvent evt)
+    {
+        InsertEvent(evt);
+        RecomputeSongBpmTimes();
     }
 
     // Only remove the currently indexed instance so replacing a boost cannot remove its replacement.
@@ -71,9 +104,68 @@ internal sealed class ColorBoostEventIndex
         {
             eventTimes.RemoveAt(search);
         }
+
+        RecomputeSongBpmTimes();
     }
 
-    // Resolve the last authored boost at or before the requested event time.
+    public int Count => eventTimes.Count;
+
+    // One pass merges sorted snapshots with chunk start times to fill every head.
+    public void RecomputeSongBpmTimes()
+    {
+        boostSnapshots.Clear();
+        foreach (var time in eventTimes)
+        {
+            var evt = eventsByTime[time];
+            boostSnapshots.Add(new BoostSnapshot
+            {
+                SongBpmTime = evt.SongBpmTime,
+                Boost = evt.Value == 1
+            });
+        }
+
+        boostChunks.Clear();
+        var chunkCount = boostSnapshots.Count > 0
+            ? Mathf.Max(1, Mathf.FloorToInt(boostSnapshots[boostSnapshots.Count - 1].SongBpmTime / ChunkSize) + 2)
+            : 1;
+        var head = 0;
+        for (var i = 0; i < chunkCount; i++)
+        {
+            var chunkStart = i * ChunkSize;
+            while (head < boostSnapshots.Count && boostSnapshots[head].SongBpmTime <= chunkStart)
+            {
+                head++;
+            }
+
+            boostChunks.Add(new BoostChunk { Head = head, Next = head, Time = chunkStart });
+        }
+    }
+
+    // Ribbon packing calls this once per span: the chunk cursor supplies the first boundary strictly
+    // after the span start plus the boost state entering it.
+    public int GetChunkCursor(float songBpmTime, out bool initialBoost)
+    {
+        var chunkIndex = Mathf.Clamp(Mathf.FloorToInt(songBpmTime / ChunkSize), 0, boostChunks.Count - 1);
+        var chunk = boostChunks[chunkIndex];
+        var index = songBpmTime >= chunk.Time ? chunk.Next : chunk.Head;
+        var count = boostSnapshots.Count;
+        while (index < count && boostSnapshots[index].SongBpmTime <= songBpmTime)
+        {
+            index++;
+        }
+
+        chunk.Next = index;
+        chunk.Time = songBpmTime;
+        boostChunks[chunkIndex] = chunk;
+        initialBoost = index > 0 && boostSnapshots[index - 1].Boost;
+        return index;
+    }
+
+    public float GetSongBpmTime(int index) => boostSnapshots[index].SongBpmTime;
+
+    public bool IsBoostAtIndex(int index) => boostSnapshots[index].Boost;
+
+    // Resolve the last boost at or before the requested event time.
     public bool IsBoostAt(float jsonTime)
     {
         var search = BinarySearchTime(jsonTime);

@@ -23,7 +23,7 @@ public class BeatmapGLSGroupFloatFXInputController : BeatmapGLSGroupInputControl
     public void OnTweakEasingHover(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         var resolved = TryGetHoveredEvent(context, out var evt) ? evt : null;
-        GLSEventHoverMutation.AdjustFloatFxEasing(context, resolved);
+        GLSEventHoverMutation.AdjustEasing(context, resolved);
     }
 
     // Outer previews expose only hover-specific mutations; fixed value actions remain inner-editor controls.

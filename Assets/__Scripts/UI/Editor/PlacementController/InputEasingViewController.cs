@@ -20,6 +20,11 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
     [SerializeField] private ToggleComponent easeBounceToggle;
     [SerializeField] private ToggleComponent easeBackToggle;
     [SerializeField] private ToggleComponent easeElasticToggle;
+    [SerializeField] private ToggleComponent easeSineToggle;
+    [SerializeField] private ToggleComponent easeCubicToggle;
+    [SerializeField] private ToggleComponent easeQuarticToggle;
+    [SerializeField] private ToggleComponent easeQuinticToggle;
+    [SerializeField] private ToggleComponent easeExponentialToggle;
 
     public void Start()
     {
@@ -41,6 +46,11 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
         easeBounceToggle.OnValueChanged(HandleEaseBounceInputChanged);
         easeBackToggle.OnValueChanged(HandleEaseBackInputChanged);
         easeElasticToggle.OnValueChanged(HandleEaseElasticInputChanged);
+        easeSineToggle.OnValueChanged(_ => HandleEaseInputChanged(EaseType.InSinusoidal));
+        easeCubicToggle.OnValueChanged(_ => HandleEaseInputChanged(EaseType.InCubic));
+        easeQuarticToggle.OnValueChanged(_ => HandleEaseInputChanged(EaseType.InQuartic));
+        easeQuinticToggle.OnValueChanged(_ => HandleEaseInputChanged(EaseType.InQuintic));
+        easeExponentialToggle.OnValueChanged(_ => HandleEaseInputChanged(EaseType.InExponential));
 
         // Restore the visible easing menu only after all of its toggle callbacks are attached.
         EditorStateService.Register(this);
@@ -117,15 +127,25 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
         easeBounceToggle.SetValueWithoutNotify(false);
         easeBackToggle.SetValueWithoutNotify(false);
         easeElasticToggle.SetValueWithoutNotify(false);
+        easeSineToggle.SetValueWithoutNotify(false);
+        easeCubicToggle.SetValueWithoutNotify(false);
+        easeQuarticToggle.SetValueWithoutNotify(false);
+        easeQuinticToggle.SetValueWithoutNotify(false);
+        easeExponentialToggle.SetValueWithoutNotify(false);
 
-        var easeString = ((EaseType)value).ToString();
-
-        if (easeString.StartsWith("InOut"))
-            curveInOutToggle.SetValueWithoutNotify(true);
-        else if (easeString.StartsWith("Out"))
-            curveOutToggle.SetValueWithoutNotify(true);
-        else
-            curveInToggle.SetValueWithoutNotify(true);
+        switch (BeatmapEasingsSelectionInputController.GetEaseCurve((EaseType)value))
+        {
+            case EaseCurve.InOut:
+            case EaseCurve.BeatSaberInOut:
+                curveInOutToggle.SetValueWithoutNotify(true);
+                break;
+            case EaseCurve.Out:
+                curveOutToggle.SetValueWithoutNotify(true);
+                break;
+            default:
+                curveInToggle.SetValueWithoutNotify(true);
+                break;
+        }
 
         switch (value)
         {
@@ -140,6 +160,31 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
             case (int)EaseType.InOutQuadratic:
                 easeQuadToggle.SetValueWithoutNotify(true);
                 break;
+            case (int)EaseType.InSinusoidal:
+            case (int)EaseType.OutSinusoidal:
+            case (int)EaseType.InOutSinusoidal:
+                easeSineToggle.SetValueWithoutNotify(true);
+                break;
+            case (int)EaseType.InCubic:
+            case (int)EaseType.OutCubic:
+            case (int)EaseType.InOutCubic:
+                easeCubicToggle.SetValueWithoutNotify(true);
+                break;
+            case (int)EaseType.InQuartic:
+            case (int)EaseType.OutQuartic:
+            case (int)EaseType.InOutQuartic:
+                easeQuarticToggle.SetValueWithoutNotify(true);
+                break;
+            case (int)EaseType.InQuintic:
+            case (int)EaseType.OutQuintic:
+            case (int)EaseType.InOutQuintic:
+                easeQuinticToggle.SetValueWithoutNotify(true);
+                break;
+            case (int)EaseType.InExponential:
+            case (int)EaseType.OutExponential:
+            case (int)EaseType.InOutExponential:
+                easeExponentialToggle.SetValueWithoutNotify(true);
+                break;
             case (int)EaseType.InCircular:
             case (int)EaseType.OutCircular:
             case (int)EaseType.InOutCircular:
@@ -148,73 +193,66 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
             case (int)EaseType.InBounce:
             case (int)EaseType.OutBounce:
             case (int)EaseType.InOutBounce:
+            case (int)EaseType.BeatSaberInOutBounce:
                 easeBounceToggle.SetValueWithoutNotify(true);
                 break;
             case (int)EaseType.InBack:
             case (int)EaseType.OutBack:
             case (int)EaseType.InOutBack:
+            case (int)EaseType.BeatSaberInOutBack:
                 easeBackToggle.SetValueWithoutNotify(true);
                 break;
             case (int)EaseType.InElastic:
             case (int)EaseType.OutElastic:
             case (int)EaseType.InOutElastic:
+            case (int)EaseType.BeatSaberInOutElastic:
                 easeElasticToggle.SetValueWithoutNotify(true);
                 break;
         }
     }
 
-    private void HandleCurveInInputChanged(bool _)
+    private void HandleCurveInInputChanged(bool _) => HandleCurveInputChanged(EaseCurve.In);
+
+    private void HandleCurveOutInputChanged(bool _) => HandleCurveInputChanged(EaseCurve.Out);
+
+    private void HandleCurveInOutInputChanged(bool _) => HandleCurveInputChanged(EaseCurve.InOut);
+
+    private void HandleCurveInputChanged(EaseCurve curve)
     {
-        if (easeQuadToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InQuadratic);
-        else if (easeCircularToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InCircular);
-        else if (easeBounceToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InBounce);
-        else if (easeBackToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InBack);
-        else if (easeElasticToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InElastic);
-        else if (easeNoneToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.None);
-        else
-            inputController.NotifyEasingChanged(EaseType.Linear);
+        var family = GetSelectedEaseFamily();
+        inputController.NotifyEasingChanged(family is EaseType.None or EaseType.Linear
+            ? family
+            : BeatmapEasingsSelectionInputController.SetEaseCurve(family, curve));
     }
 
-    private void HandleCurveOutInputChanged(bool _)
+    private EaseType GetSelectedEaseFamily()
     {
         if (easeQuadToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutQuadratic);
-        else if (easeCircularToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutCircular);
-        else if (easeBounceToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutBounce);
-        else if (easeBackToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutBack);
-        else if (easeElasticToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutElastic);
-        else if (easeNoneToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.None);
-        else
-            inputController.NotifyEasingChanged(EaseType.Linear);
+            return EaseType.InQuadratic;
+        if (easeCircularToggle.Value)
+            return EaseType.InCircular;
+        if (easeBounceToggle.Value)
+            return EaseType.InBounce;
+        if (easeBackToggle.Value)
+            return EaseType.InBack;
+        if (easeElasticToggle.Value)
+            return EaseType.InElastic;
+        if (easeSineToggle.Value)
+            return EaseType.InSinusoidal;
+        if (easeCubicToggle.Value)
+            return EaseType.InCubic;
+        if (easeQuarticToggle.Value)
+            return EaseType.InQuartic;
+        if (easeQuinticToggle.Value)
+            return EaseType.InQuintic;
+        if (easeExponentialToggle.Value)
+            return EaseType.InExponential;
+        return easeNoneToggle.Value ? EaseType.None : EaseType.Linear;
     }
 
-    private void HandleCurveInOutInputChanged(bool _)
+    private void HandleEaseInputChanged(EaseType family)
     {
-        if (easeQuadToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutQuadratic);
-        else if (easeCircularToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutCircular);
-        else if (easeBounceToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutBounce);
-        else if (easeBackToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutBack);
-        else if (easeElasticToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutElastic);
-        else if (easeNoneToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.None);
-        else
-            inputController.NotifyEasingChanged(EaseType.Linear);
+        inputController.NotifyEasingChanged(BeatmapEasingsSelectionInputController.SetEaseCurve(family, GetSelectedCurve()));
     }
 
     private void HandleEaseNoneInputChanged(bool obj) => inputController.NotifyEasingChanged(EaseType.None);
@@ -243,31 +281,43 @@ public class InputEasingViewController : ToggleableViewController, IEditorStateP
 
     private void HandleEaseBounceInputChanged(bool obj)
     {
-        if (curveOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutBounce);
-        else if (curveInOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutBounce);
-        else
-            inputController.NotifyEasingChanged(EaseType.InBounce);
+        inputController.NotifyEasingChanged(
+            BeatmapEasingsSelectionInputController.SetEaseCurve(
+                EaseType.InBounce,
+                GetSelectedCurve()));
     }
 
     private void HandleEaseBackInputChanged(bool obj)
     {
-        if (curveOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutBack);
-        else if (curveInOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutBack);
-        else
-            inputController.NotifyEasingChanged(EaseType.InBack);
+        inputController.NotifyEasingChanged(
+            BeatmapEasingsSelectionInputController.SetEaseCurve(
+                EaseType.InBack,
+                GetSelectedCurve()));
     }
 
     private void HandleEaseElasticInputChanged(bool obj)
     {
+        inputController.NotifyEasingChanged(
+            BeatmapEasingsSelectionInputController.SetEaseCurve(
+                EaseType.InElastic,
+                GetSelectedCurve()));
+    }
+
+    private EaseCurve GetSelectedCurve()
+    {
         if (curveOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.OutElastic);
-        else if (curveInOutToggle.Value)
-            inputController.NotifyEasingChanged(EaseType.InOutElastic);
-        else
-            inputController.NotifyEasingChanged(EaseType.InElastic);
+        {
+            return EaseCurve.Out;
+        }
+
+        if (!curveInOutToggle.Value)
+        {
+            return EaseCurve.In;
+        }
+
+        return BeatmapEasingsSelectionInputController.GetEaseCurve(
+            (EaseType)inputController.CurrentEasing) == EaseCurve.BeatSaberInOut
+                ? EaseCurve.BeatSaberInOut
+                : EaseCurve.InOut;
     }
 }

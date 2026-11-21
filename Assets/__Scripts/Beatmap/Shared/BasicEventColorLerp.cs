@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Beatmap.Shared
 {
-    // One stable numeric contract keeps preview and ribbon shader dispatch aligned for RGB, legacy HSV, and trueHSV.
+    // Use the same RGB, HSV, and TrueHSV mode IDs in preview lights and ribbon shaders.
     public enum BasicEventColorLerpType
     {
         RGB = 0,
@@ -13,13 +13,14 @@ namespace Beatmap.Shared
     // Centralizing classification and CPU interpolation prevents the two HSV semantics from drifting across consumers.
     public static class BasicEventColorLerp
     {
-        // Chroma's existing HSV name means normalized 0..1 hue lerping; trueHSV opts into conventional angular interpolation.
+        // Chroma's HSV mode interpolates hue as a number from 0 to 1. TrueHSV takes the shortest path around
+        // the hue wheel.
         public static BasicEventColorLerpType FromSerializedName(string lerpType)
         {
             return lerpType switch
             {
                 "HSV" => BasicEventColorLerpType.LegacyHSV,
-                "trueHSV" => BasicEventColorLerpType.TrueHSV,
+                "TrueHSV" => BasicEventColorLerpType.TrueHSV,
                 _ => BasicEventColorLerpType.RGB
             };
         }
@@ -58,6 +59,20 @@ namespace Beatmap.Shared
                 t,
                 lerpType);
 
+        public static Color InterpolateStrobeFade(
+            Color normal,
+            Color strobe,
+            float t,
+            BasicEventColorLerpType lerpType)
+        {
+            return lerpType switch
+            {
+                BasicEventColorLerpType.LegacyHSV => LerpLegacyHsv(normal, strobe, t),
+                BasicEventColorLerpType.TrueHSV => LerpTrueHSV(normal, strobe, t),
+                _ => Color.LerpUnclamped(normal, strobe, t)
+            };
+        }
+
         // Legacy Chroma compatibility requires treating normalized hue as an ordinary scalar, including its green detours.
         private static Color LerpLegacyHsv(Color start, Color end, float t)
         {
@@ -73,7 +88,6 @@ namespace Beatmap.Shared
                 t);
         }
 
-        // trueHSV preserves ChroMapper's former behavior by wrapping hue across the seam along the shortest angular path.
         private static Color LerpTrueHSV(Color start, Color end, float t)
         {
             Color.RGBToHSV(start, out var startHue, out var startSaturation, out var startValue);

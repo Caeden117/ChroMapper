@@ -31,7 +31,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
     {
         // Rebuild the paused wall pool before OnTimeChangedEarly pushes held track values. Spawned wall
         // animators must exist when those values arrive so the seek applies them immediately.
-        BeatmapContext.Atsc.OnTimeFlushPending += PrepareStoppedSeek;
+        BeatmapContext.Atsc.OnPrepareStoppedSeek += PrepareStoppedSeek;
         BeatmapContext.Atsc.OnTimeChanged += OnTimeChanged;
         BeatmapContext.Atsc.OnPlayToggled += HandlePlayToggled;
         UIMode.OnPreviewModeSwitched += OnUIPreviewModeSwitch;
@@ -48,7 +48,7 @@ public class ObstacleGridContainer : BeatmapObjectContainerCollection<BaseObstac
 
     internal override void UnsubscribeToCallbacks()
     {
-        BeatmapContext.Atsc.OnTimeFlushPending -= PrepareStoppedSeek;
+        BeatmapContext.Atsc.OnPrepareStoppedSeek -= PrepareStoppedSeek;
         BeatmapContext.Atsc.OnTimeChanged -= OnTimeChanged;
         UIMode.OnPreviewModeSwitched -= OnUIPreviewModeSwitch;
 

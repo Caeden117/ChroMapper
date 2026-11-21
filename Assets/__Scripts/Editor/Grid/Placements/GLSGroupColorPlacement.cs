@@ -11,7 +11,10 @@ public class GLSGroupColorPlacement : GLSGroupPlacement<BaseLightColorEventBoxGr
     [SerializeField] private ColorPicker colorPicker;
 
     public override bool CanPlace =>
-        base.CanPlace && GlsGroupTrack.TrackDefinition.ColorTrack && !groupInputController.IsHovering;
+        base.CanPlace
+        && GlsGroupTrack.TrackDefinition.ColorTrack
+        // Ribbon hover shouldn't block placement, GLS group node hover should.
+        && (!groupInputController.IsHovering || groupInputController.IsHoveringColorTransitionRibbon);
 
     public override Beatmap.Containers.ObjectContainer StartDrag(GameObject draggedObject)
     {
@@ -148,6 +151,7 @@ public class GLSGroupColorPlacement : GLSGroupPlacement<BaseLightColorEventBoxGr
     {
         var firstEvt = QueuedData.Boxes[0].Events[0];
         firstEvt.UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(firstEvt, EasingInputController);
         // Remove both custom color channels immediately when this node becomes an extension node.
         if (value != 0)
         {

@@ -33,7 +33,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
         UpdatePrecisionRotationGameObjectState();
 
         // Disable painting until the entire selection can be replaced as GLS event nodes.
-        SelectionController.OnSelectionChanged += UpdatePaintPropertiesButtonState;
+        SelectionController.SelectionChangedEvent += UpdatePaintPropertiesButtonState;
         UpdatePaintPropertiesButtonState();
 
         // Wire up the paint-properties button to call EventBoxViewController's apply-to-selected workflow.
@@ -64,7 +64,7 @@ public class KeybindUpdateUIController : MonoBehaviour, CMInput.IWorkflowsAction
     private void OnDestroy()
     {
         // Remove the selection listener when the controller is destroyed to avoid stale UI updates.
-        SelectionController.OnSelectionChanged -= UpdatePaintPropertiesButtonState;
+        SelectionController.SelectionChangedEvent -= UpdatePaintPropertiesButtonState;
     }
 
     private void UpdatePaintPropertiesButtonState()

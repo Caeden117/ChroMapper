@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87b2fd378894b9393c04b7a4c75776f, type: 3}
+  m_Name: GLS Node Label Layout
+  m_EditorClassIdentifier: 
+  Brightness:
+    Anchor: {x: 0, y: 0.798}
+    FontScale: 1
+  StrobeBrightness:
+    Anchor: {x: 0.7320169, y: 0.15}
+    FontScale: 0.66
+  StrobeRate:
+    Anchor: {x: 0.7320169, y: -1.002}
+    FontScale: 0.66
+  Loop:
+    Anchor: {x: -0.724, y: 0.6942}
+    FontScale: 0.6
+  RotationEasing:
+    Anchor: {x: 0.724, y: 0.2382}
+    FontScale: 0.6
+  TransformEasing:
+    Anchor: {x: 0, y: 0.2382}
+    FontScale: 0.6
+  Value:
+    Anchor: {x: 0, y: -0.9342}
+    FontScale: 1
+  HoverTitle:
+    Anchor: {x: 0, y: 0.18}
+    FontScale: 0.5
+  HoverEasing:
+    Anchor: {x: 0, y: -0.42}
+    FontScale: 0.7

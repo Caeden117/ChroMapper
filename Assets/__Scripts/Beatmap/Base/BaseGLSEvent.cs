@@ -19,10 +19,14 @@ namespace Beatmap.Base
             BoxIndex = other.BoxIndex;
             EventBoxData = other.EventBoxData;
             EventBoxGroupData = other.EventBoxGroupData;
+            Easing = other.Easing;
+            UsePrevious = other.UsePrevious;
             RefreshCustom();
         }
 
         public float RelativeJsonTime { get; set; }
+        public int Easing { get; set; }
+        public int UsePrevious { get; set; }
         public override ObjectType ObjectType { get; set; } = ObjectType.GLSEvent;
 
         public override void RecomputeSongBpmTime()
@@ -34,7 +38,12 @@ namespace Beatmap.Base
         public override void Apply(BaseObject originalData)
         {
             if (originalData is BaseGLSEvent gls)
+            {
                 RelativeJsonTime = gls.RelativeJsonTime;
+                Easing = gls.Easing;
+                UsePrevious = gls.UsePrevious;
+            }
+
             base.Apply(originalData);
         }
 

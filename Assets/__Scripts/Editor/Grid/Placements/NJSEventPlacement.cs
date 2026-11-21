@@ -27,6 +27,7 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
     {
         HandleMapVersionChanged(Settings.Instance.MapVersion);
         BeatmapVersionSwitchInputController.OnMapVersionChanged += HandleMapVersionChanged;
+        LoadInitialMap.OnLevelLoaded += RefreshMapVersion;
         base.Start();
     }
 
@@ -34,6 +35,7 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
     public override void OnDestroy()
     {
         BeatmapVersionSwitchInputController.OnMapVersionChanged -= HandleMapVersionChanged;
+        LoadInitialMap.OnLevelLoaded -= RefreshMapVersion;
         base.OnDestroy();
     }
 
@@ -74,9 +76,11 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
     private void CompleteNJSPlacement()
     {
         var difficultyInfo = BeatSaberSongContainer.Instance.MapDifficultyInfo;
+        // V3 NJS changes need BeatToTheFuture. Warn once when the map does not already declare the mod.
         if (Settings.Instance.MapVersion == 3
             && ObjectContainerCollection.MapObjects.Count == 0
-            && !difficultyInfo.CustomRequirements.Contains("BeatToTheFuture"))
+            && !difficultyInfo.CustomRequirements.Contains("BeatToTheFuture")
+            && !difficultyInfo.CustomSuggestions.Contains("BeatToTheFuture"))
         {
             CreateAndOpenBeatToTheFutureDialogue();
             return;
@@ -102,6 +106,12 @@ public class NJSEventPlacement : BasePlacement<BaseNJSEvent, NJSEventContainer, 
         requirementDialogue.AddFooterButton(HandleApplyNoDialogue, "Yes");
         requirementDialogue.AddFooterButton(null, "No");
         requirementDialogue.Open();
+    }
+
+    private void RefreshMapVersion()
+    {
+        // Difficulty reloads reuse this placement without issuing a format-conversion event.
+        HandleMapVersionChanged(Settings.Instance.MapVersion);
     }
 
     // V2 has no NJS serialization path, while V3 and V4 both support the initialized placement lane.

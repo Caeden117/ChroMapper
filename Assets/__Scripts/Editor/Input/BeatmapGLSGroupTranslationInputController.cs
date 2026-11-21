@@ -27,7 +27,7 @@ public class
     public void OnTweakEasingHover(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         var resolved = TryGetHoveredEvent(context, out var evt) ? evt : null;
-        GLSEventHoverMutation.AdjustTranslationEasing(context, resolved);
+        GLSEventHoverMutation.AdjustEasing(context, resolved);
     }
 
     // Name the scroll-wheel axis mutation consistently with the concise keybind label.

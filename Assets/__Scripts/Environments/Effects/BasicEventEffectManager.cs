@@ -138,6 +138,31 @@ public class BasicEventEffectManager : MonoBehaviour
         return effects.Count > 0;
     }
 
+    public void RecomputeSongBpmTimes(IEnumerable<BaseEvent> data)
+    {
+        foreach (var manager in Effects)
+        {
+            if (manager is IBpmTimingEffect timingEffect)
+                timingEffect.RecomputeSongBpmTimes();
+            else
+                manager.Initialize();
+        }
+
+        foreach (var evt in data)
+        {
+            if (!EventTypeToEffects.TryGetValue(evt.Type, out var effects))
+                continue;
+
+            foreach (var effect in effects)
+            {
+                if (effect is IBpmTimingEffect)
+                    continue;
+
+                effect.InsertData(evt);
+            }
+        }
+    }
+
     public T GetEffect<T>(int type) where T : StateManager<BaseEvent> =>
         EventTypeToEffects.TryGetValue(type, out var list) ? list.FirstOrDefault(x => x is T) as T : null;
 

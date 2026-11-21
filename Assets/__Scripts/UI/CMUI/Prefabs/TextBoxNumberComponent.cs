@@ -13,6 +13,7 @@ public abstract class TextBoxNumberComponent<T> : CMUIComponentWithLabel<T>, INa
     private Func<bool> getInvertScroll = () => false;
 
     private Action<T> onEndEdit;
+    private Action<bool, T> onEditingValueChanged;
     private Action<T> onSelect;
     private Action<T> onDeselect;
 
@@ -49,6 +50,15 @@ public abstract class TextBoxNumberComponent<T> : CMUIComponentWithLabel<T>, INa
     public TextBoxNumberComponent<T> OnEndEdit(Action<T> onEndEdit)
     {
         this.onEndEdit = onEndEdit;
+        return this;
+    }
+
+    /// <summary>
+    /// Reports whether focused text is valid and its parsed value without committing the edit.
+    /// </summary>
+    public TextBoxNumberComponent<T> OnEditingValueChanged(Action<bool, T> onEditingValueChanged)
+    {
+        this.onEditingValueChanged = onEditingValueChanged;
         return this;
     }
 
@@ -151,7 +161,15 @@ public abstract class TextBoxNumberComponent<T> : CMUIComponentWithLabel<T>, INa
 
     private void InputFieldValueChanged(string res)
     {
-        if (ParseAndValidate(res, out var val)) Value = val;
+        var valid = ParseAndValidate(res, out var val);
+        if (InputField.isFocused)
+        {
+            onEditingValueChanged?.Invoke(valid, val);
+        }
+        if (valid)
+        {
+            Value = val;
+        }
     }
 
     private void InputFieldEndEdit(string res)

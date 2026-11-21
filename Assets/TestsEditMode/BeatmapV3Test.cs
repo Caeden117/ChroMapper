@@ -484,7 +484,7 @@ namespace TestsEditMode
             
             Assert.AreEqual(0, rotationGroupEvent.RelativeJsonTime);
             Assert.AreEqual(0, rotationGroupEvent.UsePrevious);
-            Assert.AreEqual(1, rotationGroupEvent.EaseType);
+            Assert.AreEqual(1, rotationGroupEvent.Easing);
             Assert.AreEqual(340, rotationGroupEvent.Rotation);
             Assert.AreEqual(1, rotationGroupEvent.Direction);
             Assert.AreEqual(1, rotationGroupEvent.Loop);
@@ -524,7 +524,7 @@ namespace TestsEditMode
             
             Assert.AreEqual(0, translationGroupEvent.RelativeJsonTime);
             Assert.AreEqual(0, translationGroupEvent.UsePrevious);
-            Assert.AreEqual(1, translationGroupEvent.EaseType);
+            Assert.AreEqual(1, translationGroupEvent.Easing);
             Assert.AreEqual(100, translationGroupEvent.Translation);
             
             // FloatFX

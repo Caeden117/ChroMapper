@@ -71,11 +71,11 @@ namespace TestsEditMode
             Assert.AreEqual(3.456789f, saved["rotation"][2].AsFloat);
         }
 
-        // Doubles carrying exact float data use G9 to preserve single precision.
-        [TestCase(-9.3059749603271484, "-9.30597496")]
-        [TestCase(23.277999877929688, "23.2779999")]
-        [TestCase(6.9380006790161133, "6.93800068")]
-        [TestCase(0.10000000149011612, "0.100000001")]
+        // Float-backed doubles need compact text that reloads to the same single precision value.
+        [TestCase(-9.3059749603271484, "-9.305975")]
+        [TestCase(23.277999877929688, "23.278")]
+        [TestCase(6.9380006790161133, "6.9380007")]
+        [TestCase(0.10000000149011612, "0.1")]
         [TestCase(585.0, "585")]
         public void FloatBackedDoublesSerializeWithFloatPrecision(double value, string expected)
         {
@@ -107,6 +107,24 @@ namespace TestsEditMode
             JSONNode data = asObject ? new JSONObject() : new JSONArray();
             var saved = JSON.Parse(data.WriteColor(color).ToString()).ReadColor();
             Assert.AreEqual(color, saved);
+        }
+
+        [Test]
+        public void EditingStrobeIntervalKeepsCompactColorAndIntervalText()
+        {
+            var light = new BaseLightColorBase
+            {
+                CustomData = JSON.Parse("{\"color\":[0,1,0.197],\"strobeInterval\":1}")
+            };
+            var originalColor = light.CustomColor;
+            light.ChromaStrobeInterval = CMMath.RoundToDecimals(1f - 0.05f);
+            light.WriteCustom();
+
+            var output = light.CustomData.ToString();
+            Assert.That(output, Does.Contain("\"color\":[0,1,0.197]"));
+            Assert.That(output, Does.Contain("\"strobeInterval\":0.95"));
+            Assert.AreEqual(originalColor, JSON.Parse(output)["color"].ReadColor());
+            Assert.AreEqual(light.ChromaStrobeInterval.Value, JSON.Parse(output)["strobeInterval"].AsFloat);
         }
 
         // All four GLS node types carry non-beat values beside their relative beat times.

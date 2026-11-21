@@ -1,0 +1,63 @@
+{
+  "source": "https://easings.net/",
+  "sourceRepository": "https://github.com/ai/easings.net",
+  "sourceRevision": "d2563f0d32a511b5556774b838ec35c3a841b15d",
+  "sourceFunctions": "src/easings/easingsFunctions.ts",
+  "beatSaberSource": "Beat Saber 1.44.1 Tweening.dll, Tweening.Easing",
+  "beatSaberSourceMethods": [
+    "BeatSaberInOutBack",
+    "BeatSaberInOutElastic",
+    "BeatSaberInOutBounce"
+  ],
+  "rendering": "Original transparent curve glyphs generated from the standard published equations and the three Beat Saber-specific methods; no site bitmap assets copied.",
+  "iconHeight": 128,
+  "easingIconWidth": 205,
+  "circularIconWidth": 142,
+  "margin": 13,
+  "borderWidth": 5.34375,
+  "outlineWidth": 22.5,
+  "foregroundWidth": 11.8125,
+  "noOutlineSubdirectory": "NoOutline",
+  "samplesPerCurve": 512,
+  "standardIcons": [
+    "EaseLinear",
+    "EaseInQuadratic",
+    "EaseOutQuadratic",
+    "EaseInOutQuadratic",
+    "EaseInSinusoidal",
+    "EaseOutSinusoidal",
+    "EaseInOutSinusoidal",
+    "EaseInCubic",
+    "EaseOutCubic",
+    "EaseInOutCubic",
+    "EaseInQuartic",
+    "EaseOutQuartic",
+    "EaseInOutQuartic",
+    "EaseInQuintic",
+    "EaseOutQuintic",
+    "EaseInOutQuintic",
+    "EaseInExponential",
+    "EaseOutExponential",
+    "EaseInOutExponential",
+    "EaseInCircular",
+    "EaseOutCircular",
+    "EaseInOutCircular",
+    "EaseInBack",
+    "EaseOutBack",
+    "EaseInOutBack",
+    "EaseInElastic",
+    "EaseOutElastic",
+    "EaseInOutElastic",
+    "EaseInBounce",
+    "EaseOutBounce",
+    "EaseInOutBounce"
+  ],
+  "beatSaberSpecificIcons": [
+    "EaseBeatSaberInOutBack",
+    "EaseBeatSaberInOutElastic",
+    "EaseBeatSaberInOutBounce"
+  ],
+  "generatedMarkerIcons": [
+    "NoEasingStep"
+  ]
+}

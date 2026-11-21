@@ -44,4 +44,11 @@ public class TabManager : MonoBehaviour
         tabTitleString.StringReference.TableEntryReference = tab == creditsTab ? "tab.credits" : "heading";
         tabTitleString.StringReference.RefreshString();
     }
+
+    internal void OnTabNameLocalized(OptionsTabButton tab)
+    {
+        // The heading can receive the locale change before its selected tab label has updated.
+        if (tab == SelectedTab && tab != creditsTab)
+            tabTitleString.RefreshString();
+    }
 }

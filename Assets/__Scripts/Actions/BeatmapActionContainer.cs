@@ -12,6 +12,9 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     public static event Action<BeatmapAction> OnActionUndo;
     public static event Action<BeatmapAction> OnActionRedo;
 
+    // Action-heavy tests can disable undo/redo logging to avoid formatting thousands of log messages.
+    public static bool ActionDiagnosticsEnabled { get; set; } = true;
+
     private static BeatmapActionContainer instance;
     [SerializeField] private GameObject moveableGridTransform;
     [SerializeField] private SelectionController selection;
@@ -66,12 +69,7 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
 
         // Debug.Log($"Action of type {action.GetType().Name} added. ({action.Comment})");
 
-        // Deferring ActionCreatedEvent until after execution brings AddAction in line with Undo/Redo
-        // TODO: May make more sense to refactor ActionCreatedEvent to add a Networked boolean parameter and invoke this event unconditionally
-        if (!action.Networked)
-        {
-            OnActionCreated?.Invoke(action);
-        }
+        OnActionCreated?.Invoke(action);
     }
 
     public static void RemoveAllActionsOfType<T>() where T : BeatmapAction =>
@@ -81,23 +79,36 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     {
         var action = instance.beatmapActions.Find(x => x.Guid == actionGuid);
         if (action == null) return;
-        Debug.Log($"Undid a {action.GetType().Name}. ({action.Comment})");
+        if (ActionDiagnosticsEnabled)
+        {
+            Debug.Log($"Undid a {action.GetType().Name}. ({action.Comment})");
+        }
         instance.DoUndo(action);
+
+        OnActionUndo?.Invoke(action);
     }
 
     public static void Redo(Guid actionGuid)
     {
         var action = instance.beatmapActions.Find(x => x.Guid == actionGuid);
         if (action == null) return;
-        Debug.Log($"Redid a {action.GetType().Name}. ({action.Comment})");
+        if (ActionDiagnosticsEnabled)
+        {
+            Debug.Log($"Redid a {action.GetType().Name}. ({action.Comment})");
+        }
         instance.DoRedo(action);
+
+        OnActionRedo?.Invoke(action);
     }
 
     public BeatmapAction Undo()
     {
         var lastActive = beatmapActions.AsValueEnumerable().LastOrDefault(x => !x.Networked && x.Active);
         if (lastActive == null) return null;
-        Debug.Log($"Undid a {lastActive.GetType().Name}. ({lastActive.Comment})");
+        if (ActionDiagnosticsEnabled)
+        {
+            Debug.Log($"Undid a {lastActive.GetType().Name}. ({lastActive.Comment})");
+        }
         DoUndo(lastActive);
         OnActionUndo?.Invoke(lastActive);
         return lastActive;
@@ -107,7 +118,10 @@ public class BeatmapActionContainer : MonoBehaviour, CMInput.IActionsActions
     {
         var firstNotActive = beatmapActions.AsValueEnumerable().FirstOrDefault(x => !x.Networked && !x.Active);
         if (firstNotActive == null) return null;
-        Debug.Log($"Redid a {firstNotActive.GetType().Name}. ({firstNotActive.Comment})");
+        if (ActionDiagnosticsEnabled)
+        {
+            Debug.Log($"Redid a {firstNotActive.GetType().Name}. ({firstNotActive.Comment})");
+        }
         DoRedo(firstNotActive);
         OnActionRedo?.Invoke(firstNotActive);
         return firstNotActive;

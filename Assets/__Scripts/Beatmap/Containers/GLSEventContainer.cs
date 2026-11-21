@@ -13,6 +13,8 @@ namespace Beatmap.Containers
         [SerializeField] private GLSEventAppearanceSO glsEventAppearance;
         [SerializeField] private TracksManager tracksManager;
         [SerializeField] private TextMeshPro[] valueDisplays;
+        [SerializeField] private GLSNodeLabel[] valueLabels;
+        [SerializeField] private GLSEventIconView iconView;
         [SerializeField] private LightGradientController lightGradientController;
         [SerializeField] public TrackDefinitionsSO TrackDefinitions;
 
@@ -21,6 +23,8 @@ namespace Beatmap.Containers
 
         // Expose the existing serialized ribbon renderer for color-transition appearance updates.
         public LightGradientController LightGradientController => lightGradientController;
+        [SerializeField] private LightGradientController incomingLightGradientController;
+        public LightGradientController IncomingLightGradientController => incomingLightGradientController;
 
         public override BaseObject ObjectData { get => EventData; set => EventData = (BaseGLSEvent)value; }
 
@@ -60,17 +64,37 @@ namespace Beatmap.Containers
                 0.5f + laneIndex,
                 BeatmapConstant.EventNodeGroundedCenterY,
                 EventData.SongBpmTime * EditorScaleController.EditorScale);
+            lightGradientController.RefreshRibbonPlane();
+            if (incomingLightGradientController != null)
+                incomingLightGradientController.RefreshRibbonPlane();
             UpdateCollisionGroups();
         }
 
         public void SetText(bool enable)
         {
-            foreach (var textMeshPro in valueDisplays) textMeshPro.enabled = enable;
+            foreach (var textMeshPro in valueDisplays)
+                textMeshPro.enabled = enable;
         }
 
-        public void SetText(string text)
+        public void SetText(BaseGLSEvent evt)
         {
-            foreach (var textMeshPro in valueDisplays) textMeshPro.SetText(text);
+            foreach (var label in valueLabels)
+                label.SetEvent(evt);
+        }
+
+        public void SetIcons(GLSEventIconState state)
+        {
+            iconView.SetIcons(state, EventData, valueDisplays);
+        }
+
+        public void SetColorHover(bool visible)
+        {
+            if (iconView == null)
+            {
+                return;
+            }
+
+            iconView.SetColorHover(visible, valueDisplays);
         }
     }
 }

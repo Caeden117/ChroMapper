@@ -16,7 +16,6 @@ namespace Tests.Editor
 {
     public class CensoredRingShakeParityTest : PreviewWorkflowTestBase
     {
-        private static readonly bool[] PlaybackCases = { false, true };
         private const float PositionTolerance = 0.002f;
         private const float ClockTolerance = 0.00002f;
         private static readonly PropertyInfo PlaybackSeconds = typeof(AudioTimeSyncController)
@@ -27,22 +26,10 @@ namespace Tests.Editor
 
         // Imported from the 1.40.8 installation: SHA256 31D463B0028BC21D7C438B3A2C50F42F709F85F5977A5577CCC906C4CAEA3FE8.
         [UnityTest]
-        public IEnumerator FullMapRingsAndAttachedLasersFollowEnvironmentShake(
-            [ValueSource(nameof(PlaybackCases))] bool playback)
-        {
-            yield return CheckShake("CensoredFullMapFixture.json", playback);
-        }
-
-        [UnityTest]
-        public IEnumerator PlaybackShakeToleratesAdjacentClockFloats([Values(-1, 1)] int clockFloatSteps)
-        {
-            yield return CheckShake("CensoredFullMapFixture.json", true, clockFloatSteps);
-        }
-
-        private IEnumerator CheckShake(string fixture, bool playback, int clockFloatSteps = 0)
+        public IEnumerator FullMapRingsAndAttachedLasersFollowEnvironmentShake()
         {
             Settings.Instance.Animations = true;
-            var data = JSON.Parse(File.ReadAllText(PathUtils.Combine(Application.dataPath, "Tests", "Fixtures", fixture)));
+            var data = JSON.Parse(File.ReadAllText(PathUtils.Combine(Application.dataPath, "Tests", "Fixtures", "CensoredFullMapFixture.json")));
             var oracle = data.Clone();
             var difficulty = new InfoDifficulty(new InfoDifficultySet { Characteristic = "Standard" })
             {
@@ -64,6 +51,28 @@ namespace Tests.Editor
             Assert.That(rings.Length, Is.EqualTo(30));
             var runway = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None)
                 .Single(item => item.name == "TrackConstruction");
+            // All four clock cases use the same map. Rewind through the normal seek path between them.
+            foreach (var (playback, clockFloatSteps) in new[] { (false, 0), (true, 0), (true, -1), (true, 1) })
+            {
+                TestContext.WriteLine($"Ring shake: playback={playback}, clockFloatSteps={clockFloatSteps}");
+                if (atsc.IsPlaying)
+                {
+                    atsc.CancelPlaying();
+                }
+
+                atsc.MoveToJsonTime(0f);
+                yield return CheckShake(atsc, rings, runway, oracle, playback, clockFloatSteps);
+            }
+        }
+
+        private IEnumerator CheckShake(
+            AudioTimeSyncController atsc,
+            TrackLaneRing[] rings,
+            Transform runway,
+            JSONNode oracle,
+            bool playback,
+            int clockFloatSteps)
+        {
             const float baselineBeat = 68f;
             // The first shake keyframe is zero. Freeze the clock before capturing it so setup and
             // playback use the same authored pose, including round trips through seconds.
@@ -93,18 +102,24 @@ namespace Tests.Editor
                 Is.EqualTo(pausedRunwayX).Within(PositionTolerance),
                 "Entering playback at the same beat must not move the control runway.");
             for (var i = 0; i < rings.Length; ++i)
+            {
                 Assert.That(
                     initialX[i],
                     Is.EqualTo(pausedRingX[i]).Within(PositionTolerance),
                     $"Entering playback at the same beat moved {rings[i].name}.");
+            }
 
             foreach (var beat in new[] { 68.1f, 68.2f, 68.5f, 69.1f, 70.2f, 72.9f, 73.1f, 74.5f, 75.1f,
                 84.1f, 85.2f, 89.1f, 91.1f, 68.1f })
             {
                 if (playback)
+                {
                     PlaybackSeconds.SetValue(atsc, GetSampleSeconds(atsc, beat, clockFloatSteps));
+                }
                 else
+                {
                     atsc.MoveToJsonTime(beat);
+                }
 
                 yield return null;
                 yield return null;
@@ -129,13 +144,11 @@ namespace Tests.Editor
                     var expectedX = initialX[i] + shake;
                     var error = expectedX - ring.transform.position.x;
                     var lasers = attachedLasers[i];
-                    var parentName = ring.transform.parent != null ? ring.transform.parent.name : "<scene root>";
-                    Debug.Log($"[CensoredRingShake] beat={atsc.CurrentJsonTime} ring={ring.name} "
-                        + $"parent={parentName} x={ring.transform.position.x} expected={expectedX} "
-                        + $"animator={ring.GetComponent<Beatmap.Animations.ObjectAnimator>() != null} lasers={lasers.Length}");
                     if (Mathf.Abs(error) > PositionTolerance)
+                    {
                         failures.Add($"{ring.name} and its {lasers.Length} lasers missed shake X={shake}: "
                             + $"expected {expectedX}, actual {ring.transform.position.x}.");
+                    }
 
                     foreach (var laser in lasers)
                     {
@@ -144,8 +157,10 @@ namespace Tests.Editor
                             ring.transform.position.z), ring.transform.rotation, ring.transform.lossyScale)
                             .MultiplyPoint3x4(localCenter);
                         if (Mathf.Abs(expectedCenter.x - laser.Renderer.bounds.center.x) > PositionTolerance)
+                        {
                             failures.Add($"{ring.name}/{laser.name}: laser bounds X={laser.Renderer.bounds.center.x}, "
                                 + $"expected {expectedCenter.x} after the authored shake.");
+                        }
                     }
                 }
                 Assert.That(failures, Is.Empty, string.Join("\n", failures));

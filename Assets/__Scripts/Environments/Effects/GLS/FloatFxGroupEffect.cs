@@ -209,7 +209,7 @@ public class
         IEnumerable<(StateChunksContainer<FloatFxGroupStateData, BaseVfxEventEventBoxGroup>
             groupContainer, StateChunksContainer<FloatFxEventStateData, BaseFxEventFloat> eventContainer)>
         GetContainers() =>
-        idToContainer.Select(x => (x.GroupContainer, x.EventContainer));
+        activeContainers.Select(x => (x.GroupContainer, x.EventContainer));
 
     protected override int GetEventCount(BaseVfxEventEventBox box) => box.Events.Length;
 

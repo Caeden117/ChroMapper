@@ -368,7 +368,7 @@ namespace SimpleJSON
 
         public static implicit operator JSONNode(float n)
         {
-            return new JSONNumber(n);
+            return new JSONFloatNumber(n);
         }
         public static implicit operator float(JSONNode d)
         {
@@ -1210,6 +1210,9 @@ namespace SimpleJSON
 
     public partial class JSONNumber : JSONNode
     {
+        // Signed longs and G17 doubles need at most 24 characters, including sign and exponent.
+        private const int NumberBufferSize = 24;
+
         public static bool CapNumbersToDecimals = true;
         public static int DecimalPrecision = 3;
 
@@ -1231,21 +1234,41 @@ namespace SimpleJSON
             }
         }
 
-        protected static string FormatNumber(double value)
+        protected static string FormatNumber(double value, bool floatPrecision = false)
+        {
+            Span<char> buffer = stackalloc char[NumberBufferSize];
+            var length = FormatNumber(value, buffer, floatPrecision);
+            return new string(buffer.Slice(0, length));
+        }
+
+        protected static void AppendNumber(StringBuilder builder, double value, bool floatPrecision = false)
+        {
+            Span<char> buffer = stackalloc char[NumberBufferSize];
+            var length = FormatNumber(value, buffer, floatPrecision);
+            builder.Append(buffer.Slice(0, length));
+        }
+
+        private static int FormatNumber(double value, Span<char> buffer, bool floatPrecision)
         {
             // The upper limit is exclusive because converting long.MaxValue to double rounds it up.
-            if (value >= long.MinValue && value < -(double)long.MinValue)
+            var withinIntegerRange = value >= long.MinValue && value < -(double)long.MinValue;
+            if (withinIntegerRange)
             {
                 var asInteger = (long)value;
                 if (asInteger == value)
-                    return asInteger.ToString(CultureInfo.InvariantCulture);
-
-                var asFloat = (float)value;
-                if (asFloat == value)
-                    return asFloat.ToString("G9", CultureInfo.InvariantCulture);
+                {
+                    asInteger.TryFormat(buffer, out var integerLength, provider: CultureInfo.InvariantCulture);
+                    return integerLength;
+                }
             }
 
-            return value.ToString("G17", CultureInfo.InvariantCulture);
+            // Large integral doubles can also be exact floats. Keep their double precision unless the caller supplied a float.
+            var asFloat = (float)value;
+            if ((floatPrecision || withinIntegerRange) && asFloat == value)
+                return Ryu.RyuSingle.Format(asFloat, buffer);
+
+            value.TryFormat(buffer, out var length, "G17", CultureInfo.InvariantCulture);
+            return length;
         }
 
         public override double AsDouble
@@ -1276,7 +1299,7 @@ namespace SimpleJSON
 
         internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, JSONTextMode aMode)
         {
-            aSB.Append(Value);
+            AppendNumber(aSB, m_Data);
         }
         private static bool IsNumeric(object value)
         {

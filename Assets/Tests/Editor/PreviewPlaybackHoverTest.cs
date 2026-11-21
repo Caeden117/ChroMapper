@@ -25,37 +25,9 @@ namespace Tests.Editor
         private BeatmapNoteInputController noteInput;
         private NoteContainer container;
 
+        // Check the gate and held hover together in every UI mode and playback state.
         [UnityTest]
-        public IEnumerator PlayingPreviewClearsHoveredNoteOnUnpause(
-            [Values(UIModeType.Preview, UIModeType.Playing)] UIModeType mode)
-        {
-            var note = PlaceUtils.Place(new BaseNote { JsonTime = 2f });
-            yield return null;
-
-            SetupSharedState();
-            container = GetNoteContainer(note);
-            uiMode.SetUIMode(mode, false);
-            HoldHover();
-
-            StartDeterministicPlayback();
-            try
-            {
-                InvokeUpdate();
-
-                Assert.That(noteInput.IsHovering, Is.False,
-                    "Unpausing in a preview UI mode kept the held hover active.");
-                Assert.That(container.Highlighted, Is.False,
-                    "Unpausing in a preview UI mode left the hover outline visible.");
-            }
-            finally
-            {
-                RestoreSharedState();
-            }
-        }
-
-        // Only the playback gate may drop the held hover; paused previews and non-preview playback keep it.
-        [UnityTest]
-        public IEnumerator HeldHoverSurvivesOutsideUnpausedPreview(
+        public IEnumerator HeldHoverAndSuppressionFollowPreviewPlaybackState(
             [Values(UIModeType.Preview, UIModeType.Playing, UIModeType.Normal)] UIModeType mode,
             [Values(false, true)] bool playing)
         {
@@ -66,9 +38,16 @@ namespace Tests.Editor
             container = GetNoteContainer(note);
             uiMode.SetUIMode(mode, false);
             HoldHover();
-            if (playing) StartDeterministicPlayback();
+            if (playing)
+            {
+                StartDeterministicPlayback();
+            }
             try
             {
+                Assert.That(
+                    BeatmapInputController<NoteContainer>.PlaybackHoverSuppressed,
+                    Is.EqualTo(UIMode.PreviewMode && playing),
+                    $"Suppression was wrong for mode={mode} playing={playing}.");
                 InvokeUpdate();
 
                 var suppressed = UIMode.PreviewMode && playing;
@@ -76,30 +55,6 @@ namespace Tests.Editor
                     $"Hover state was wrong for mode={mode} playing={playing}.");
                 Assert.That(container.Highlighted, Is.EqualTo(!suppressed),
                     $"Hover outline was wrong for mode={mode} playing={playing}.");
-            }
-            finally
-            {
-                RestoreSharedState();
-            }
-        }
-
-        // The suppression gate is the narrow conjunction of the shared preview UI mode and an unpaused song.
-        [UnityTest]
-        public IEnumerator PlaybackHoverSuppressionMatchesUnpausedPreview(
-            [Values(UIModeType.Preview, UIModeType.Playing, UIModeType.Normal)] UIModeType mode,
-            [Values(false, true)] bool playing)
-        {
-            yield return null;
-
-            SetupSharedState();
-            uiMode.SetUIMode(mode, false);
-            if (playing) StartDeterministicPlayback();
-            try
-            {
-                Assert.That(
-                    BeatmapInputController<NoteContainer>.PlaybackHoverSuppressed,
-                    Is.EqualTo(UIMode.PreviewMode && playing),
-                    $"Suppression was wrong for mode={mode} playing={playing}.");
             }
             finally
             {

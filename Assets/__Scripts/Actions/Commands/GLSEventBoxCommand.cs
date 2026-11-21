@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Beatmap.Base;
 using Beatmap.Enums;
@@ -6,6 +8,102 @@ using UnityEngine;
 
 public static class GLSEventBoxCommand
 {
+    public static bool CanSplitSections(BaseEventBoxGroup group, BaseEventBox box)
+    {
+        return CanSplitSections(group, box, box?.IndexFilter.Param0 ?? 0);
+    }
+
+    public static bool CanSplitSections(BaseEventBoxGroup group, BaseEventBox box, int sectionCount)
+    {
+        var presentSections = GetPresentSectionIds(group, box, sectionCount);
+        return presentSections != null && presentSections.Count < sectionCount;
+    }
+
+    public static BaseEventBoxGroup SplitSections(BaseEventBoxGroup group, int boxIndex)
+    {
+        var source = group.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
+        var presentSections = GetPresentSectionIds(group, source, source?.IndexFilter.Param0 ?? 0);
+        if (presentSections == null || presentSections.Count == source.IndexFilter.Param0)
+        {
+            return group;
+        }
+
+        var newGroup = BeatmapFactory.Clone(group);
+        switch (newGroup)
+        {
+            case BaseLightColorEventBoxGroup color:
+                InsertMissingSections(color, boxIndex, presentSections);
+                break;
+            case BaseLightRotationEventBoxGroup rotation:
+                InsertMissingSections(rotation, boxIndex, presentSections);
+                break;
+            case BaseLightTranslationEventBoxGroup translation:
+                InsertMissingSections(translation, boxIndex, presentSections);
+                break;
+            case BaseVfxEventEventBoxGroup fx:
+                InsertMissingSections(fx, boxIndex, presentSections);
+                break;
+        }
+
+        GLSCommonCommand.RebindGroup(newGroup);
+        return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.None);
+    }
+
+    private static HashSet<int> GetPresentSectionIds(BaseEventBoxGroup group, BaseEventBox source, int sectionCount)
+    {
+        if (source == null
+            || source.IndexFilter.Type != (int)IndexFilterType.Division
+            || sectionCount <= 1)
+        {
+            return null;
+        }
+
+        var axis = source.GetAxis();
+        var presentSections = new HashSet<int>();
+        // The selected box will use the draft count when the Sections field commits on deselection.
+        if (source.IndexFilter.Param1 >= 0 && source.IndexFilter.Param1 < sectionCount)
+        {
+            presentSections.Add(source.IndexFilter.Param1);
+        }
+        foreach (var box in group.ReadOnlyBoxes)
+        {
+            var filter = box.IndexFilter;
+            if (box != source
+                && box.GetAxis() == axis
+                && filter.Type == (int)IndexFilterType.Division
+                && filter.Param0 == sectionCount
+                && filter.Param1 >= 0
+                && filter.Param1 < sectionCount)
+            {
+                presentSections.Add(filter.Param1);
+            }
+        }
+        return presentSections;
+    }
+
+    private static void InsertMissingSections<TBox>(
+        BaseEventBoxGroup<TBox> group,
+        int sourceIndex,
+        HashSet<int> presentSections)
+        where TBox : BaseEventBox
+    {
+        var source = group.Boxes[sourceIndex];
+        var splitBoxes = new List<TBox>(source.IndexFilter.Param0 - presentSections.Count);
+        for (var section = 0; section < source.IndexFilter.Param0; section++)
+        {
+            if (presentSections.Contains(section))
+            {
+                continue;
+            }
+
+            var box = BeatmapFactory.Clone(source);
+            box.IndexFilter.Param1 = section;
+            box.IsAutomaticAxisLane = false;
+            splitBoxes.Add(box);
+        }
+        group.Boxes.InsertRange(sourceIndex + 1, splitBoxes);
+    }
+
     public static BaseEventBoxGroup AddEventBox(BaseEventBoxGroup group, int targetIndex)
     {
         var newGroup = BeatmapFactory.Clone(group);
@@ -15,7 +113,11 @@ public static class GLSEventBoxCommand
                 lcebg.Boxes.Insert(targetIndex, new());
                 break;
             case ILightTransformEventBoxGroup transformGroup:
-                transformGroup.InsertDefaultTransformBox(targetIndex);
+                // Insert the new box after the selected lane and keep its axis.
+                var selectedAxis = targetIndex > 0 && targetIndex <= transformGroup.TransformBoxes.Count
+                    ? (int)transformGroup.TransformBoxes[targetIndex - 1].GetAxis()
+                    : (int)Axis.X;
+                transformGroup.InsertTransformBox(targetIndex, selectedAxis);
                 break;
             case BaseVfxEventEventBoxGroup ffebg:
                 ffebg.Boxes.Insert(targetIndex, new());
@@ -442,11 +544,47 @@ public static class GLSEventBoxCommand
         return GLSCommonCommand.TriggerPlaceAction(group, BeatmapFactory.Clone(newGroup));
     }
 
-    public static BaseEventBoxGroup SetType(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup MaterializeAutomaticLane(
+        BaseEventBoxGroup group,
+        BaseEventBox displayBox)
+    {
+        var newGroup = CloneForBoxEdit(group, -1, displayBox, out var newBox);
+        return newBox == null
+            ? null
+            : GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.None);
+    }
+
+    private static BaseEventBoxGroup CloneForBoxEdit(
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox,
+        out BaseEventBox newBox)
     {
         var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.Type == value) return null;
+        newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
+        if (newBox == null && displayBox != null)
+        {
+            GLSCommonCommand.TryMaterializeAutomaticAxisLane(newGroup, displayBox, out newBox, out _);
+            GLSCommonCommand.RebindGroup(newGroup);
+        }
+
+        if (newBox != null)
+        {
+            // A configured empty box must survive automatic-lane pruning and serialization.
+            newBox.IsAutomaticAxisLane = false;
+        }
+        return newGroup;
+    }
+
+    public static BaseEventBoxGroup SetType(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
+    {
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.Type == value)
+            return null;
 
         switch (value)
         {
@@ -465,14 +603,19 @@ public static class GLSEventBoxCommand
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxFilterType);
     }
 
-    public static BaseEventBoxGroup SetParam0(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetParam0(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null)
+            return null;
 
         var newValue = newBox.IndexFilter.Type == (int)IndexFilterType.Division ? value : value - 1;
-        if (newBox.IndexFilter.Param0 == newValue) return null;
+        if (newBox.IndexFilter.Param0 == newValue)
+            return null;
         newBox.IndexFilter.Param0 = newValue;
 
         return GLSCommonCommand.TriggerModifyEventBoxAction(
@@ -481,14 +624,19 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFilterParam0);
     }
 
-    public static BaseEventBoxGroup SetParam1(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetParam1(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null)
+            return null;
 
         var newValue = newBox.IndexFilter.Type == (int)IndexFilterType.Division ? value - 1 : value;
-        if (newBox.IndexFilter.Param1 == newValue) return null;
+        if (newBox.IndexFilter.Param1 == newValue)
+            return null;
         newBox.IndexFilter.Param1 = newValue;
 
         return GLSCommonCommand.TriggerModifyEventBoxAction(
@@ -497,11 +645,15 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFilterParam1);
     }
 
-    public static BaseEventBoxGroup SetReverse(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetReverse(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.Reverse == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.Reverse == value)
+            return null;
         newBox.IndexFilter.Reverse = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(
             group,
@@ -509,20 +661,28 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFilterReverse);
     }
 
-    public static BaseEventBoxGroup SetChunk(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetChunk(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.Chunks == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.Chunks == value)
+            return null;
         newBox.IndexFilter.Chunks = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxFilterChunk);
     }
 
-    public static BaseEventBoxGroup SetRandom(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetRandom(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.Random == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.Random == value)
+            return null;
         newBox.IndexFilter.Random = value;
         if (newBox.IndexFilter.Seed == 0) newBox.IndexFilter.Seed = -211754377;
         return GLSCommonCommand.TriggerModifyEventBoxAction(
@@ -531,29 +691,41 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFilterRandom);
     }
 
-    public static BaseEventBoxGroup SetSeed(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetSeed(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.Seed == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.Seed == value)
+            return null;
         newBox.IndexFilter.Seed = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxFilterSeed);
     }
 
-    public static BaseEventBoxGroup SetLimit(float value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetLimit(
+        float value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || Mathf.Approximately(newBox.IndexFilter.Limit, value)) return group;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || Mathf.Approximately(newBox.IndexFilter.Limit, value))
+            return group;
         newBox.IndexFilter.Limit = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxFilterLimit);
     }
 
-    public static BaseEventBoxGroup SetLimitAffectsType(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetLimitAffectsType(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.IndexFilter.LimitAffectsType == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.IndexFilter.LimitAffectsType == value)
+            return null;
         newBox.IndexFilter.LimitAffectsType = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(
             group,
@@ -561,11 +733,15 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFilterLimitAffectsType);
     }
 
-    public static BaseEventBoxGroup SetBeatDistributionType(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetBeatDistributionType(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.BeatDistributionType == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.BeatDistributionType == value)
+            return null;
         newBox.BeatDistributionType = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(
             group,
@@ -573,11 +749,15 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxBeatDistributionType);
     }
 
-    public static BaseEventBoxGroup SetBeatDistribution(float value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetBeatDistribution(
+        float value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || Mathf.Approximately(newBox.BeatDistribution, value)) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || Mathf.Approximately(newBox.BeatDistribution, value))
+            return null;
         newBox.BeatDistribution = value;
         return GLSCommonCommand.TriggerModifyEventBoxAction(
             group,
@@ -585,11 +765,15 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxBeatDistribution);
     }
 
-    public static BaseEventBoxGroup SetAxis(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetAxis(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var box);
         // Axis edits apply only to the common transform-box contract and retain the existing action boundary.
-        if (newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex) is not BaseLightTransformEventBox newBox
+        if (box is not BaseLightTransformEventBox newBox
             || newBox.Axis == value)
         {
             return null;
@@ -602,10 +786,14 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxAxis);
     }
 
-    public static BaseEventBoxGroup SetFlip(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetFlip(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        if (newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex) is not BaseLightTransformEventBox newBox
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var box);
+        if (box is not BaseLightTransformEventBox newBox
             || newBox.Flip == value)
         {
             return null;
@@ -618,28 +806,35 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxFlip);
     }
 
-    public static BaseEventBoxGroup SetValueDistribution(float value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetValueDistribution(
+        float value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null)
+            return null;
         float newValue;
         switch (newBox)
         {
             case BaseLightColorEventBox lceb:
                 newValue = value / 100f;
-                if (Mathf.Approximately(lceb.BrightnessDistribution, newValue)) return null;
+                if (Mathf.Approximately(lceb.BrightnessDistribution, newValue))
+                    return null;
                 lceb.BrightnessDistribution = newValue;
                 break;
             // Rotation retains raw degrees while translation retains its percentage display conversion through the shared scale.
             case BaseLightTransformEventBox transformBox:
                 newValue = value / transformBox.ValueDistributionDisplayScale;
-                if (Mathf.Approximately(transformBox.ValueDistribution, newValue)) return null;
+                if (Mathf.Approximately(transformBox.ValueDistribution, newValue))
+                    return null;
                 transformBox.ValueDistribution = newValue;
                 break;
             case BaseVfxEventEventBox ffeb:
                 newValue = value / 100f;
-                if (Mathf.Approximately(ffeb.VfxDistribution, newValue)) return null;
+                if (Mathf.Approximately(ffeb.VfxDistribution, newValue))
+                    return null;
                 ffeb.VfxDistribution = newValue;
                 break;
         }
@@ -650,23 +845,30 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxValueDistribution);
     }
 
-    public static BaseEventBoxGroup SetValueDistributionType(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetValueDistributionType(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null)
+            return null;
         switch (newBox)
         {
             case BaseLightColorEventBox lceb:
-                if (lceb.BrightnessDistributionType == value) return null;
+                if (lceb.BrightnessDistributionType == value)
+                    return null;
                 lceb.BrightnessDistributionType = value;
                 break;
             case BaseLightTransformEventBox transformBox:
-                if (transformBox.ValueDistributionType == value) return null;
+                if (transformBox.ValueDistributionType == value)
+                    return null;
                 transformBox.ValueDistributionType = value;
                 break;
             case BaseVfxEventEventBox ffeb:
-                if (ffeb.VfxDistributionType == value) return null;
+                if (ffeb.VfxDistributionType == value)
+                    return null;
                 ffeb.VfxDistributionType = value;
                 break;
         }
@@ -677,23 +879,30 @@ public static class GLSEventBoxCommand
             ActionMergeType.ModifyEventBoxValueDistributionType);
     }
 
-    public static BaseEventBoxGroup SetAffectFirst(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetAffectFirst(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null)
+            return null;
         switch (newBox)
         {
             case BaseLightColorEventBox lceb:
-                if (lceb.BrightnessAffectFirst == value) return null;
+                if (lceb.BrightnessAffectFirst == value)
+                    return null;
                 lceb.BrightnessAffectFirst = value;
                 break;
             case BaseLightTransformEventBox transformBox:
-                if (transformBox.AffectFirst == value) return null;
+                if (transformBox.AffectFirst == value)
+                    return null;
                 transformBox.AffectFirst = value;
                 break;
             case BaseVfxEventEventBox ffeb:
-                if (ffeb.VfxAffectFirst == value) return null;
+                if (ffeb.VfxAffectFirst == value)
+                    return null;
                 ffeb.VfxAffectFirst = value;
                 break;
         }
@@ -701,13 +910,57 @@ public static class GLSEventBoxCommand
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxAffectFirst);
     }
 
-    public static BaseEventBoxGroup SetEasing(int value, BaseEventBoxGroup group, int boxIndex)
+    public static BaseEventBoxGroup SetEasing(
+        int value,
+        BaseEventBoxGroup group,
+        int boxIndex,
+        BaseEventBox displayBox = null)
     {
-        var newGroup = BeatmapFactory.Clone(group);
-        var newBox = newGroup.ReadOnlyBoxes.ElementAtOrDefault(boxIndex);
-        if (newBox == null || newBox.Easing == value) return null;
+        var newGroup = CloneForBoxEdit(group, boxIndex, displayBox, out var newBox);
+        if (newBox == null || newBox.Easing == value)
+            return null;
         newBox.Easing = value;
 
         return GLSCommonCommand.TriggerModifyEventBoxAction(group, newGroup, ActionMergeType.ModifyEventBoxEasing);
+    }
+
+    public static BaseEventBoxGroup SetColorDistributions(
+        string[] value,
+        bool strobe,
+        BaseEventBoxGroup group,
+        int boxIndex)
+    {
+        value ??= Array.Empty<string>();
+        if (group.ReadOnlyBoxes.ElementAtOrDefault(boxIndex) is not BaseLightColorEventBox originalBox)
+        {
+            return null;
+        }
+
+        var existing = strobe
+            ? originalBox.StrobeColorDistributions
+            : originalBox.ColorDistributions;
+        if (existing.SequenceEqual(value))
+        {
+            return null;
+        }
+
+        var newGroup = BeatmapFactory.Clone(group);
+        var newBox = (BaseLightColorEventBox)newGroup.ReadOnlyBoxes.ElementAt(boxIndex);
+        if (strobe)
+        {
+            newBox.StrobeColorDistributions = value;
+        }
+        else
+        {
+            newBox.ColorDistributions = value;
+        }
+
+        newBox.SaveCustom();
+        return GLSCommonCommand.TriggerModifyEventBoxAction(
+            group,
+            newGroup,
+            strobe
+                ? ActionMergeType.ModifyEventBoxStrobeColorDistributions
+                : ActionMergeType.ModifyEventBoxColorDistributions);
     }
 }

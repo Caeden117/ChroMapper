@@ -6,6 +6,9 @@
     "Main",
     "Plugins",
     "Unity.TextMeshPro",
+    "Unity.Localization",
+    "Unity.ResourceManager",
+    "UnityEngine.UI",
     "Unity.InputSystem",
     "Unity.InputSystem.TestFramework",
     "LiteNetLib",
@@ -21,7 +24,8 @@
   "allowUnsafeCode": false,
   "overrideReferences": true,
   "precompiledReferences": [
-    "nunit.framework.dll"
+    "nunit.framework.dll",
+    "0Harmony.dll"
   ],
   "autoReferenced": false,
   "defineConstraints": [

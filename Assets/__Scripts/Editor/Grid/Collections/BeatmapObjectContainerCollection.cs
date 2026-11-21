@@ -105,6 +105,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
     {
         loadedCollections.Remove(ContainerType);
         UnsubscribeToCallbacks();
+        // Detach this instance from the static setting callback so scene unload can release its MapObjects
+        // and containers.
+        Settings.StopNotifyingBySettingName("TimeValueDecimalPrecision", UpdateEpsilon);
         EditContext.OnEditModeChanged -= HandleEditModeChanged;
     }
 
@@ -256,14 +259,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             return;
         }
         obj.HasAttachedContainer = false;
-        //Debug.Log($"Creating container with hash code {obj.GetHashCode()}");
         // Environment unload can destroy pooled geometry containers. Drop destroyed entries before reuse.
-        ObjectContainer dequeued;
-        do
-        {
-            if (pooledContainers.Count == 0) CreateNewObject();
-            dequeued = pooledContainers.Dequeue();
-        } while (dequeued == null);
+        var dequeued = GetPooledContainer();
         dequeued.ObjectData = obj;
         dequeued.transform.localEulerAngles = Vector3.zero;
         dequeued.UpdateGridPosition();
@@ -302,9 +299,8 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         var containerIsAlive = container != null;
         if (containerIsAlive)
         {
-            //Debug.Log($"Recycling container with hash code {obj.GetHashCode()}");
             container.ObjectData = null;
-            container.SafeSetActive(false);
+            DeactivatePooledContainer(container);
         }
         LoadedContainers.Remove(obj);
 
@@ -314,11 +310,35 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
             ObjectsWithContainers.Remove(obj);
         if (containerIsAlive)
         {
-            pooledContainers.Enqueue(container);
+            AddPooledContainer(container);
             HandleContainerDespawn(container, obj);
         }
         obj.HasAttachedContainer = false;
         OnContainerDespawned?.Invoke(obj);
+    }
+
+    protected virtual ObjectContainer GetPooledContainer()
+    {
+        ObjectContainer container;
+        do
+        {
+            if (pooledContainers.Count == 0)
+                CreateNewObject();
+
+            container = pooledContainers.Dequeue();
+        } while (container == null);
+
+        return container;
+    }
+
+    protected virtual void DeactivatePooledContainer(ObjectContainer container) => container.SafeSetActive(false);
+
+    protected virtual void AddPooledContainer(ObjectContainer container) => pooledContainers.Enqueue(container);
+
+    protected void RecycleAllContainers()
+    {
+        while (ObjectsWithContainers.Count > 0)
+            RecycleContainer(ObjectsWithContainers[^1], ObjectsWithContainers.Count - 1);
     }
 
     private void CreateNewObject()
@@ -519,6 +539,9 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
         if (customEvents != null)
             customEvents.RefreshBpmTiming(jsonTime);
 
+        var map = BeatSaberSongContainer.Instance.Map;
+        map.RecomputeGlsSongBpmTimesAfter(jsonTime);
+
         // Bookmarks aren't in the ContainerCollection yet so we have this
         foreach (var bookmark in bookmarkManagerInstance.bookmarkContainers)
             if (bookmark.Data.JsonTime > jsonTime)
@@ -526,6 +549,10 @@ public abstract class BeatmapObjectContainerCollection : MonoBehaviour
 
         bookmarkManagerInstance.RefreshBookmarkTimelinePositions();
         bookmarkManagerInstance.RefreshBookTooltips();
+
+        var bpmCollection = GetCollectionForType(ObjectType.BpmChange);
+        if (bpmCollection != null)
+            bpmCollection.BeatmapContext.NotifyBeatmapTimingChanged(jsonTime);
     }
 
     protected virtual void UpdateContainerData(ObjectContainer con, BaseObject obj) { }
@@ -668,8 +695,11 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
             }
         }
 
-        conflicting.ForEach(conflict => DeleteObject(conflict, false, false));
+        foreach (var conflict in conflicting)
+            DeleteConflictingObject(conflict);
     }
+
+    protected virtual void DeleteConflictingObject(T conflict) => DeleteObject(conflict, false, false);
 
     /// <inheritdoc/>
     public override void RefreshPool(float lowerBound, float upperBound, bool forceRefresh = false) =>
@@ -687,8 +717,7 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
 
         // Easier to process recyclings at the beginning, rather than try to deal with it later.
         if (forceRefresh)
-            while (ObjectsWithContainers.Count > 0)
-                RecycleContainer(ObjectsWithContainers[ObjectsWithContainers.Count - 1], indexInObjectsWithContainers: ObjectsWithContainers.Count - 1); // Clearing list from index 0 made this O(N^2) including N^2/2 position shifts.... clearing from the back to front is O(N) if we dont scan with .Remove
+            RecycleAllContainers();
         else
         {
             var containersSpan = ObjectsWithContainers.AsSpan();
@@ -940,7 +969,6 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         // Ensure customData is up to date before spawning
         obj.WriteCustom();
 
-        //Debug.Log($"Spawning object with hash code {obj.GetHashCode()}");
         if (removeConflicting)
             RemoveConflictingObjects(new T[] { obj }, out conflicting);
         else
@@ -953,7 +981,6 @@ public abstract class BeatmapObjectContainerCollection<T> : BeatmapObjectContain
         HandleObjectSpawned(obj, inCollectionOfSpawns);
         OnObjectSpawned?.Invoke(obj);
 
-        //Debug.Log($"Total object count: {LoadedObjects.Count}");
         if (refreshesPool) RefreshPool();
     }
 

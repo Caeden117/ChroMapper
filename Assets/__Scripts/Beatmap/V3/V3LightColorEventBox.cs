@@ -17,6 +17,7 @@ namespace Beatmap.V3
             box.BrightnessDistributionType = node["t"].AsInt;
             box.BrightnessAffectFirst = node["b"].AsInt;
             box.Easing = node["i"].AsInt;
+            box.SetCustomData(node["customData"]);
             box.Events = BaseItem
                 .GetRequiredNode(node, "e")
                 .AsArray.Linq.Select(x => V3LightColorBase.GetFromJson(x.Value))
@@ -33,11 +34,22 @@ namespace Beatmap.V3
             node["d"] = box.BeatDistributionType;
             node["r"] = box.BrightnessDistribution;
             node["t"] = box.BrightnessDistributionType;
-            node["b"] = box.BrightnessAffectFirst;
+            if (box.ShouldSerializeAffectFirst(
+                box.BrightnessAffectFirst,
+                box.BrightnessDistribution,
+                box.BrightnessDistributionType))
+            {
+                node["b"] = box.BrightnessAffectFirst;
+            }
             node["i"] = box.Easing;
             var ary = new JSONArray();
             foreach (var k in box.Events) ary.Add(V3LightColorBase.ToJson(k));
             node["e"] = ary;
+            var customData = box.SaveCustom();
+            if (customData.Children.Any())
+            {
+                node["customData"] = customData;
+            }
             return node;
         }
     }

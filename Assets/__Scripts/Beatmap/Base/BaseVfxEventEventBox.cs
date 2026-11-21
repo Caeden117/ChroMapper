@@ -12,6 +12,7 @@ namespace Beatmap.Base
     {
         public BaseVfxEventEventBox()
         {
+            ApplyDefaultAffectFirst();
             VfxDistributionType = (int)DistributionType.Wave;
             Events = Array.Empty<BaseFxEventFloat>();
         }

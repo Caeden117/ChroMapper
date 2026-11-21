@@ -67,7 +67,7 @@ public class BeatmapRotationInputController : BeatmapInputController<ObjectConta
         {
             laneRotationProvider.SetEditRotation(
                 Mathf.RoundToInt(
-                    Mathf.Round((laneRotationProvider.EditRotation + (modifier * prec)) * 1_000f) / 1_000f));
+                    CMMath.RoundToDecimals(laneRotationProvider.EditRotation + (modifier * prec))));
         }
     }
 

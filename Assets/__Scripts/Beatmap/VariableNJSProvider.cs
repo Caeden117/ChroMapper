@@ -41,6 +41,9 @@ public class VariableNJSProvider : StateManager<VariableNJSStateData, BaseNJSEve
             BaseNoteJumpSpeed,
             offset,
             BaseBeatPerMinute);
+        // Arc attachment reads these values before the first timeline update.
+        NoteJumpSpeed = BaseNoteJumpSpeed;
+        UpdateMovementValues();
 
         InitializeStates(
             container,
@@ -70,6 +73,12 @@ public class VariableNJSProvider : StateManager<VariableNJSStateData, BaseNJSEve
 
     public void UpdateState()
     {
+        UpdateMovementValues();
+        OnChanged?.Invoke();
+    }
+
+    private void UpdateMovementValues()
+    {
         EditorScale = 100f * NoteJumpSpeed / BaseBeatPerMinute;
 
         var factor = Mathf.Min(NoteJumpSpeed / BaseNoteJumpSpeed, 1f);
@@ -79,8 +88,6 @@ public class VariableNJSProvider : StateManager<VariableNJSStateData, BaseNJSEve
 
         JumpDistance = NoteJumpSpeed * JumpDuration;
         HalfJumpDistance = JumpDistance * 0.5f;
-
-        OnChanged?.Invoke();
     }
 
     protected override void OnInsertUpdateToPreviousState(VariableNJSStateData newState, VariableNJSStateData prevState)

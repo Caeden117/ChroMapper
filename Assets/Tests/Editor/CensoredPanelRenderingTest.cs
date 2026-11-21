@@ -27,15 +27,9 @@ namespace Tests.Editor
             animationsBeforeTest = Settings.Instance.Animations;
             Settings.Instance.Animations = true;
 
-            yield return TestUtils.ReloadMap(
-                3,
-                JSON.Parse(File.ReadAllText(FixturePath)),
-                beatsPerMinute: 195,
-                environmentName: "FitBeatEnvironment",
-                songLengthSeconds: 200);
-            TestUtils.CaptureCurrentMapAsSharedBaseline();
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
+            yield break;
         }
 
         [SetUp]
@@ -123,7 +117,7 @@ namespace Tests.Editor
                 environmentName: "FitBeatEnvironment", songLengthSeconds: 200);
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            yield return Beat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
+            yield return AssertBeat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
 
             // Round-trip through the real save path in memory: serialization must keep each
             // material's explicit shaderKeywords:[] so a save+reload cannot silently revert
@@ -146,7 +140,7 @@ namespace Tests.Editor
                 environmentName: "FitBeatEnvironment", songLengthSeconds: 200);
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            yield return Beat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
+            yield return AssertBeat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
         }
 
         // Lifecycle discriminator for the round-trip centering drift above: reload the SAME
@@ -159,18 +153,17 @@ namespace Tests.Editor
                 beatsPerMinute: 195, environmentName: "FitBeatEnvironment", songLengthSeconds: 200);
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            yield return Beat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
+            yield return AssertBeat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
 
             yield return TestUtils.ReloadMap(3, JSON.Parse(File.ReadAllText(FixturePath)),
                 beatsPerMinute: 195, environmentName: "FitBeatEnvironment", songLengthSeconds: 200);
             uiMode = Object.FindAnyObjectByType<UIMode>();
             cameraManager = Object.FindAnyObjectByType<CameraManager>();
-            yield return Beat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
+            yield return AssertBeat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround();
         }
 
         // The panel must keep its white surround, saturated colors, and centered red text after seeks.
-        [UnityTest]
-        public IEnumerator Beat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround()
+        private IEnumerator AssertBeat124TvPanelHasVisibleColoursCenteredTextAndWhiteSurround()
         {
             var map = BeatSaberSongContainer.Instance.Map;
             Assert.That(map, Is.Not.Null, "The panel fixture must be loaded.");

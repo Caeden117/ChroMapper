@@ -1,9 +1,12 @@
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using Assets.HSVPicker.UI.TextMeshPro;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Tests.Editor
 {
@@ -65,8 +68,6 @@ namespace Tests.Editor
             }
         }
 
-        // Degree values grow to three integer digits, so the narrow hue box caps the fraction at two
-        // decimals to keep the hundreds digit visible.
         [Test]
         public void PickerHueDisplayRoundsDegreesButTextKeepsPrecision()
         {
@@ -77,7 +78,7 @@ namespace Tests.Editor
                 var input = HueField(go).GetComponent<TMPro.TMP_InputField>();
 
                 picker.H = 123.456f / 360f;
-                Assert.That(input.text, Is.EqualTo("123.46"));
+                Assert.That(input.text, Is.EqualTo("123.456"));
 
                 input.text = "44.446";
                 Assert.That(picker.H * 360f, Is.EqualTo(44.446f).Within(0.0001f));
@@ -85,6 +86,36 @@ namespace Tests.Editor
             finally
             {
                 Object.DestroyImmediate(go);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator PickerHueDisplayFitsThreeDecimals()
+        {
+            var canvasObject = new GameObject("Picker canvas", typeof(Canvas));
+            canvasObject.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            var go = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(PickerPrefabPath), canvasObject.transform);
+            try
+            {
+                // CMUI normally gives this prefab its containing dialog's width.
+                go.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 300f);
+                var picker = go.GetComponentInChildren<ColorPicker>();
+                if (!picker.Setup.ShowHsv)
+                    picker.ToggleColorSliders();
+
+                yield return null;
+
+                Canvas.ForceUpdateCanvases();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(go.GetComponent<RectTransform>());
+                picker.H = 123.456f / 360f;
+                var input = HueField(go).GetComponent<TMPro.TMP_InputField>();
+                Assert.That(input.text, Is.EqualTo("123.456"));
+                Assert.That(input.textViewport.rect.width, Is.GreaterThan(0f));
+                Assert.That(input.textComponent.GetPreferredValues(input.text).x, Is.LessThanOrEqualTo(input.textViewport.rect.width));
+            }
+            finally
+            {
+                Object.DestroyImmediate(canvasObject);
             }
         }
 
@@ -121,6 +152,100 @@ namespace Tests.Editor
             {
                 Assert.That(label.MINValue, Is.EqualTo(0f));
                 Assert.That(label.MAXValue, Is.EqualTo(360f));
+            }
+        }
+
+        private const string RowPrefabPath = "Assets/_Prefabs/UI/GLS Color Distribution Row.prefab";
+
+        // The row prefab is authored inactive and activated by the array view controller when added,
+        // so tests must activate the clone for Awake to wire the component callbacks.
+        private static GLSColorDistributionRowView SpawnRow()
+        {
+            var go = Object.Instantiate(
+                AssetDatabase.LoadAssetAtPath<GameObject>(RowPrefabPath));
+            go.SetActive(true);
+            return go.GetComponent<GLSColorDistributionRowView>();
+        }
+
+        [Test]
+        public void DistributionRowDisplaysHueOffsetAsDegrees()
+        {
+            var row = SpawnRow();
+            try
+            {
+                row.SetDistribution("h,0.5,IO^2");
+                Assert.That(row.ValueInput.Value, Is.EqualTo(180f).Within(0.001f));
+                row.SetDistribution("h,1,L,l");
+                Assert.That(row.ValueInput.Value, Is.EqualTo(360f).Within(0.001f));
+                row.SetDistribution("h,0,L");
+                Assert.That(row.ValueInput.Value, Is.EqualTo(0f).Within(0.001f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(row.gameObject);
+            }
+        }
+
+        [Test]
+        public void DistributionRowParsesDegreesBackToNormalizedOffset()
+        {
+            var row = SpawnRow();
+            try
+            {
+                row.SetDistribution("h,0,IO^2");
+
+                row.ValueInput.Value = 360f;
+                Assert.That(row.GetDistribution(), Is.EqualTo("h,1,IO^2"));
+                row.ValueInput.Value = 180f;
+                Assert.That(row.GetDistribution(), Is.EqualTo("h,0.5,IO^2"));
+                row.ValueInput.Value = 0f;
+                Assert.That(row.GetDistribution(), Is.EqualTo("h,0,IO^2"));
+            }
+            finally
+            {
+                Object.DestroyImmediate(row.gameObject);
+            }
+        }
+
+        [Test]
+        public void DistributionRowLeavesNonHueOffsetsUnscaled()
+        {
+            var row = SpawnRow();
+            try
+            {
+                row.SetDistribution("v,0.7,L");
+                Assert.That(row.ValueInput.Value, Is.EqualTo(0.7f).Within(0.001f));
+                row.ValueInput.Value = 2f;
+                Assert.That(row.GetDistribution(), Is.EqualTo("v,2,L"));
+            }
+            finally
+            {
+                Object.DestroyImmediate(row.gameObject);
+            }
+        }
+
+        // The stored offset stays authored-normalized, so switching targets re-renders the same
+        // offset in the new target's units instead of leaking a degrees value into another channel.
+        [Test]
+        public void DistributionRowRescalesDisplayedValueWhenTargetChanges()
+        {
+            var row = SpawnRow();
+            try
+            {
+                row.SetDistribution("h,0.5,IO^2");
+                Assert.That(row.ValueInput.Value, Is.EqualTo(180f).Within(0.001f));
+
+                row.TargetDropdown.Value = 2;
+                Assert.That(row.ValueInput.Value, Is.EqualTo(0.5f).Within(0.001f));
+                Assert.That(row.GetDistribution(), Is.EqualTo("v,0.5,IO^2"));
+
+                row.TargetDropdown.Value = 0;
+                Assert.That(row.ValueInput.Value, Is.EqualTo(180f).Within(0.001f));
+                Assert.That(row.GetDistribution(), Is.EqualTo("h,0.5,IO^2"));
+            }
+            finally
+            {
+                Object.DestroyImmediate(row.gameObject);
             }
         }
     }

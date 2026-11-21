@@ -9,12 +9,14 @@ using UnityEngine;
 public class GLSEventGridProvider : MonoBehaviour
 {
     public event Action<BaseEventBoxGroup> OnGroupChanged;
+    public event Action OnAutomaticLaneDefaultsChanged;
     // Retiring an outer group must clear inner node ownership without sending null to handlers that require a valid group.
     public event Action OnGroupRetired;
 
     [SerializeField] private EditModeContext editMode;
     [SerializeField] private GridLane gridLane;
     [SerializeField] private AudioTimeSyncController atsc;
+    [SerializeField] private BeatmapRuntimeContext beatmapRuntimeContext;
 
     [Header("Prefab")] [SerializeField] private TextMeshProUGUI labelPrefab;
     [SerializeField] private RectTransform targetCanvas;
@@ -29,8 +31,11 @@ public class GLSEventGridProvider : MonoBehaviour
     private readonly List<BaseEventBox> axisLaneOrder = new();
     private readonly List<int> axisLaneAuthoredIndexes = new();
     private readonly List<int> authoredLaneDisplayIndexes = new();
+    private readonly HashSet<(Axis Axis, int Element)> claimedLights = new();
+    private readonly HashSet<BaseEventBox> lanesOwningLights = new();
     private BaseEventBoxGroup groupContext;
 
+    public GridLane RibbonGridLane => gridLane;
     public int DisplayedLaneCount => axisLaneOrder.Count;
 
     public BaseEventBoxGroup GroupContext
@@ -48,6 +53,29 @@ public class GLSEventGridProvider : MonoBehaviour
 
     private bool markRemove;
     public BaseEventBoxGroup LastContext;
+
+    private void Awake()
+    {
+        Settings.NotifyBySettingName(nameof(Settings.DefaultGLSAffectFirst), HandleAutomaticLaneDefaultChanged);
+    }
+
+    private void OnDestroy()
+    {
+        Settings.StopNotifyingBySettingName(nameof(Settings.DefaultGLSAffectFirst), HandleAutomaticLaneDefaultChanged);
+    }
+
+    private void HandleAutomaticLaneDefaultChanged(object _)
+    {
+        // Cached automatic lanes describe future boxes. Saved boxes keep their own configured value.
+        foreach (var lanes in unusedLanesByGroupType.Values)
+        {
+            for (var axis = 0; axis < lanes.Length; axis++)
+            {
+                lanes[axis].ApplyDefaultAffectFirst();
+            }
+        }
+        OnAutomaticLaneDefaultsChanged?.Invoke();
+    }
 
     public void MarkRemove()
     {
@@ -100,6 +128,7 @@ public class GLSEventGridProvider : MonoBehaviour
         var boxes = groupContext.ReadOnlyBoxes;
         AppendMissingAxisLanes(groupContext, axisUnusedLanes);
         RebuildAxisLaneOrder(boxes);
+        RebuildLaneOwnership(boxes, beatmapRuntimeContext.Descriptor.GetGlsGroupSize(groupContext));
         gridLane.Lane = DisplayedLaneCount;
 
         for (var i = 0; i < DisplayedLaneCount; i++)
@@ -144,11 +173,46 @@ public class GLSEventGridProvider : MonoBehaviour
 
             label.SetText(sb.ToString());
 
-            // Dim "fake" auto-lanes so it's clear which are serialized and which are UI-candy. They become real once something is placed in them.
             var labelColor = labelPrefab.color;
-            labelColor.a *= box.IsAutomaticAxisLane && box.ReadOnlyEvents.Count == 0 ? 0.5f : 1f;
+            if (!box.IsAutomaticAxisLane && !lanesOwningLights.Contains(box))
+            {
+                labelColor = Color.red;
+            }
+            else
+            {
+                labelColor.a *= box.IsAutomaticAxisLane && box.ReadOnlyEvents.Count == 0 ? 0.5f : 1f;
+            }
             label.color = labelColor;
             label.enabled = true;
+        }
+    }
+
+    // Match playback's first-valid-box ownership order. Rotation and translation axes claim lights independently.
+    private void RebuildLaneOwnership(IReadOnlyList<BaseEventBox> boxes, int groupSize)
+    {
+        claimedLights.Clear();
+        lanesOwningLights.Clear();
+        for (var boxIndex = 0; boxIndex < boxes.Count; boxIndex++)
+        {
+            var box = boxes[boxIndex];
+            if (box.IsAutomaticAxisLane && box.ReadOnlyEvents.Count == 0)
+            {
+                continue;
+            }
+
+            var filter = IndexFilterHelper.Convert(box.IndexFilter, groupSize);
+            if (filter == null)
+            {
+                continue;
+            }
+
+            foreach (var (element, _, _) in filter)
+            {
+                if (claimedLights.Add((box.GetAxis(), element)))
+                {
+                    lanesOwningLights.Add(box);
+                }
+            }
         }
     }
 
@@ -269,9 +333,12 @@ public class GLSEventGridProvider : MonoBehaviour
             }
         }
 
+        var enabledAxes = beatmapRuntimeContext.TrackDefinitions.Gls.TryGetValue(group.ID, out var trackDefinition)
+            ? transformGroup.GetEnabledAxes(trackDefinition)
+            : null;
         for (var axis = 0; axis < unusedLanes.Length; axis++)
         {
-            if ((presentAxes & (1 << axis)) == 0)
+            if ((presentAxes & (1 << axis)) == 0 && (enabledAxes == null || enabledAxes[axis]))
             {
                 lanes.Add(unusedLanes[axis]);
             }

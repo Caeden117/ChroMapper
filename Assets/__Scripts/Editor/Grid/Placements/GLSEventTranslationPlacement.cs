@@ -44,13 +44,14 @@ public class
 
     private void HandleEasingChanged(int value)
     {
-        QueuedData.EaseType = value;
+        QueuedData.Easing = value;
         GlsEventAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 
     private void HandleExtensionChanged(int value)
     {
         QueuedData.UsePrevious = value;
+        GLSPlacementEditorState.ClearExtensionEasing(QueuedData, EasingInputController);
         GlsEventAppearance.SetAppearance(PlacementVisualContainer, false);
     }
 

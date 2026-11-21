@@ -43,5 +43,6 @@ public class TextBoxFloatComponent : TextBoxNumberComponent<float>
         return val;
     }
 
-    protected override float AddValue(float val, float delta) => ValidateValue(val + (delta * GetPrecisionValue()));
+    protected override float AddValue(float val, float delta)
+        => ValidateValue(CMMath.RoundToDecimals(val + (delta * GetPrecisionValue())));
 }

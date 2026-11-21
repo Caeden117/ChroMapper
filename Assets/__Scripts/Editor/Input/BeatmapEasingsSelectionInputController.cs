@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Beatmap.Base;
 using Beatmap.Containers;
@@ -33,15 +33,17 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         EaseType.InBounce,
         EaseType.OutBounce,
         EaseType.InOutBounce,
+        EaseType.BeatSaberInOutBounce,
         EaseType.InBack,
         EaseType.OutBack,
         EaseType.InOutBack,
+        EaseType.BeatSaberInOutBack,
         EaseType.InElastic,
         EaseType.OutElastic,
-        EaseType.InOutElastic
+        EaseType.InOutElastic,
+        EaseType.BeatSaberInOutElastic
     };
 
-    // you're about to witness bizarre
     public void OnEasingCurve(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -49,10 +51,8 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
             var ease = currentEase;
             if (ease is EaseType.None or EaseType.Linear) return;
 
-            var curve = GetEaseCurve(ease);
-            ease -= (int)curve;
-            curve = (EaseCurve)(((int)curve + 1) % 3);
-            ease += (int)curve;
+            var curve = GetNextEaseCurve(ease);
+            ease = SetEaseCurve(ease, curve);
             NotifyEasingChanged(ease);
         }
     }
@@ -64,14 +64,7 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         switch (HoveredObject)
         {
             case GLSEventContainer glsEventContainer:
-                ease = (EaseType)(glsEventContainer.EventData switch
-                {
-                    BaseLightColorBase lcb => lcb.Easing,
-                    BaseLightRotationBase lrb => lrb.EaseType,
-                    BaseLightTranslationBase ltb => ltb.EaseType,
-                    BaseFxEventFloat fx => fx.Easing,
-                    _ => 0
-                });
+                ease = (EaseType)(glsEventContainer.EventData?.Easing ?? 0);
                 break;
             case NJSEventContainer njsEventContainer:
                 ease = (EaseType)njsEventContainer.NJSData.Easing;
@@ -84,12 +77,11 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
 
         var easeCurve = GetEaseCurve(ease);
         if (easeCurve != currentCurve)
-            ease = ease - (int)easeCurve + (int)currentCurve;
+            ease = SetEaseCurve(ease, currentCurve);
         else
         {
-            ease -= (int)currentCurve;
-            currentCurve = (EaseCurve)(((int)currentCurve + 1) % 3);
-            ease += (int)currentCurve;
+            currentCurve = GetNextEaseCurve(ease);
+            ease = SetEaseCurve(ease, currentCurve);
         }
 
         switch (HoveredObject)
@@ -139,7 +131,9 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         if (!context.performed) return;
         var ease = currentEase;
 
-        var easeCurve = (int)(ease is EaseType.Linear or EaseType.None ? currentCurve : GetEaseCurve(ease));
+        var easeCurve = (int)ToStandardCurve(ease is EaseType.Linear or EaseType.None
+            ? currentCurve
+            : GetEaseCurve(ease));
         if (ease == EaseType.Linear)
             ease = easeStandard.Contains(currentEase) ? currentEase : EaseType.InQuadratic + easeCurve;
         else if (ease == EaseType.None)
@@ -171,14 +165,7 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         switch (HoveredObject)
         {
             case GLSEventContainer glsEventContainer:
-                ease = (EaseType)(glsEventContainer.EventData switch
-                {
-                    BaseLightColorBase lcb => lcb.Easing,
-                    BaseLightRotationBase lrb => lrb.EaseType,
-                    BaseLightTranslationBase ltb => ltb.EaseType,
-                    BaseFxEventFloat fx => fx.Easing,
-                    _ => 0
-                });
+                ease = (EaseType)(glsEventContainer.EventData?.Easing ?? 0);
                 break;
             case NJSEventContainer njsEventContainer:
                 ease = (EaseType)njsEventContainer.NJSData.Easing;
@@ -187,7 +174,9 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
                 return;
         }
 
-        var easeCurve = (int)(ease is EaseType.Linear or EaseType.None ? currentCurve : GetEaseCurve(ease));
+        var easeCurve = (int)ToStandardCurve(ease is EaseType.Linear or EaseType.None
+            ? currentCurve
+            : GetEaseCurve(ease));
         if (ease == EaseType.Linear)
             ease = easeStandard.Contains(currentEase) ? currentEase : EaseType.InQuadratic + easeCurve;
         else if (ease == EaseType.None)
@@ -232,7 +221,7 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         if (context.performed)
         {
             var ease = easeAlternative.Contains(currentEase)
-                ? easeAlternative[(easeAlternative.IndexOf(currentEase) + 3) % easeAlternative.Count]
+                ? easeAlternative[(easeAlternative.IndexOf(currentEase) + 4) % easeAlternative.Count]
                 : easeAlternative[(int)currentCurve];
             NotifyEasingChanged(ease);
         }
@@ -245,28 +234,19 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         switch (HoveredObject)
         {
             case GLSEventContainer glsEventContainer:
-                ease = (EaseType)(glsEventContainer.EventData switch
-                {
-                    BaseLightColorBase lcb => lcb.Easing,
-                    BaseLightRotationBase lrb => lrb.EaseType,
-                    BaseLightTranslationBase ltb => ltb.EaseType,
-                    BaseFxEventFloat fx => fx.Easing,
-                    _ => 0
-                });
+                ease = (EaseType)(glsEventContainer.EventData?.Easing ?? 0);
                 break;
             default:
                 return;
         }
 
-        var easeCurve = (int)GetEaseCurve(ease);
+        var easeCurve = GetEaseCurve(ease);
         if (IsSameEaseType(ease, currentEase) && easeAlternative.Contains(ease))
         {
-            ease -= easeCurve;
-            ease = easeAlternative[(easeAlternative.IndexOf(ease) + 3) % easeAlternative.Count];
-            ease += easeCurve;
+            ease = easeAlternative[(easeAlternative.IndexOf(ease) + 4) % easeAlternative.Count];
         }
         else if (!IsSameEaseType(ease, currentEase) && easeAlternative.Contains(currentEase))
-            ease = currentEase - (int)GetEaseCurve(currentEase) + easeCurve;
+            ease = SetEaseCurve(currentEase, easeCurve);
         else
             ease = easeAlternative[(int)currentCurve];
 
@@ -282,9 +262,11 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         }
     }
 
-    public void NotifyEasingChanged(EaseType value)
+    // Clearing a placement extension's curve must preserve the Extension selector. Ordinary easing input still selects a normal node.
+    public void NotifyEasingChanged(EaseType value, bool clearExtension = true)
     {
-        NotifyExtensionChanged(0);
+        if (clearExtension)
+            NotifyExtensionChanged(0);
         if (currentEase == value) return;
         currentEase = value;
         if (value is not EaseType.Linear and not EaseType.None) currentCurve = GetEaseCurve(value);
@@ -323,14 +305,7 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         {
             case GLSEventContainer glsEventContainer:
                 {
-                    var e = glsEventContainer.EventData switch
-                    {
-                        BaseLightColorBase lcb => lcb.UsePrevious,
-                        BaseLightRotationBase lrb => lrb.UsePrevious,
-                        BaseLightTranslationBase ltb => ltb.UsePrevious,
-                        BaseFxEventFloat fx => fx.UsePrevious,
-                        _ => 0
-                    };
+                    var e = glsEventContainer.EventData?.UsePrevious ?? 0;
                     GLSEventEasingCommand.SetExtension(glsEventContainer.EventData, (e + 1) % 2);
                     break;
                 }
@@ -363,14 +338,83 @@ public class BeatmapEasingsSelectionInputController : BeatmapInputController<Obj
         OnExtensionChanged?.Invoke(extension);
     }
 
-    // TODO: these are gigahorrible, but easy way out
-    private static bool IsSameEaseType(EaseType a, EaseType b) => a - (int)GetEaseCurve(a) == b - (int)GetEaseCurve(b);
+    private static bool IsSameEaseType(EaseType a, EaseType b) => GetEaseFamily(a) == GetEaseFamily(b);
 
-    private static EaseCurve GetEaseCurve(EaseType ease)
+    public static EaseCurve GetEaseCurve(EaseType ease)
     {
-        var easeCurve = ease.ToString();
-        if (easeCurve.StartsWith("InOut")) return EaseCurve.InOut;
-        if (easeCurve.StartsWith("Out")) return EaseCurve.Out;
-        return EaseCurve.In;
+        return ease switch
+        {
+            EaseType.OutQuadratic or
+            EaseType.OutSinusoidal or
+            EaseType.OutCubic or
+            EaseType.OutQuartic or
+            EaseType.OutQuintic or
+            EaseType.OutExponential or
+            EaseType.OutCircular or
+            EaseType.OutBack or
+            EaseType.OutElastic or
+            EaseType.OutBounce => EaseCurve.Out,
+            EaseType.InOutQuadratic or
+            EaseType.InOutSinusoidal or
+            EaseType.InOutCubic or
+            EaseType.InOutQuartic or
+            EaseType.InOutQuintic or
+            EaseType.InOutExponential or
+            EaseType.InOutCircular or
+            EaseType.InOutBack or
+            EaseType.InOutElastic or
+            EaseType.InOutBounce => EaseCurve.InOut,
+            EaseType.BeatSaberInOutBack or
+            EaseType.BeatSaberInOutElastic or
+            EaseType.BeatSaberInOutBounce => EaseCurve.BeatSaberInOut,
+            _ => EaseCurve.In
+        };
+    }
+
+    public static EaseType SetEaseCurve(EaseType ease, EaseCurve curve)
+    {
+        var family = GetEaseFamily(ease);
+        if (curve == EaseCurve.BeatSaberInOut)
+        {
+            return family switch
+            {
+                EaseType.InBack => EaseType.BeatSaberInOutBack,
+                EaseType.InElastic => EaseType.BeatSaberInOutElastic,
+                EaseType.InBounce => EaseType.BeatSaberInOutBounce,
+                _ => family + (int)EaseCurve.InOut
+            };
+        }
+
+        return family + (int)curve;
+    }
+
+    private static EaseCurve GetNextEaseCurve(EaseType ease)
+    {
+        var curveCount = IsAlternativeFamily(ease) ? 4 : 3;
+        return (EaseCurve)(((int)GetEaseCurve(ease) + 1) % curveCount);
+    }
+
+    private static EaseCurve ToStandardCurve(EaseCurve curve)
+    {
+        return curve == EaseCurve.BeatSaberInOut
+            ? EaseCurve.InOut
+            : curve;
+    }
+
+    private static bool IsAlternativeFamily(EaseType ease)
+    {
+        var family = GetEaseFamily(ease);
+        return family is EaseType.InBack or EaseType.InElastic or EaseType.InBounce;
+    }
+
+    private static EaseType GetEaseFamily(EaseType ease)
+    {
+        return ease switch
+        {
+            EaseType.InOutBack or EaseType.BeatSaberInOutBack => EaseType.InBack,
+            EaseType.InOutElastic or EaseType.BeatSaberInOutElastic => EaseType.InElastic,
+            EaseType.InOutBounce or EaseType.BeatSaberInOutBounce => EaseType.InBounce,
+            _ => ease - (int)GetEaseCurve(ease)
+        };
     }
 }

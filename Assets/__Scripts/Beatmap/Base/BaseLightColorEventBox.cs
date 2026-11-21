@@ -11,6 +11,7 @@ namespace Beatmap.Base
     {
         public BaseLightColorEventBox()
         {
+            ApplyDefaultAffectFirst();
             BrightnessDistributionType = (int)DistributionType.Wave;
             Events = Array.Empty<BaseLightColorBase>();
         }
@@ -57,13 +58,49 @@ namespace Beatmap.Base
             BrightnessDistribution = other.BrightnessDistribution;
             BrightnessDistributionType = other.BrightnessDistributionType;
             BrightnessAffectFirst = other.BrightnessAffectFirst;
+            CustomData = other.CustomData?.Clone();
             Events = other.Events.Select(x => x.Clone()).Cast<BaseLightColorBase>().ToArray();
+            ColorDistributions = other.ColorDistributions.ToArray();
+            StrobeColorDistributions = other.StrobeColorDistributions.ToArray();
+            RefreshColorDistributionCaches();
         }
 
         public float BrightnessDistribution { get; set; }
         public int BrightnessDistributionType { get; set; }
         public int BrightnessAffectFirst { get; set; }
         public BaseLightColorBase[] Events { get; set; }
+        public JSONNode CustomData { get; private set; } = new JSONObject();
+        public string[] ColorDistributions { get; set; } = Array.Empty<string>();
+        public string[] StrobeColorDistributions { get; set; } = Array.Empty<string>();
+        public IReadOnlyList<GLSColorDistributionInstruction> ParsedColorDistributions { get; private set; } =
+            Array.Empty<GLSColorDistributionInstruction>();
+        public IReadOnlyList<GLSColorDistributionInstruction> ParsedStrobeColorDistributions { get; private set; } =
+            Array.Empty<GLSColorDistributionInstruction>();
+
+        public void SetCustomData(JSONNode customData)
+        {
+            CustomData = customData is JSONObject
+                ? customData
+                : new JSONObject();
+            // Read the authored distribution keys directly so loading leaves customData unchanged.
+            ColorDistributions = GLSColorDistribution.ReadStrings(CustomData, GLSColorDistribution.ColorDistributionsKey);
+            StrobeColorDistributions = GLSColorDistribution.ReadStrings(CustomData, GLSColorDistribution.StrobeColorDistributionsKey);
+            RefreshColorDistributionCaches();
+        }
+
+        public JSONNode SaveCustom()
+        {
+            GLSColorDistribution.WriteStrings(CustomData, GLSColorDistribution.ColorDistributionsKey, ColorDistributions);
+            GLSColorDistribution.WriteStrings(CustomData, GLSColorDistribution.StrobeColorDistributionsKey, StrobeColorDistributions);
+            RefreshColorDistributionCaches();
+            return CustomData;
+        }
+
+        private void RefreshColorDistributionCaches()
+        {
+            ParsedColorDistributions = GLSColorDistribution.Parse(ColorDistributions);
+            ParsedStrobeColorDistributions = GLSColorDistribution.Parse(StrobeColorDistributions);
+        }
 
         public override JSONNode ToJson() =>
             Settings.Instance.MapVersion switch

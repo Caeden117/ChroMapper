@@ -19,7 +19,7 @@ public static class RotationCommand
         if (evt != null)
         {
             var newEvt = BeatmapFactory.Clone(evt);
-            newEvt.Rotation = Mathf.Round((newEvt.Rotation + (modifier * prec)) * 1_000f) / 1_000f % 360f;
+            newEvt.Rotation = CMMath.RoundToDecimals(newEvt.Rotation + (modifier * prec)) % 360f;
             if (Mathf.Approximately(newEvt.Rotation, 0f))
             {
                 regc.DeleteObject(evt, true, true, "Deleted a rotation event for 0 rotation.");
@@ -37,7 +37,7 @@ public static class RotationCommand
             {
                 JsonTime = time,
                 ExecutionTime = ExecutionTime.Early,
-                Rotation = Mathf.Round(modifier * prec * 1_000f) / 1_000f
+                Rotation = CMMath.RoundToDecimals(modifier * prec)
             };
             regc.SpawnObject(newEvt, out var conflicting);
             BeatmapActionContainer.AddAction(
@@ -55,7 +55,7 @@ public static class RotationCommand
         {
             case BaseRotationEvent evt:
                 {
-                    evt.Rotation = Mathf.Round((evt.Rotation + (modifier * prec)) * 1_000f) / 1_000f % 360f;
+                    evt.Rotation = CMMath.RoundToDecimals(evt.Rotation + (modifier * prec)) % 360f;
                     break;
                 }
             case BaseGrid grid:
@@ -159,9 +159,20 @@ public static class RotationCommand
 
     public static BaseRotationEvent ModifyHover(BaseRotationEvent originalObject, int modifier, float prec)
     {
+        if (HoverSelectionMutation.TryApply(
+                originalObject,
+                data => data.Rotation = CMMath.RoundToDecimals(data.Rotation + (modifier * prec)) % 360f,
+                out var edited))
+        {
+            return edited.Count > 0
+                ? (BaseRotationEvent)edited[0]
+                : null;
+        }
+
+
         var newObject = BeatmapFactory.Clone(originalObject);
 
-        newObject.Rotation = Mathf.Round((newObject.Rotation + (modifier * prec)) * 1_000f) / 1_000f % 360f;
+        newObject.Rotation = CMMath.RoundToDecimals(newObject.Rotation + (modifier * prec)) % 360f;
 
         // Content equality detects a no-op without relying on the collection ordering keys.
         if (newObject.HasSameContent(originalObject)) return null;

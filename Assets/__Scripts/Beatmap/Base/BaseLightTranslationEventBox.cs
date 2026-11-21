@@ -11,6 +11,7 @@ namespace Beatmap.Base
     {
         public BaseLightTranslationEventBox()
         {
+            ApplyDefaultAffectFirst();
             TranslationDistributionType = (int)DistributionType.Wave;
             Events = Array.Empty<BaseLightTranslationBase>();
         }

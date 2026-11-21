@@ -194,6 +194,8 @@ public class LoadKeybindsController : MonoBehaviour
 
         Debug.Log($"Added keybind override for {keybindOverride.InputActionName}.");
         AllOverrides.Add(keybindOverride);
+        // The overlap resolver caches the old bindings until the rebind refreshes them.
+        InputSystemPatch.RefreshBlockMap(CMInputCallbackInstaller.InputInstance);
     }
 
     private static string MigrateActionName(string actionName) =>

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Assets.HSVPicker.UI.TextMeshPro;
@@ -97,6 +98,68 @@ namespace Tests.Editor
             Assert.AreEqual(expected, picker.CurrentColor);
         }
 
+        [TestCase(ColorValues.Hue, "123.456789")]
+        [TestCase(ColorValues.Saturation, "0.123456789")]
+        [TestCase(ColorValues.Value, "0.123456789")]
+        public void HsvTextEditsSaveRoundedRgb(ColorValues channel, string text)
+        {
+            GetInput(channel).text = text;
+
+            var converted = HSVUtil.ConvertHsvToRgb(picker.H * 360, picker.S, picker.V, ImportedColor.a);
+            var json = new JSONArray().WriteColor(picker.CurrentColor);
+            var saved = JSON.Parse(json.ToString());
+            for (var index = 0; index < 3; index++)
+            {
+                var expected = (float)Math.Round(converted[index], 3);
+                Assert.AreEqual(expected, picker.CurrentColor[index]);
+                Assert.AreEqual(expected.ToString("0.###", CultureInfo.InvariantCulture), json[index].Value);
+                Assert.AreEqual(expected, saved[index].AsFloat);
+            }
+
+            Assert.AreEqual(ImportedColor.a, saved[3].AsFloat);
+        }
+
+        [TestCase(ColorValues.Hue, 0.3429366f, "123.457")]
+        [TestCase(ColorValues.Saturation, 0.1234567f, "0.123")]
+        [TestCase(ColorValues.Value, 0.7654321f, "0.765")]
+        public void HsvSliderDisplaysThreeDecimalPlaces(ColorValues channel, float value, string expected)
+        {
+            var slider = root.GetComponentsInChildren<ColorSlider>(true).Single(item => item.Type == channel);
+            slider.GetComponent<Slider>().value = value;
+
+            Assert.AreEqual(expected, GetInput(channel).text);
+            Assert.AreEqual(value, picker.GetValue(channel), "Display rounding must not quantize HSV coordinates.");
+        }
+
+        [Test]
+        public void ColorSquareSavesRoundedRgbAfterRepeatedMoves()
+        {
+            var slider = root.GetComponentInChildren<BoxSlider>(true);
+            var values = new[] { 0.1234567f, 0.7654321f, 0.3456789f };
+            foreach (var value in values)
+            {
+                slider.NormalizedValue = value;
+                slider.NormalizedValueY = 1f - value;
+                var json = new JSONArray().WriteColor(picker.CurrentColor);
+                var saved = JSON.Parse(json.ToString());
+                for (var index = 0; index < 3; index++)
+                {
+                    var expected = (float)Math.Round(picker.CurrentColor[index], 3);
+                    Assert.AreEqual(expected, picker.CurrentColor[index]);
+                    Assert.AreEqual(expected.ToString("0.###", CultureInfo.InvariantCulture), json[index].Value);
+                    Assert.AreEqual(expected, saved[index].AsFloat);
+                }
+            }
+        }
+
+        private TMPro.TMP_InputField GetInput(ColorValues channel)
+        {
+            var typeField = typeof(ColorTMPField).GetField("type", BindingFlags.NonPublic | BindingFlags.Instance);
+            return root.GetComponentsInChildren<ColorTMPField>(true)
+                .Single(item => (ColorValues)typeField.GetValue(item) == channel)
+                .GetComponent<TMPro.TMP_InputField>();
+        }
+
         [Test]
         public void LoadingAndDisplayingColorPreservesImportedPrecision()
         {
@@ -134,13 +197,21 @@ namespace Tests.Editor
         }
 
         [Test]
-        public void HexEntryPreservesParsedRgbaColor()
+        public void HexEntryRoundsRgbAndPreservesParsedAlpha()
         {
             var field = root.GetComponentInChildren<HexColorField>(true);
             Assert.IsNotNull(field, "The picker prefab must expose the hex-entry path.");
             field.GetComponent<InputField>().onEndEdit.Invoke("#12345678");
             ColorUtility.TryParseHtmlString("#12345678", out var expected);
-            Assert.AreEqual(expected, picker.CurrentColor);
+            expected.r = (float)Math.Round(expected.r, 3);
+            expected.g = (float)Math.Round(expected.g, 3);
+            expected.b = (float)Math.Round(expected.b, 3);
+            var saved = JSON.Parse(new JSONArray().WriteColor(picker.CurrentColor).ToString());
+            for (var index = 0; index < 4; index++)
+            {
+                Assert.AreEqual(expected[index], picker.CurrentColor[index]);
+                Assert.AreEqual(expected[index], saved[index].AsFloat);
+            }
         }
 
         [TestCase(2)]

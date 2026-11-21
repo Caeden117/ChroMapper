@@ -51,7 +51,7 @@ public void OnActionName(InputAction.CallbackContext context)
 
 `ButtonWithThreeModifiers` is retained for rebuilding persisted legacy overrides; do not use it for a newly authored axis action.
 
-`InputSystemPatch` compares each binding's non-composite control paths. A binding is blocked only by an enabled binding with more paths that contains every one of its paths. Runtime-added actions are absent from that startup cache.
+`InputSystemPatch` compares each action's non-composite binding paths as seen at `Start()`, loaded overrides included. A binding is meant to be blocked only by an enabled action with more paths that contains every one of its paths, but the startup per-action cache does not observe active callback contexts, disabled maps, or later rebinds. Runtime-added actions are absent from that cache entirely.
 
 When multiple action maps share a chord, callbacks must validate ownership through their editor context, such as the active controller, hovered object, or blocking UI. Do not inspect hardcoded physical modifier keys in the mutation helper; the authored binding and overlap patch own chord resolution.
 

@@ -107,6 +107,8 @@ public class ArcGridContainer : BeatmapObjectContainerCollection<BaseArc>
         for (int i = 0; i < maxRecomputePerFrame && queuedUpdatingArcs.Count != 0; ++i)
         {
             var container = queuedUpdatingArcs.Dequeue();
+            // Scene teardown can destroy an arc while its spline update is still queued.
+            if (container == null) continue;
             container.RecomputePosition();
             container.SetIndicators(!isPlaying);
         }

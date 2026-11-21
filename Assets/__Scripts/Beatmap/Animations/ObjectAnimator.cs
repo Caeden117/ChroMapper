@@ -720,10 +720,7 @@ namespace Beatmap.Animations
                     }
                 }
 
-                AnimatedLife =
-                    (this.time != null && this.time < obj.SongBpmTime)
-                    || WorldPosition.Count > 0
-                    || (obj.CustomFake && time < timeEnd);
+                UpdateAnimatedLife(obj, time);
                 if (ShouldRecycle)
                 {
                     var despawnTime = WorldPosition.Count == 0 && !obj.CustomFake
@@ -1173,10 +1170,23 @@ namespace Beatmap.Animations
                 : Mathf.LerpUnclamped(timeBegin, timeEnd, normalTime);
         }
 
+        private void UpdateAnimatedLife(BaseGrid obj, float animationTime)
+        {
+            AnimatedLife =
+                (time != null && time < obj.SongBpmTime)
+                || WorldPosition.Count > 0
+                || (obj.CustomFake && animationTime < timeEnd);
+        }
+
         private void OnTimeChanged()
         {
             if (Context.Atsc.IsPlaying) return;
 
+            // A seek can recreate a frozen wall immediately before resume. Update its lifetime before the next despawn check.
+            if (container != null && container.ObjectData is BaseGrid obj)
+            {
+                UpdateAnimatedLife(obj, time ?? Context.Atsc.CurrentSongBpmTime);
+            }
             ApplyCurrentPose();
         }
 

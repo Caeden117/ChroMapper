@@ -1,0 +1,28 @@
+Ryū binary32 float-to-decimal conversion
+
+Original algorithm: Copyright 2018 Ulf Adams
+https://github.com/ulfjack/ryu
+
+C# port: Dogwei/RyuCsharp
+https://github.com/Dogwei/RyuCsharp
+Pinned revision: c8c211bb3e2541dfbbc8aa3c0ed6023d5cb35668
+
+These files are distributed under the Boost Software License 1.0.
+See LICENSE-Boost.txt for the complete license.
+
+Imported portions: f2s.cs, f2s_full_table.cs, floating_decimal_32.cs and the
+power-of-five/logarithm helpers from common.cs. The binary32 arithmetic and
+lookup values are retained from the pinned C# port.
+
+Local adaptations:
+- Limit the import to binary32 formatting, with an internal Ryu.RyuSingle API.
+- Replace C# 11 global aliases and file-scoped namespaces with Unity-compatible
+  C# syntax, and expand control-flow bodies to match project formatting.
+- Replace Unsafe-based character output with stack-allocated spans and
+  BitConverter.SingleToInt32Bits, avoiding an additional package dependency.
+- Write into a caller-owned span and return its length so the JSON writer can
+  append directly to StringBuilder without allocating a string per number.
+- Render the shortest decimal significand in fixed or scientific notation,
+  using invariant JSON-compatible punctuation and an uppercase signed exponent.
+- Preserve the project's existing zero and non-finite text conventions.
+- Use conditional System.Diagnostics assertions and omit the C compiler branch.

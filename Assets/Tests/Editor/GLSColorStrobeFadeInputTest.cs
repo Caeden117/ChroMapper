@@ -1,7 +1,6 @@
 using System.Reflection;
 using Beatmap.Base;
 using Beatmap.Containers;
-using Beatmap.Enums;
 // The regression fixture creates authoritative GLS groups through the same factory used by loaded maps.
 using Beatmap.Helper;
 using NUnit.Framework;
@@ -50,13 +49,16 @@ namespace Tests.Editor
             }
         }
 
-        // OuterPrimaryGlsColorNodeShiftScrollTogglesStrobeFade protects the collection-owned outer preview node path.
+        // OuterPrimaryGlsColorNodeShiftScrollTogglesStrobeFade protects the collection-owned outer preview node path;
+        // the strobe fade cycle turns off when scrolling down from its first enabled InOutCubic state.
         [Test]
         public void OuterPrimaryGlsColorNodeShiftScrollTogglesStrobeFade()
         {
             SetEditingMode(EditingMode.GLS);
             var group = PlaceColorGroup(primaryStrobeFade: 1, ghostStrobeFade: 0);
             var primaryEvent = group.Boxes[0].Events[0];
+            // GlsEasingCycleMatchesEditorOrder starts the enabled cycle at native InOutCubic, so scrolling down
+            // from that unset-key state is the single step that returns to fade off.
             var containerObject = new GameObject("Outer primary GLS color Strobe Fade test container");
             var controllerObject = new GameObject("Outer primary GLS color Strobe Fade test controller");
             try
@@ -71,11 +73,12 @@ namespace Tests.Editor
                 controller.HoveredObject = container;
                 controller.RaycastTarget = container;
 
-                SendShiftScroll(controller);
+                SendShiftScroll(controller, -1f);
 
                 var replacement = GetOpenColorGroup();
                 Assert.NotNull(replacement);
                 Assert.AreEqual(0, replacement.Boxes[0].Events[0].StrobeFade);
+                Assert.IsFalse(replacement.Boxes[0].Events[0].CustomData.HasKey("strobeEasing"));
                 Assert.AreEqual(0, replacement.Boxes[0].Events[1].StrobeFade);
             }
             finally
@@ -121,7 +124,8 @@ namespace Tests.Editor
             }
         }
 
-        private void SendShiftScroll(CMInput.IGLSColorObjectsActions controller)
+        // Isolate the authored composite from host focus and physical devices so the raycast refactor retains deterministic input coverage.
+        private void SendShiftScroll(CMInput.IGLSColorObjectsActions controller, float scrollY = 1f)
         {
             InitializeVirtualInput(includeKeyboard: true);
             var input = new CMInput();
@@ -134,7 +138,7 @@ namespace Tests.Editor
                 InputSystem.Update();
                 InputSystem.QueueStateEvent(
                     VirtualMouse,
-                    new MouseState { scroll = new Vector2(0f, 1f) });
+                    new MouseState { scroll = new Vector2(0f, scrollY) });
                 InputSystem.Update();
             }
             finally
