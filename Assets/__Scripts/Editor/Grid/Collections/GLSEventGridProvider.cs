@@ -128,7 +128,7 @@ public class GLSEventGridProvider : MonoBehaviour
         var boxes = groupContext.ReadOnlyBoxes;
         AppendMissingAxisLanes(groupContext, axisUnusedLanes);
         RebuildAxisLaneOrder(boxes);
-        RebuildLaneOwnership(boxes, GetGroupSize(groupContext));
+        RebuildLaneOwnership(boxes, beatmapRuntimeContext.Descriptor.GetGlsGroupSize(groupContext));
         gridLane.Lane = DisplayedLaneCount;
 
         for (var i = 0; i < DisplayedLaneCount; i++)
@@ -215,29 +215,6 @@ public class GLSEventGridProvider : MonoBehaviour
             }
         }
     }
-
-    // Use the manager for this group type because color, rotation, and translation groups can have different physical light counts.
-    private int GetGroupSize(BaseEventBoxGroup group)
-        => group switch
-        {
-            BaseLightColorEventBoxGroup => beatmapRuntimeContext.Descriptor.LightColorGroupEffectManager.IdToEffect
-                .TryGetValue(group.ID, out var colorEffect)
-                ? colorEffect.Count
-                : 0,
-            BaseLightRotationEventBoxGroup => beatmapRuntimeContext.Descriptor.LightRotationGroupEffectManager.IdToEffect
-                .TryGetValue(group.ID, out var rotationEffect)
-                ? rotationEffect.Count
-                : 0,
-            BaseLightTranslationEventBoxGroup => beatmapRuntimeContext.Descriptor.LightTranslationGroupEffectManager.IdToEffect
-                .TryGetValue(group.ID, out var translationEffect)
-                ? translationEffect.Count
-                : 0,
-            BaseVfxEventEventBoxGroup => beatmapRuntimeContext.Descriptor.FloatFxGroupEffectManager.IdToEffect
-                .TryGetValue(group.ID, out var floatFxEffect)
-                ? floatFxEffect.Count
-                : 0,
-            _ => 0
-        };
 
     public bool TryGetDisplayedBox(int laneIndex, out BaseEventBox box)
     {

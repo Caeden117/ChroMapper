@@ -286,7 +286,7 @@ public class EventBoxViewController : MonoBehaviour
     {
         if (groupContext == null)
             return;
-        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, GetGroupSize(groupContext));
+        GLSEventBoxCommand.AddAllIdsEventBox(groupContext, beatmapRuntimeContext.Descriptor.GetGlsGroupSize(groupContext));
     }
 
     private void HandleAddAxesEventBox()
@@ -304,7 +304,8 @@ public class EventBoxViewController : MonoBehaviour
         if (groupContext is not ILightTransformEventBoxGroup)
             return;
         var td = beatmapRuntimeContext.TrackDefinitions.GetGlsOrDefault(groupContext.ID);
-        GLSEventBoxCommand.AddAllAxesAndIdsEventBox(groupContext, td, GetGroupSize(groupContext));
+        GLSEventBoxCommand.AddAllAxesAndIdsEventBox(
+            groupContext, td, beatmapRuntimeContext.Descriptor.GetGlsGroupSize(groupContext));
     }
 
     private void HandleDeleteEventBox()
@@ -570,7 +571,7 @@ public class EventBoxViewController : MonoBehaviour
 
     private void HandleEventBoxChanged(BaseEventBoxGroup group, BaseEventBox box)
     {
-        var groupSize = GetGroupSize(group);
+        var groupSize = beatmapRuntimeContext.Descriptor.GetGlsGroupSize(group);
 
         foreach (var t in instantiatedErrorText) Destroy(t);
         instantiatedErrorText.Clear();
@@ -936,35 +937,5 @@ public class EventBoxViewController : MonoBehaviour
         tooltip.AppearDelay = 0.25f;
         if (hotkeyActionMap != null) tooltip.HotkeyActionMap = hotkeyActionMap;
         if (hotkeyActionName != null) tooltip.HotkeyActionName = hotkeyActionName;
-    }
-
-    private int GetGroupSize(BaseEventBoxGroup group)
-    {
-        return group switch
-        {
-            BaseLightColorEventBoxGroup => beatmapRuntimeContext.Descriptor
-                .LightColorGroupEffectManager
-                .IdToEffect
-                .TryGetValue(group.ID, out var fx)
-                ? fx.Count
-                : 0,
-            BaseLightRotationEventBoxGroup => beatmapRuntimeContext.Descriptor
-                .LightRotationGroupEffectManager
-                .IdToEffect.TryGetValue(group.ID, out var fx)
-                ? fx.Count
-                : 0,
-            BaseLightTranslationEventBoxGroup => beatmapRuntimeContext.Descriptor
-                .LightTranslationGroupEffectManager
-                .IdToEffect.TryGetValue(group.ID, out var fx)
-                ? fx.Count
-                : 0,
-            BaseVfxEventEventBoxGroup =>
-                beatmapRuntimeContext.Descriptor.FloatFxGroupEffectManager.IdToEffect.TryGetValue(
-                    group.ID,
-                    out var fx)
-                    ? fx.Count
-                    : 0,
-            _ => 0
-        };
     }
 }

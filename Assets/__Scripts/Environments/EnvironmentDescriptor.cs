@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Beatmap.Base;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
@@ -87,6 +88,19 @@ public class EnvironmentDescriptor : MonoBehaviour
         FloatFxGroupEffectManager.Refresh();
     }
 
+    // Each event-box type can have a different number of targets for the same group ID.
+    public int GetGlsGroupSize(BaseEventBoxGroup group) => group switch
+    {
+        BaseLightColorEventBoxGroup => LightColorGroupEffectManager.IdToEffect
+            .TryGetValue(group.ID, out var colorEffect) ? colorEffect.Count : 0,
+        BaseLightRotationEventBoxGroup => LightRotationGroupEffectManager.IdToEffect
+            .TryGetValue(group.ID, out var rotationEffect) ? rotationEffect.Count : 0,
+        BaseLightTranslationEventBoxGroup => LightTranslationGroupEffectManager.IdToEffect
+            .TryGetValue(group.ID, out var translationEffect) ? translationEffect.Count : 0,
+        BaseVfxEventEventBoxGroup => FloatFxGroupEffectManager.IdToEffect
+            .TryGetValue(group.ID, out var floatFxEffect) ? floatFxEffect.Count : 0,
+        _ => 0
+    };
 
     public void Register(LightController controller, bool strict = true)
     {

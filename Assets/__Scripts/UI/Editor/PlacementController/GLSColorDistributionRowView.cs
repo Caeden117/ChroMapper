@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Beatmap.Base;
 using UnityEngine;
 
 public class GLSColorDistributionRowView : MonoBehaviour
@@ -144,23 +145,27 @@ public class GLSColorDistributionRowView : MonoBehaviour
         return isLight ? $"{target},{offsetStr},{easing},l" : $"{target},{offsetStr},{easing}";
     }
 
-    private static bool TryParse(string raw, out int targetIdx, out float offset, out int easingIdx, out bool isLight)
+    private static bool TryParse(string raw, out int targetIndex, out float offset, out int easingIndex, out bool isLight)
     {
-        targetIdx = 0; offset = 0f; easingIdx = 0; isLight = false;
-        if (string.IsNullOrWhiteSpace(raw)) return false;
-        var parts = raw.Split(',');
-        if (parts.Length < 3) return false;
-        var targetPart = parts[0]?.Trim() ?? string.Empty;
-        bool found = false;
-        foreach (var ch in targetPart)
+        targetIndex = 0;
+        offset = 0f;
+        easingIndex = 0;
+        isLight = false;
+        if (!GLSColorDistribution.TryParseFields(raw, out var fields, trimOffset: true))
+            return false;
+
+        // A row can display only one target, so use the first recognized target from the saved entry.
+        foreach (var token in fields.TargetTokens)
         {
-            if (TargetTokenToIndex.TryGetValue(ch.ToString().ToLowerInvariant(), out var idx)) { targetIdx = idx; found = true; break; }
+            if (!TargetTokenToIndex.TryGetValue(token.ToString().ToLowerInvariant(), out targetIndex))
+                continue;
+
+            offset = fields.Offset;
+            EasingTokenToIndex.TryGetValue(fields.EasingToken.Trim(), out easingIndex);
+            isLight = fields.UsesAffectedLightProgress;
+            return true;
         }
-        if (!found) return false;
-        if (!float.TryParse(parts[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out offset)) return false;
-        if (float.IsNaN(offset) || float.IsInfinity(offset)) return false;
-        if (!EasingTokenToIndex.TryGetValue(parts[2].Trim(), out easingIdx)) easingIdx = 0;
-        if (parts.Length >= 4) isLight = string.Equals(parts[3].Trim(), "l", StringComparison.OrdinalIgnoreCase);
-        return true;
+
+        return false;
     }
 }

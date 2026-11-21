@@ -291,31 +291,49 @@ namespace Beatmap.Base
             var result = new List<GLSColorDistributionInstruction>(values.Count);
             for (var valueIndex = 0; valueIndex < values.Count; valueIndex++)
             {
-                var parts = values[valueIndex]?.Split(',');
-                if (parts == null
-                    || parts.Length < 3
-                    || !float.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var offset)
-                    || float.IsNaN(offset)
-                    || float.IsInfinity(offset)
-                    || !Easing.TryGetByNameOrShortName(parts[2], out var easing))
+                if (!TryParseFields(values[valueIndex], out var fields)
+                    || !Easing.TryGetByNameOrShortName(fields.EasingToken, out var easing))
                 {
                     continue;
                 }
 
-                var targets = ParseTargets(parts[0]);
+                var targets = ParseTargets(fields.TargetTokens);
                 if (targets != GLSColorDistributionTargets.None)
                 {
-                    var usesAffectedLightProgress = parts.Length >= 4
-                        && string.Equals(parts[3].Trim(), "l", StringComparison.OrdinalIgnoreCase);
                     result.Add(new GLSColorDistributionInstruction(
                         targets,
-                        offset,
+                        fields.Offset,
                         easing,
-                        usesAffectedLightProgress));
+                        fields.UsesAffectedLightProgress));
                 }
             }
 
             return result;
+        }
+
+        internal static bool TryParseFields(
+            string value,
+            out (string TargetTokens, float Offset, string EasingToken, bool UsesAffectedLightProgress) fields,
+            bool trimOffset = false)
+        {
+            fields = default;
+            var parts = value?.Split(',');
+            if (parts == null || parts.Length < 3)
+                return false;
+
+            var offsetToken = parts[1].AsSpan();
+            if (trimOffset)
+                offsetToken = offsetToken.Trim();
+            if (!float.TryParse(offsetToken, NumberStyles.Float, CultureInfo.InvariantCulture, out var offset)
+                || !float.IsFinite(offset))
+            {
+                return false;
+            }
+
+            var usesAffectedLightProgress = parts.Length >= 4
+                && parts[3].AsSpan().Trim().Equals("l".AsSpan(), StringComparison.OrdinalIgnoreCase);
+            fields = (parts[0], offset, parts[2], usesAffectedLightProgress);
+            return true;
         }
 
         public static string[] ReadStrings(JSONNode customData, string key)
