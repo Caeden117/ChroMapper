@@ -52,13 +52,17 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     }
 
     private bool isScrolling;
-    private Vector3 lastMousePosition;
+    private Vector2 lastMousePosition;
     private EventContainer lastMetadataFailureContainer;
     private string lastMetadataFailureReason;
 
-    private void Start()
+    private void HidePreviewWhileScrolling()
     {
-        lastMousePosition = Input.mousePosition;
+        if (!isScrolling)
+            lastMousePosition = KeybindsController.MousePosition;
+
+        isScrolling = true;
+        HidePreviewVisual();
     }
 
     private void HidePreviewVisual()
@@ -95,8 +99,8 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
     {
         if (!isScrolling) return;
 
-        var currentMousePosition = Input.mousePosition;
-        var mouseMoved = Vector3.Distance(currentMousePosition, lastMousePosition) > 0.1f;
+        var currentMousePosition = KeybindsController.MousePosition;
+        var mouseMoved = Vector2.Distance(currentMousePosition, lastMousePosition) > 0.1f;
 
         if (mouseMoved)
         {
@@ -468,8 +472,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
         {
             if (edited.Count > 0)
             {
-                isScrolling = true;
-                HidePreviewVisual();
+                HidePreviewWhileScrolling();
                 foreach (var evt in edited)
                     RefreshEditedEventAppearance(evt);
 
@@ -506,8 +509,7 @@ public class BeatmapEventInputController : BeatmapInputController<EventContainer
 
         eventAppearance.SetAppearance(e, TrackDefinition);
         // Record successful scrolling before the replacement action invalidates the hovered container.
-        isScrolling = true;
-        HidePreviewVisual();
+        HidePreviewWhileScrolling();
         var updateAction = UpdatedEventAction(e.ObjectData, (BaseEvent)original, mergeType);
         BeatmapActionContainer.AddAction(updateAction, true);
         // Refresh the replacement container after relinking so its text and gradient use the final edited object.

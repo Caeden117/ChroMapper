@@ -5,7 +5,6 @@ using NUnit.Framework;
 using SimpleJSON;
 using Tests.Infrastructure;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.TestTools;
 
 namespace Tests.Editor
@@ -15,10 +14,11 @@ namespace Tests.Editor
     // controller index 6) to the registered Panic laser; the user confirms live CM now matches
     // the game's side after the ObjectAnimator lifecycle fix.
     // Fixture keeps the authored customEvents/environment relative order, no flattening.
-    // Explicit because the HDR screenshot path is machine/GPU-specific; run on demand with
-    // -TestFilter 'Tests.Editor.SaltyOpeningLaserParityTest'.
     public class SaltyOpeningLaserParityTest : TestBase
     {
+        private const int CaptureWidth = 1024;
+        private const int CaptureHeight = 576;
+
         private bool animationsBeforeTest;
         private UIMode uiMode;
         private CameraManager cameraManager;
@@ -61,7 +61,7 @@ namespace Tests.Editor
             ApplyDeployedCameraSettings();
             uiMode.SetUIMode(UIModeType.Playing, false);
             cameraManager.SelectCamera(CameraType.Playing);
-            var camera = cameraManager.CameraControllers[1].Camera;
+            var camera = cameraManager.SelectedCameraController.Camera;
             yield return SeekTo(2.625f);
 
             var pair = Object.FindObjectsByType<ParametricBloomFogLightController>(
@@ -80,59 +80,75 @@ namespace Tests.Editor
             Assert.That(id7.Color.a, Is.LessThanOrEqualTo(0.01f),
                 "Type0 ID7 lit at beat 2.625; lightID[1] should only drive ID6.");
 
-            var pixels = RenderPixels(camera);
-            var left = CountRedLaserPixels(pixels, 260, 460);
-            var right = CountRedLaserPixels(pixels, 564, 764);
-            Object.DestroyImmediate(pixels);
+            var litPixels = RenderPixels(camera);
+            var color = id6.Color;
+            Color32[] unlitPixels;
+            try
+            {
+                id6.SetColor(Color.clear);
+                id6.Refresh();
+                unlitPixels = RenderPixels(camera);
+            }
+            finally
+            {
+                id6.SetColor(color);
+                id6.Refresh();
+            }
+
+            var left = CountAddedRedLaserPixels(litPixels, unlitPixels, 260, 460);
+            var right = CountAddedRedLaserPixels(litPixels, unlitPixels, 564, 764);
             Assert.That(left + right, Is.GreaterThan(0),
-                $"No visible red laser pixels at beat 2.625; left={left} right={right}.");
+                $"ID6 added no visible red laser pixels at beat 2.625; left={left} right={right}.");
         }
 
-        private static int CountRedLaserPixels(Texture2D texture, int xMin, int xMax)
+        private static int CountAddedRedLaserPixels(Color32[] litPixels, Color32[] unlitPixels, int xMin, int xMax)
         {
-            var pixels = texture.GetPixels32();
             var count = 0;
-            for (var topY = 350; topY <= 575 && topY < 576; topY++)
+            for (var topY = 350; topY < CaptureHeight; topY++)
             {
-                var row = 575 - topY;
-                for (var x = xMin; x <= xMax && x < 1024; x++)
+                var row = CaptureHeight - 1 - topY;
+                for (var x = xMin; x <= xMax; x++)
                 {
-                    var p = pixels[row * 1024 + x];
-                    if (p.r >= 140 && p.r >= 2 * p.g && p.r >= 2 * p.b)
+                    var index = (row * CaptureWidth) + x;
+                    if (IsRedLaserPixel(litPixels[index]) && !IsRedLaserPixel(unlitPixels[index]))
                         count++;
                 }
             }
             return count;
         }
 
-        private Texture2D RenderPixels(Camera camera)
+        private static bool IsRedLaserPixel(Color32 pixel) =>
+            pixel.r >= 140 && pixel.r >= 2 * pixel.g && pixel.r >= 2 * pixel.b;
+
+        private static Color32[] RenderPixels(Camera camera)
         {
-            var rt = new RenderTexture(1024, 576, 24, RenderTextureFormat.DefaultHDR);
+            // The red-pixel thresholds describe the playing camera's sRGB display output.
+            var target = new RenderTexture(CaptureWidth, CaptureHeight, 24, RenderTextureFormat.ARGB32,
+                RenderTextureReadWrite.sRGB);
+            var texture = new Texture2D(CaptureWidth, CaptureHeight, TextureFormat.RGBA32, false);
             var previousTarget = camera.targetTexture;
             var previousActive = RenderTexture.active;
             try
             {
-                camera.targetTexture = rt;
-                RenderTexture.active = rt;
+                camera.targetTexture = target;
                 camera.Render();
-                var texture = new Texture2D(1024, 576, TextureFormat.RGB24, false);
-                texture.ReadPixels(new Rect(0, 0, 1024, 576), 0, 0);
-                texture.Apply();
-                return texture;
+                RenderTexture.active = target;
+                texture.ReadPixels(new Rect(0, 0, CaptureWidth, CaptureHeight), 0, 0);
+                return texture.GetPixels32();
             }
             finally
             {
                 camera.targetTexture = previousTarget;
                 RenderTexture.active = previousActive;
-                rt.Release();
-                Object.DestroyImmediate(rt);
+                Object.DestroyImmediate(texture);
+                Object.DestroyImmediate(target);
             }
         }
 
         private void ApplyDeployedCameraSettings()
         {
             Settings.Instance.PlayerCameraFOV = 90f;
-            Settings.Instance.PlayerCameraOffsetZ = 0f;
+            Settings.ApplyOptionByName(nameof(Settings.PlayerCameraOffsetZ), 0f);
             Settings.Instance.CameraFOV = 90f;
         }
 
@@ -153,7 +169,7 @@ namespace Tests.Editor
                 cameraManager.SelectCamera(CameraType.Editing);
             Settings.Instance.Animations = animationsBeforeTest;
             Settings.Instance.PlayerCameraFOV = previousPlayerCameraFOV;
-            Settings.Instance.PlayerCameraOffsetZ = previousPlayerCameraOffsetZ;
+            Settings.ApplyOptionByName(nameof(Settings.PlayerCameraOffsetZ), previousPlayerCameraOffsetZ);
             Settings.Instance.CameraFOV = previousCameraFOV;
             yield break;
         }

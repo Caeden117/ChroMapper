@@ -12,6 +12,9 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 {
     private static CameraController instance;
 
+    // The window can stay fullscreen while the mapper scene is reloaded.
+    private static Vector2Int? windowedResolution;
+
     [SerializeField] private Vector3[] presetPositions;
     [SerializeField] private Vector3[] presetRotations;
     [SerializeField] private float movementSpeed;
@@ -462,7 +465,37 @@ public class CameraController : MonoBehaviour, CMInput.ICameraActions
 
     public void OnToggleFullscreen(CallbackContext context)
     {
-        if (!Application.isEditor && context.performed) Screen.fullScreen = !Screen.fullScreen;
+        // Both controllers receive this shortcut even when only one Camera is rendering.
+        if (Application.isEditor || !context.performed || playerCamera)
+            return;
+
+        var display = Screen.mainWindowDisplayInfo;
+        var request = GetFullscreenRequest(
+            Screen.fullScreen,
+            new Vector2Int(Screen.width, Screen.height),
+            new Vector2Int(display.width, display.height),
+            ref windowedResolution);
+        if (request.Resolution is Vector2Int resolution)
+            Screen.SetResolution(resolution.x, resolution.y, request.Mode);
+        else
+            Screen.fullScreen = request.Mode != FullScreenMode.Windowed;
+    }
+
+    internal static (FullScreenMode Mode, Vector2Int? Resolution) GetFullscreenRequest(
+        bool isFullscreen,
+        Vector2Int currentResolution,
+        Vector2Int displayResolution,
+        ref Vector2Int? previousWindowedResolution)
+    {
+        if (isFullscreen)
+        {
+            var resolution = previousWindowedResolution;
+            previousWindowedResolution = null;
+            return (FullScreenMode.Windowed, resolution);
+        }
+
+        previousWindowedResolution = currentResolution;
+        return (FullScreenMode.FullScreenWindow, displayResolution);
     }
 
     public void OnLocation1(CallbackContext context) => OnLocation(0);

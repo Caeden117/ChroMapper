@@ -58,6 +58,15 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
         public int Y;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NativeRect
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
     private IntPtr playerWindow;
     private bool suppressingLegacy;
     private WindowsRawMouseReader rawMouse;
@@ -198,18 +207,22 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
             return;
 
         var mouse = Mouse.current;
-        if (mouse == null || !GetCursorPos(out var point) || !ScreenToClient(playerWindow, ref point))
+        if (mouse == null
+            || !GetCursorPos(out var point)
+            || !ScreenToClient(playerWindow, ref point)
+            || !GetClientRect(playerWindow, out var clientRect)
+            || clientRect.Right == 0 || clientRect.Bottom == 0)
+        {
             return;
+        }
 
-        // GetCursorPos is desktop-relative. Window chrome, window position, and other monitors
-        // must be removed before converting Win32's top-left origin to Unity's bottom-left.
-        var position = new Vector2(point.X, Screen.height - 1 - point.Y);
+        var clientSize = new Vector2Int(clientRect.Right, clientRect.Bottom);
         var buttons = (IsPressed(0x01) ? 1 : 0)
             | (IsPressed(0x02) ? 2 : 0)
             | (IsPressed(0x04) ? 4 : 0)
             | (IsPressed(0x06) ? 8 : 0)
             | (IsPressed(0x05) ? 16 : 0);
-        var insideClient = point.X >= 0 && point.Y >= 0 && point.X < Screen.width && point.Y < Screen.height;
+        var insideClient = point.X >= 0 && point.Y >= 0 && point.X < clientSize.x && point.Y < clientSize.y;
         // Changing registration while a button is held can swallow the legacy release and leave
         // Windows' activation/drag state stuck. Switch only between complete clicks.
         if (buttons == 0)
@@ -230,6 +243,12 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
                 SetCursor(arrowCursor);
         }
 
+        var screenSize = new Vector2Int(Screen.width, Screen.height);
+        var position = MapClientPosition(
+            new Vector2Int(point.X, point.Y),
+            clientSize,
+            screenSize,
+            clientSize != screenSize && Screen.fullScreenMode == FullScreenMode.FullScreenWindow);
         rawMouse.Take(out var x, out var y, out var wheelX, out var wheelY);
         ApplyMouseState(mouse, position, new Vector2(x, -y), new Vector2(wheelX, wheelY) * wheelScale, buttons);
     }
@@ -269,6 +288,10 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
     private static extern bool ScreenToClient(IntPtr window, ref Point point);
 
     [DllImport("user32.dll", ExactSpelling = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetClientRect(IntPtr window, out NativeRect rect);
+
+    [DllImport("user32.dll", ExactSpelling = true)]
     private static extern short GetAsyncKeyState(int virtualKey);
 
     [DllImport("user32.dll", EntryPoint = "LoadCursorW", ExactSpelling = true)]
@@ -277,6 +300,28 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
     [DllImport("user32.dll", ExactSpelling = true)]
     private static extern IntPtr SetCursor(IntPtr cursor);
 #endif
+
+    internal static Vector2 MapClientPosition(
+        Vector2Int clientPosition,
+        Vector2Int clientSize,
+        Vector2Int screenSize,
+        bool letterboxed)
+    {
+        var position = new Vector2(clientPosition.x, clientSize.y - 1 - clientPosition.y);
+        if (clientSize == screenSize)
+            return position;
+
+        var scale = new Vector2(
+            (float)screenSize.x / clientSize.x,
+            (float)screenSize.y / clientSize.y);
+        if (!letterboxed)
+            return Vector2.Scale(position, scale);
+
+        // Borderless fullscreen preserves the render aspect ratio and centers it in the client area.
+        var uniformScale = Mathf.Max(scale.x, scale.y);
+        var letterboxOffset = ((Vector2)clientSize * uniformScale - (Vector2)screenSize) * 0.5f;
+        return position * uniformScale - letterboxOffset;
+    }
 
     internal static void SuppressMouseStateEvent(InputEventPtr eventPointer, InputDevice device)
     {

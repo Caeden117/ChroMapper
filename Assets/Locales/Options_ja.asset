@@ -1561,6 +1561,14 @@ MonoBehaviour:
     m_Localized: By default new event boxes will have Affect First defaulted to on, when this is enabled. Disable this if you prefer the Original Editor behavior. This value will not be serialized in your json unless the event box has some distribution related settings.
     m_Metadata:
       m_Items: []
+  - m_Id: 781108813288137152
+    m_Localized: Sync copied objects with clipboard JSON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 781108813288137153
+    m_Localized: Export copied objects as JSON when leaving ChroMapper and import recognized clipboard JSON when returning.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
