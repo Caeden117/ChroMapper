@@ -43,7 +43,9 @@ public class BloomfogRendererSO : ScriptableObject
 
         if (bloomfogMesh == null)
             PrepareMesh(true);
-        Shader.SetGlobalMatrix(vertexTransformMatrix, Matrix4x4.Ortho(0, 1, 1, 0, -1, 1));
+        // Light quads use bottom-left viewport coordinates. The render target's Y orientation depends on the graphics API.
+        var viewportProjection = Matrix4x4.Ortho(0, 1, 0, 1, -1, 1);
+        Shader.SetGlobalMatrix(vertexTransformMatrix, GL.GetGPUProjectionMatrix(viewportProjection, true));
     }
 
     private void OnDisable() => Release();

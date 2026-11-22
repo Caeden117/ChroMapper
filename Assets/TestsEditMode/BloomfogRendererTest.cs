@@ -7,6 +7,52 @@ namespace TestsEditMode
 {
     public class BloomfogRendererTest
     {
+        [Test]
+        public void BloomFogTextureKeepsLightsOnTheirProjectedSide()
+        {
+            const int size = 128;
+            var renderer = ScriptableObject.CreateInstance<BloomfogRendererSO>();
+            var material = new Material(Shader.Find("ChroMapper/BloomfogMesh"));
+            var root = new GameObject("BloomfogLights");
+            var target = new RenderTexture(size, size, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+            var pixels = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
+            var previousActive = RenderTexture.active;
+            var previousTransform = Shader.GetGlobalMatrix("_VertexTransformMatrix");
+            var previousRatio = Shader.GetGlobalVector("_CustomFogTextureToScreenRatio");
+            var previousEyeOffsets = Shader.GetGlobalVector("_StereoCameraEyeOffsets");
+            var light = CreateLight(root, material);
+            try
+            {
+                renderer.FOV = new Vector2(90f, 90f);
+                light.transform.SetPositionAndRotation(new Vector3(0f, 1f, -3f), Quaternion.Euler(0f, 0f, 90f));
+                light.Center = 0.5f;
+                light.SetColor(Color.white);
+
+                renderer.RenderToTexture(Matrix4x4.identity, Matrix4x4.Perspective(90f, 1f, 0.1f, 100f), target, out _);
+                RenderTexture.active = target;
+                pixels.ReadPixels(new Rect(0, 0, size, size), 0, 0);
+                var aboveCenter = pixels.GetPixel(size / 2, size * 2 / 3).r;
+                var belowCenter = pixels.GetPixel(size / 2, size / 3).r;
+
+                Assert.That(aboveCenter, Is.GreaterThan(belowCenter),
+                    $"A light above the camera center must render above the texture center. "
+                    + $"Red above: {aboveCenter}, red below: {belowCenter}.");
+            }
+            finally
+            {
+                RenderTexture.active = previousActive;
+                Shader.SetGlobalMatrix("_VertexTransformMatrix", previousTransform);
+                Shader.SetGlobalVector("_CustomFogTextureToScreenRatio", previousRatio);
+                Shader.SetGlobalVector("_StereoCameraEyeOffsets", previousEyeOffsets);
+                BloomFogObject.AllBloomFogLights.Remove(light);
+                Object.DestroyImmediate(root);
+                Object.DestroyImmediate(renderer);
+                Object.DestroyImmediate(material);
+                Object.DestroyImmediate(pixels);
+                Object.DestroyImmediate(target);
+            }
+        }
+
         // RenderQuads rewrites submesh descriptors in place each frame, and Unity validates every
         // SetSubMesh against the descriptors left over from the previous pass. Reproduces the
         // deployed-log warning "SetSubMesh #0 shares part of its index buffer with SubMesh #1":

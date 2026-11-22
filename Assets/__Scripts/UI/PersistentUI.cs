@@ -413,10 +413,10 @@ public class PersistentUI : MonoBehaviour
         var rectWidth = tooltipPanelRect.rect.width * persistentCanvas.scaleFactor * 0.5f;
         var rectHeight = tooltipPanelRect.rect.height * persistentCanvas.scaleFactor * 0.5f;
 
+        var pointerPosition = CMInputCallbackInstaller.InputInstance.Utils.MouseMovement.ReadValue<Vector2>();
         var clamped = new Vector2(
-            Mathf.Clamp(Input.mousePosition.x, rectWidth, screenWidth - rectWidth),
-            Mathf.Clamp(Input.mousePosition.y + (rectHeight - 4), rectHeight, screenHeight - rectHeight)
-        );
+            Mathf.Clamp(pointerPosition.x, rectWidth, screenWidth - rectWidth),
+            Mathf.Clamp(pointerPosition.y + (rectHeight - 4), rectHeight, screenHeight - rectHeight));
         tooltipPanelRect.position = clamped;
     }
 

@@ -152,6 +152,10 @@ namespace Tests.Editor
             var previousColorSpaces = renderers.Select(renderer => renderer.applyActiveColorSpace).ToArray();
             var previousMaterials = renderers.Select(renderer => renderer.sharedMaterial).ToArray();
             var previousLifetimeColors = sources.Select(system => system.colorOverLifetime.enabled).ToArray();
+            var camera = cameras.SelectedCameraController.Camera;
+            var previousCameraPosition = camera.transform.localPosition;
+            var previousCameraRotation = camera.transform.localRotation;
+            var previousFieldOfView = camera.fieldOfView;
             try
             {
                 if (importRendererSettings)
@@ -199,7 +203,6 @@ namespace Tests.Editor
                         system.GetComponent<ParticleSystemRenderer>().SetPropertyBlock(block);
                     }
 
-                    var camera = cameras.SelectedCameraController.Camera;
                     camera.transform.SetPositionAndRotation(ReadVector(fixture["cameraPosition"]), Quaternion.identity);
                     camera.fieldOfView = fixture["cameraVerticalFov"];
                     var pixels = Capture(camera, frame["capture"].Value + "-star-regression", width, height);
@@ -219,6 +222,8 @@ namespace Tests.Editor
             }
             finally
             {
+                camera.transform.SetLocalPositionAndRotation(previousCameraPosition, previousCameraRotation);
+                camera.fieldOfView = previousFieldOfView;
                 for (var index = 0; index < sources.Length; index++)
                 {
                     renderers[index].applyActiveColorSpace = previousColorSpaces[index];

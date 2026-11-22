@@ -25,6 +25,9 @@ Overrides automatic Unity executable discovery.
 .PARAMETER ProjectPath
 Overrides the ChroMapper Unity project directory. By default, the script's own
 directory is used.
+
+.PARAMETER OpenGL
+Requests Unity's OpenGL Core renderer for both PlayMode and EditMode.
 #>
 
 param(
@@ -34,7 +37,8 @@ param(
 
     [string]$UnityExe,
 
-    [string]$ProjectPath
+    [string]$ProjectPath,
+    [switch]$OpenGL
 )
 
 Set-StrictMode -Version Latest
@@ -188,6 +192,10 @@ function Invoke-ChroMapperTestPlatform {
 
     if (-not [string]::IsNullOrWhiteSpace($TestFilter)) {
         $UnityArguments += @("-testFilter", $TestFilter)
+    }
+
+    if ($OpenGL) {
+        $UnityArguments += "-force-glcore"
     }
 
     $UnityProcess = Start-Process -FilePath $UnityExe -ArgumentList $UnityArguments -PassThru -NoNewWindow
