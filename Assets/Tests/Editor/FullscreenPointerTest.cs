@@ -58,7 +58,8 @@ namespace Tests.Editor
                         position,
                         Vector2.zero,
                         Vector2.zero,
-                        0);
+                        0,
+                        swapButtons: false);
 
                     var uiPosition = mouse.position.ReadValue();
                     var uiHit = RectTransformUtility.RectangleContainsScreenPoint(hitbox, uiPosition, camera);
