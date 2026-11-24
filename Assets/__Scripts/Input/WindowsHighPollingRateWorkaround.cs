@@ -25,21 +25,21 @@ using UnityEngine.InputSystem.LowLevel;
 // Windows standalone builds activate this automatically. Editor builds do not.
 // Never install this in the Editor, where it can disable the Editor's own input.
 //
-// Unity UUM-142550 includes 6000.3.15f1, ChroMapper uses 6000.3.13f1. The tracker lists a
-// mitigation in 7000.0.0a2, not a complete fix, and no verified 6.3 fix as researched 2026-10-21:
-// https://issuetracker.unity.com/issues/19661/play-mode-framerate-drops-significantly-when-moving-the-mouse-cursor-with-high-polling-rate
-// 
-// After we update to unity 7, recheck the physical-mouse reproduction , and see if the mouse lag
-// still reproduces by watching framerate stutter while moving a 1000hz+ gaming mouse around in CM while 
-// watching for frame stutter during playback on windows 11.
+// Unity 6000.3.29f1 includes a mitigation for high-polling-rate FPS drops in Windows players (UUM-147395).
+// After upgrading, verify playback with a 1000 Hz or higher mouse before removing this workaround.
+// https://issuetracker.unity.com/issues/23505/windows-player-framerate-drops-significantly-when-moving-the-mouse-cursor-with-high-polling-rate
 //
 // !!!!!! NOTE THAT YOU CAN STILL REPRODUCE THE FRAME DROPS BY CLICKING OUT TO ANOTHER APPLICATION, 
 // AND THEN MOVING YOUR MOUSE AROUND OVER THE CM WINDOW WHILE CM DOES NOT HAVE WINDOW FOCUS.
 // This is because we use normal input while not in focus to avoid CM receiving raw input meant for other applications.
 public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
 {
+    private const int LeftButtonMask = 1 << (int)MouseButton.Left;
+    private const int RightButtonMask = 1 << (int)MouseButton.Right;
+
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     private const uint NoLegacyMouseMessages = 0x30;
+    private const int SwapButtonMetric = 23;
     private static readonly int DeviceSize = Marshal.SizeOf<RawInputDevice>();
 
     [StructLayout(LayoutKind.Sequential)]
@@ -69,6 +69,7 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
 
     private IntPtr playerWindow;
     private bool suppressingLegacy;
+    private bool swapButtons;
     private WindowsRawMouseReader rawMouse;
     private float wheelScale;
     private RawInputDevice normalRegistration = new RawInputDevice { UsagePage = 0x01, Usage = 0x02 };
@@ -194,6 +195,8 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
             return false;
         }
 
+        // GetAsyncKeyState reports physical buttons. Refresh Windows' mapping each time suppression starts.
+        swapButtons = GetSystemMetrics(SwapButtonMetric) != 0;
         suppressingLegacy = true;
         rawMouse.Take(out _, out _, out _, out _);
         SetCursor(arrowCursor);
@@ -217,15 +220,15 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
         }
 
         var clientSize = new Vector2Int(clientRect.Right, clientRect.Bottom);
-        var buttons = (IsPressed(0x01) ? 1 : 0)
-            | (IsPressed(0x02) ? 2 : 0)
+        var physicalButtons = (IsPressed(0x01) ? LeftButtonMask : 0)
+            | (IsPressed(0x02) ? RightButtonMask : 0)
             | (IsPressed(0x04) ? 4 : 0)
             | (IsPressed(0x06) ? 8 : 0)
             | (IsPressed(0x05) ? 16 : 0);
         var insideClient = point.X >= 0 && point.Y >= 0 && point.X < clientSize.x && point.Y < clientSize.y;
         // Changing registration while a button is held can swallow the legacy release and leave
         // Windows' activation/drag state stuck. Switch only between complete clicks.
-        if (buttons == 0)
+        if (physicalButtons == 0)
         {
             if (insideClient && !suppressingLegacy)
                 ApplyRegistration("client area, buttons released");
@@ -250,7 +253,13 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
             screenSize,
             clientSize != screenSize && Screen.fullScreenMode == FullScreenMode.FullScreenWindow);
         rawMouse.Take(out var x, out var y, out var wheelX, out var wheelY);
-        ApplyMouseState(mouse, position, new Vector2(x, -y), new Vector2(wheelX, wheelY) * wheelScale, buttons);
+        ApplyMouseState(
+            mouse,
+            position,
+            new Vector2(x, -y),
+            new Vector2(wheelX, wheelY) * wheelScale,
+            physicalButtons,
+            swapButtons);
     }
 
     private static bool IsPressed(int virtualKey) => (GetAsyncKeyState(virtualKey) & 0x8000) != 0;
@@ -294,6 +303,9 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
     [DllImport("user32.dll", ExactSpelling = true)]
     private static extern short GetAsyncKeyState(int virtualKey);
 
+    [DllImport("user32.dll", ExactSpelling = true)]
+    private static extern int GetSystemMetrics(int index);
+
     [DllImport("user32.dll", EntryPoint = "LoadCursorW", ExactSpelling = true)]
     private static extern IntPtr LoadCursor(IntPtr instance, IntPtr cursorName);
 
@@ -334,8 +346,17 @@ public sealed class WindowsHighPollingRateWorkaround : MonoBehaviour
         Vector2 position,
         Vector2 delta,
         Vector2 scroll,
-        int buttons)
+        int physicalButtons,
+        bool swapButtons)
     {
+        var buttons = physicalButtons;
+        if (swapButtons)
+        {
+            var leftButton = physicalButtons & LeftButtonMask;
+            var rightButton = physicalButtons & RightButtonMask;
+            buttons = (physicalButtons & ~(LeftButtonMask | RightButtonMask)) | (leftButton << 1) | (rightButton >> 1);
+        }
+
         // Apply once per dynamic update. No queued repair competes with native button snapshots.
         InputState.Change(mouse, new MouseState
         {
